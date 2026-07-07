@@ -1,0 +1,44 @@
+# Node.js dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# Python dependencies & cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Local databases (SQLite)
+backend/*.db
+backend/insider_threat.db
+
+# Environment secret files
+backend/.env
+frontend/.env
+
+# Backend application files should stay out of the frontend-only repo
+backend/
+
+# Extra root-level artifacts not needed for frontend deployment
+Insider_Threat_Postman_Collection.json
+
+# Editors & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+node_modules
