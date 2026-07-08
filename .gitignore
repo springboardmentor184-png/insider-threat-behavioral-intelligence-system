@@ -30,8 +30,12 @@ backend/insider_threat.db
 backend/.env
 frontend/.env
 
-# Backend application files should stay out of the frontend-only repo
-backend/
+# Backend local environment and generated files
+backend/venv/
+backend/.venv/
+
+# Keep backend source tracked, but exclude generated caches
+backend/**/__pycache__/
 
 # Extra root-level artifacts not needed for frontend deployment
 Insider_Threat_Postman_Collection.json
