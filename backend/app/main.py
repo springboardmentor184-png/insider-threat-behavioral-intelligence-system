@@ -22,6 +22,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Security Headers Middleware (Clickjacking, MIME Sniffing, XSS protection)
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Content-Security-Policy"] = "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net"
+    return response
+
 # Register routes
 app.include_router(auth.router, prefix="/api")
 app.include_router(employees.router, prefix="/api")
@@ -68,6 +78,25 @@ def seed_system_data():
                 db_depts[d["name"]] = existing
                 
         db.commit()
+
+        # 2.5 Seed Default Administrator (for testing auth flows out-of-the-box)
+        from app.models.models import User
+        from app.core.security import get_password_hash
+        admin_role = db_roles["Administrator"]
+        existing_admin = db.query(User).filter(User.email == "admin@company.com").first()
+        if not existing_admin:
+            db_admin = User(
+                full_name="Administrator Operator",
+                username="admin_corp",
+                email="admin@company.com",
+                hashed_password=get_password_hash("AdminPass123!"),
+                role_id=admin_role.id,
+                email_verified=True,
+                auth_provider="local"
+            )
+            db.add(db_admin)
+            db.commit()
+
 
         # 3. Seed Employee Profiles (if empty)
         if db.query(Employee).count() == 0:
@@ -192,6 +221,11 @@ def seed_system_data():
                 db.add(db_log)
                 
             db.commit()
+
+            # Seed 100 mock users dataset
+            from app.seed_users_postgres import seed_100_users
+            seed_100_users(db)
+
     except Exception as e:
         db.rollback()
         print(f"Error seeding database: {e}")

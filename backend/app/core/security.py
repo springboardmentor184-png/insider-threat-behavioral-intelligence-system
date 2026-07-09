@@ -25,3 +25,10 @@ def create_access_token(username: str, role: str, expires_delta: Optional[timede
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
+def create_refresh_token(username: str, role: str) -> str:
+    """Generates a long-lived JWT refresh token expiring in 7 days."""
+    expire = datetime.utcnow() + timedelta(days=7)
+    to_encode = {"exp": expire, "sub": username, "role": role, "type": "refresh"}
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+

@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import { Shield, AlertCircle } from 'lucide-react'
-import api from '../services/api'
+import { Shield, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 const Login = () => {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   
@@ -15,15 +16,22 @@ const Login = () => {
   const [customGoogleEmail, setCustomGoogleEmail] = useState('')
   const [customGoogleName, setCustomGoogleName] = useState('')
 
-  const { login } = useContext(AuthContext)
+  const { login, loginWithGoogle } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    
+    // Quick validation
+    if (!email || !password) {
+      setError('Please fill in all credentials.')
+      return
+    }
+
     setLoading(true)
     try {
-      await login(username, password)
+      await login(email, password, rememberMe)
       navigate('/')
     } catch (err) {
       setError(err.response?.data?.detail || 'Authentication failed. Please check credentials.')
@@ -37,11 +45,10 @@ const Login = () => {
     setLoading(true)
     setShowGoogleModal(false)
     try {
-      const payload = { credential: `${name}:${email}` }
-      const res = await api.post('/auth/google', payload)
-      localStorage.setItem('token', res.data.access_token)
-      // Refresh browser to synchronize AuthContext profile state
-      window.location.href = '/'
+      const googleId = `g-${name.toLowerCase().replace(/\s+/g, '')}-${Date.now().toString().slice(-4)}`
+      const picUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${name}`
+      await loginWithGoogle(name, email, googleId, picUrl)
+      navigate('/')
     } catch (err) {
       setError('Google Sign-in failed. Please try again.')
     } finally {
@@ -53,7 +60,7 @@ const Login = () => {
     <div className="login-layout">
       <div className="glass-card auth-card">
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <Shield size={48} style={{ color: '#3b82f6', marginBottom: '1rem' }} />
+          <Shield size={48} style={{ color: '#06b6d4', marginBottom: '1rem' }} />
           <h2 style={{ fontFamily: 'Space Grotesk' }}>SYSTEM ACCESS</h2>
           <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '0.25rem' }}>
             Behavioral Intelligence Control Panel
@@ -69,29 +76,69 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Username</label>
+            <label className="form-label">Corporate Email</label>
             <input
-              type="text"
+              type="email"
               required
               className="form-control"
-              placeholder="Enter operator username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="operator@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
             />
           </div>
-          <div className="form-group">
-            <label className="form-label">Password</label>
+
+          <div className="form-group" style={{ position: 'relative' }}>
+            <label className="form-label">Security Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               className="form-control"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '1rem',
+                top: '2.4rem',
+                background: 'none',
+                border: 'none',
+                color: '#64748b',
+                cursor: 'pointer'
+              }}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
           </div>
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
-            {loading ? 'Authorizing Session...' : 'Authenticate'}
+
+          {/* Remember Me and Forgot Password Container */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#94a3b8', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={loading}
+                style={{ accentColor: '#06b6d4' }}
+              />
+              Remember Me
+            </label>
+            <Link to="/forgot-password" style={{ color: '#06b6d4', fontWeight: '500' }}>
+              Forgot Password?
+            </Link>
+          </div>
+
+          <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
+            {loading ? (
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <Loader2 size={16} className="spinner" /> Authorizing Session...
+              </span>
+            ) : 'Authenticate'}
           </button>
         </form>
 
@@ -107,6 +154,7 @@ const Login = () => {
           type="button"
           onClick={() => setShowGoogleModal(true)}
           style={styles.googleBtn}
+          disabled={loading}
         >
           <svg style={{ width: '18px', height: '18px' }} viewBox="0 0 24 24">
             <path
@@ -126,11 +174,11 @@ const Login = () => {
               d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.7-2.87c-1.03.69-2.34 1.1-4.26 1.1-3.16 0-5.73-1.81-6.63-4.54L1.48 16.8A11.96 11.96 0 0 0 12 23z"
             />
           </svg>
-          Sign in with Google
+          Continue with Google
         </button>
 
         <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#94a3b8', fontSize: '0.9rem' }}>
-          New analyst or operator? <Link to="/register" style={{ fontWeight: '500' }}>Request Access</Link>
+          Need security clearance? <Link to="/register" style={{ fontWeight: '500' }}>Register Now</Link>
         </p>
       </div>
 
@@ -148,24 +196,24 @@ const Login = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
               <button
                 type="button"
-                onClick={() => triggerGoogleAuth('venkat', 'venkatsainama995@gmail.com')}
+                onClick={() => triggerGoogleAuth('Venkat Sainama', 'venkatsainama995@gmail.com')}
                 style={styles.accountOption}
               >
-                <strong>venkat</strong> (venkatsainama995@gmail.com)
+                <strong>Venkat Sainama</strong> (venkatsainama995@gmail.com)
               </button>
               <button
                 type="button"
-                onClick={() => triggerGoogleAuth('admin_operator', 'admin.corp@company.com')}
+                onClick={() => triggerGoogleAuth('Sarah Connor', 'sconnor@company.com')}
                 style={styles.accountOption}
               >
-                <strong>admin_operator</strong> (admin.corp@company.com)
+                <strong>Sarah Connor</strong> (sconnor@company.com)
               </button>
               <button
                 type="button"
-                onClick={() => triggerGoogleAuth('sec_analyst', 'analyst.team@company.com')}
+                onClick={() => triggerGoogleAuth('Alex Vance', 'avance@intel.org')}
                 style={styles.accountOption}
               >
-                <strong>sec_analyst</strong> (analyst.team@company.com)
+                <strong>Alex Vance</strong> (avance@intel.org)
               </button>
             </div>
 
@@ -177,7 +225,7 @@ const Login = () => {
               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="Full Name"
                   className="form-control"
                   style={{ fontSize: '0.85rem' }}
                   value={customGoogleName}

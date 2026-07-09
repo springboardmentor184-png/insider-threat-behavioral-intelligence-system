@@ -1,14 +1,16 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import { Shield, AlertCircle, CheckCircle } from 'lucide-react'
-import api from '../services/api'
+import { Shield, AlertCircle, CheckCircle, Check, X, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 const Register = () => {
-  const [username, setUsername] = useState('')
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [roleName, setRoleName] = useState('Security Analyst')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -18,20 +20,121 @@ const Register = () => {
   const [customGoogleEmail, setCustomGoogleEmail] = useState('')
   const [customGoogleName, setCustomGoogleName] = useState('')
 
-  const { registerUser } = useContext(AuthContext)
+  const { registerUser, loginWithGoogle } = useContext(AuthContext)
   const navigate = useNavigate()
+
+  // Live password validation checklist state
+  const [checks, setChecks] = useState({
+    length: false,
+    upper: false,
+    lower: false,
+    number: false,
+    special: false,
+    spaces: true,
+    weak: true
+  })
+
+  // Password Strength Meter calculations
+  const [strengthScore, setStrengthScore] = useState(0)
+  const [strengthLevel, setStrengthLevel] = useState({ text: 'Weak', color: '#ef4444' })
+
+  useEffect(() => {
+    const weakList = ["password", "password123", "12345678", "qwerty", "admin", "welcome", "letmein"]
+    const checkLength = password.length >= 8 && password.length <= 64
+    const checkUpper = /[A-Z]/.test(password)
+    const checkLower = /[a-z]/.test(password)
+    const checkNumber = /[0-9]/.test(password)
+    const checkSpecial = /[!@#$%^&*()_+\-=\[\]{}|;':",./<>?`~]/.test(password)
+    const checkSpaces = !/\s/.test(password)
+    const checkWeak = !weakList.includes(password.toLowerCase())
+
+    setChecks({
+      length: checkLength,
+      upper: checkUpper,
+      lower: checkLower,
+      number: checkNumber,
+      special: checkSpecial,
+      spaces: checkSpaces,
+      weak: checkWeak
+    })
+
+    // Calculate score
+    let score = 0
+    if (checkLength) score += 1
+    if (checkUpper) score += 1
+    if (checkLower) score += 1
+    if (checkNumber) score += 1
+    if (checkSpecial) score += 1
+    if (checkSpaces && password.length > 0) score += 1
+    if (checkWeak && password.length > 0) score += 1
+
+    setStrengthScore(score)
+
+    // Map score to levels
+    if (password.length === 0) {
+      setStrengthLevel({ text: 'None', color: 'rgba(255,255,255,0.08)' })
+    } else if (score <= 3) {
+      setStrengthLevel({ text: 'Weak', color: '#ef4444' })
+    } else if (score === 4) {
+      setStrengthLevel({ text: 'Fair', color: '#f97316' })
+    } else if (score === 5) {
+      setStrengthLevel({ text: 'Medium', color: '#eab308' })
+    } else if (score === 6) {
+      setStrengthLevel({ text: 'Strong', color: '#22c55e' })
+    } else {
+      setStrengthLevel({ text: 'Very Strong', color: '#15803d' })
+    }
+  }, [password])
+
+  const isValid = Object.values(checks).every(val => val === true)
+  const isMatch = password === confirmPassword && confirmPassword.length > 0
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setSuccess(false)
+
+    // Front-end validations
+    if (!fullName || fullName.length < 3 || fullName.length > 100) {
+      setError('Full Name must be between 3 and 100 characters.')
+      return
+    }
+    if (!/^[a-zA-Z\s]+$/.test(fullName)) {
+      setError('Full Name can only contain alphabet characters and spaces.')
+      return
+    }
+    if (username && (username.length < 3 || username.length > 30 || !/^[a-zA-Z0-9_]+$/.test(username))) {
+      setError('Username must be 3-30 characters containing only letters, numbers, and underscores.')
+      return
+    }
+    
+    // Block disposable email domains
+    const disposableDomains = ["mailinator.com", "tempmail.com", "yopmail.com", "sharklasers.com", "guerrillamail.com"]
+    const emailDomain = email.split('@')[1]?.toLowerCase()
+    if (disposableDomains.includes(emailDomain)) {
+      setError('Registration using disposable email addresses is restricted.')
+      return
+    }
+
+    if (!isValid) {
+      setError('Please satisfy all password complexity requirements.')
+      return
+    }
+    if (!isMatch) {
+      setError('Passwords do not match.')
+      return
+    }
+
     setLoading(true)
     try {
-      await registerUser(username, email, password, roleName)
+      await registerUser(fullName, email, username, password, confirmPassword, roleName)
       setSuccess(true)
+      setPassword('')
+      setConfirmPassword('')
+      // Give a few seconds to let them read the notice about the verification link in server console
       setTimeout(() => {
         navigate('/login')
-      }, 1500)
+      }, 5000)
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration failed. Please check inputs.')
     } finally {
@@ -44,11 +147,10 @@ const Register = () => {
     setLoading(true)
     setShowGoogleModal(false)
     try {
-      const payload = { credential: `${name}:${email}` }
-      const res = await api.post('/auth/google', payload)
-      localStorage.setItem('token', res.data.access_token)
+      const googleId = `g-${name.toLowerCase().replace(/\s+/g, '')}-${Date.now().toString().slice(-4)}`
+      const picUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${name}`
+      await loginWithGoogle(name, email, googleId, picUrl)
       setSuccess(true)
-      // Redirect to home screen and reload session details
       setTimeout(() => {
         window.location.href = '/'
       }, 1000)
@@ -61,9 +163,9 @@ const Register = () => {
 
   return (
     <div className="login-layout">
-      <div className="glass-card auth-card">
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <Shield size={48} style={{ color: '#8b5cf6', marginBottom: '1rem' }} />
+      <div className="glass-card auth-card" style={{ maxWidth: '500px', marginTop: '2rem', marginBottom: '2rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <Shield size={48} style={{ color: '#06b6d4', marginBottom: '0.75rem' }} />
           <h2 style={{ fontFamily: 'Space Grotesk' }}>CLEARANCE REQUEST</h2>
           <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '0.25rem' }}>
             Register security operator session account
@@ -80,22 +182,24 @@ const Register = () => {
         {success && (
           <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
             <CheckCircle size={16} style={{ flexShrink: 0 }} />
-            <span>Access clearance provisioned. Redirecting...</span>
+            <span>Account created! A simulated verification link has been printed to the backend terminal console. Please verify to log in.</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Username</label>
+            <label className="form-label">Full Name</label>
             <input
               type="text"
               required
               className="form-control"
               placeholder="operator_name"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              disabled={loading || success}
             />
           </div>
+
           <div className="form-group">
             <label className="form-label">Corporate Email</label>
             <input
@@ -105,34 +209,135 @@ const Register = () => {
               placeholder="operator@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading || success}
             />
           </div>
+
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">Username (Optional)</label>
             <input
-              type="password"
+              type="text"
+              className="form-control"
+              placeholder="operator_codename"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={loading || success}
+            />
+          </div>
+
+          <div className="form-group" style={{ position: 'relative' }}>
+            <label className="form-label">Security Password</label>
+            <input
+              type={showPassword ? "text" : "password"}
               required
               className="form-control"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading || success}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '1rem',
+                top: '2.4rem',
+                background: 'none',
+                border: 'none',
+                color: '#64748b',
+                cursor: 'pointer'
+              }}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
           </div>
+
+          {/* Password Validation Checklist */}
+          {password.length > 0 && (
+            <div style={{ marginBottom: '1rem', fontSize: '0.8rem', color: '#94a3b8', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.length ? '#10b981' : '#ef4444' }}>
+                {checks.length ? <Check size={12} /> : <X size={12} />} 8-64 Characters
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.upper ? '#10b981' : '#ef4444' }}>
+                {checks.upper ? <Check size={12} /> : <X size={12} />} Uppercase Letter
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.lower ? '#10b981' : '#ef4444' }}>
+                {checks.lower ? <Check size={12} /> : <X size={12} />} Lowercase Letter
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.number ? '#10b981' : '#ef4444' }}>
+                {checks.number ? <Check size={12} /> : <X size={12} />} One Number
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.special ? '#10b981' : '#ef4444' }}>
+                {checks.special ? <Check size={12} /> : <X size={12} />} Special Char
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.spaces ? '#10b981' : '#ef4444' }}>
+                {checks.spaces ? <Check size={12} /> : <X size={12} />} No Spaces
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: checks.weak ? '#10b981' : '#ef4444', gridColumn: 'span 2' }}>
+                {checks.weak ? <Check size={12} /> : <X size={12} />} Strong & Uncommon
+              </div>
+            </div>
+          )}
+
+          {/* Password Strength Meter */}
+          {password.length > 0 && (
+            <div style={{ marginBottom: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '0.25rem', color: '#94a3b8' }}>
+                <span>Password Strength:</span>
+                <span style={{ color: strengthLevel.color, fontWeight: 'bold' }}>{strengthLevel.text}</span>
+              </div>
+              <div style={{ height: '6px', width: '100%', backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%',
+                  width: `${(strengthScore / 7) * 100}%`,
+                  backgroundColor: strengthLevel.color,
+                  transition: 'all 0.3s ease'
+                }} />
+              </div>
+            </div>
+          )}
+
           <div className="form-group">
-            <label className="form-label">Security Role (Clearance Level)</label>
+            <label className="form-label">Confirm Security Password</label>
+            <input
+              type="password"
+              required
+              className="form-control"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={loading || success}
+            />
+            {confirmPassword.length > 0 && (
+              <span style={{ fontSize: '0.75rem', marginTop: '0.25rem', display: 'block', color: isMatch ? '#10b981' : '#ef4444' }}>
+                {isMatch ? '✓ Passwords Match' : '✗ Passwords Do Not Match'}
+              </span>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Request Clearance Level</label>
             <select
               className="form-control"
               value={roleName}
               onChange={(e) => setRoleName(e.target.value)}
+              disabled={loading || success}
+              style={{ backgroundColor: '#0f172a', color: '#f8fafc', border: '1px solid rgba(255, 255, 255, 0.08)' }}
             >
-              <option value="Administrator">Administrator (Full Access)</option>
-              <option value="Security Manager">Security Manager (Oversight)</option>
-              <option value="SOC Engineer">SOC Engineer (Ingestion & Controls)</option>
-              <option value="Security Analyst">Security Analyst (Investigation)</option>
+              <option value="Administrator">Administrator</option>
+              <option value="Security Manager">Security Manager</option>
+              <option value="SOC Engineer">SOC Engineer</option>
+              <option value="Security Analyst">Security Analyst</option>
             </select>
           </div>
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1.5rem' }} disabled={loading}>
-            {loading ? 'Authorizing Clearance...' : 'Submit Request'}
+
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading || success || !isValid || !isMatch}>
+            {loading ? (
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <Loader2 size={16} className="spinner" /> Provisioning Clearance...
+              </span>
+            ) : 'Request Clearance'}
           </button>
         </form>
 
@@ -148,6 +353,7 @@ const Register = () => {
           type="button"
           onClick={() => setShowGoogleModal(true)}
           style={styles.googleBtn}
+          disabled={loading || success}
         >
           <svg style={{ width: '18px', height: '18px' }} viewBox="0 0 24 24">
             <path
@@ -167,11 +373,11 @@ const Register = () => {
               d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.7-2.87c-1.03.69-2.34 1.1-4.26 1.1-3.16 0-5.73-1.81-6.63-4.54L1.48 16.8A11.96 11.96 0 0 0 12 23z"
             />
           </svg>
-          Sign up with Google
+          Continue with Google
         </button>
 
         <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#94a3b8', fontSize: '0.9rem' }}>
-          Already have clearance? <Link to="/login" style={{ fontWeight: '500' }}>Login here</Link>
+          Already registered? <Link to="/login" style={{ fontWeight: '500' }}>Login Terminal</Link>
         </p>
       </div>
 
@@ -189,17 +395,17 @@ const Register = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
               <button
                 type="button"
-                onClick={() => triggerGoogleAuth('venkat', 'venkatsainama995@gmail.com')}
+                onClick={() => triggerGoogleAuth('Venkat Sainama', 'venkatsainama995@gmail.com')}
                 style={styles.accountOption}
               >
-                <strong>venkat</strong> (venkatsainama995@gmail.com)
+                <strong>Venkat Sainama</strong> (venkatsainama995@gmail.com)
               </button>
               <button
                 type="button"
-                onClick={() => triggerGoogleAuth('admin_operator', 'admin.corp@company.com')}
+                onClick={() => triggerGoogleAuth('Sarah Connor', 'sconnor@company.com')}
                 style={styles.accountOption}
               >
-                <strong>admin_operator</strong> (admin.corp@company.com)
+                <strong>Sarah Connor</strong> (sconnor@company.com)
               </button>
             </div>
 
@@ -211,7 +417,7 @@ const Register = () => {
               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="Full Name"
                   className="form-control"
                   style={{ fontSize: '0.85rem' }}
                   value={customGoogleName}
@@ -233,7 +439,7 @@ const Register = () => {
                 disabled={!customGoogleName || !customGoogleEmail}
                 onClick={() => triggerGoogleAuth(customGoogleName, customGoogleEmail)}
               >
-                Register Custom Account
+                Authorize Custom Account
               </button>
             </div>
 

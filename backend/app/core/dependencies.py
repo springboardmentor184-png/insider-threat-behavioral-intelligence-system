@@ -1,36 +1,54 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 import jwt
-from typing import List
+from typing import List, Optional
 from app.database import get_db
 from app.config import settings
 from app.models.models import User
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
     db: Session = Depends(get_db)
 ) -> User:
-    token = credentials.credentials
+    token = None
+    
+    # 1. Try to extract from Authorization Header
+    if credentials:
+        token = credentials.credentials
+        
+    # 2. Try to extract from HttpOnly Cookies (Secure cookie fallback)
+    if not token:
+        token = request.cookies.get("access_token")
+        
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
+    if not token:
+        raise credentials_exception
+        
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        subject: str = payload.get("sub")
+        token_type = payload.get("type")
+        
+        # Block refresh tokens from acting as access tokens
+        if token_type == "refresh" or subject is None:
             raise credentials_exception
     except jwt.PyJWTError:
         raise credentials_exception
     
-    user = db.query(User).filter(User.username == username).first()
+    # Support lookup via username OR email
+    user = db.query(User).filter((User.username == subject) | (User.email == subject)).first()
     if user is None:
         raise credentials_exception
-    
+        
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

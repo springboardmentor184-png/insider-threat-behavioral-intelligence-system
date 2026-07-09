@@ -1,10 +1,12 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+import re
 
 # --- Token Schemas ---
 class Token(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str
 
 class TokenData(BaseModel):
@@ -23,25 +25,147 @@ class RoleResponse(RoleBase):
 
 # --- User Schemas ---
 class UserBase(BaseModel):
-    username: str
+    full_name: Optional[str] = None
+    username: Optional[str] = None
     email: EmailStr
+    profile_picture: Optional[str] = None
+    auth_provider: str = "local"
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
+    full_name: str = Field(..., min_length=3, max_length=100)
+    email: EmailStr
+    username: Optional[str] = None
     password: str
-    role_name: str  # Role name: Administrator, Security Manager, SOC Engineer, Security Analyst
+    confirm_password: str
+    role_name: str = "Security Analyst"
+
+    @field_validator('full_name')
+    @classmethod
+    def validate_full_name(cls, v: str) -> str:
+        if not re.match(r"^[a-zA-Z\s]+$", v):
+            raise ValueError("Full Name can only contain letters and spaces")
+        return v
+
+    @field_validator('email')
+    @classmethod
+    def clean_email(cls, v: EmailStr) -> EmailStr:
+        return v.strip().lower()
+
+    @field_validator('username')
+    @classmethod
+    def validate_username(cls, v: Optional[str]) -> Optional[str]:
+        if v is None or v == "":
+            return None
+        v = v.strip()
+        if len(v) < 3 or len(v) > 30:
+            raise ValueError("Username must be between 3 and 30 characters")
+        if not re.match(r"^[a-zA-Z0-9_]+$", v):
+            raise ValueError("Username can only contain letters, numbers, and underscores")
+        return v
+
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v: str) -> str:
+        if len(v) < 8 or len(v) > 64:
+            raise ValueError("Password must be between 8 and 64 characters")
+        if not any(c.isupper() for c in v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not any(c.islower() for c in v):
+            raise ValueError("Password must contain at least one lowercase letter")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Password must contain at least one number")
+        if not any(c in "!@#$%^&*()_+-=[]{}|;':\",./<>?`~" for c in v):
+            raise ValueError("Password must contain at least one special character")
+        if " " in v:
+            raise ValueError("Password cannot contain spaces")
+        
+        weak_passwords = ["password", "password123", "12345678", "qwerty", "admin", "welcome", "letmein"]
+        if v.lower() in weak_passwords:
+            raise ValueError("Password is too weak or common")
+        return v
+
+    @model_validator(mode='after')
+    def verify_passwords_match(self) -> 'UserCreate':
+        if self.password != self.confirm_password:
+            raise ValueError("Passwords do not match")
+        return self
 
 class UserResponse(UserBase):
     id: int
     role: RoleResponse
     is_active: bool
+    email_verified: bool
+    last_login: Optional[datetime] = None
     created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
 
 class UserLogin(BaseModel):
-    username: str
+    email: EmailStr
     password: str
+    remember_me: bool = False
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    password: str
+    confirm_password: str
+
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v: str) -> str:
+        if len(v) < 8 or len(v) > 64:
+            raise ValueError("Password must be between 8 and 64 characters")
+        if not any(c.isupper() for c in v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not any(c.islower() for c in v):
+            raise ValueError("Password must contain at least one lowercase letter")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Password must contain at least one number")
+        if not any(c in "!@#$%^&*()_+-=[]{}|;':\",./<>?`~" for c in v):
+            raise ValueError("Password must contain at least one special character")
+        if " " in v:
+            raise ValueError("Password cannot contain spaces")
+        return v
+
+    @model_validator(mode='after')
+    def verify_passwords_match(self) -> 'ResetPasswordRequest':
+        if self.password != self.confirm_password:
+            raise ValueError("Passwords do not match")
+        return self
+
+class ProfileUpdate(BaseModel):
+    full_name: Optional[str] = None
+    username: Optional[str] = None
+    profile_picture: Optional[str] = None
+
+    @field_validator('full_name')
+    @classmethod
+    def validate_full_name(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        if not re.match(r"^[a-zA-Z\s]+$", v):
+            raise ValueError("Full Name can only contain letters and spaces")
+        return v
+
+    @field_validator('username')
+    @classmethod
+    def validate_username(cls, v: Optional[str]) -> Optional[str]:
+        if v is None or v == "":
+            return None
+        v = v.strip()
+        if len(v) < 3 or len(v) > 30:
+            raise ValueError("Username must be between 3 and 30 characters")
+        if not re.match(r"^[a-zA-Z0-9_]+$", v):
+            raise ValueError("Username can only contain letters, numbers, and underscores")
+        return v
+
+class TokenRefreshRequest(BaseModel):
+    refresh_token: str
 
 # --- Department Schemas ---
 class DepartmentBase(BaseModel):
