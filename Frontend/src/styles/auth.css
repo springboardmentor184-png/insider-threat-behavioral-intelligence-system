@@ -1,0 +1,196 @@
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-page {
+  background: #f5f7fb;
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+
+.left-panel {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 60px;
+}
+
+.left-content {
+  max-width: 480px;
+}
+
+.logo-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  backdrop-filter: blur(8px);
+}
+
+.logo-circle i {
+  font-size: 42px;
+}
+
+.project-title {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.project-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.project-text {
+  font-size: 17px;
+  line-height: 1.8;
+  opacity: .95;
+  margin-bottom: 35px;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.feature-box {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+}
+
+.feature i {
+  color: #fff;
+  margin-right: 15px;
+  font-size: 20px;
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card {
+  width: 430px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  transition: .3s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+}
+
+.login-card h2 {
+  color: #1f2937;
+}
+
+.badge {
+  border-radius: 25px;
+  font-size: 13px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.input-group-text {
+  background: white;
+  border-right: none;
+}
+
+.form-control {
+  height: 52px;
+  border-left: none;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: none;
+}
+
+.btn-outline-secondary {
+  border-left: none;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.login-btn {
+  height: 52px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.forgot-link,
+.register-link {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.forgot-link:hover,
+.register-link:hover {
+  color: #1d4ed8;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 991px) {
+
+  .left-panel {
+    display: none !important;
+  }
+
+  .login-card {
+    width: 95%;
+    margin: 20px;
+    padding: 30px;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .login-card {
+    padding: 25px;
+  }
+
+  .project-title {
+    font-size: 34px;
+  }
+
+}
