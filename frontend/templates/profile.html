@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITBIS User Profile Management">
+    <title>My Profile — ITBIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Include Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            50: '#e0e7ff',
+                            600: '#6366f1',
+                            700: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30">
+        <div class="p-5 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-xl flex items-center justify-center text-lg shadow-sm">
+                    🛡️
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-800">ITBIS Platform</h2>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Threat Center</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1" id="sidebar-nav">
+            <!-- Populated by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs overflow-hidden" id="sidebar-avatar">
+                    U
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-semibold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
+                    <div class="text-[10px] text-slate-400 font-medium capitalize" id="sidebar-user-role">—</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 ml-64 min-h-screen flex flex-col">
+        <!-- Top Header -->
+        <header class="h-16 border-b border-slate-200 bg-white sticky top-0 flex items-center justify-between px-8 z-20">
+            <div>
+                <h1 class="text-base font-bold text-slate-900" id="header-title">My Profile</h1>
+                <p class="text-xs text-slate-400" id="header-subtitle">View and manage your platform access profile</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="logout()" class="px-3.5 py-1.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5">
+                    ⏻ Log Out
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8 space-y-6 flex-1 max-w-4xl w-full mx-auto">
+            <!-- Profile Info Card -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex items-center gap-6" id="profile-header">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center text-2xl font-bold overflow-hidden" id="profile-avatar-large">
+                    U
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-950" id="profile-full-name">User Name</h2>
+                    <span class="inline-block px-2.5 py-0.5 mt-1 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-full text-[10px] font-semibold uppercase tracking-wide" id="profile-role-badge">
+                        Analyst
+                    </span>
+                </div>
+            </div>
+
+            <!-- Profile Form Details -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <h3 class="text-sm font-bold text-slate-800 mb-5 border-b border-slate-100 pb-3">Personal & Department Information</h3>
+                <form id="profile-update-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="email" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Email Address</label>
+                            <input type="email" id="email" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-500 cursor-not-allowed outline-none" disabled>
+                        </div>
+                        <div>
+                            <label for="username" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Username</label>
+                            <input type="text" id="username" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-500 cursor-not-allowed outline-none" disabled>
+                        </div>
+                        <div>
+                            <label for="full_name" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Full Name</label>
+                            <input type="text" id="full_name" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all" required>
+                        </div>
+                        <div>
+                            <label for="department" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Department</label>
+                            <input type="text" id="department" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all">
+                        </div>
+                        <div>
+                            <label for="designation" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Designation</label>
+                            <input type="text" id="designation" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all">
+                        </div>
+                        <div>
+                            <label for="manager" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Supervisor / Manager</label>
+                            <input type="text" id="manager" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="profile_image" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Profile Image URL</label>
+                            <input type="url" id="profile_image" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all" placeholder="https://domain.com/photo.jpg">
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-3">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-md transition-all">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Google Authenticator 2FA Card -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        📱 Google Authenticator (MFA)
+                    </h3>
+                    <span id="mfa-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-500 border border-slate-200">Disabled</span>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <!-- MFA Disabled View -->
+                    <div id="mfa-disabled-section" class="space-y-3">
+                        <p class="text-slate-500">Protect your account with an extra layer of security. When enabled, you must provide a 6-digit code from your Google Authenticator app during sign-in.</p>
+                        <button onclick="startMFASetup()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1.5 px-3.5 rounded-lg transition-all shadow-sm">
+                            Enable 2FA
+                        </button>
+                    </div>
+
+                    <!-- MFA Setup Verification View -->
+                    <div id="mfa-setup-section" class="hidden border border-indigo-100 rounded-xl p-4 bg-indigo-50/30 space-y-4 animate-fade-in">
+                        <div class="font-semibold text-indigo-950">Set Up Multi-Factor Authentication:</div>
+                        <div class="flex flex-col md:flex-row gap-5 items-center">
+                            <div class="bg-white border border-slate-200 p-2 rounded-lg" id="mfa-qr-container">
+                                <!-- QR code image injected here -->
+                            </div>
+                            <div class="space-y-2 flex-1">
+                                <p class="text-slate-600 font-medium">1. Scan this QR code in your Google Authenticator app.</p>
+                                <p class="text-slate-400">Or manually enter the secret key: <code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-[10px] text-slate-800" id="mfa-secret-text">SECRET</code></p>
+                                <p class="text-slate-600 font-medium mt-3">2. Enter the 6-digit code generated by the app:</p>
+                                <div class="flex gap-2">
+                                    <input type="text" id="mfa-setup-code" maxlength="6" pattern="[0-9]{6}" class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm text-center font-mono tracking-widest bg-white focus:outline-none focus:border-indigo-600 w-32 shadow-sm" placeholder="000000">
+                                    <button onclick="confirmMFASetup()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1.5 px-3 rounded-lg shadow-sm">
+                                        Verify & Activate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MFA Active View -->
+                    <div id="mfa-enabled-section" class="hidden space-y-3">
+                        <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 p-3 rounded-xl flex items-center gap-2">
+                            <span class="text-base">🟢</span>
+                            <div>Google Authenticator MFA is active on this account.</div>
+                        </div>
+                        <button onclick="disableMFA()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-100 font-semibold py-1.5 px-3 rounded-lg transition-all">
+                            Disable 2FA
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metadata Box -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <h3 class="text-sm font-bold text-slate-800 mb-4 border-b border-slate-100 pb-3">Security & Account Details</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                    <div>
+                        <div class="text-slate-400 font-medium">Account Status</div>
+                        <div class="mt-1 font-bold text-emerald-600" id="status-text">Active</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 font-medium">Login Method</div>
+                        <div class="mt-1 font-semibold text-slate-800" id="provider-text">Local credentials</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 font-medium">Created At</div>
+                        <div class="mt-1 font-mono text-slate-600" id="created-text">—</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 font-medium">Last Updated</div>
+                        <div class="mt-1 font-mono text-slate-600" id="updated-text">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/profile.js"></script>
+    <script>
+        initProfile();
+    </script>
+</body>
+</html>

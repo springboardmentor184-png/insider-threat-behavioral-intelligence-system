@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITBIS Admin User Management Portal">
+    <title>User Management — ITBIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Include Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            50: '#e0e7ff',
+                            600: '#6366f1',
+                            700: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30">
+        <div class="p-5 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-xl flex items-center justify-center text-lg shadow-sm">
+                    🛡️
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-800">ITBIS Platform</h2>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Threat Center</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1" id="sidebar-nav">
+            <!-- Populated by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs overflow-hidden" id="sidebar-avatar">
+                    U
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-semibold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
+                    <div class="text-[10px] text-slate-400 font-medium capitalize" id="sidebar-user-role">—</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 ml-64 min-h-screen flex flex-col">
+        <!-- Top Header -->
+        <header class="h-16 border-b border-slate-200 bg-white sticky top-0 flex items-center justify-between px-8 z-20">
+            <div>
+                <h1 class="text-base font-bold text-slate-900" id="header-title">User Management</h1>
+                <p class="text-xs text-slate-400" id="header-subtitle">Manage system access roles and activate/deactivate accounts</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="users-count" class="text-xs font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">0 users</span>
+                <button onclick="openAddUserModal()" class="px-3.5 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1">
+                    ➕ Add User
+                </button>
+                <button onclick="logout()" class="px-3.5 py-1.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5">
+                    ⏻ Log Out
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8 space-y-4 flex-1 max-w-[1200px] w-full mx-auto">
+            <!-- Tabs Navigation -->
+            <div class="flex border-b border-slate-200 mb-2">
+                <button onclick="switchTab('all')" id="tab-all" class="px-5 py-2.5 text-xs font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all focus:outline-none">
+                    All Users
+                </button>
+                <button onclick="switchTab('pending')" id="tab-pending" class="px-5 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-all focus:outline-none flex items-center gap-1.5">
+                    Pending Approvals
+                    <span id="pending-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] bg-red-100 text-red-600 font-bold">0</span>
+                </button>
+            </div>
+
+            <!-- Users Listing Table -->
+            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase tracking-wider font-semibold">
+                            <th class="py-3 px-4">User ID</th>
+                            <th class="py-3 px-4">Name & Email</th>
+                            <th class="py-3 px-4">Department</th>
+                            <th class="py-3 px-4">System Role</th>
+                            <th class="py-3 px-4">Account Status</th>
+                            <th class="py-3 px-4">Created Date</th>
+                            <th class="py-3 px-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body" class="divide-y divide-slate-100 text-slate-600">
+                        <tr>
+                            <td colspan="7" class="py-8 text-center text-slate-400 font-medium">
+                                <div class="spinner mb-2"></div>
+                                Loading system users...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal Overlay -->
+    <div id="add-user-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md p-6 animate-fade-in mx-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="text-sm font-bold text-slate-800">Add New System User</h3>
+                <button onclick="closeAddUserModal()" class="text-slate-400 hover:text-slate-600 text-sm">✕</button>
+            </div>
+
+            <form id="add-user-form" class="space-y-4">
+                <div>
+                    <label for="new-email" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" id="new-email" class="w-full px-3.5 py-2 border border-slate-200 text-xs rounded-lg text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 shadow-sm" placeholder="user@itbis.com" required>
+                </div>
+                <div>
+                    <label for="new-username" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Username</label>
+                    <input type="text" id="new-username" class="w-full px-3.5 py-2 border border-slate-200 text-xs rounded-lg text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 shadow-sm" placeholder="username" required>
+                </div>
+                <div>
+                    <label for="new-fullname" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="new-fullname" class="w-full px-3.5 py-2 border border-slate-200 text-xs rounded-lg text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 shadow-sm" placeholder="John Doe" required>
+                </div>
+                <div>
+                    <label for="new-password" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="new-password" class="w-full px-3.5 py-2 border border-slate-200 text-xs rounded-lg text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 shadow-sm" placeholder="••••••••" required>
+                </div>
+                <div>
+                    <label for="new-role" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">System Role</label>
+                    <select id="new-role" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-900 bg-white focus:outline-none focus:border-indigo-600 shadow-sm">
+                        <option value="security_analyst">Security Analyst</option>
+                        <option value="soc_engineer">SOC Engineer</option>
+                        <option value="security_manager">Security Manager</option>
+                        <option value="administrator">Administrator</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end gap-2 border-t border-slate-100 pt-4 mt-2">
+                    <button type="button" onclick="closeAddUserModal()" class="px-3.5 py-1.5 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-sm">Cancel</button>
+                    <button type="submit" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/admin.js"></script>
+    <script>
+        initAdmin();
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITBIS - Monitored Employee Activity Logs Feed">
+    <title>Activity Logs Feed — ITBIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Include Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            50: '#e0e7ff',
+                            600: '#6366f1',
+                            700: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30">
+        <div class="p-5 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-xl flex items-center justify-center text-lg shadow-sm">
+                    🛡️
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-800">ITBIS Platform</h2>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Threat Center</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1" id="sidebar-nav">
+            <!-- Populated by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs overflow-hidden" id="sidebar-avatar">
+                    U
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-semibold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
+                    <div class="text-[10px] text-slate-400 font-medium capitalize" id="sidebar-user-role">—</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 ml-64 min-h-screen flex flex-col">
+        <!-- Top Sticky Header -->
+        <header class="h-16 border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 flex items-center justify-between px-8 z-20">
+            <div>
+                <h1 class="text-base font-bold text-slate-900" id="header-title">Monitored Activity Logs</h1>
+                <p class="text-xs text-slate-400" id="header-subtitle font-semibold">Examine activity histories extracted from datasets</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="logout()" class="px-3.5 py-1.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5">
+                    ⏻ Log Out
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8 space-y-6 flex-1 max-w-[1400px] w-full mx-auto">
+            <!-- Table Card -->
+            <div class="bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col overflow-hidden">
+                <!-- Filters & Search Header -->
+                <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="flex items-center gap-2 flex-wrap w-full md:w-auto">
+                        <button onclick="filterCategory(null)" id="btn-all" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm border border-indigo-600 transition-all">All Logs</button>
+                        <button onclick="filterCategory('logon')" id="btn-logon" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-all">Logons</button>
+                        <button onclick="filterCategory('device')" id="btn-device" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-all">USB Devices</button>
+                        <button onclick="filterCategory('file')" id="btn-file" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-all">File Copies</button>
+                        <button onclick="filterCategory('email')" id="btn-email" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-all">Emails</button>
+                        <button onclick="filterCategory('http')" id="btn-http" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-all">Web Browser</button>
+                    </div>
+
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <div class="relative w-full md:w-60">
+                            <input type="text" id="log-search" oninput="debounceSearch(this.value)" class="w-full pl-9 pr-4 py-1.5 text-xs border border-slate-200 rounded-lg placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600/10 shadow-sm transition-all bg-white" placeholder="Search by ID or PC...">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">🔍</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="exportData('csv')" class="p-1.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-sm text-slate-600 transition-all flex items-center gap-1" title="Export CSV">
+                                📥 CSV
+                            </button>
+                            <button onclick="exportData('json')" class="p-1.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg text-xs font-semibold shadow-sm text-slate-600 transition-all flex items-center gap-1" title="Export JSON">
+                                📥 JSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Content -->
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase tracking-wider font-semibold">
+                                <th class="py-3 px-4 select-none cursor-pointer hover:bg-slate-100/50" onclick="sortTable('timestamp')">
+                                    Timestamp <span id="sort-icon-timestamp">↕</span>
+                                </th>
+                                <th class="py-3 px-4 select-none cursor-pointer hover:bg-slate-100/50" onclick="sortTable('employee_id')">
+                                    Employee ID <span id="sort-icon-employee_id">↕</span>
+                                </th>
+                                <th class="py-3 px-4 select-none cursor-pointer hover:bg-slate-100/50" onclick="sortTable('pc')">
+                                    Host PC <span id="sort-icon-pc">↕</span>
+                                </th>
+                                <th class="py-3 px-4">Event Type</th>
+                                <th class="py-3 px-4">Action</th>
+                                <th class="py-3 px-4">Activity Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body" class="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                                <td colspan="6" class="py-8 text-center text-slate-400 font-medium">
+                                    <div class="spinner mb-2"></div>
+                                    Loading event logs...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Footer -->
+                <div class="p-4 border-t border-slate-100 flex items-center justify-between">
+                    <div class="text-xs text-slate-400 font-medium" id="pagination-status">
+                        Showing page 1
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevPage()" id="btn-prev" class="px-3.5 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none rounded-lg text-xs font-semibold shadow-sm text-slate-700 transition-all">Previous</button>
+                        <button onclick="nextPage()" id="btn-next" class="px-3.5 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none rounded-lg text-xs font-semibold shadow-sm text-slate-700 transition-all">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script>
+        // We reuse the dashboard initialization and pagination routines
+        currentPage = 1;
+        logLimit = 30; // Show more logs on full logs page
+
+        async function initLogsPage() {
+            if (!requireAuth()) return;
+
+            try {
+                const res = await apiFetch('/api/users/me');
+                if (!res.ok) { logout(); return; }
+
+                const user = await res.json();
+                renderSidebar(user);
+                
+                // Set Header
+                document.getElementById('sidebar-user-name').textContent = user.full_name;
+                document.getElementById('sidebar-user-role').textContent = ROLE_LABELS[user.role] || user.role;
+                const initials = user.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const avatarEl = document.getElementById('sidebar-avatar');
+                if (user.profile_image) {
+                    avatarEl.innerHTML = `<img src="${user.profile_image}" class="w-full h-full object-cover">`;
+                } else {
+                    avatarEl.textContent = initials;
+                }
+
+                await loadLogs();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        initLogsPage();
+    </script>
+</body>
+</html>

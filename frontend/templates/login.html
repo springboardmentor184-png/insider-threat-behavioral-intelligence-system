@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to the Insider Threat Behavioral Intelligence System">
+    <title>Sign In — ITBIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Include Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            50: '#e0e7ff',
+                            600: '#6366f1',
+                            700: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-[440px] bg-white border border-slate-200 rounded-2xl shadow-xl p-8 relative z-10 transition-all duration-200 hover:shadow-2xl">
+        <!-- Logo & Header -->
+        <div class="text-center mb-6">
+            <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-xl inline-flex items-center justify-center mb-3 text-2xl shadow-md">
+                🛡️
+            </div>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Welcome to ITBIS</h1>
+            <p class="text-sm text-slate-500 mt-1">Insider Threat Behavioral Intelligence System</p>
+        </div>
+
+        <!-- Default Credentials Callout -->
+        <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 mb-6 text-xs text-indigo-950">
+            <div class="font-semibold mb-1 flex items-center gap-1">
+                🔑 Demo Access Credentials:
+            </div>
+            <div class="grid grid-cols-2 gap-x-2 gap-y-1 mt-1 text-slate-700 font-mono">
+                <div>Admin:</div>
+                <div class="font-semibold text-indigo-900">admin@itbis.com (admin123)</div>
+                <div>Analyst:</div>
+                <div class="font-semibold text-indigo-900">analyst@itbis.com (analyst123)</div>
+                <div>SOC Eng:</div>
+                <div class="font-semibold text-indigo-900">soc@itbis.com (soc123)</div>
+                <div>Manager:</div>
+                <div class="font-semibold text-indigo-900">manager@itbis.com (manager123)</div>
+            </div>
+        </div>
+
+        <!-- Config Error Notice -->
+        <div id="error-notice" class="hidden bg-red-50 border border-red-200 text-red-800 text-xs rounded-xl p-4 mb-6 animate-pulse">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label for="email" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Email Address</label>
+                <input type="email" id="email" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all" placeholder="name@company.com" required autofocus>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label for="password" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Password</label>
+                    <a href="#" onclick="showForgotPassword()" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Forgot?</a>
+                </div>
+                <div class="relative">
+                    <input type="password" id="password" class="w-full pl-3.5 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 shadow-sm transition-all" placeholder="Enter your password" required>
+                    <button type="button" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none" onclick="togglePasswordVisibility()">
+                        <span id="eye-icon">👁️</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center">
+                <input type="checkbox" id="remember_me" class="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                <label for="remember_me" class="ml-2 text-xs text-slate-600 font-medium select-none cursor-pointer">Remember me on this device</label>
+            </div>
+
+            <button type="submit" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg text-sm shadow-md shadow-indigo-600/10 hover:shadow-indigo-600/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                Sign In
+            </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="flex items-center my-5 text-xs text-slate-400 uppercase font-semibold tracking-wider">
+            <div class="flex-1 h-px bg-slate-200"></div>
+            <span class="px-3">or continue with</span>
+            <div class="flex-1 h-px bg-slate-200"></div>
+        </div>
+
+        <!-- Google OAuth -->
+        <button type="button" onclick="googleLogin()" class="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold py-2.5 px-4 rounded-lg text-sm shadow-sm active:scale-[0.99] transition-all">
+            <svg class="w-4 h-4" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google Identity Provider
+        </button>
+
+        <!-- Footer -->
+        <div class="text-center mt-6 text-xs text-slate-500">
+            Don't have an account? <a href="/register" class="text-indigo-600 hover:text-indigo-700 font-semibold transition-all">Create one</a>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/auth.js"></script>
+    <script>
+        // Check if user is already authenticated
+        redirectIfAuth();
+
+        // Handle URL error query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get('error');
+        if (errorParam === 'google_not_configured') {
+            const noticeEl = document.getElementById('error-notice');
+            noticeEl.innerHTML = `
+                <div class="font-bold mb-1">⚠️ OAuth Redirect Failed</div>
+                <div>Google Sign-In is not configured on the server. Please set <strong>GOOGLE_CLIENT_ID</strong> and <strong>GOOGLE_CLIENT_SECRET</strong> in the server's <code>.env</code> file.</div>
+            `;
+            noticeEl.classList.remove('hidden');
+            showToast('Google OAuth is not configured.', 'error');
+        }
+
+        // Toggle Password Visibility
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.textContent = '🙈';
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.textContent = '👁️';
+            }
+        }
+
+        // Show mock Forgot Password
+        function showForgotPassword() {
+            showToast('Password recovery is managed by your system administrator.', 'info');
+        }
+
+        // Handle login form submission
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember_me').checked;
+
+            btn.innerHTML = '<div class="spinner"></div> Signing in...';
+            btn.disabled = true;
+
+            await login(email, password, rememberMe);
+
+            btn.innerHTML = 'Sign In';
+            btn.disabled = false;
+        });
+    </script>
+</body>
+</html>
