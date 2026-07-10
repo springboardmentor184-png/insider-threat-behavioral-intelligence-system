@@ -1,16 +1,141 @@
-# React + Vite
+# 🛡 AI Insider Threat Behavioral Intelligence System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered Insider Threat Behavioral Intelligence System developed as part of the Infosys Springboard Internship Program.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📌 Project Overview
 
-## React Compiler
+This project is designed to detect potential insider threats by analyzing employee behavioral data using Artificial Intelligence and Machine Learning.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The system provides a secure authentication module, employee activity monitoring, risk analysis, and dashboard visualization to help organizations identify suspicious behavior.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Features
+
+### Authentication Module
+- Login Page
+- Registration Page
+- Responsive UI
+- React Router Navigation
+
+### Dashboard (In Progress)
+- Sidebar Navigation
+- Navbar
+- Employee Statistics
+- Threat Alerts
+- Activity Logs
+- Risk Score
+
+### AI Module (Upcoming)
+- Behavioral Analysis
+- Insider Threat Prediction
+- Risk Classification
+
+---
+
+## 🛠 Technology Stack
+
+### Frontend
+- React.js
+- Bootstrap 5
+- React Router DOM
+- Axios
+- Bootstrap Icons
+- HTML5
+- CSS3
+- JavaScript (ES6)
+
+### Backend (Upcoming)
+- FastAPI
+- Python
+- JWT Authentication
+- PostgreSQL
+
+### AI / ML
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- TensorFlow
+- Kaggle Dataset
+
+---
+
+## 📂 Project Structure
+
+```
+insider-threat-behavioral-intelligence-system/
+
+├── Frontend/
+├── Backend/
+├── datasets/
+├── Docs/
+└── README.md
+```
+
+---
+
+## ▶️ Frontend Setup
+
+Clone the repository
+
+```bash
+git clone https://github.com/springboardmentor184-png/insider-threat-behavioral-intelligence-system.git
+```
+
+Go to Frontend
+
+```bash
+cd Frontend
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Start React
+
+```bash
+npm run dev
+```
+
+---
+
+## 📈 Current Progress
+
+- ✅ Project Structure
+- ✅ Authentication UI
+- ✅ React Routing
+- 🔄 Dashboard Development
+- ⏳ Backend Development
+- ⏳ AI Model Integration
+
+---
+
+## 📅 Future Enhancements
+
+- JWT Authentication
+- OAuth Login
+- Role-Based Access Control
+- Employee Activity Monitoring
+- AI Threat Prediction
+- Email Notifications
+- Reports & Analytics
+
+---
+
+## 👨‍💻 Contributor
+
+**Darshan Lohakare**
+
+MCA Graduate | Java Developer | AI Enthusiast
+
+---
+
+## 📜 License
+
+This project is developed for educational purposes as part of the Infosys Springboard Internship Program.
