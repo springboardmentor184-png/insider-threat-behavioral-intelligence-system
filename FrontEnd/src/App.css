@@ -1,0 +1,260 @@
+/* Global */
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 50px;
+  background: #1a1a2e;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.nav-links .nav-btn {
+  margin-left: 20px;
+  padding: 10px 20px;
+  background: #e94560;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-links .nav-btn:hover {
+  background: #ff6b81;
+  transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 120px 20px;
+  background: linear-gradient(to right, #16213e, #0f3460);
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: 46px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-bottom: 30px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+}
+
+/* Carousel Section */
+.carousel {
+  padding: 70px 40px;
+  text-align: center;
+}
+
+.carousel h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #0f3460;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  gap: 25px;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel-card {
+  flex: 0 0 280px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-card h3 {
+  margin-bottom: 10px;
+  color: #0f3460;
+}
+
+.carousel-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Features Section */
+.features {
+  padding: 80px 40px;
+  text-align: center;
+  background: #fff;
+}
+
+.features h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  color: #0f3460;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.feature-card {
+  background: #f9fafb;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card h3 {
+  margin-bottom: 12px;
+  color: #0f3460;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Testimonials Section */
+.testimonials {
+  padding: 80px 40px;
+  background: #f0f4f8;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #0f3460;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.testimonial-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-style: italic;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.testimonial-card h4 {
+  margin-top: 15px;
+  font-style: normal;
+  color: #0f3460;
+}
+
+/* Login/Register Cards */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  width: 360px;
+  text-align: center;
+}
+
+.card h2 {
+  margin-bottom: 1.5rem;
+  color: #0f3460;
+}
+
+.card input, .card select {
+  width: 100%;
+  padding: 0.9rem;
+  margin: 0.6rem 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.card input:focus, .card select:focus {
+  outline: 2px solid #0f3460;
+}
+
+.card button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: #e94560;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  color: #fff;
+}
+
+.card button:hover {
+  background: #ff6b81;
+  transform: translateY(-2px);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 25px;
+  background: #1a1a2e;
+  color: #fff;
+  margin-top: 40px;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.25);
+}
+
+.account-text {
+  margin-top: 1rem;
+  color: black;   /* makes the text black */
+}
+
+.account-text a {
+  color: #38bdf8;   /* keeps the link blue */
+  font-weight: bold;
+}
