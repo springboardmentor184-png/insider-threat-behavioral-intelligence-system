@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "../styles/dashboard.css";
 
-function Activitylogs() {
+function Settings() {
   return (
     <div className="dashboard-container">
       <Sidebar />
@@ -11,10 +11,10 @@ function Activitylogs() {
         <Navbar />
 
         <div className="dashboard-body">
-          <h2>Activity Logs</h2>
+          <h2>Settings</h2>
 
           <p>
-            Employee activity logs will be displayed here after backend integration.
+            Application settings and user preferences will be managed here.
           </p>
         </div>
       </div>
@@ -22,4 +22,4 @@ function Activitylogs() {
   );
 }
 
-export default Activitylogs;
+export default Settings;

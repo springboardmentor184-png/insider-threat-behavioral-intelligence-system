@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "../styles/dashboard.css";
 
-function Activitylogs() {
+function Employees() {
   return (
     <div className="dashboard-container">
       <Sidebar />
@@ -11,10 +11,11 @@ function Activitylogs() {
         <Navbar />
 
         <div className="dashboard-body">
-          <h2>Activity Logs</h2>
+          <h2>Employees</h2>
 
           <p>
-            Employee activity logs will be displayed here after backend integration.
+            This page will display all employees, their departments,
+            roles, and current status after backend integration.
           </p>
         </div>
       </div>
@@ -22,4 +23,4 @@ function Activitylogs() {
   );
 }
 
-export default Activitylogs;
+export default Employees;

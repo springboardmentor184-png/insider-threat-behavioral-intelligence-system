@@ -1,49 +1,99 @@
+import { NavLink, useNavigate } from "react-router-dom";
+
 function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/login");
+  };
+
   return (
-    <div
-      className="bg-dark text-white p-4"
-      style={{ width: "250px", minHeight: "100vh" }}
-    >
+    <aside className="sidebar">
+      {/* Logo */}
+      <div className="sidebar-logo">
+        <div className="logo-icon">
+          <i className="bi bi-shield-lock-fill"></i>
+        </div>
 
-      <h3 className="mb-5">
-        🛡 AI Insider Threat
-      </h3>
+        <div>
+          <h4>AI Insider</h4>
+          <p>Threat Intelligence</p>
+        </div>
+      </div>
 
-      <ul className="nav flex-column">
+      {/* Navigation */}
+      <nav className="sidebar-menu">
 
-        <li className="nav-item mb-3">
-          <a href="#" className="nav-link text-white">
-            🏠 Dashboard
-          </a>
-        </li>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-grid-fill"></i>
+          <span>Dashboard</span>
+        </NavLink>
 
-        <li className="nav-item mb-3">
-          <a href="#" className="nav-link text-white">
-            👤 Profile
-          </a>
-        </li>
+        <NavLink
+          to="/employees"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-people-fill"></i>
+          <span>Employees</span>
+        </NavLink>
 
-        <li className="nav-item mb-3">
-          <a href="#" className="nav-link text-white">
-            📄 Activity Logs
-          </a>
-        </li>
+        <NavLink
+          to="/analytics"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-bar-chart-fill"></i>
+          <span>Analytics</span>
+        </NavLink>
 
-        <li className="nav-item mb-3">
-          <a href="#" className="nav-link text-white">
-            ⚠ Threat Alerts
-          </a>
-        </li>
+        <NavLink
+          to="/activitylogs"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-clock-history"></i>
+          <span>Activity Logs</span>
+        </NavLink>
 
-        <li className="nav-item">
-          <a href="#" className="nav-link text-white">
-            🚪 Logout
-          </a>
-        </li>
+        <NavLink
+          to="/threatalerts"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-shield-exclamation"></i>
+          <span>Threat Alerts</span>
+        </NavLink>
 
-      </ul>
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-gear-fill"></i>
+          <span>Settings</span>
+        </NavLink>
 
-    </div>
+      </nav>
+
+      {/* Logout */}
+      <div className="sidebar-footer">
+        <button className="logout-btn" onClick={handleLogout}>
+          <i className="bi bi-box-arrow-right"></i>
+          <span> Logout</span>
+        </button>
+      </div>
+    </aside>
   );
 }
 
