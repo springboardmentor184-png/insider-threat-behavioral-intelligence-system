@@ -1,5 +1,11 @@
 from fastapi import FastAPI
 
+from app.database import engine
+from app import models
+
+# Create all database tables
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="AI Insider Threat Behavioral Intelligence System API",
     description="Backend API for Insider Threat Detection and Risk Analysis",
