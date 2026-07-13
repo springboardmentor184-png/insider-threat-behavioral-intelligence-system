@@ -2,15 +2,66 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from models.user import User
 from database import SessionLocal
-from models.employee import EmployeeProfile
 from models.department import Department
 from models.device import Device
 from models.alert import Alert
 from models.employee import EmployeeProfile
+from datetime import datetime
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    jwt_required,
+    get_jwt_identity
+)
 
 app = Flask(__name__)
 
+app.config["JWT_SECRET_KEY"] = "insider-threat-secret-key"
+
+jwt = JWTManager(app)
+
 CORS(app, origins=["http://localhost:5173"])
+
+@app.route("/employees", methods=["POST"])
+def add_employee():
+
+    data = request.get_json()
+
+    db = SessionLocal()
+
+    try:
+
+        employee = EmployeeProfile(
+            user_id=data["user_id"],
+            department=data["department"],
+            designation=data["designation"],
+            manager=data["manager"],
+            joining_date=datetime.strptime(
+    data["joining_date"],
+    "%Y-%m-%d"
+).date(),
+            phone=data["phone"],
+            status=data["status"]
+        )
+
+        db.add(employee)
+        db.commit()
+
+        return jsonify({
+            "message": "Employee profile added successfully"
+        }), 201
+
+    except Exception as e:
+
+        db.rollback()
+
+        return jsonify({
+            "error": str(e)
+        }), 400
+
+    finally:
+
+        db.close()
 
 
 @app.route("/")
@@ -93,9 +144,19 @@ def login():
 
         if user and user.password == data["password"]:
 
+            access_token = create_access_token(
+    identity=str(user.user_id),
+    additional_claims={
+        "name": user.name,
+        "role": user.role
+    }
+)
+
             return jsonify({
 
                 "message": "Login successful",
+
+                "access_token": access_token,
 
                 "user_id": user.user_id,
 
@@ -144,6 +205,7 @@ def get_users():
         db.close()
 
 @app.route("/dashboard/admin", methods=["GET"])
+@jwt_required()
 def admin_dashboard():
 
     db = SessionLocal()
@@ -181,27 +243,35 @@ def get_employees():
 
     try:
 
-        employees = db.query(EmployeeProfile).all()
+        employees = (
+    db.query(EmployeeProfile, User)
+    .join(User, EmployeeProfile.user_id == User.user_id)
+    .all()
+)
 
         employee_list = []
 
-        for emp in employees:
+        for emp, user in employees:
 
-            employee_list.append({
+           employee_list.append({
 
-                "employee_id": emp.employee_id,
+        "employee_id": emp.employee_id,
 
-                "department": emp.department,
+        "name": user.name,
 
-                "designation": emp.designation,
+        "email": user.email,
 
-                "manager": emp.manager,
+        "department": emp.department,
 
-                "phone": emp.phone,
+        "designation": emp.designation,
 
-                "status": emp.status
+        "manager": emp.manager,
 
-            })
+        "phone": emp.phone,
+
+        "status": emp.status
+
+        })
 
         return jsonify(employee_list)
 

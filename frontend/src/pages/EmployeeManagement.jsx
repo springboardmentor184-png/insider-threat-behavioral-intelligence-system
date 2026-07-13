@@ -1,7 +1,26 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function EmployeeManagement() {
+    const [employees, setEmployees] = useState([]);
+    useEffect(() => {
+
+    axios
+        .get("http://127.0.0.1:5000/employees")
+        .then((response) => {
+
+            setEmployees(response.data);
+
+        })
+        .catch((error) => {
+
+            console.error(error);
+
+        });
+
+}, []);
 
     return (
 
@@ -77,34 +96,43 @@ function EmployeeManagement() {
 
                             <tbody>
 
-                                <tr className="border-b">
+    {employees.map((emp) => (
 
-                                    <td className="p-4">EMP001</td>
-                                    <td className="p-4">Rahul Sharma</td>
-                                    <td className="p-4">IT</td>
-                                    <td className="p-4">Security Analyst</td>
+        <tr key={emp.employee_id} className="border-b">
 
-                                    <td className="p-4">
-                                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                                            Active
-                                        </span>
-                                    </td>
+            <td className="p-4">{emp.employee_id}</td>
 
-                                    <td className="p-4 text-center space-x-2">
+            <td className="p-4">
+                {emp.name || "N/A"}
+            </td>
 
-                                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
-                                            Edit
-                                        </button>
+            <td className="p-4">{emp.department}</td>
 
-                                        <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                                            Delete
-                                        </button>
+            <td className="p-4">{emp.designation}</td>
 
-                                    </td>
+            <td className="p-4">
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                    {emp.status}
+                </span>
+            </td>
 
-                                </tr>
+            <td className="p-4 text-center space-x-2">
 
-                            </tbody>
+                <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+                    Edit
+                </button>
+
+                <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                    Delete
+                </button>
+
+            </td>
+
+        </tr>
+
+    ))}
+
+</tbody>
 
                         </table>
 

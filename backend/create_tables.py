@@ -8,6 +8,7 @@ from models.privilege import AccessPrivilege
 from models.activity_log import ActivityLog
 from models.alert import Alert
 from models.risk_score import RiskScore
+from models.employee import employee
 
 Base.metadata.create_all(bind=engine)
 

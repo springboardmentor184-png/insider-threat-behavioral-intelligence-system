@@ -4,33 +4,46 @@ function Sidebar({ role }) {
 
     const menus = {
 
-        Admin: [
-            { name: "Dashboard", path: "/admin" },
-            { name: "Employee Management", path: "/employees" },
-            { name: "Departments", path: "#" },
-            { name: "Devices", path: "#" },
-            { name: "Access Privileges", path: "#" },
-            { name: "Reports", path: "#" },
-            { name: "Settings", path: "#" }
-        ],
+    Admin: [
+        { name: "Dashboard", path: "/admin" },
+        { name: "Employee Management", path: "/employees" },
+        { name: "Departments", path: "#" },
+        { name: "Devices", path: "#" },
+        { name: "Access Privileges", path: "#" },
+        { name: "Reports", path: "#" },
+        { name: "Settings", path: "#" }
+    ],
 
-        "Security Manager": [
-            { name: "Dashboard", path: "/manager" }
-        ],
+    "Security Manager": [
+        { name: "Dashboard", path: "/manager" },
+        { name: "Alerts", path: "#" },
+        { name: "Employees", path: "/employees" },
+        { name: "Departments", path: "#" },
+        { name: "Reports", path: "#" }
+    ],
 
-        "Security Analyst": [
-            { name: "Dashboard", path: "/analyst" }
-        ],
+    "Security Analyst": [
+        { name: "Dashboard", path: "/analyst" },
+        { name: "Alert Queue", path: "#" },
+        { name: "Investigations", path: "#" },
+        { name: "Activity Logs", path: "#" }
+    ],
 
-        "SOC Engineer": [
-            { name: "Dashboard", path: "/soc" }
-        ],
+    "SOC Engineer": [
+        { name: "Dashboard", path: "/soc" },
+        { name: "Devices", path: "#" },
+        { name: "System Events", path: "#" },
+        { name: "Network Activity", path: "#" }
+    ],
 
-        Employee: [
-            { name: "Dashboard", path: "/employee" }
-        ]
+    Employee: [
+        { name: "Dashboard", path: "/employee" },
+        { name: "My Profile", path: "#" },
+        { name: "My Activity", path: "#" },
+        { name: "My Devices", path: "#" }
+    ]
 
-    };
+};
 
     return (
 
