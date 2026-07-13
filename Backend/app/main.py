@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from app.routes import employees
 from app.database import engine
 from app import models
 
@@ -11,7 +12,7 @@ app = FastAPI(
     description="Backend API for Insider Threat Detection and Risk Analysis",
     version="1.0.0"
 )
-
+app.include_router(employees.router)
 
 @app.get("/")
 def root():
