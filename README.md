@@ -46,7 +46,7 @@ The platform is designed around the **CERT Insider Threat Dataset** and **LANL C
 4. **Configure environment variables**:
    Create a `.env` file in the root directory (based on `.env.example`):
    ```ini
-   DATABASE_URL=mysql+aiomysql://root:sunaikumar2005@127.0.0.1:3306/itbis
+   DATABASE_URL=mysql+aiomysql://root:password@127.0.0.1:3306/itbis
    SECRET_KEY=itbis-dev-secret-key-change-in-production-2026
    ALGORITHM=HS256
    ACCESS_TOKEN_EXPIRE_MINUTES=15

@@ -9,19 +9,19 @@ let allUsersList = [];
 async function initAdmin() {
     if (!requireAuth()) return;
 
-    // Verify administrator role from JWT claims
-    const payload = getTokenPayload();
-    if (payload?.role !== 'administrator') {
-        showToast('Access denied. Administrator privileges required.', 'error');
-        setTimeout(() => window.location.href = '/dashboard', 1000);
-        return;
-    }
-
     try {
         const res = await apiFetch('/api/users/me');
         if (!res.ok) { logout(); return; }
 
         const user = await res.json();
+
+        // Verify administrator role from user profile
+        if (user.role !== 'administrator') {
+            showToast('Access denied. Administrator privileges required.', 'error');
+            setTimeout(() => window.location.href = '/dashboard', 1000);
+            return;
+        }
+
         renderSidebar(user);
         renderAdminHeader();
         await loadUsers();
