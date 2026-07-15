@@ -19,20 +19,25 @@ function Dashboard() {
         <div className="dashboard-body">
           {/* Page Heading */}
           <div className="dashboard-header">
-
-              <div>
-                <h2>Security Operations Center</h2>
-                <p>
-                  Welcome back, Darshan. Here's today's security overview and employee activity.
-                </p>
-              </div>
-
-              <div className="dashboard-date">
-                <h5>{new Date().toLocaleDateString()}</h5>
-                <span>Live Monitoring</span>
-              </div>
-
+            <div>
+              <h2>Security Operations Center</h2>
+              <p>
+                Welcome back, Darshan. Here's today's security overview and
+                employee activity.
+              </p>
             </div>
+
+            <div className="dashboard-date">
+              <h5>{new Date().toLocaleDateString()}</h5>
+              <span>Live Monitoring</span>
+            </div>
+          </div>
+
+          {/* Charts */}
+          <div className="charts-grid">
+            <ActivityChart />
+            <RiskChart />
+          </div>
 
           {/* Statistics Cards */}
           <div className="stats-grid">
@@ -69,14 +74,10 @@ function Dashboard() {
             />
           </div>
 
-          {/* Charts */}
-          <div className="charts-grid">
-            <ActivityChart />
-            <RiskChart />
-          </div>
-
           {/* Activity Table */}
           <ActivityTable />
+
+          {/* Threat Alerts */}
           <ThreatAlerts />
         </div>
       </div>
