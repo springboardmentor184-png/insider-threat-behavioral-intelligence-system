@@ -1,56 +1,30 @@
-# 🛡️ Insider Threat Behavioral Intelligence System
+# Insider Threat Behavioral Intelligence System
 
 An AI-powered Insider Threat Behavioral Intelligence System developed as part of the Infosys Springboard Virtual Internship.
 
 ---
 
-# 📖 Project Overview
+# Project Overview
 
-This project aims to detect potential insider threats by analyzing employee behavior using Machine Learning and Artificial Intelligence.
+The Insider Threat Behavioral Intelligence System is designed to identify potential insider threats by analyzing employee behavior using Artificial Intelligence and Machine Learning.
 
-The system will monitor employee activities, identify suspicious behavioral patterns, assess risk levels, and help security teams take preventive actions.
-
----
-
-# 🎯 Project Objectives
-
-- Secure user authentication
-- Employee activity monitoring
-- Behavioral risk analysis
-- Insider threat prediction using ML
-- Interactive dashboard for visualization
+The system provides secure authentication, employee management, department management, device management, and will later integrate behavioral analytics and machine learning models to detect suspicious insider activities and assess organizational risk.
 
 ---
 
-# 🚀 Current Progress
+# Project Objectives
 
-### ✅ Backend
-
-- FastAPI project setup
-- User Registration API
-- Password hashing using bcrypt
-- Password verification
-- SQLAlchemy integration
-- SQLite database connection
-- User data persistence
-- Duplicate email validation
-
-### ⏳ In Progress
-
-- Login API
-- JWT Authentication
-- Role-Based Access Control (RBAC)
-
-### 📅 Planned
-
-- Employee activity logging
-- ML model integration
-- Risk score prediction
-- Dashboard APIs
+- Secure user authentication and authorization
+- Employee profile management
+- Department and device management
+- Behavioral activity monitoring
+- Insider threat detection using Machine Learning
+- Risk assessment and prediction
+- Interactive security dashboard
 
 ---
 
-# 🛠️ Technology Stack
+# Technology Stack
 
 ## Backend
 
@@ -60,9 +34,15 @@ The system will monitor employee activities, identify suspicious behavioral patt
 - SQLite
 - Pydantic
 - Passlib (bcrypt)
+- JWT Authentication
+- Google OAuth 2.0
 - Uvicorn
 
-## AI / ML (Planned)
+## Frontend (Planned)
+
+- React.js
+
+## AI / Machine Learning (Planned)
 
 - Pandas
 - NumPy
@@ -71,9 +51,9 @@ The system will monitor employee activities, identify suspicious behavioral patt
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
-```
+```text
 backend/
 │
 ├── app/
@@ -85,52 +65,136 @@ backend/
 │   └── main.py
 │
 ├── requirements.txt
-└── venv/
+
 ```
 
 ---
 
-# ⚙️ Setup
+# Implemented Features
 
-Clone the repository
+## Authentication
+
+- User Registration
+- User Login
+- Password Hashing using bcrypt
+- JWT Authentication
+- Protected Routes
+- User Profile API
+- Role-Based Access Control (RBAC)
+- Google OAuth 2.0 Login
+
+## Employee Management
+
+- Create Employee Profile
+- Retrieve Employee Profile
+- Update Employee Profile
+- Delete Employee Profile
+
+## Department Management
+
+- Create Department
+- Retrieve Department
+- Update Department
+- Delete Department
+
+## Device Management
+
+- Create Device
+- Retrieve Device
+- Update Device
+- Delete Device
+
+---
+
+# API Endpoints
+
+## Authentication
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/register` | Register a new user |
+| POST | `/login` | Login using email and password |
+| GET | `/profile` | Retrieve authenticated user profile |
+| GET | `/auth/google/login` | Login using Google OAuth |
+
+## Employee
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/employee/profile` | Create employee profile |
+| GET | `/employee/profile` | Retrieve employee profile |
+| PUT | `/employee/profile` | Update employee profile |
+| DELETE | `/employee/profile` | Delete employee profile |
+
+## Department
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/department` | Create department |
+| GET | `/department` | Retrieve departments |
+| PUT | `/department/{department_id}` | Update department |
+| DELETE | `/department/{department_id}` | Delete department |
+
+## Device
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/device` | Create device |
+| GET | `/device` | Retrieve devices |
+| PUT | `/device/{device_id}` | Update device |
+| DELETE | `/device/{device_id}` | Delete device |
+
+---
+
+# Setup Instructions
+
+## Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/springboardmentor184-png/insider-threat-behavioral-intelligence-system.git
 ```
 
-Go inside backend
+## Navigate to the backend directory
 
 ```bash
 cd backend
 ```
 
-Create virtual environment
+## Create a virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate
+## Activate the virtual environment
 
-Windows
+### Windows
 
 ```bash
 venv\Scripts\activate
 ```
 
-Install dependencies
+### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+## Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run server
+## Run the application
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Swagger
+## API Documentation
+
+Swagger UI
 
 ```
 http://127.0.0.1:8000/docs
@@ -138,39 +202,44 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# 📌 Available API
+# Current Progress
 
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| POST | `/register` | Register a new user |
+## Completed
+
+- User Authentication
+- JWT Authentication
+- Role-Based Access Control
+- Google OAuth Authentication
+- Employee Management Module
+- Department Management Module
+- Device Management Module
+
+## In Progress
+
+- React Frontend Development
+
+## Planned
+
+- Employee Activity Monitoring
+- Behavioral Analytics
+- Insider Threat Detection
+- Machine Learning Model Integration
+- Risk Score Prediction
+- Dashboard and Reporting
 
 ---
 
-# 🗺️ Roadmap
-
-- ✅ User Registration
-- 🔄 Login Authentication
-- 🔄 JWT Token
-- 🔄 Role-Based Access Control
-- 🔄 Employee Monitoring
-- 🔄 Insider Threat Detection
-- 🔄 Dashboard
-- 🔄 Machine Learning Integration
-
----
-
-# 👨‍💻 Contributor
+# Contributors
 
 **Aman Kumar**
 
-B.Tech Information Technology
-
-MITS Gwalior
+B.Tech Information Technology  
+Madhav Institute of Technology and Science (MITS), Gwalior
 
 Infosys Springboard Virtual Internship
 
 ---
 
-# 📄 License
+# License
 
-This project is developed for educational purposes as part of the Infosys Springboard Internship Program.
+This project is developed for educational purposes as part of the Infosys Springboard Virtual Internship.
