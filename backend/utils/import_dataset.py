@@ -8,7 +8,7 @@ import csv
 import os
 import asyncio
 from datetime import datetime
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from backend.core.database import AsyncSessionLocal, engine, Base
 from backend.models.user import User
 from backend.models.activity_log import ActivityLog
@@ -309,6 +309,17 @@ async def main():
     print("[OK] Database tables verified/created")
 
     async with AsyncSessionLocal() as session:
+        # Clear existing data to avoid duplicate key violations on rerun
+        print("Clearing existing dataset tables to allow fresh ingestion...")
+        await session.execute(delete(LogonEvent))
+        await session.execute(delete(DeviceEvent))
+        await session.execute(delete(FileEvent))
+        await session.execute(delete(EmailEvent))
+        await session.execute(delete(HttpEvent))
+        await session.execute(delete(Employee))
+        await session.commit()
+        print("[OK] Tables cleared successfully")
+
         insiders = load_insider_ids()
         employees_map = await import_employees(session, insiders)
         
