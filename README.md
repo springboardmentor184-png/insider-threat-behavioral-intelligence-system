@@ -2,39 +2,40 @@
 
 ## Project Overview
 
-The Insider Threat Behavioral Intelligence System is a web-based security application developed to help organizations monitor employee activities, manage user profiles, and detect potential insider threats.
+The Insider Threat Behavioral Intelligence System is a web-based enterprise security application designed to help organizations monitor employee activities, manage user profiles, and detect potential insider threats.
 
-The system provides role-based access for different users and is being developed as part of the Infosys Springboard internship project.
+The system provides secure role-based access for different organizational users and is being developed as part of the Infosys Springboard Internship Program.
 
 ---
 
 # Tech Stack
 
-### Frontend
+## Frontend
 
-* React (Vite)
-* React Router DOM
-* Axios
-* Tailwind CSS
-* JavaScript
+- React (Vite)
+- React Router DOM
+- Axios
+- Tailwind CSS
+- JavaScript
 
-### Backend
+## Backend
 
-* Python
-* Flask
-* Flask-CORS
-* SQLAlchemy
+- Python
+- Flask
+- Flask-CORS
+- Flask-JWT-Extended
+- SQLAlchemy
 
-### Database
+## Database
 
-* PostgreSQL
+- PostgreSQL
 
-### Development Tools
+## Development Tools
 
-* Git
-* GitHub
-* VS Code
-* Postman
+- Git
+- GitHub
+- VS Code
+- Postman
 
 ---
 
@@ -42,89 +43,96 @@ The system provides role-based access for different users and is being developed
 
 ## Authentication
 
-* User Registration
-* User Login
-* Role-based login
-* Backend authentication using Flask APIs
-* Frontend connected to backend using Axios
+- User Registration
+- User Login
+- JWT Authentication
+- Role-Based Access Control
+- Flask REST APIs
+- Axios Integration between React and Flask
 
 ---
 
 ## Role-Based Dashboards
 
-Separate dashboards have been created for:
+Separate dashboards have been developed for:
 
-* Administrator
-* Security Manager
-* Security Analyst
-* SOC Engineer
-* Employee
+- Administrator
+- Security Manager
+- Security Analyst
+- SOC Engineer
+- Employee
 
-Each role is redirected to its respective dashboard after login.
+Each user is redirected to the appropriate dashboard after successful login.
 
 ---
 
 ## Database Design
 
-The PostgreSQL database has been designed with the following tables:
+The PostgreSQL database contains the following tables:
 
-* Users
-* Employee Profiles
-* Departments
-* Devices
-* Access Privileges
-* Activity Logs
-* Alerts
-* Risk Scores
+- Users
+- Employee Profiles
+- Departments
+- Devices
+- Access Privileges
+- Activity Logs
+- Alerts
+- Risk Scores
 
-Relationships between tables have been created using foreign keys.
+The database schema is implemented using SQLAlchemy ORM with foreign key relationships.
 
 ---
 
-## Admin Dashboard
+## Administrator Dashboard
 
-The Administrator dashboard currently displays live statistics from the database, including:
+The Administrator Dashboard displays live statistics retrieved from PostgreSQL, including:
 
-* Total Employees
-* Departments
-* Registered Devices
-* Open Alerts
+- Total Employees
+- Departments
+- Registered Devices
+- Open Alerts
 
-The dashboard retrieves data through Flask REST APIs connected to PostgreSQL.
+Dashboard statistics are fetched through secured Flask REST APIs.
 
 ---
 
 ## Employee Management
 
-A professional Employee Management interface has been created with:
+The Employee Management module currently includes:
 
-* Employee table
-* Search bar
-* Add Employee button
-* Edit button (UI)
-* Delete button (UI)
+- Employee List
+- Search Bar
+- Add Employee Button
+- Edit Button (UI)
+- Delete Button (UI)
 
-Backend integration for CRUD operations is currently under development.
+Implemented Backend APIs:
+
+- Add Employee Profile
+- Fetch Employee Profiles
+
+Employee records are stored in PostgreSQL and displayed in the React frontend.
 
 ---
 
 ## REST APIs Developed
 
-* User Registration
-* User Login
-* Fetch Users
-* Fetch Employees
-* Admin Dashboard Statistics
+- User Registration
+- User Login
+- Fetch Users
+- Add Employee
+- Fetch Employees
+- Administrator Dashboard Statistics
 
 ---
 
 # Project Structure
 
 ```text
-Frontend (React)
+React Frontend
         │
         ▼
-REST API (Flask)
+Flask REST API
         │
         ▼
 SQLAlchemy ORM
@@ -137,59 +145,64 @@ PostgreSQL Database
 
 # Current Project Status
 
-### Completed
+## Completed
 
-* Project setup
-* Database configuration
-* React frontend
-* Flask backend
-* PostgreSQL integration
-* User authentication
-* Role-based navigation
-* Admin dashboard
-* Employee Management UI
-* Database schema
+- Project Setup
+- React Frontend
+- Flask Backend
+- PostgreSQL Configuration
+- Database Schema Design
+- SQLAlchemy Models
+- User Authentication
+- JWT Token Generation
+- Role-Based Navigation
+- Administrator Dashboard
+- Security Manager Dashboard
+- Security Analyst Dashboard
+- SOC Engineer Dashboard
+- Employee Dashboard
+- Employee Management UI
+- Employee APIs (Add & View)
+- GitHub Repository Setup
 
 ---
 
 # Work in Progress
 
-The following features are currently being developed:
+The following modules are currently under development:
 
-* JWT Authentication
-* Protected Routes
-* Employee CRUD Operations
-* Department Management
-* Device Management
-* Access Privilege Management
-* Activity Log Management
-* Alert Generation
-* Risk Score Module
-* Search and Filter Functionality
-* Reports and Analytics
-* Role-based Authorization
-* Password Hashing
-* CERT Insider Threat Dataset Integration
-* LANL Cyber Security Dataset Integration
-* CMU Insider Threat Dataset Integration
+- Protected Routes using JWT
+- Employee CRUD Operations (Edit/Delete)
+- Department Management
+- Device Management
+- Access Privilege Management
+- Activity Log Management
+- Alert Management
+- Risk Score Module
+- Search & Filter Functionality
+- Reports & Analytics
+- Password Hashing
+- Role-Based Authorization
+- CERT Insider Threat Dataset Integration
+- LANL Cyber Security Dataset Integration
+- CMU Insider Threat Dataset Integration
 
 ---
 
 # Future Enhancements
 
-* Behavioral anomaly detection
-* Insider threat risk prediction
-* Real-time alerts
-* Interactive dashboards and charts
-* Activity timeline visualization
-* Machine Learning based threat detection
-* Security reports
-* Audit logs
-* Email notifications
-* Advanced analytics
+- Behavioral Anomaly Detection
+- Machine Learning Based Insider Threat Prediction
+- Real-Time Alerts
+- Interactive Charts & Dashboards
+- Activity Timeline Visualization
+- Security Reports
+- Audit Logs
+- Email Notifications
+- Advanced Risk Analytics
 
 ---
 
 # Project Goal
 
-The goal of this project is to build an enterprise-level Insider Threat Behavioral Intelligence System that enables organizations to securely manage employees, monitor user activities, analyze behavioral patterns, and detect potential insider threats through role-based access control and data-driven security analytics.
+The objective of this project is to build an enterprise-level Insider Threat Behavioral Intelligence System capable of securely managing employees, monitoring user activities, analyzing behavioral patterns, and detecting potential insider threats through role-based access control, data analytics, and machine learning techniques.
