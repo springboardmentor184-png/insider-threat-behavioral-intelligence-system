@@ -17,6 +17,18 @@ class ActivityLog(Base):
 
     activity_type = Column(String(100), nullable=False)
 
-    description = Column(String(255))
+    source = Column(String(100))
 
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    destination = Column(String(255))
+
+    device = Column(String(100))
+
+    size = Column(Integer)
+
+    attachments = Column(Integer)
+
+    description = Column(String(500))
+
+    timestamp = Column(DateTime, nullable=False)
+
+    risk_level = Column(String(20), default="Normal")

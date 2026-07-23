@@ -255,30 +255,76 @@ def get_employees():
 
            employee_list.append({
 
-        "employee_id": emp.employee_id,
+    "employee_id": emp.employee_id,
 
-        "name": user.name,
+    "user_id": emp.user_id,
 
-        "email": user.email,
+    "name": user.name,
 
-        "department": emp.department,
+    "email": user.email,
 
-        "designation": emp.designation,
+    "department": emp.department,
 
-        "manager": emp.manager,
+    "designation": emp.designation,
 
-        "phone": emp.phone,
+    "manager": emp.manager,
 
-        "status": emp.status
+    "joining_date": emp.joining_date.strftime("%Y-%m-%d"),
 
-        })
+    "phone": emp.phone,
+
+    "status": emp.status
+
+})
 
         return jsonify(employee_list)
 
     finally:
 
         db.close()
+@app.route("/employees/<int:employee_id>", methods=["PUT"])
+def update_employee(employee_id):
 
+    data = request.get_json()
+
+    db = SessionLocal()
+
+    try:
+
+        employee = db.query(EmployeeProfile).filter(
+            EmployeeProfile.employee_id == employee_id
+        ).first()
+
+        if not employee:
+
+            return jsonify({
+                "message": "Employee not found"
+            }), 404
+
+        employee.department = data["department"]
+        employee.designation = data["designation"]
+        employee.manager = data["manager"]
+        employee.joining_date = data["joining_date"]
+        employee.phone = data["phone"]
+        employee.status = data["status"]
+
+        db.commit()
+
+        return jsonify({
+            "message": "Employee updated successfully"
+        })
+
+    except Exception as e:
+
+        db.rollback()
+
+        return jsonify({
+            "error": str(e)
+        }), 400
+
+    finally:
+
+        db.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
