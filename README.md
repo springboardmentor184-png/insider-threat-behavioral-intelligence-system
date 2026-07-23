@@ -111,6 +111,31 @@ python -m backend.utils.seed_data
 
 ---
 
+## Milestone 2: Behavioral Analytics & Anomaly Detection (Completed)
+
+Milestone 2 establishes individual employee behavior profiles and implements automated threat-detection models.
+
+### Completed Features:
+1. **Behavioral Profiler Engine**: Aggregates event histories per employee across logons, device connect, file touch, email sizes, and web categories to store statistical averages and ratios in the `EmployeeBaseline` database model.
+2. **Anomaly Detection Workflows**: Uses standard deviation thresholding ($Z$-score $> 3$) and relative frequency probability rules to evaluate activity logs against established baselines.
+3. **Threat Detection Models**:
+   - *Unusual Login Time* (logons outside standard schedule for users with low historical after-hours ratios).
+   - *Unauthorized Access Attempts* (accessing workstations outside of common baseline whitelists).
+   - *Suspicious Device Connects* (USB interactions occurring after-hours/weekends).
+   - *Abnormal Data Downloads* (daily file actions exceeding standard deviation boundaries).
+   - *Exfiltration Indicators* (visits to leak sites like WikiLeaks, large external email attachments, and cloud storage spikes).
+4. **Executive Reporting**: Aggregates anomalies by severity, pinpoints high-risk employees, and highlights target departments in serialized reports, with support for exporting both JSON and styled PDF summaries directly from the dashboard.
+5. **Interactive UI Tabs**: Integrates dedicated tabs for *Overview KPIs* (filtering out dummy users on start), *Threat Alerts* (allowing status resolution updates), *Behavioral Baselines* (generating comparison charts via Chart.js), and *Executive Reports* (manually triggering threat scans and downloading reports in JSON and PDF formats).
+
+### Training and Scanning Models:
+You can trigger the baseline training and scan via the command line:
+```bash
+$env:PYTHONPATH="."
+.\venv\Scripts\python.exe -m backend.utils.train_models
+```
+
+---
+
 ## Running the Application
 
 1. **Start the local FastAPI server**:
@@ -131,9 +156,13 @@ Run the full testing suite using `pytest`:
 $env:PYTHONPATH="."; .\venv\Scripts\python.exe -m pytest tests/ -v
 ```
 
-This runs 13 automated tests covering:
+This runs **20 automated tests** covering:
 - Bcrypt password hashing & validations
 - JWT rotation and secure cookie clearing
 - Simulated Google OAuth redirects
 - Google Authenticator TOTP Setup / verification flows
 - Admin user creation and role restriction filters
+- Employee baseline profiling algorithms
+- Threat signature rules and Z-score outlier boundaries
+- Status updates, pagination, and executive report downloads
+

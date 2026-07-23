@@ -4,7 +4,7 @@ Dashboard data integration and query API tests.
 
 import pytest
 from httpx import AsyncClient
-from backend.models.dataset import Employee, LogonEvent
+from backend.models.dataset import Employee, LogonEvent, BehavioralAnomaly
 from datetime import datetime, timezone
 
 
@@ -18,7 +18,7 @@ async def test_dashboard_route_protection(test_client: AsyncClient):
 @pytest.mark.asyncio
 async def test_dashboard_stats_and_charts(test_client: AsyncClient, seed_user, db_session):
     """Test retrieving dynamic KPI metrics and charts with proper cookie auth."""
-    # Seed sample employees and logs
+    # Seed sample employees, logs, and an anomaly
     emp = Employee(
         employee_id="TES0001",
         full_name="Test Employee",
@@ -35,8 +35,18 @@ async def test_dashboard_stats_and_charts(test_client: AsyncClient, seed_user, d
         pc="PC-9999",
         activity="Logon"
     )
+    anomaly = BehavioralAnomaly(
+        employee_id="TES0001",
+        category="Logon Hours",
+        severity="High",
+        timestamp=datetime.now(timezone.utc),
+        description="Midnight logon event detected",
+        status="Open",
+        pc="PC-9999"
+    )
     db_session.add(emp)
     db_session.add(log)
+    db_session.add(anomaly)
     await db_session.commit()
 
     # Login to get cookies

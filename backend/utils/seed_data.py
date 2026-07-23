@@ -7,7 +7,8 @@ import asyncio
 from sqlalchemy import select
 from backend.core.database import engine, AsyncSessionLocal, Base
 from backend.models.user import User
-from backend.models.activity_log import ActivityLog  # noqa: F401 — ensure table is registered
+from backend.models.activity_log import ActivityLog  # noqa: F401
+from backend.models.dataset import Employee, LogonEvent, DeviceEvent, FileEvent, EmailEvent, HttpEvent, EmployeeBaseline, BehavioralAnomaly, AnomalyReport  # noqa: F401
 from backend.models.enums import UserRole
 from backend.core.security import hash_password
 
