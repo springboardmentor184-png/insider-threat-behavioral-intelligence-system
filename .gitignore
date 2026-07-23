@@ -231,3 +231,11 @@ frontend/.env
 # OS files
 .DS_Store
 Thumbs.db
+
+# ML datasets and trained models
+backend/ml/datasets/
+backend/ml/trained_models/
+
+# Keep folder structure
+!backend/ml/datasets/.gitkeep
+!backend/ml/trained_models/.gitkeep
