@@ -24,7 +24,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const handleLogout = async () => {
     try {
       await axiosClient.post('/auth/logout');
-    } catch (error) {
+    } catch {
       // Ignore logout errors and continue clearing local state
     }
     localStorage.removeItem('access_token');

@@ -1,19 +1,11 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-import Sidebar from './Sidebar';
 import Footer from './Footer';
-import DashboardLayout from '../dashboard/DashboardLayout';
 import { ROUTES } from '../../constants/routes';
 
 const MainLayout = () => {
   const location = useLocation();
-  const isDashboardRoute = location.pathname.startsWith(ROUTES.DASHBOARD);
-
-  if (isDashboardRoute) {
-    return <DashboardLayout />;
-  }
-
   const isAuthRoute = location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
 
   if (isAuthRoute) {

@@ -9,6 +9,51 @@ from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
 from app.core.security import get_password_hash, verify_password, create_access_token
 from app.core.config import settings
 
+ROLE_ALIASES = {
+    "analyst": "Security Analyst",
+    "security analyst": "Security Analyst",
+    "manager": "Manager",
+    "admin": "Administrator",
+    "administrator": "Administrator",
+    "employee": "Standard Employee",
+    "standard employee": "Standard Employee",
+}
+
+DEPARTMENT_ALIASES = {
+    "engineering": "Engineering",
+    "security": "Security / SOC",
+    "hr": "Human Resources",
+    "it": "IT Administration",
+    "management": "Management",
+}
+
+
+def _resolve_department(db: Session, req: RegisterRequest):
+    if req.department_id:
+        return db.query(Department).filter(Department.id == req.department_id).first()
+    if not req.department:
+        return None
+
+    department_key = req.department.strip().lower()
+    department_name = DEPARTMENT_ALIASES.get(department_key, req.department.strip())
+    department = db.query(Department).filter(
+        (Department.department_code == department_key) | 
+        (Department.department_name.ilike(department_name))
+    ).first()
+    return department
+
+
+def _resolve_role(db: Session, req: RegisterRequest):
+    if req.role_id:
+        return db.query(Role).filter(Role.id == req.role_id).first()
+    if not req.role:
+        return None
+
+    role_key = req.role.strip().lower()
+    role_name = ROLE_ALIASES.get(role_key, req.role.strip())
+    role = db.query(Role).filter(Role.role_name.ilike(role_name)).first()
+    return role
+
 def get_client_info(request: Request):
     ip_address = request.client.host if request.client else None
     user_agent = request.headers.get("user-agent", "")
@@ -38,10 +83,17 @@ def register_employee(db: Session, req: RegisterRequest, request: Request):
     if db.query(Employee).filter(Employee.employee_id == req.employee_id).first():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Employee ID already exists")
 
-    if req.department_id and not db.query(Department).filter(Department.id == req.department_id).first():
+    department = _resolve_department(db, req)
+    role = _resolve_role(db, req)
+
+    if req.department_id and not department:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Department does not exist")
-        
-    if req.role_id and not db.query(Role).filter(Role.id == req.role_id).first():
+    if req.department and not department:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Department does not exist")
+
+    if req.role_id and not role:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Role does not exist")
+    if req.role and not role:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Role does not exist")
 
     new_employee = Employee(
@@ -50,8 +102,8 @@ def register_employee(db: Session, req: RegisterRequest, request: Request):
         last_name=req.last_name,
         email=req.email,
         password_hash=get_password_hash(req.password),
-        department_id=req.department_id,
-        role_id=req.role_id,
+        department_id=department.id if department else None,
+        role_id=role.id if role else None,
         is_active=True,
         failed_login_attempts=0,
         last_password_change=datetime.now(timezone.utc)

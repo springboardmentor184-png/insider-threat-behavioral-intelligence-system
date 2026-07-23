@@ -2,6 +2,7 @@ from pathlib import Path
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
+
 from app.core.config import settings
 
 
@@ -23,4 +24,18 @@ def _build_engine():
 
 
 engine = _build_engine()
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+)
+
+
+# FastAPI Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

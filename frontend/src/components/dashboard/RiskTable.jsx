@@ -1,14 +1,22 @@
-import React from 'react';
+﻿import React from 'react';
 import { Users } from 'lucide-react';
 
-const RiskTable = () => {
-  const employees = [
-    { id: 1, name: 'David Thompson', score: 94, dept: 'Finance', activity: 'Mass File Download', status: 'Monitored' },
-    { id: 2, name: 'Sarah Jenkins', score: 88, dept: 'Finance', activity: 'Off-hours Login', status: 'Investigating' },
-    { id: 3, name: 'Robert Lee', score: 76, dept: 'IT Admin', activity: 'Privilege Escalation', status: 'Monitored' },
-    { id: 4, name: 'Amanda Clarke', score: 72, dept: 'Engineering', activity: 'USB Device Connected', status: 'Normal' },
-    { id: 5, name: 'Marcus Chen', score: 68, dept: 'Engineering', activity: 'Multiple Failed Logins', status: 'Normal' },
+const RiskTable = ({ entries = [] }) => {
+  const defaultEntries = [
+    { id: 1, full_name: 'David Thompson', risk_score: 94, risk_level: 'Critical' },
+    { id: 2, full_name: 'Sarah Jenkins', risk_score: 88, risk_level: 'High' },
+    { id: 3, full_name: 'Robert Lee', risk_score: 76, risk_level: 'High' },
+    { id: 4, full_name: 'Amanda Clarke', risk_score: 72, risk_level: 'Medium' },
+    { id: 5, full_name: 'Marcus Chen', risk_score: 68, risk_level: 'Medium' },
   ];
+
+  const tableEntries = entries.length ? entries : defaultEntries;
+
+  const getBarColor = (score) => {
+    if (score > 80) return 'bg-danger';
+    if (score > 60) return 'bg-warning';
+    return 'bg-success';
+  };
 
   return (
     <div className="bg-white rounded-[16px] shadow-sm border border-border-color overflow-hidden">
@@ -24,29 +32,25 @@ const RiskTable = () => {
             <tr className="bg-slate-50 border-b border-border-color">
               <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Employee</th>
               <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Risk Score</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Department</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Last Activity</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Status</th>
+              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Risk Level</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border-color">
-            {employees.map((emp) => (
-              <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
-                <td className="py-4 px-6 text-sm font-medium text-text-main">{emp.name}</td>
+            {tableEntries.map((emp, index) => (
+              <tr key={emp.employee_id || emp.id || index} className="hover:bg-slate-50 transition-colors">
+                <td className="py-4 px-6 text-sm font-medium text-text-main">{emp.full_name}</td>
                 <td className="py-4 px-6">
                   <div className="flex items-center gap-2">
-                    <div className="w-full bg-slate-100 rounded-full h-1.5 max-w-[60px]">
-                      <div 
-                        className={`h-1.5 rounded-full ${emp.score > 80 ? 'bg-danger' : emp.score > 60 ? 'bg-warning' : 'bg-success'}`} 
-                        style={{ width: `${emp.score}%` }}
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 max-w-[80px]">
+                      <div
+                        className={`h-1.5 rounded-full ${getBarColor(emp.risk_score)}`}
+                        style={{ width: `${emp.risk_score}%` }}
                       ></div>
                     </div>
-                    <span className="text-xs font-bold text-text-main">{emp.score}</span>
+                    <span className="text-xs font-bold text-text-main">{emp.risk_score}</span>
                   </div>
                 </td>
-                <td className="py-4 px-6 text-sm text-subtext">{emp.dept}</td>
-                <td className="py-4 px-6 text-sm text-text-main">{emp.activity}</td>
-                <td className="py-4 px-6 text-sm text-subtext">{emp.status}</td>
+                <td className="py-4 px-6 text-sm text-subtext">{emp.risk_level}</td>
               </tr>
             ))}
           </tbody>

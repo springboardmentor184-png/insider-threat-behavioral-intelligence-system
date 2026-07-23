@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Shield, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 
@@ -90,28 +90,27 @@ const AuthLayout = ({ children }) => {
               </div>
             </div>
 
-            {/* Live Status Cards */}
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-white p-3 rounded-[12px] border border-border-color shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                 <div className="flex items-center gap-1.5 mb-2">
                   <span className="text-[10px]">🟢</span>
-                  <span className="text-[10px] font-semibold text-subtext uppercase">Active Employees</span>
+                  <span className="text-[10px] font-semibold text-subtext uppercase">Secure Access</span>
                 </div>
-                <div className="text-lg font-bold text-text-main">1,248</div>
+                <div className="text-sm font-bold text-text-main">Always on</div>
               </div>
               <div className="bg-white p-3 rounded-[12px] border border-border-color shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                 <div className="flex items-center gap-1.5 mb-2">
                   <span className="text-[10px]">🟡</span>
-                  <span className="text-[10px] font-semibold text-subtext uppercase">Threats Detected</span>
+                  <span className="text-[10px] font-semibold text-subtext uppercase">Enterprise Visibility</span>
                 </div>
-                <div className="text-lg font-bold text-text-main">12</div>
+                <div className="text-sm font-bold text-text-main">Real-time insights</div>
               </div>
               <div className="bg-white p-3 rounded-[12px] border border-border-color shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                 <div className="flex items-center gap-1.5 mb-2">
                   <span className="text-[10px]">🔵</span>
-                  <span className="text-[10px] font-semibold text-subtext uppercase">System Status</span>
+                  <span className="text-[10px] font-semibold text-subtext uppercase">Threat Response</span>
                 </div>
-                <div className="text-sm mt-1 font-bold text-success">Protected</div>
+                <div className="text-sm mt-1 font-bold text-success">Ready</div>
               </div>
             </div>
             

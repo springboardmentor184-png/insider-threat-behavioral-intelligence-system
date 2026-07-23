@@ -67,14 +67,26 @@ def get_employee_by_id(db: Session, employee_id: str, request: Request, current_
     if current_user.id != employee.id:
         log_activity(db, current_user.id, ActivityType.EMPLOYEE_VIEWED, Severity.LOW, f"Viewed profile of employee {employee.employee_id}", request)
 
-    employee_data = {
-        k: v
-        for k, v in employee.__dict__.items()
-        if not k.startswith("_") and k not in {"department", "role", "department_id", "role_id"}
-    }
-
     return EmployeeDetailResponse(
-        **employee_data,
+        id=employee.id,
+        employee_id=employee.employee_id,
+        first_name=employee.first_name,
+        last_name=employee.last_name,
+        email=employee.email,
+        phone=employee.phone,
+        department_id=employee.department_id,
+        role_id=employee.role_id,
+        job_title=employee.job_title,
+        manager_name=employee.manager_name,
+        status=employee.status,
+        is_active=employee.is_active,
+        failed_login_attempts=employee.failed_login_attempts,
+        last_password_change=employee.last_password_change,
+        deleted_at=employee.deleted_at,
+        date_joined=employee.date_joined,
+        last_login=employee.last_login,
+        created_at=employee.created_at,
+        updated_at=employee.updated_at,
         department=employee.department,
         role=employee.role,
         risk_score=risk_score

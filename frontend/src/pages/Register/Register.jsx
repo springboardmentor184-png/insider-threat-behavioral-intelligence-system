@@ -63,7 +63,9 @@ const Register = () => {
         first_name,
         last_name,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        department: formData.department,
+        role: formData.role,
       });
       navigate(ROUTES.LOGIN);
     } catch (err) {

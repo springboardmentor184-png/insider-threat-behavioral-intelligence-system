@@ -1,7 +1,10 @@
 import uuid
 import enum
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Text, Float, Boolean
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+from app.database.base import Base
+from app.database.types import GUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database.base import Base
@@ -19,8 +22,8 @@ class RiskAssessment(Base):
     """
     __tablename__ = "risk_assessments"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    employee_id = Column(UUID(as_uuid=True), ForeignKey("employees.id"), nullable=False, index=True)
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4, index=True)
+    employee_id = Column(GUID(), ForeignKey("employees.id"), nullable=False, index=True)
     
     risk_score = Column(Float, nullable=False, default=0.0, index=True)
     risk_level = Column(Enum(RiskLevel), nullable=False, default=RiskLevel.LOW)

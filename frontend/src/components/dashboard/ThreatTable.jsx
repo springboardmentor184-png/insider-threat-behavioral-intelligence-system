@@ -1,13 +1,22 @@
-import React from 'react';
+﻿import React from 'react';
 import { AlertCircle } from 'lucide-react';
 
-const ThreatTable = () => {
-  const alerts = [
-    { id: 1, emp: 'Sarah Jenkins', dept: 'Finance', risk: 'Critical', status: 'Investigating', time: '10 mins ago', color: 'bg-danger/10 text-danger border-danger/20' },
-    { id: 2, emp: 'Marcus Chen', dept: 'Engineering', risk: 'High', status: 'Open', time: '45 mins ago', color: 'bg-warning/10 text-warning border-warning/20' },
-    { id: 3, emp: 'Emily Watson', dept: 'HR', risk: 'Medium', status: 'Reviewed', time: '2 hours ago', color: 'bg-primary/10 text-primary border-primary/20' },
-    { id: 4, emp: 'James Miller', dept: 'Sales', risk: 'Low', status: 'Closed', time: '5 hours ago', color: 'bg-success/10 text-success border-success/20' }
+const ThreatTable = ({ alerts = [] }) => {
+  const defaultAlerts = [
+    { id: 1, employee_name: 'Sarah Jenkins', risk_level: 'Critical', risk_score: 94, anomaly_detected: true, last_analyzed: '2026-01-01T10:40:00Z' },
+    { id: 2, employee_name: 'Marcus Chen', risk_level: 'High', risk_score: 88, anomaly_detected: true, last_analyzed: '2026-01-01T09:15:00Z' },
+    { id: 3, employee_name: 'Emily Watson', risk_level: 'Medium', risk_score: 76, anomaly_detected: false, last_analyzed: '2026-01-01T08:50:00Z' },
+    { id: 4, employee_name: 'James Miller', risk_level: 'Low', risk_score: 62, anomaly_detected: false, last_analyzed: '2026-01-01T08:05:00Z' },
   ];
+
+  const tableAlerts = alerts.length ? alerts : defaultAlerts;
+
+  const getBadgeClasses = (level) => {
+    if (level === 'Critical') return 'bg-danger/10 text-danger border border-danger/20';
+    if (level === 'High') return 'bg-warning/10 text-warning border border-warning/20';
+    if (level === 'Medium') return 'bg-primary/10 text-primary border border-primary/20';
+    return 'bg-success/10 text-success border border-success/20';
+  };
 
   return (
     <div className="bg-white rounded-[16px] shadow-sm border border-border-color overflow-hidden">
@@ -23,24 +32,24 @@ const ThreatTable = () => {
           <thead>
             <tr className="bg-slate-50 border-b border-border-color">
               <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Employee</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Department</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Risk Level</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Status</th>
-              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Time</th>
+              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Risk</th>
+              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Score</th>
+              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Anomaly</th>
+              <th className="py-3 px-6 text-xs font-semibold text-subtext uppercase tracking-wider">Last Analyzed</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border-color">
-            {alerts.map((alert) => (
+            {tableAlerts.map((alert) => (
               <tr key={alert.id} className="hover:bg-slate-50 transition-colors">
-                <td className="py-4 px-6 text-sm font-medium text-text-main">{alert.emp}</td>
-                <td className="py-4 px-6 text-sm text-subtext">{alert.dept}</td>
+                <td className="py-4 px-6 text-sm font-medium text-text-main">{alert.employee_name}</td>
                 <td className="py-4 px-6 text-sm">
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${alert.color}`}>
-                    {alert.risk}
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${getBadgeClasses(alert.risk_level)}`}>
+                    {alert.risk_level}
                   </span>
                 </td>
-                <td className="py-4 px-6 text-sm text-text-main">{alert.status}</td>
-                <td className="py-4 px-6 text-sm text-subtext">{alert.time}</td>
+                <td className="py-4 px-6 text-sm text-text-main">{alert.risk_score}</td>
+                <td className="py-4 px-6 text-sm text-text-main">{alert.anomaly_detected ? 'Yes' : 'No'}</td>
+                <td className="py-4 px-6 text-sm text-subtext">{alert.last_analyzed ? new Date(alert.last_analyzed).toLocaleString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>
