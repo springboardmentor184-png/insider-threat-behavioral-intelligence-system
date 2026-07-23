@@ -39,6 +39,10 @@ backend/**/__pycache__/
 
 # Extra root-level artifacts not needed for frontend deployment
 Insider_Threat_Postman_Collection.json
+archive.zip
+lanl-auth-dataset-1.bz2
+infosys springboard   copy/
+insider-threat-behavioral-intelligence-system/
 
 # Editors & OS
 .vscode/

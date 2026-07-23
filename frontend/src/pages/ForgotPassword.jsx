@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { Shield, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
+import { Shield, AlertCircle, CheckCircle, ArrowLeft, KeyRound } from 'lucide-react'
 import api from '../services/api'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [resetLink, setResetLink] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -14,11 +15,15 @@ const ForgotPassword = () => {
     e.preventDefault()
     setError('')
     setSuccess(false)
+    setResetLink('')
     setLoading(true)
 
     try {
-      await api.post('/auth/forgot-password', { email })
+      const res = await api.post('/auth/forgot-password', { email })
       setSuccess(true)
+      if (res.data.reset_link) {
+        setResetLink(res.data.reset_link)
+      }
     } catch (err) {
       setError(err.response?.data?.detail || 'An error occurred. Please try again.')
     } finally {
@@ -45,9 +50,31 @@ const ForgotPassword = () => {
         )}
 
         {success && (
-          <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
-            <CheckCircle size={16} style={{ flexShrink: 0 }} />
-            <span>Reset link generated! Check the backend server terminal logs for the simulated SMTP link.</span>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', marginBottom: '1rem' }}>
+              <CheckCircle size={16} style={{ flexShrink: 0 }} />
+              <span>Password reset token successfully generated for {email}!</span>
+            </div>
+
+            {resetLink && (
+              <div style={{ textAlign: 'center' }}>
+                <Link 
+                  to={resetLink} 
+                  className="btn btn-primary" 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    gap: '0.5rem', 
+                    width: '100%', 
+                    padding: '0.75rem',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <KeyRound size={18} /> Proceed to Reset Password
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

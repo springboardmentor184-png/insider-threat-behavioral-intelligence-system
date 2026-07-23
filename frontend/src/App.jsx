@@ -14,6 +14,7 @@ import EmployeeList from './pages/EmployeeList'
 import AddEmployee from './pages/AddEmployee'
 import EmployeeDetails from './pages/EmployeeDetails'
 import ActivityLogs from './pages/ActivityLogs'
+import AnalyticsCockpit from './pages/AnalyticsCockpit'
 
 function App() {
   return (
@@ -34,6 +35,12 @@ function App() {
             <Route path="/" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <AnalyticsCockpit />
               </ProtectedRoute>
             } />
             

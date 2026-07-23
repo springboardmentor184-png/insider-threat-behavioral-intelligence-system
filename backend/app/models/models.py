@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON, func
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, JSON, Float, func
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -104,3 +104,39 @@ class ActivityLog(Base):
     # Relationships
     employee = relationship("Employee", back_populates="activity_logs")
     device = relationship("Device", back_populates="activity_logs")
+    anomalies = relationship("Anomaly", back_populates="activity_log")
+
+class BehavioralBaseline(Base):
+    __tablename__ = "behavioral_baselines"
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="CASCADE"), nullable=False)
+    avg_daily_logins = Column(Float, default=0.0)
+    avg_daily_downloads = Column(Float, default=0.0)
+    avg_daily_uploads = Column(Float, default=0.0)
+    after_hours_ratio = Column(Float, default=0.0)
+    usb_usage_count = Column(Integer, default=0)
+    baseline_metrics = Column(JSON, nullable=True)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    employee = relationship("Employee", backref="baselines")
+
+class Anomaly(Base):
+    __tablename__ = "anomalies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="SET NULL"), nullable=True)
+    activity_log_id = Column(Integer, ForeignKey("activity_logs.id", ondelete="SET NULL"), nullable=True)
+    category = Column(String(100), nullable=False, index=True)
+    severity = Column(String(20), default="Medium", nullable=False, index=True)
+    anomaly_score = Column(Float, default=0.5)
+    description = Column(Text, nullable=False)
+    details = Column(JSON, nullable=True)
+    status = Column(String(50), default="Open", nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    employee = relationship("Employee", backref="anomalies")
+    activity_log = relationship("ActivityLog", back_populates="anomalies")
+

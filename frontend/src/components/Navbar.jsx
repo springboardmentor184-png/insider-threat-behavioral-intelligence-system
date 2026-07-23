@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import { Shield, Users, ClipboardList, LogOut, PlusCircle, User } from 'lucide-react'
+import { Shield, Users, ClipboardList, LogOut, PlusCircle, User, Activity } from 'lucide-react'
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useContext(AuthContext)
@@ -25,12 +25,14 @@ const Navbar = () => {
       
       <div style={styles.links}>
         <Link to="/" style={styles.link}><Shield size={16} /> Dashboard</Link>
+        <Link to="/analytics" style={styles.link}><Activity size={16} /> Analytics & Anomalies</Link>
         <Link to="/employees" style={styles.link}><Users size={16} /> Employees</Link>
         {isAdminOrManager && (
           <Link to="/employees/add" style={styles.link}><PlusCircle size={16} /> Add Employee</Link>
         )}
         <Link to="/activities" style={styles.link}><ClipboardList size={16} /> Activity Logs</Link>
       </div>
+
 
       <div style={styles.userSection}>
         <div style={styles.userInfo}>

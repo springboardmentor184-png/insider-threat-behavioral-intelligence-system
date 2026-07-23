@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base, SessionLocal
-from app.routers import auth, employees, activities
+from app.routers import auth, employees, activities, analytics
 from app.models.models import Role, Department, Employee, Device, ActivityLog
 
 # Initialize database schema tables automatically
@@ -36,6 +36,7 @@ async def add_security_headers(request, call_next):
 app.include_router(auth.router, prefix="/api")
 app.include_router(employees.router, prefix="/api")
 app.include_router(activities.router, prefix="/api")
+app.include_router(analytics.router, prefix="/api")
 
 @app.on_event("startup")
 def seed_system_data():

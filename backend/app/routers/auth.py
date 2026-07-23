@@ -201,7 +201,8 @@ def forgot_password(payload: ForgotPasswordRequest, request: Request, db: Sessio
     sanitize_input(payload.email)
 
     user = db.query(User).filter(User.email == payload.email.strip().lower()).first()
-    # To prevent user enumeration attacks, return 200 OK regardless of whether the user exists.
+    reset_token = None
+    
     if user and user.auth_provider == "local":
         reset_token = str(uuid.uuid4())
         user.reset_token = reset_token
@@ -215,7 +216,11 @@ def forgot_password(payload: ForgotPasswordRequest, request: Request, db: Sessio
         print(f"Click here to reset: http://localhost:3000/reset-password?token={reset_token}")
         print(f"========================================================\n")
 
-    return {"message": "If this email is registered, a password reset link has been dispatched."}
+    return {
+        "message": "Password reset token generated successfully.",
+        "reset_token": reset_token,
+        "reset_link": f"/reset-password?token={reset_token}" if reset_token else None
+    }
 
 @router.post("/reset-password", status_code=status.HTTP_200_OK)
 def reset_password(user_in: ResetPasswordRequest, db: Session = Depends(get_db)):
