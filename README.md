@@ -30,6 +30,13 @@ The system provides secure role-based access for different organizational users 
 
 - PostgreSQL
 
+## Machine Learning
+
+- Pandas
+- NumPy
+- Scikit-learn
+- Joblib
+
 ## Development Tools
 
 - Git
@@ -39,7 +46,7 @@ The system provides secure role-based access for different organizational users 
 
 ---
 
-# Features Completed
+# Milestone 1 – User Management & System Foundation
 
 ## Authentication
 
@@ -102,14 +109,15 @@ The Employee Management module currently includes:
 
 - Employee List
 - Search Bar
-- Add Employee Button
-- Edit Button (UI)
-- Delete Button (UI)
+- Add Employee
+- Edit Employee
+- Delete Employee (UI)
 
 Implemented Backend APIs:
 
 - Add Employee Profile
 - Fetch Employee Profiles
+- Update Employee Profile
 
 Employee records are stored in PostgreSQL and displayed in the React frontend.
 
@@ -122,7 +130,81 @@ Employee records are stored in PostgreSQL and displayed in the React frontend.
 - Fetch Users
 - Add Employee
 - Fetch Employees
+- Update Employee
 - Administrator Dashboard Statistics
+
+---
+
+# Milestone 2 – Behavioral Analytics & Anomaly Detection
+
+## Behavioral Profiling Engine
+
+Completed:
+
+- Created the Machine Learning module structure.
+- Integrated the CERT Insider Threat Dataset.
+- Loaded and processed enterprise email activity data.
+- Developed the feature engineering pipeline.
+- Extracted behavioral features from employee activities including:
+  - Email Size
+  - Number of Attachments
+  - Hour of Activity
+  - Day of Week
+  - Email Content Length
+
+---
+
+## AI-Based Anomaly Detection
+
+Completed:
+
+- Implemented an Isolation Forest anomaly detection model using Scikit-learn.
+- Trained the model on engineered behavioral features.
+- Saved the trained model using Joblib.
+- Developed a prediction pipeline for detecting abnormal employee behavior.
+- Successfully classified employee activities into:
+  - Normal
+  - Anomaly
+
+---
+
+## Activity Monitoring
+
+Completed:
+
+- Designed the Activity Logs database model.
+- Configured activity storage for employee behavioral events.
+- Prepared the backend architecture for continuous activity monitoring.
+
+---
+
+## Current Progress
+
+The following components have been successfully implemented:
+
+- CERT Dataset Integration
+- Behavioral Feature Engineering
+- Behavioral Profiling Pipeline
+- AI Model Training
+- Isolation Forest Model
+- Prediction Pipeline
+- Activity Log Model
+- Machine Learning Project Structure
+
+---
+
+## Remaining Work
+
+- Integrate the trained ML model with Flask APIs
+- Perform real-time anomaly detection from activity logs
+- Generate behavioral baselines for every employee
+- Calculate employee risk scores
+- Generate insider threat alerts
+- Build anomaly reports
+- Connect predictions with the Administrator Dashboard
+- Add behavioral analytics visualizations
+- Integrate LANL Cyber Security Dataset
+- Integrate CMU Insider Threat Dataset
 
 ---
 
@@ -133,6 +215,9 @@ React Frontend
         │
         ▼
 Flask REST API
+        │
+        ▼
+Machine Learning Engine
         │
         ▼
 SQLAlchemy ORM
@@ -161,45 +246,15 @@ PostgreSQL Database
 - Security Analyst Dashboard
 - SOC Engineer Dashboard
 - Employee Dashboard
-- Employee Management UI
-- Employee APIs (Add & View)
+- Employee Management
+- Employee CRUD (Add, View, Update)
+- Activity Log Model
+- CERT Dataset Integration
+- Feature Engineering Pipeline
+- Behavioral Profiling Engine
+- Isolation Forest Model Training
+- AI Prediction Pipeline
 - GitHub Repository Setup
-
----
-
-# Work in Progress
-
-The following modules are currently under development:
-
-- Protected Routes using JWT
-- Employee CRUD Operations (Edit/Delete)
-- Department Management
-- Device Management
-- Access Privilege Management
-- Activity Log Management
-- Alert Management
-- Risk Score Module
-- Search & Filter Functionality
-- Reports & Analytics
-- Password Hashing
-- Role-Based Authorization
-- CERT Insider Threat Dataset Integration
-- LANL Cyber Security Dataset Integration
-- CMU Insider Threat Dataset Integration
-
----
-
-# Future Enhancements
-
-- Behavioral Anomaly Detection
-- Machine Learning Based Insider Threat Prediction
-- Real-Time Alerts
-- Interactive Charts & Dashboards
-- Activity Timeline Visualization
-- Security Reports
-- Audit Logs
-- Email Notifications
-- Advanced Risk Analytics
 
 ---
 
