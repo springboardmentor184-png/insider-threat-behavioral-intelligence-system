@@ -69,7 +69,7 @@ async def google_callback(
             name=user_info["name"],
             email=user_info["email"],
             password=None,
-            role="employee"
+            role="Security Analyst"
         )
 
         db.add(db_user)
@@ -83,11 +83,11 @@ async def google_callback(
         }
     )
 
-    return {
-        "message": "Google login successful",
-        "access_token": token,
-        "token_type": "bearer"
-    }
+    from fastapi.responses import RedirectResponse
+
+    frontend_url = f"http://localhost:5173/google-success?token={token}"
+
+    return RedirectResponse(url=frontend_url)
 
 
 
@@ -348,6 +348,7 @@ def delete_employee_profile(
 @router.post("/department")
 def create_department(
     department: DepartmentCreate,
+    current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     existing_department = db.query(Department).filter(
