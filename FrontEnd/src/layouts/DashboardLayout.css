@@ -1,0 +1,50 @@
+/* =================================
+   DASHBOARD LAYOUT
+================================= */
+
+.dashboard-layout {
+  min-height: 100vh;
+  width: 100%;
+
+  background: #f5f7fb;
+}
+
+/* =================================
+   MAIN AREA
+================================= */
+
+.dashboard-main {
+  min-height: 100vh;
+
+  margin-left: 260px;
+
+  background: #f5f7fb;
+}
+
+/* =================================
+   NAVBAR SPACE
+================================= */
+
+.dashboard-content {
+  min-height: 100vh;
+
+  padding-top: 72px;
+
+  box-sizing: border-box;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 900px) {
+  .dashboard-main {
+    margin-left: 230px;
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-main {
+    margin-left: 76px;
+  }
+}

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+device.csv
+email.csv
+file.csv
+http.csv
+logon.csv
+psychometric.csv

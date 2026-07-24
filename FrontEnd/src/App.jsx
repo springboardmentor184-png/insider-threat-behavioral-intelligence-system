@@ -1,41 +1,45 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import LogIn from "./Components/LogIn";
-import Register from "./Components/Register";
-import Dashboard from "./Components/Dashboard";
-import EmployeeForm from "./Components/EmployeeForm";
-import LandingPage from "./Components/LandingPage";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children, allowedRoles }) => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+import DashboardLayout from "./layouts/DashboardLayout";
 
-  if (!token) return <Navigate to="/login" replace />;
-  if (allowedRoles && !allowedRoles.includes(role)) return <h3>Access Denied</h3>;
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
 
-  return children;
-};
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Employees from "./pages/Employees/Employees";
+import ActivityLogs from "./pages/ActivityLogs/ActivityLogs";
+import Alerts from "./pages/Alerts/Alerts";
+import RiskAnalysis from "./pages/RiskAnalysis/RiskAnalysis";
+import Investigations from "./pages/Investigations/Investigations";
+import Reports from "./pages/Reports/Reports";
+import Profile from "./pages/Profile/Profile";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LogIn />} />
+
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={
-          <ProtectedRoute allowedRoles={["Security Analyst","SOC Engineer","Security Manager","Administrator"]}>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/employees" element={
-          <ProtectedRoute allowedRoles={["Administrator"]}>
-            <EmployeeForm />
-          </ProtectedRoute>
-        } />
-        <Route path="*" element={<Navigate to="/" replace />} />
+
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/activity-logs" element={<ActivityLogs />} />
+          <Route path="/alerts" element={<Alerts />} />
+          <Route path="/risk-analysis" element={<RiskAnalysis />} />
+          <Route path="/investigations" element={<Investigations />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
+
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
