@@ -385,22 +385,22 @@ React Dashboard
 
 ## Dashboard
 
-![Dashboard](docs/images/dashboard.png)
+![Dashboard](docs/dashboard.png)
 ---
 
 ## Employee Management
-![Employees](docs/images/employees.png)
+![Employees](doc/employees.png)
 
 ---
 
 ## Employee Investigation
 
-![Investigation](docs/images/investigation.png)
+![Investigation](docs/investigation.png)
 
 ---
 
 ## Activity Logs
-![Actigity logs](docs/images/activitylogs.png)
+![Actigity logs](docs/activitylogs.png)
 
 ---
 
