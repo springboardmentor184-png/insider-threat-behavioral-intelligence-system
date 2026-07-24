@@ -6,21 +6,26 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/auth/login', {
-        username,
-        password
-      });
-      localStorage.setItem('token', response.data.access_token);
-      setMessage('✅ Login Successful! Welcome to the System.');
-      console.log('Token:', response.data.access_token);
-    } catch (error) {
-      setMessage('❌ Login Failed. Check your username and password.');
-      console.error('Login error:', error);
-    }
-  };
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/auth/login', {
+      username,
+      password
+    });
+    localStorage.setItem('token', response.data.access_token);
+    localStorage.setItem('role', response.data.role);
+    localStorage.setItem('username', response.data.username);
+    setMessage('✅ Login Successful! Redirecting to Dashboard...');
+    
+    // Redirect to dashboard after 1 second
+    setTimeout(() => {
+      window.location.href = '/dashboard';
+    }, 1000);
+  } catch (error) {
+    setMessage('❌ Login Failed. Check your username and password.');
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

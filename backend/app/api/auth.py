@@ -53,7 +53,10 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == user_data.username).first()
     if not user or not verify_password(user_data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid username or password")
-    
-    # Create the "ID Badge" (JWT Token)
     access_token = create_access_token(data={"sub": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "role": user.role.role_name,
+        "username": user.username
+    }
