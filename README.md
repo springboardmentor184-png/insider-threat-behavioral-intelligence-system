@@ -108,9 +108,13 @@ The CERT Insider Threat Dataset (Kaggle) has been identified as the data source 
 ## Milestone 2 Progress
 
 ✅ Dataset acquisition — CERT r4.2 (Kaggle: andrihjonior/cert-insider-threat-dataset-r4-2)
+
 ✅ Files: logon.csv, device.csv, file.csv, email.csv, http.csv (5% sampled), psychometric.csv, LDAP snapshots (3 months)
+
 ✅ Ingestion pipeline (`ingest_cert_data.py`) — loads all files into PostgreSQL (`itbis_db`)
+
 ✅ EDA — structural checks (nulls, dtypes, row counts) and pattern analysis (login times, after-hours activity, top users by device/file/email activity)
+
 ✅ Feature engineering (`feature_engineering.py`) — per-user behavioral features: total logons, after-hours logons, after-hours ratio, device activity, file access count, emails sent, http activity, combined activity score. Saved to `user_features` table.
 
 🔄 Next: Isolation Forest anomaly/risk scoring model on `user_features`
