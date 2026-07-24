@@ -1,0 +1,132 @@
+{
+    "summary": {
+        "total_users": 1000,
+        "critical_users": 1,
+        "high_risk_users": 31,
+        "medium_risk_users": 453,
+        "low_risk_users": 515,
+        "detected_anomalies": 20,
+        "average_risk_score": 29.21
+    },
+    "risk_distribution": {
+        "Low": 515,
+        "Medium": 453,
+        "High": 31,
+        "Critical": 1
+    },
+    "top_risky_users": [
+        {
+            "user": "DTAA/ACH0803",
+            "risk_score": 80,
+            "risk_level": "Critical",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Very high off-hour activity (84.9%)",
+                "Used 48 different PCs",
+                "132 device switches",
+                "Average session 8.5 hours"
+            ]
+        },
+        {
+            "user": "DTAA/ACD0647",
+            "risk_score": 75,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Very high off-hour activity (100.0%)",
+                "Average session 11.0 hours"
+            ]
+        },
+        {
+            "user": "DTAA/ACL0865",
+            "risk_score": 75,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Very high off-hour activity (100.0%)",
+                "Average session 10.0 hours"
+            ]
+        },
+        {
+            "user": "DTAA/AAR0508",
+            "risk_score": 75,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Very high off-hour activity (100.0%)",
+                "Average session 10.0 hours"
+            ]
+        },
+        {
+            "user": "DTAA/ABL0836",
+            "risk_score": 73,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "High off-hour activity (54.8%)",
+                "Average session 11.1 hours"
+            ]
+        },
+        {
+            "user": "DTAA/ABH0963",
+            "risk_score": 73,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Very high off-hour activity (100.0%)",
+                "Average session 9.0 hours"
+            ]
+        },
+        {
+            "user": "DTAA/AAC0599",
+            "risk_score": 71,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "High off-hour activity (51.6%)",
+                "Average session 8.0 hours"
+            ]
+        },
+        {
+            "user": "DTAA/ABB0272",
+            "risk_score": 70,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Used 73 different PCs",
+                "218 device switches",
+                "Moderate login variance"
+            ]
+        },
+        {
+            "user": "DTAA/ABS0726",
+            "risk_score": 68,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Average session 9.1 hours",
+                "High login variance"
+            ]
+        },
+        {
+            "user": "DTAA/AAC0344",
+            "risk_score": 68,
+            "risk_level": "High",
+            "anomaly": "Anomaly",
+            "reasons": [
+                "Isolation Forest detected abnormal behaviour",
+                "Moderate off-hour activity (48.1%)",
+                "Average session 8.0 hours"
+            ]
+        }
+    ]
+}

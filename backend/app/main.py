@@ -43,6 +43,8 @@ from app.api import project_status
 from app.models.activity import Activity
 from app.api import activity
 
+from app.api import ml
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Insider Threat Behavioral Intelligence System")
@@ -61,3 +63,4 @@ app.include_router(dashboard.router)
 app.include_router(audit_logs.router)
 app.include_router(project_status.router)
 app.include_router(activity.router)
+app.include_router(ml.router)
