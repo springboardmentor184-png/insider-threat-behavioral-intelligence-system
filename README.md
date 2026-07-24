@@ -389,7 +389,7 @@ React Dashboard
 ---
 
 ## Employee Management
-![Employees](doc/employees.png)
+![Employees](docs/employees.png)
 
 ---
 
