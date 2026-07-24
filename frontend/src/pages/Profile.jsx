@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -8,14 +8,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        const response = await api.get("/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const response = await api.get("/profile");
         setUser(response.data.user);
       } catch (error) {
         console.error(error.response?.data || error.message);
@@ -25,15 +18,17 @@ function Profile() {
     fetchProfile();
   }, []);
 
-  if (!user) return <h2>Loading...</h2>;
+  if (!user) return <h2 style={{ marginLeft: "240px", marginTop: "20px" }}>Loading...</h2>;
 
   return (
     <div>
-        <Navbar />
-      <h2>Profile</h2>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Role: {user.role}</p>
+      <Sidebar />
+      <div style={{ marginLeft: "240px", marginTop: "20px" }}>
+        <h2>Profile</h2>
+        <p>Name: {user.name}</p>
+        <p>Email: {user.email}</p>
+        <p>Role: {user.role}</p>
+      </div>
     </div>
   );
 }

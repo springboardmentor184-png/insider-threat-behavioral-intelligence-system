@@ -104,6 +104,12 @@ backend/
 - Update Device
 - Delete Device
 
+## Activity Monitoring
+
+- Ingest activity logs in bulk from CSV files (login, file access, device connect/disconnect, email events)
+- Record individual live activity events
+- Retrieve activity events, filterable by user or event type
+
 ---
 
 # API Endpoints
@@ -131,9 +137,9 @@ backend/
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/department` | Create department |
-| GET | `/department` | Retrieve departments |
-| PUT | `/department/{department_id}` | Update department |
-| DELETE | `/department/{department_id}` | Delete department |
+| GET | `/department` | Retrieve departments *(planned — not yet implemented)* |
+| PUT | `/department/{department_id}` | Update department *(planned — not yet implemented)* |
+| DELETE | `/department/{department_id}` | Delete department *(planned — not yet implemented)* |
 
 ## Device
 
@@ -141,8 +147,16 @@ backend/
 |---------|----------|-------------|
 | POST | `/device` | Create device |
 | GET | `/device` | Retrieve devices |
-| PUT | `/device/{device_id}` | Update device |
-| DELETE | `/device/{device_id}` | Delete device |
+| PUT | `/device` | Update the current employee's device |
+| DELETE | `/device` | Delete the current employee's device |
+
+## Activity Monitoring
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/activity/event` | Record a single activity event |
+| POST | `/activity/ingest` | Bulk-ingest activity events from a CSV file |
+| GET | `/activity/events` | Retrieve recent activity events (filterable) |
 
 ---
 
@@ -211,8 +225,9 @@ http://127.0.0.1:8000/docs
 - Role-Based Access Control
 - Google OAuth Authentication
 - Employee Management Module
-- Department Management Module
+- Department Management Module (create only — full CRUD planned)
 - Device Management Module
+- Activity Log Ingestion Pipeline
 
 ## In Progress
 
@@ -220,7 +235,6 @@ http://127.0.0.1:8000/docs
 
 ## Planned
 
-- Employee Activity Monitoring
 - Behavioral Analytics
 - Insider Threat Detection
 - Machine Learning Model Integration

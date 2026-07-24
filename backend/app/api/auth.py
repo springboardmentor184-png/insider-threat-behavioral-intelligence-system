@@ -19,7 +19,8 @@ from app.services.rbac import require_role
 from app.models.employee import EmployeeProfile
 from app.schemas.employee import (
     EmployeeProfileCreate,
-    EmployeeProfileUpdate
+    EmployeeProfileUpdate,
+    EmployeeProfileResponse,
 )
 from app.models.department import Department
 from app.schemas.department import (
@@ -271,6 +272,15 @@ def get_employee_profile(
     }
 
 
+@router.get("/employee/all", response_model=list[EmployeeProfileResponse])
+def get_all_employees(
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(EmployeeProfile).all()
+
+
+
 @router.put("/employee/profile")
 def update_employee_profile(
     profile: EmployeeProfileUpdate,
@@ -374,6 +384,14 @@ def create_department(
         "message": "Department created successfully",
         "department": new_department
     }
+
+
+@router.get("/department", response_model=list[DepartmentResponse])
+def get_all_departments(
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(Department).all()
 
 
 

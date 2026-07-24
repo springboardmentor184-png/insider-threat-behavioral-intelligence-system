@@ -6,6 +6,9 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import GoogleSuccess from "../pages/GoogleSuccess";
+import EmployeePage from "../pages/EmployeePage";   {/* add */}
+import DepartmentPage from "../pages/DepartmentPage";
+import DevicePage from "../pages/DevicePage";
 
 function AppRoutes() {
   return (
@@ -25,6 +28,30 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoute>
+              <EmployeePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/departments"
+          element={
+            <ProtectedRoute>
+              <DepartmentPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/device"
+          element={
+            <ProtectedRoute>
+              <DevicePage />
             </ProtectedRoute>
           }
         />
