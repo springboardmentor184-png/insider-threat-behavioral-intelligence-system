@@ -26,6 +26,8 @@ class RegisterSchema(Schema):
     department = fields.Str(required=False, validate=validate.Length(max=100))
     designation = fields.Str(required=False, validate=validate.Length(max=100))
     joining_date = fields.Date(required=False)
+    authorized_workstations = fields.Str(required=False, validate=validate.Length(max=255))
+    authorized_usbs = fields.Str(required=False, validate=validate.Length(max=255))
 
 class EmployeeSchema(Schema):
     employee_code = fields.Str(required=True, validate=validate.Length(min=2, max=50))
@@ -37,3 +39,7 @@ class EmployeeSchema(Schema):
     designation = fields.Str(required=True, validate=validate.Length(min=1, max=100))
     joining_date = fields.Date(required=True)
     status = fields.Str(required=False, validate=validate.OneOf(['ACTIVE', 'INACTIVE', 'SUSPENDED']), dump_default='ACTIVE')
+    role_name = fields.Str(required=False, validate=validate.OneOf(['ADMINISTRATOR', 'ADMIN', 'SECURITY_ANALYST', 'SOC_ENGINEER', 'SECURITY_MANAGER', 'EMPLOYEE']))
+    authorized_workstations = fields.Str(required=False, allow_none=True, validate=validate.Length(max=255))
+    authorized_usbs = fields.Str(required=False, allow_none=True, validate=validate.Length(max=255))
+    assigned_analyst_id = fields.Int(required=False, allow_none=True)

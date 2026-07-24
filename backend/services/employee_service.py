@@ -54,11 +54,37 @@ class EmployeeService:
             department=data.get('department'),
             designation=data.get('designation'),
             joining_date=joining_date_val,
-            status=data.get('status', 'ACTIVE')
+            status=data.get('status', 'ACTIVE'),
+            authorized_workstations=data.get('authorized_workstations'),
+            authorized_usbs=data.get('authorized_usbs'),
+            assigned_analyst_id=data.get('assigned_analyst_id')
         )
 
         db.session.add(employee)
         try:
+            db.session.flush() # Populate employee.id
+            
+            # Automatically create User login credentials for onboarded employee
+            from models.user import User
+            from models.role import Role
+            from database.db import bcrypt
+            
+            role_name = data.get('role_name', 'EMPLOYEE')
+            role = Role.query.filter_by(role_name=role_name.upper()).first()
+            if not role:
+                role = Role.query.filter_by(role_name='EMPLOYEE').first()
+                
+            username_val = employee_code.lower()
+            if not User.query.filter_by(username=username_val).first():
+                pass_hash = bcrypt.generate_password_hash('password123').decode('utf-8')
+                new_user = User(
+                    username=username_val,
+                    password_hash=pass_hash,
+                    role_id=role.id,
+                    employee_id=employee.id
+                )
+                db.session.add(new_user)
+                
             db.session.commit()
             
             # Log activity (since this is an employee creation, we log it with their new ID)
@@ -107,6 +133,16 @@ class EmployeeService:
         if 'phone' in data: employee.phone = data['phone']
         if 'department' in data: employee.department = data['department']
         if 'designation' in data: employee.designation = data['designation']
+        if 'authorized_workstations' in data: employee.authorized_workstations = data['authorized_workstations']
+        if 'authorized_usbs' in data: employee.authorized_usbs = data['authorized_usbs']
+        if 'assigned_analyst_id' in data: employee.assigned_analyst_id = data['assigned_analyst_id']
+        
+        # Update associated user role if role_name is provided
+        if 'role_name' in data and data['role_name']:
+            from models.role import Role
+            role = Role.query.filter_by(role_name=data['role_name'].upper()).first()
+            if role and employee.user:
+                employee.user.role_id = role.id
         
         if 'joining_date' in data:
             joining_date_val = data['joining_date']

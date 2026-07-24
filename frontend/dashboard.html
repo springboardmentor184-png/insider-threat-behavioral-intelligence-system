@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CYBERGUARD Behavioral Intel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+        }
+        .glass-panel {
+            background: rgba(30, 32, 36, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1e2024",
+                        "primary-container": "#00e5ff",
+                        "on-primary-container": "#00626e",
+                        "on-surface": "#e2e2e8",
+                        "on-surface-variant": "#bac9cc",
+                        "surface-dim": "#111318",
+                        "surface-variant": "#333539",
+                        "outline-variant": "#3b494c",
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-md">
+    <!-- Navigation Bar -->
+    <nav class="glass-panel border-b border-outline-variant/20 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="material-symbols-outlined text-primary-container text-2xl">security</span>
+                <h1 class="text-xl font-bold text-primary-container">CYBERGUARD</h1>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button onclick="logout()" class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-surface-container transition-colors">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold mb-2">Welcome to Behavioral Intelligence</h2>
+            <p class="text-on-surface-variant">Monitor insider threats and behavioral anomalies in real-time</p>
+        </div>
+
+        <!-- System Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="glass-panel p-6 rounded-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm">Total Users</p>
+                        <p class="text-3xl font-bold" id="totalUsers">--</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary-container text-3xl">people</span>
+                </div>
+            </div>
+            <div class="glass-panel p-6 rounded-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm">Total Employees</p>
+                        <p class="text-3xl font-bold" id="totalEmployees">--</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary-container text-3xl">badge</span>
+                </div>
+            </div>
+            <div class="glass-panel p-6 rounded-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm">Active Employees</p>
+                        <p class="text-3xl font-bold" id="activeEmployees">--</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary-container text-3xl">check_circle</span>
+                </div>
+            </div>
+            <div class="glass-panel p-6 rounded-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm">Activity Logs</p>
+                        <p class="text-3xl font-bold" id="totalLogs">--</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary-container text-3xl">history</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Employee List -->
+        <div class="glass-panel p-6 rounded-lg mb-8">
+            <h3 class="text-xl font-bold mb-4">Employee Management</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-outline-variant/20">
+                            <th class="text-left py-3 px-4">Employee ID</th>
+                            <th class="text-left py-3 px-4">Name</th>
+                            <th class="text-left py-3 px-4">Email</th>
+                            <th class="text-left py-3 px-4">Department</th>
+                            <th class="text-left py-3 px-4">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTable">
+                        <tr>
+                            <td colspan="5" class="py-8 text-center text-on-surface-variant">Loading employees...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../api.js"></script>
+    <script>
+        // Check authentication
+        if (!API.token) {
+            window.location.href = '/login';
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Load system summary
+                const summaryResponse = await API.admin.getSystemSummary();
+                if (summaryResponse.success) {
+                    const metrics = summaryResponse.data.metrics;
+                    document.getElementById('totalUsers').textContent = metrics.total_users;
+                    document.getElementById('totalEmployees').textContent = metrics.total_employees;
+                    document.getElementById('activeEmployees').textContent = metrics.active_employees;
+                    document.getElementById('totalLogs').textContent = metrics.total_activity_logs;
+                }
+
+                // Load employees
+                const employeesResponse = await API.employees.getAll();
+                if (employeesResponse.success) {
+                    const employees = employeesResponse.data;
+                    const table = document.getElementById('employeeTable');
+                    
+                    if (Array.isArray(employees) && employees.length > 0) {
+                        table.innerHTML = employees.map(emp => `
+                            <tr class="border-b border-outline-variant/10 hover:bg-surface-container/30 transition-colors">
+                                <td class="py-3 px-4">${emp.employee_code || 'N/A'}</td>
+                                <td class="py-3 px-4">${emp.first_name} ${emp.last_name}</td>
+                                <td class="py-3 px-4">${emp.email || 'N/A'}</td>
+                                <td class="py-3 px-4">${emp.department || 'N/A'}</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-3 py-1 rounded text-xs font-bold ${emp.status === 'ACTIVE' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">
+                                        ${emp.status || 'UNKNOWN'}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        table.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-on-surface-variant">No employees found</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                alert('Error loading dashboard: ' + error.message);
+            }
+        }
+
+        // Logout function
+        async function logout() {
+            try {
+                await API.auth.logout();
+                API.clearToken();
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                API.clearToken();
+                window.location.href = '/login';
+            }
+        }
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

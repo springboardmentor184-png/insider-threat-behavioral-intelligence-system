@@ -124,6 +124,44 @@ def api_profile():
     return api_response(success=True, message="Profile retrieved successfully.", data=result["data"], status_code=result["status_code"])
 
 
+@auth_bp.route('/api/auth/dashboard-url', methods=['GET'])
+@jwt_required()
+def api_dashboard_url():
+    """
+    API endpoint to get the role-based dashboard URL.
+    """
+    user_id = get_jwt_identity()
+    from models.user import User
+    from database.db import db
+    
+    user = db.session.get(User, user_id)
+    if not user:
+        return api_error(message="User not found.", status_code=404)
+    
+    role = user.role.role_name.upper() if user.role else 'EMPLOYEE'
+    
+    # Map roles to dashboard URLs
+    dashboard_urls = {
+        'ADMINISTRATOR': '/admin/dashboard',
+        'SECURITY_ANALYST': '/analyst/dashboard',
+        'SOC_ENGINEER': '/soc/dashboard',
+        'EMPLOYEE': '/employee/dashboard',
+        'SECURITY_MANAGER': '/admin/dashboard',  # Security manager gets admin dashboard
+    }
+    
+    dashboard_url = dashboard_urls.get(role, '/employee/dashboard')
+    
+    return api_response(
+        success=True,
+        message="Dashboard URL retrieved.",
+        data={
+            "role": role,
+            "dashboard_url": dashboard_url
+        },
+        status_code=200
+    )
+
+
 # ==========================================
 # WEB TEMPLATE ROUTING (HTML Views)
 # ==========================================

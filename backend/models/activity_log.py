@@ -26,5 +26,5 @@ class ActivityLog(db.Model):
             'description': self.description,
             'ip_address': self.ip_address,
             'device_name': self.device_name,
-            'timestamp': self.timestamp.isoformat() if self.timestamp else None
+            'timestamp': (self.timestamp.isoformat() + 'Z') if self.timestamp else None
         }

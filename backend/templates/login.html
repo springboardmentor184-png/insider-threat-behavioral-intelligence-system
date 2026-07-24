@@ -1,342 +1,279 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Insider Threat Behavioral Intelligence</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: rgba(17, 24, 39, 0.75);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --primary: #00f2fe;
-            --primary-glow: rgba(0, 242, 254, 0.4);
-            --secondary: #4facfe;
-            --accent-red: #ef4444;
-            --accent-green: #10b981;
-            --font-display: 'Outfit', sans-serif;
-            --font-body: 'Inter', sans-serif;
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | CYBERGUARD Behavioral Intel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1e2024",
+                        "inverse-on-surface": "#2f3035",
+                        "secondary-fixed-dim": "#b0c6ff",
+                        "outline-variant": "#3b494c",
+                        "primary-container": "#00e5ff",
+                        "inverse-primary": "#006875",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#001f24",
+                        "on-primary-container": "#00626e",
+                        "surface-variant": "#333539",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-tertiary-fixed-variant": "#8a1d00",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-fixed-dim": "#ffb4a2",
+                        "tertiary": "#ffe7e2",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-secondary": "#002d6e",
+                        "on-tertiary": "#621100",
+                        "secondary-fixed": "#d9e2ff",
+                        "tertiary-fixed": "#ffdad2",
+                        "on-surface": "#e2e2e8",
+                        "surface-container-highest": "#333539",
+                        "surface-tint": "#00daf3",
+                        "on-secondary-fixed-variant": "#00429b",
+                        "primary": "#c3f5ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-background": "#e2e2e8",
+                        "on-secondary-container": "#f2f3ff",
+                        "outline": "#849396",
+                        "on-primary": "#00363d",
+                        "inverse-surface": "#e2e2e8",
+                        "on-tertiary-container": "#aa2600",
+                        "tertiary-container": "#ffc2b3",
+                        "on-secondary-fixed": "#001945",
+                        "background": "#111318",
+                        "secondary": "#b0c6ff",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#0068ed",
+                        "surface-bright": "#37393e",
+                        "on-tertiary-fixed": "#3c0700",
+                        "surface-container-low": "#1a1c20",
+                        "surface-dim": "#111318",
+                        "on-error": "#690005",
+                        "surface": "#111318",
+                        "primary-fixed": "#9cf0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "component-gap-md": "16px",
+                        "unit": "4px",
+                        "container-padding-mobile": "16px",
+                        "container-padding-desktop": "24px",
+                        "component-gap-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "title-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 32, 36, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        .input-focus-glow:focus {
+            outline: none;
+            border-color: #00e5ff;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
         }
 
-        body {
-            font-family: var(--font-body);
-            background: radial-gradient(circle at 50% 50%, #111827 0%, #0b0f19 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
+        .auth-grid-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0, 229, 255, 0.03) 1px, transparent 0);
+            background-size: 24px 24px;
         }
 
-        /* Abstract cyber background grids */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center;
-            z-index: -1;
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
 
-        .container {
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
-            z-index: 10;
-        }
-
-        .login-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px 32px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 
-                        0 0 32px 0 rgba(0, 242, 254, 0.04);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .login-card::before {
-            content: '';
+        .scanline::after {
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .logo-container {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 242, 254, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-            animation: pulse 3s infinite alternate;
-        }
-
-        .title {
-            font-family: var(--font-display);
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            color: var(--text-secondary);
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 229, 255, 0.05) 50%, transparent 100%);
+            animation: scanline 8s linear infinite;
             pointer-events: none;
-            transition: color 0.3s;
-        }
-
-        .form-input {
-            width: 100%;
-            background: rgba(10, 15, 30, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px 14px 12px 42px;
-            color: #ffffff;
-            font-family: var(--font-body);
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
-            background: rgba(10, 15, 30, 0.9);
-        }
-
-        .form-input:focus + .input-icon {
-            color: var(--primary);
-        }
-
-        .alert {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: linear-gradient(90deg, #00f2fe, #4facfe);
-            border: none;
-            border-radius: 8px;
-            color: #0b0f19;
-            font-family: var(--font-display);
-            font-size: 16px;
-            font-weight: 600;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
-        }
-
-        .btn-submit:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
-        }
-
-        .btn-submit:active {
-            transform: translateY(1px);
-        }
-
-        .footer-text {
-            text-align: center;
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 24px;
-        }
-
-        .footer-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .footer-link:hover {
-            color: var(--secondary);
-            text-decoration: underline;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
-            }
-            100% {
-                box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
-            }
-        }
-
-        /* Loading spinner */
-        .spinner {
-            border: 2px solid rgba(11, 15, 25, 0.3);
-            border-radius: 50%;
-            border-top: 2px solid #0b0f19;
-            width: 16px;
-            height: 16px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            z-index: 1;
         }
     </style>
 </head>
-<body>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen auth-grid-bg">
+<div class="flex h-full w-full">
+<!-- Left: High-Tech Illustration Content -->
+<div class="hidden lg:flex flex-1 relative flex-col justify-center items-center px-12 overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-lowest to-transparent opacity-50 z-0"></div>
+<div class="relative z-10 max-w-2xl text-center space-y-6">
+<div class="relative inline-block">
+<img class="w-[600px] h-auto rounded-lg shadow-2xl border border-primary/20" alt="Cyber security digital eye illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsWurlB5ONU50mQflZno48jfykgh4wLYcvs_7uKt_t9oN_OlBrKEdIlZz0Zm4U9Scx8EoQ3QoCp6YzOSsYtKrlGwKclFzNDFFDUeEfJ3osvq_YjJI8bOn6yqO8joAET6VuRc3TML1c5xr4cG8jCr9IZiZoWpU_H98zSi-MNm93CdMsj_oVhoO_l4S0_VQioA1nSjK8SGQtspHJ5kFfxXlOF5RKlamxiY9Ak_Dub7NanDYAIh2yXzoBZtIVQ6IbAaZhcFNijqUYBrQ"/>
+<div class="absolute -inset-4 border border-primary/10 rounded-xl animate-pulse"></div>
+</div>
+<div class="space-y-2">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Vigilance Through Intelligence</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mx-auto">
+                        Securely access the Behavioral Intelligence System to monitor threats and identify insider risks in real-time.
+                    </p>
+</div>
+</div>
+<!-- Decorative floating badges -->
+<div class="absolute top-12 left-12 glass-panel p-4 rounded-sm flex items-center space-x-3 border-l-2 border-primary">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+<div class="text-left">
+<p class="font-label-sm text-label-sm text-primary uppercase">System Status</p>
+<p class="font-label-md text-label-md text-on-surface">Operational - 100%</p>
+</div>
+</div>
+</div>
+<!-- Right: Login Form -->
+<div class="w-full lg:w-[500px] flex flex-col justify-center px-6 md:px-12 bg-surface-dim relative overflow-hidden scanline">
+<!-- Mobile Logo -->
+<div class="lg:hidden mb-12 flex justify-center">
+<img alt="CyberGuard Logo" class="h-16 w-16 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGFxkfAilTkUOv7jeAF-rqfNiChGzVUUGDY720IAaXuVWKLnw6omlTVlNp3vgyIuhyFta2U5rWlYmJVYLS5uh7AMTW3OfwbUZ8fe49Gfo_qbCNxrNNO5amV6KzLgv6RFAvL_wKjfmIbUSpYAafQqlwKMSc3sAkil35gJceN4EzAHdQUgvRuPcDnLiLRMPaa859mhlEskgjXJq5UW1xJhnE3Fa2cPu_TQEd_1DmdIjZIPb-QtVx_EXKyfuLpjYsGe9Bv9bpayrrhvY"/>
+</div>
+<div class="max-w-sm mx-auto w-full space-y-6 relative z-10">
+<div class="hidden lg:block">
+<img alt="CyberGuard Logo" class="h-14 w-14 object-contain mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGFxkfAilTkUOv7jeAF-rqfNiChGzVUUGDY720IAaXuVWKLnw6omlTVlNp3vgyIuhyFta2U5rWlYmJVYLS5uh7AMTW3OfwbUZ8fe49Gfo_qbCNxrNNO5amV6KzLgv6RFAvL_wKjfmIbUSpYAafQqlwKMSc3sAkil35gJceN4EzAHdQUgvRuPcDnLiLRMPaa859mhlEskgjXJq5UW1xJhnE3Fa2cPu_TQEd_1DmdIjZIPb-QtVx_EXKyfuLpjYsGe9Bv9bpayrrhvY"/>
+<h2 class="font-headline-md text-headline-md text-on-surface">System Authorization</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Enter your credentials to continue to Behavioral Intel.</p>
+</div>
 
-<div class="container">
-    <div class="login-card">
-        <div class="header">
-            <div class="logo-container">
-                <i data-lucide="shield-alert"></i>
-            </div>
-            <h1 class="title">Behavioral Intelligence</h1>
-            <p class="subtitle">Insider Threat Detection Portal</p>
-        </div>
+<!-- Custom Error Alert Container -->
+<div id="errorAlert" class="hidden p-3 rounded-sm bg-error-container/20 border border-error-container/50 text-error text-label-md flex items-center space-x-2">
+  <span class="material-symbols-outlined">error</span>
+  <span id="errorMessage">Invalid credentials.</span>
+</div>
 
-        <div class="alert" id="errorAlert">
-            <i data-lucide="alert-circle" style="width: 18px; height: 18px; flex-shrink: 0;"></i>
-            <span id="errorMessage">Invalid credentials. Please try again.</span>
-        </div>
-
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username" class="form-label">Username</label>
-                <div class="input-wrapper">
-                    <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required autocomplete="username">
-                    <i data-lucide="user" class="input-icon"></i>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <div class="input-wrapper">
-                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
-                    <i data-lucide="lock" class="input-icon"></i>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit" id="submitBtn">
-                <span>Access System</span>
-                <div class="spinner" id="btnSpinner"></div>
-                <i data-lucide="arrow-right" id="btnArrow"></i>
-            </button>
-        </form>
-
-        <p class="footer-text">
-            Onboard new analyst? 
-            <a href="/register" class="footer-link">Register Account</a>
-        </p>
-    </div>
+<form class="space-y-4" id="loginForm">
+<!-- Username or Email Field -->
+<div class="space-y-1">
+<label class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-widest" for="email">Identity (Username or Email)</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-[20px]">alternate_email</span>
+</div>
+<input class="w-full bg-surface-container-high border border-outline-variant text-on-surface rounded-sm py-3 pl-10 pr-4 input-focus-glow transition-all font-body-md placeholder:text-on-surface-variant/30" id="email" name="email" placeholder="admin or admin@security.com" required="" type="text"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-widest" for="password">Passphrase</label>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-[20px]">lock</span>
+</div>
+<input class="w-full bg-surface-container-high border border-outline-variant text-on-surface rounded-sm py-3 pl-10 pr-10 input-focus-glow transition-all font-body-md placeholder:text-on-surface-variant/30" id="password" name="password" placeholder="••••••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Remember & Forgot -->
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input class="h-4 w-4 rounded-sm border-outline-variant bg-surface-container-high text-primary-container focus:ring-primary focus:ring-offset-surface-dim" id="remember-me" name="remember-me" type="checkbox"/>
+<label class="ml-2 block font-label-md text-label-md text-on-surface-variant" for="remember-me">Secure Persistence</label>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary-container hover:bg-primary-fixed-dim text-on-primary-container font-label-md text-label-md py-4 rounded-sm flex items-center justify-center space-x-2 transition-all transform active:scale-[0.98] shadow-lg shadow-primary-container/10 group" type="submit" id="submitBtn">
+<span class="font-bold tracking-widest uppercase" id="btnText">Establish Link</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" id="btnIcon">arrow_forward</span>
+</button>
+</form>
+<div class="pt-4 border-t border-outline-variant/30 text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">
+                        Unauthorized access is monitored and logged
+                    </p>
+</div>
+<div class="text-center pt-2">
+<p class="font-body-md text-on-surface-variant">
+    Onboard new analyst? 
+    <a href="/register" class="text-primary hover:text-primary-fixed-dim transition-colors font-semibold ml-1">Register Account</a>
+</p>
+</div>
+</div>
+<!-- Version Info Footer -->
+<div class="absolute bottom-6 left-12 right-12 flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant/40">SEC-V.4.2.0</span>
+<div class="flex space-x-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant/40 hover:text-primary-container transition-colors" href="#">Legal Compliance</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Atmospheric Effect -->
+<div class="fixed top-0 right-0 -z-10 w-1/2 h-full pointer-events-none overflow-hidden">
+<div class="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-primary-container/5 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-[10%] left-[20%] w-[300px] h-[300px] bg-secondary-container/5 rounded-full blur-[80px]"></div>
 </div>
 
 <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
-
-    // Check if user already has an access token and redirect
+    // Redirect if already authenticated
     if (localStorage.getItem('access_token')) {
         window.location.href = '/profile';
     }
 
     const loginForm = document.getElementById('loginForm');
     const submitBtn = document.getElementById('submitBtn');
-    const btnSpinner = document.getElementById('btnSpinner');
-    const btnArrow = document.getElementById('btnArrow');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
     const errorAlert = document.getElementById('errorAlert');
     const errorMessage = document.getElementById('errorMessage');
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // Hide previous errors
-        errorAlert.style.display = 'none';
+        errorAlert.classList.add('hidden');
 
-        // Show spinner, disable button
+        // Show loading state
         submitBtn.disabled = true;
-        btnSpinner.style.display = 'inline-block';
-        btnArrow.style.display = 'none';
+        btnText.textContent = "Authenticating...";
+        btnIcon.className = "animate-spin material-symbols-outlined";
+        btnIcon.textContent = "sync";
 
-        const username = document.getElementById('username').value.trim();
+        const username = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
 
         try {
@@ -351,31 +288,59 @@
             const result = await response.json();
 
             if (response.ok && result.success) {
-                // Store JWT tokens and user info
+                // Verified flash
+                btnText.textContent = "Verified";
+                btnIcon.className = "material-symbols-outlined text-green-400";
+                btnIcon.textContent = "check_circle";
+                submitBtn.classList.replace('bg-primary-container', 'bg-green-500/20');
+                submitBtn.classList.add('border', 'border-green-500/50', 'text-green-400');
+
+                // Save tokens
                 localStorage.setItem('access_token', result.data.access_token);
                 localStorage.setItem('refresh_token', result.data.refresh_token);
                 localStorage.setItem('username', result.data.user.username);
                 localStorage.setItem('role', result.data.user.role);
                 localStorage.setItem('employee_id', result.data.user.employee_id || '');
 
-                // Redirect to profile
-                window.location.href = '/profile';
+                setTimeout(() => {
+                    document.body.style.opacity = '0';
+                    document.body.style.transition = 'opacity 0.3s ease-out';
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 300);
+                }, 800);
             } else {
-                // Show error message
-                errorMessage.textContent = result.message || 'Login failed. Please check your credentials.';
-                errorAlert.style.display = 'flex';
+                errorMessage.textContent = result.message || 'Login failed. Invalid identity or passphrase.';
+                errorAlert.classList.remove('hidden');
+                resetBtn();
             }
         } catch (error) {
             console.error('Login error:', error);
-            errorMessage.textContent = 'A network error occurred. Connection refused.';
-            errorAlert.style.display = 'flex';
-        } finally {
-            // Restore button state
-            submitBtn.disabled = false;
-            btnSpinner.style.display = 'none';
-            btnArrow.style.display = 'inline-block';
+            errorMessage.textContent = 'A network error occurred. Link connection refused.';
+            errorAlert.classList.remove('hidden');
+            resetBtn();
+        }
+    });
+
+    function resetBtn() {
+        submitBtn.disabled = false;
+        btnText.textContent = "Establish Link";
+        btnIcon.className = "material-symbols-outlined group-hover:translate-x-1 transition-transform";
+        btnIcon.textContent = "arrow_forward";
+        submitBtn.className = "w-full bg-primary-container hover:bg-primary-fixed-dim text-on-primary-container font-label-md text-label-md py-4 rounded-sm flex items-center justify-center space-x-2 transition-all transform active:scale-[0.98] shadow-lg shadow-primary-container/10 group";
+    }
+
+    // Atmospheric mouse tracking
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        if (window.innerWidth > 1024) {
+            const glow = document.querySelector('.fixed .bg-primary-container\\/5');
+            if (glow) {
+                glow.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
+            }
         }
     });
 </script>
-</body>
-</html>
+</body></html>

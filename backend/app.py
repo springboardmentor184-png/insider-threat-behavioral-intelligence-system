@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, send_from_directory, render_template_string
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from werkzeug.exceptions import HTTPException
@@ -19,7 +19,7 @@ from utils.response import api_error
 logger = get_logger()
 
 def create_app(config_class=config_instance):
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='../frontend', static_url_path='/static')
     app.config.from_object(config_class)
 
     # Initialize Extensions
@@ -33,11 +33,68 @@ def create_app(config_class=config_instance):
     # Configure CORS
     CORS(app)
 
+    # ==========================================
+    # FRONTEND ROUTES
+    # ==========================================
+    
+    @app.route('/', methods=['GET'])
+    def index():
+        """Serve index/home page"""
+        return send_from_directory('../frontend', 'login_cyberguard/code.html')
+    
+    @app.route('/login', methods=['GET'])
+    def login():
+        """Serve login page"""
+        return send_from_directory('../frontend', 'login_cyberguard/code.html')
+    
+    @app.route('/register', methods=['GET'])
+    def register():
+        """Serve registration page"""
+        return send_from_directory('../frontend', 'register_cyberguard/code.html')
+    
+    @app.route('/dashboard', methods=['GET'])
+    def dashboard():
+        """Serve dashboard page"""
+        return send_from_directory('../frontend', 'dashboard.html')
+    
+    @app.route('/admin/dashboard', methods=['GET'])
+    def admin_dashboard():
+        """Serve admin dashboard"""
+        from middleware.permissions import requires_role
+        return send_from_directory('../frontend/admin', 'dashboard.html')
+    
+    @app.route('/analyst/dashboard', methods=['GET'])
+    def analyst_dashboard():
+        """Serve security analyst dashboard"""
+        return send_from_directory('../frontend/analyst', 'dashboard.html')
+    
+    @app.route('/soc/dashboard', methods=['GET'])
+    def soc_dashboard():
+        """Serve SOC engineer dashboard"""
+        return send_from_directory('../frontend/soc', 'dashboard.html')
+    
+    @app.route('/employee/dashboard', methods=['GET'])
+    def employee_dashboard():
+        """Serve employee dashboard"""
+        return send_from_directory('../frontend/employee', 'dashboard.html')
+    
+    @app.route('/api.js', methods=['GET'])
+    def api_js():
+        """Serve API client library"""
+        return send_from_directory('../frontend', 'api.js')
+    
+    @app.route('/static/<path:filename>', methods=['GET'])
+    def static_files(filename):
+        """Serve static files from frontend"""
+        return send_from_directory('../frontend', filename)
+
     # Register Blueprints
+    from routes.analytics import analytics_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(employee_bp)
     app.register_blueprint(activity_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(analytics_bp)
 
     # ==========================================
     # CENTRALIZED ERROR HANDLING
@@ -78,17 +135,42 @@ def create_app(config_class=config_instance):
     # ==========================================
     with app.app_context():
         try:
+            # Import all models to ensure they are registered for create_all()
+            from models import Role, Employee, User, ActivityLog, Permission, RolePermission, BehaviorProfile, BehaviorBaseline, BehaviorFeature, RiskScore, Anomaly, Alert, ThreatReport
+            
             # Create tables if they do not exist (useful for SQLite out-of-the-box run)
             db.create_all()
             
+            # Run lightweight column migration in SQLite if columns are missing
+            try:
+                inspector = db.inspect(db.engine)
+                columns = [c['name'] for c in inspector.get_columns('employees')]
+                with db.engine.connect() as conn:
+                    if 'authorized_workstations' not in columns:
+                        conn.execute(db.text("ALTER TABLE employees ADD COLUMN authorized_workstations VARCHAR(255)"))
+                        logger.info("Migration: Added 'authorized_workstations' column to employees table.")
+                    if 'authorized_usbs' not in columns:
+                        conn.execute(db.text("ALTER TABLE employees ADD COLUMN authorized_usbs VARCHAR(255)"))
+                        logger.info("Migration: Added 'authorized_usbs' column to employees table.")
+                    if 'assigned_analyst_id' not in columns:
+                        conn.execute(db.text("ALTER TABLE employees ADD COLUMN assigned_analyst_id INTEGER"))
+                        logger.info("Migration: Added 'assigned_analyst_id' column to employees table.")
+                    conn.commit()
+            except Exception as migrate_err:
+                logger.warning(f"Lightweight migration notice: {str(migrate_err)}")
+            
             # Seed Roles
             from models.role import Role
-            roles_to_seed = ['ADMINISTRATOR', 'ADMIN', 'SECURITY_ANALYST', 'SOC_ENGINEER', 'SECURITY_MANAGER', 'EMPLOYEE']
+            roles_to_seed = ['ADMINISTRATOR', 'SECURITY_ANALYST', 'SOC_ENGINEER', 'EMPLOYEE', 'SECURITY_MANAGER']
             for role_name in roles_to_seed:
                 if not Role.query.filter_by(role_name=role_name).first():
                     r = Role(role_name=role_name)
                     db.session.add(r)
             db.session.commit()
+            
+            # Seed Permissions
+            from services.permission_service import seed_permissions
+            seed_permissions()
             
             # Seed Default Administrator account if none exists
             from models.user import User
@@ -111,7 +193,9 @@ def create_app(config_class=config_instance):
                         department='CyberSecurity Operations',
                         designation='Chief Security Architect',
                         joining_date=date.today(),
-                        status='ACTIVE'
+                        status='ACTIVE',
+                        authorized_workstations='WS-01, WS-Admin',
+                        authorized_usbs='USB-01'
                     )
                     db.session.add(admin_employee)
                     db.session.flush() # get id

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Activity Monitoring | CYBERGUARD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(30, 32, 36, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(244, 67, 54, 0.2);
+        }
+        .timeline-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+        .timeline-scroll::-webkit-scrollbar-thumb {
+            background: rgba(132, 147, 150, 0.3);
+            border-radius: 2px;
+        }
+        .activity-feed-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .activity-feed-scroll::-webkit-scrollbar-thumb {
+            background: rgba(132, 147, 150, 0.3);
+            border-radius: 2px;
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+        .scanline-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.2), transparent);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#282a2e",
+                    "surface-container": "#1e2024",
+                    "inverse-on-surface": "#2f3035",
+                    "secondary-fixed-dim": "#b0c6ff",
+                    "outline-variant": "#3b494c",
+                    "primary-container": "#00e5ff",
+                    "inverse-primary": "#006875",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed": "#001f24",
+                    "on-primary-container": "#00626e",
+                    "surface-variant": "#333539",
+                    "on-primary-fixed-variant": "#004f58",
+                    "on-tertiary-fixed-variant": "#8a1d00",
+                    "surface-container-lowest": "#0c0e12",
+                    "tertiary-fixed-dim": "#ffb4a2",
+                    "tertiary": "#ffe7e2",
+                    "primary-fixed-dim": "#00daf3",
+                    "on-secondary": "#002d6e",
+                    "on-tertiary": "#621100",
+                    "secondary-fixed": "#d9e2ff",
+                    "tertiary-fixed": "#ffdad2",
+                    "on-surface": "#e2e2e8",
+                    "surface-container-highest": "#333539",
+                    "surface-tint": "#00daf3",
+                    "on-secondary-fixed-variant": "#00429b",
+                    "primary": "#c3f5ff",
+                    "on-surface-variant": "#bac9cc",
+                    "on-background": "#e2e2e8",
+                    "on-secondary-container": "#f2f3ff",
+                    "outline": "#849396",
+                    "on-primary": "#00363d",
+                    "inverse-surface": "#e2e2e8",
+                    "on-tertiary-container": "#aa2600",
+                    "tertiary-container": "#ffc2b3",
+                    "on-secondary-fixed": "#001945",
+                    "background": "#111318",
+                    "secondary": "#b0c6ff",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#0068ed",
+                    "surface-bright": "#37393e",
+                    "on-tertiary-fixed": "#3c0700",
+                    "surface-container-low": "#1a1c20",
+                    "surface-dim": "#111318",
+                    "on-error": "#690005",
+                    "surface": "#111318",
+                    "primary-fixed": "#9cf0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "component-gap-md": "16px",
+                    "unit": "4px",
+                    "container-padding-mobile": "16px",
+                    "container-padding-desktop": "24px",
+                    "component-gap-sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["JetBrains Mono"],
+                    "display-lg": ["Inter"],
+                    "label-sm": ["JetBrains Mono"],
+                    "title-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container/80 backdrop-blur-xl border-r border-white/10 z-50 flex flex-col py-spacing-gutter">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary-fixed-dim tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">security</span>
+                CYBERGUARD
+            </h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mt-1 opacity-60">Behavioral Intel</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Employees</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary-fixed-dim bg-primary-container/10 border-r-2 border-primary-fixed-dim transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-label-md text-label-md">Monitoring</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-label-md text-label-md">Threat Detection</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5">
+<div class="w-10 h-10 rounded bg-primary-container/20 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary">admin_panel_settings</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-bold">CISO Console</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Status: Active</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] h-screen flex flex-col relative">
+<div class="scanline-effect"></div>
+<!-- Top App Bar -->
+<header class="h-16 flex justify-between items-center px-container-desktop bg-surface-dim/90 backdrop-blur-md border-b border-white/5 z-40">
+<div class="flex items-center gap-component-gap-md w-1/3">
+<div class="relative w-full max-w-sm group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-container-highest/50 border border-white/10 rounded-lg pl-10 pr-4 py-1.5 font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-on-surface-variant/50" placeholder="Search events, IP, or employee..." type="text"/>
+</div>
+</div>
+<div class="flex items-center justify-center">
+<span class="font-title-lg text-title-lg text-primary-fixed-dim uppercase tracking-widest font-semibold">Activity Monitoring</span>
+</div>
+<div class="flex items-center gap-6 w-1/3 justify-end">
+<div class="flex gap-4">
+<button class="relative hover:bg-surface-container-highest p-2 rounded-lg transition-all group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full glow-red"></span>
+</button>
+<button class="hover:bg-surface-container-highest p-2 rounded-lg transition-all group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">settings</span>
+</button>
+<button class="hover:bg-surface-container-highest p-2 rounded-lg transition-all group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">help</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface font-bold leading-tight">Chief Information Officer</p>
+<p class="text-[10px] text-primary uppercase leading-tight font-medium">Clearance L7</p>
+</div>
+<img class="w-10 h-10 rounded border border-primary/30 object-cover" data-alt="A professional close-up portrait of a Chief Information Security Officer, a middle-aged woman with a sharp gaze and professional attire, in a dimly lit high-tech environment with soft blue computer screen reflections on her face. The style is cinematic and authoritative, matching a dark cybersecurity dashboard theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUZwYt7ztt7zVZVvP_eB9yAhmA7YF-duyiUYO6-wevsl0mHZVhwgkT_JEpwwOUi5DQTtlHgyjGojVNJf--rGorLtIft6LHgyafRFJbC4QBi9scmmOSdgbebCiuv-zjVJVmRaMaNGOtkHGUcHWkkasHUXvzCU_GSZ-cvxLAYWSMsIyxcvkPFxeLQhFhMm2YFrCvSnpDwK9kMCxDC5r_b40PLqoW0P3gVMoJ69ASM_gnul5gEAnb4PF1fWfYZtcD09RkMyMIQjuZ-6g"/>
+</div>
+</div>
+</header>
+<!-- Monitoring Workspace -->
+<section class="flex-1 p-spacing-gutter overflow-hidden flex flex-col gap-spacing-gutter">
+<!-- Quick Filters Row -->
+<div class="flex items-center justify-between">
+<div class="flex gap-component-gap-sm">
+<button class="px-4 py-2 bg-primary text-on-primary font-label-md text-label-md rounded flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">all_inclusive</span> ALL EVENTS
+                    </button>
+<button class="px-4 py-2 glass-panel hover:bg-white/5 text-on-surface-variant font-label-md text-label-md rounded flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">usb</span> USB MEDIA
+                    </button>
+<button class="px-4 py-2 glass-panel hover:bg-white/5 text-on-surface-variant font-label-md text-label-md rounded flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">folder_open</span> FILE ACCESS
+                    </button>
+<button class="px-4 py-2 glass-panel hover:bg-white/5 text-on-surface-variant font-label-md text-label-md rounded flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">login</span> LOGINS
+                    </button>
+<button class="px-4 py-2 glass-panel hover:bg-white/5 text-on-surface-variant font-label-md text-label-md rounded flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">history</span> WEB HISTORY
+                    </button>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low border border-white/5 p-1 rounded-lg">
+<span class="text-[10px] font-label-md text-on-surface-variant ml-2 uppercase">Time Range:</span>
+<button class="px-3 py-1 bg-surface-variant rounded text-on-surface font-label-sm text-label-sm">LAST 1H</button>
+<button class="px-3 py-1 hover:bg-white/5 rounded text-on-surface-variant font-label-sm text-label-sm">6H</button>
+<button class="px-3 py-1 hover:bg-white/5 rounded text-on-surface-variant font-label-sm text-label-sm">24H</button>
+<button class="px-2 py-1 hover:bg-white/5 rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+</button>
+</div>
+</div>
+<!-- Central Timeline Visualization -->
+<div class="glass-panel rounded-xl flex-shrink-0 h-[220px] p-6 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+<div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(0, 229, 255, 0.15) 1px, transparent 0); background-size: 24px 24px;"></div>
+</div>
+<div class="flex justify-between items-start mb-6 relative z-10">
+<div>
+<h3 class="font-label-md text-label-md text-primary tracking-widest uppercase flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary glow-cyan animate-pulse"></span>
+                            Temporal Activity Heatmap
+                        </h3>
+<p class="text-on-surface-variant text-[11px] mt-1">Cross-vector correlation of all system events over time</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_5px_#00e5ff]"></span>
+<span class="text-[10px] text-on-surface-variant uppercase">Normal</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-container shadow-[0_0_5px_#ffc2b3]"></span>
+<span class="text-[10px] text-on-surface-variant uppercase">Suspicious</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-error glow-red"></span>
+<span class="text-[10px] text-on-surface-variant uppercase">Critical</span>
+</div>
+</div>
+</div>
+<!-- Fake Chart Logic -->
+<div class="relative h-[100px] flex items-end gap-1 overflow-x-auto timeline-scroll pb-2">
+<!-- Generating bars with varying heights -->
+<script>
+                        const container = document.currentScript.parentElement;
+                        for(let i=0; i<60; i++) {
+                            const h = Math.floor(Math.random() * 80) + 10;
+                            const isAlert = i === 12 || i === 45;
+                            const isSuspicious = i % 15 === 0;
+                            const colorClass = isAlert ? 'bg-error glow-red' : (isSuspicious ? 'bg-tertiary-container' : 'bg-primary-container/30');
+                            const bar = document.createElement('div');
+                            bar.className = `flex-shrink-0 w-[6px] ${colorClass} rounded-t-[1px] transition-all hover:scale-y-125 hover:bg-primary cursor-pointer`;
+                            bar.style.height = `${h}%`;
+                            container.appendChild(bar);
+                        }
+                    </script>
+</div>
+<div class="flex justify-between mt-2 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-tighter opacity-50">
+<span>14:00</span>
+<span>14:15</span>
+<span>14:30</span>
+<span>14:45</span>
+<span>15:00</span>
+</div>
+</div>
+<!-- Bottom Section: Feed and Stats -->
+<div class="flex-1 grid grid-cols-12 gap-spacing-gutter min-h-0">
+<!-- Live Scrolling Log -->
+<div class="col-span-8 glass-panel rounded-xl flex flex-col overflow-hidden">
+<div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-white/2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">stream</span>
+<h3 class="font-label-md text-label-md text-on-surface uppercase font-bold tracking-wider">Live Activity Stream</h3>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[11px] font-label-md text-on-surface-variant">AUTO-REFRESH: <span class="text-primary">ON</span></span>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto activity-feed-scroll p-0">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-high/95 backdrop-blur z-10 border-b border-white/5">
+<tr>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase">Timestamp</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase">Employee</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase">Action Vector</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase">Status</th>
+<th class="py-3 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase text-right">Risk</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- High Risk Row -->
+<tr class="hover:bg-error/5 transition-colors group">
+<td class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant">14:52:12</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-surface-container-highest border border-white/10 flex items-center justify-center text-[10px]">JD</div>
+<span class="font-medium text-on-surface">John Doe (DevOps)</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-error">usb</span>
+                                            Mass file deletion from /PROD_DB
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-error-container text-on-error-container font-bold uppercase">Blocked</span>
+</td>
+<td class="py-4 px-6 text-right">
+<span class="text-error font-bold">94%</span>
+</td>
+</tr>
+<!-- Normal Row -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant">14:51:58</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-surface-container-highest border border-white/10 flex items-center justify-center text-[10px]">AM</div>
+<span class="font-medium text-on-surface">Alice Miller (HR)</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">language</span>
+                                            Accessed LinkedIn.com
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-surface-container-highest text-on-surface-variant font-bold uppercase">Allowed</span>
+</td>
+<td class="py-4 px-6 text-right">
+<span class="text-primary opacity-50">12%</span>
+</td>
+</tr>
+<!-- Suspicious Row -->
+<tr class="hover:bg-tertiary-container/10 transition-colors group">
+<td class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant">14:50:02</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-surface-container-highest border border-white/10 flex items-center justify-center text-[10px]">RW</div>
+<span class="font-medium text-on-surface">Rick Watts (Sales)</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container">vpn_key</span>
+                                            Failed SSH Attempt (IP: 192.168.1.45)
+                                        </span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-tertiary-container text-on-tertiary-container font-bold uppercase">Investigating</span>
+</td>
+<td class="py-4 px-6 text-right">
+<span class="text-tertiary-container font-bold">48%</span>
+</td>
+</tr>
+<!-- More Rows for Visual Density -->
+<script>
+                                    const tbody = document.currentScript.parentElement;
+                                    const names = ["Sarah Connor", "Bob Vance", "Michael Scott", "Pam Beesly", "Dwight Schrute"];
+                                    const actions = ["Print Job: Report_2023.pdf", "Access: Cloud Storage", "Login: Remote VPN", "Web: Stack Overflow", "Email Sent: 14 Recipients"];
+                                    for(let i=0; i<15; i++) {
+                                        const tr = document.createElement('tr');
+                                        tr.className = 'hover:bg-white/5 transition-colors group';
+                                        tr.innerHTML = `
+                                            <td class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant">14:48:${String(i).padStart(2, '0')}</td>
+                                            <td class="py-4 px-6">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="w-6 h-6 rounded bg-surface-container-highest border border-white/10 flex items-center justify-center text-[10px] uppercase">${names[i%5].substring(0,1)}${names[i%5].split(' ')[1][0]}</div>
+                                                    <span class="font-medium text-on-surface">${names[i%5]}</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                <span class="flex items-center gap-2 text-on-surface-variant">
+                                                    <span class="material-symbols-outlined text-[16px]">info</span>
+                                                    ${actions[i%5]}
+                                                </span>
+                                            </td>
+                                            <td class="py-4 px-6">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-surface-container-highest text-on-surface-variant font-bold uppercase">Logged</span>
+                                            </td>
+                                            <td class="py-4 px-6 text-right">
+                                                <span class="text-on-surface-variant opacity-30">${Math.floor(Math.random() * 15)}%</span>
+                                            </td>
+                                        `;
+                                        tbody.appendChild(tr);
+                                    }
+                                </script>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Contextual Analysis Sidebar -->
+<div class="col-span-4 flex flex-col gap-spacing-gutter overflow-y-auto activity-feed-scroll pr-2">
+<!-- Advanced Filters Bento -->
+<div class="glass-panel rounded-xl p-5 border-l-4 border-primary">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">Advanced Filters</h4>
+<span class="material-symbols-outlined text-[18px] text-primary">filter_alt</span>
+</div>
+<div class="space-y-4">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1.5 uppercase">Risk Threshold</label>
+<input class="w-full accent-primary h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer" type="range"/>
+<div class="flex justify-between text-[10px] text-on-surface-variant mt-1 font-label-sm">
+<span>0%</span>
+<span>50%</span>
+<span>100%</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="p-2 bg-surface-container-low border border-white/5 rounded">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="rounded border-white/10 bg-surface-container text-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-[11px] text-on-surface font-medium uppercase">Internal Only</span>
+</label>
+</div>
+<div class="p-2 bg-surface-container-low border border-white/5 rounded">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-white/10 bg-surface-container text-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-[11px] text-on-surface font-medium uppercase">Admin Level</span>
+</label>
+</div>
+</div>
+<button class="w-full py-2 bg-white/5 hover:bg-white/10 text-on-surface font-label-md text-label-md rounded border border-white/5 transition-all uppercase tracking-widest font-bold">
+                                Apply Refinements
+                            </button>
+</div>
+</div>
+<!-- Top Risk Sources -->
+<div class="glass-panel rounded-xl p-5">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">Top Risk Vectors</h4>
+<span class="material-symbols-outlined text-[18px] text-tertiary-container">warning</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-error-container/20 flex items-center justify-center border border-error/20">
+<span class="material-symbols-outlined text-error text-[18px]">usb</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-[11px] text-on-surface font-medium uppercase">Unauthorized USB</span>
+<span class="text-[11px] text-error font-bold">84% CRITICAL</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-error h-full w-[84%] glow-red"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary-container/20 flex items-center justify-center border border-tertiary/20">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">dns</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-[11px] text-on-surface font-medium uppercase">Lateral Movement</span>
+<span class="text-[11px] text-tertiary-container font-bold">52% WARN</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full w-[52%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/20 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[18px]">lock_reset</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-[11px] text-on-surface font-medium uppercase">Credential Brute</span>
+<span class="text-[11px] text-primary font-bold">21% STABLE</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[21%] glow-cyan"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Behavior Baseline Card -->
+<div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-1000"></div>
+<h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider mb-2">Behavior Baseline</h4>
+<div class="flex items-end gap-3">
+<span class="font-display-lg text-display-lg text-primary tracking-tighter">98.2</span>
+<span class="text-on-surface-variant font-label-md mb-2">/ 100 HEALTH</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2 leading-relaxed">System-wide behavioral patterns are within 2% of the standard rolling average for this weekday.</p>
+<div class="mt-4 pt-4 border-t border-white/5 flex gap-4">
+<div class="text-center flex-1">
+<p class="text-[10px] text-on-surface-variant uppercase">Alerts (24h)</p>
+<p class="font-title-lg text-title-lg text-on-surface">12</p>
+</div>
+<div class="w-[1px] bg-white/10"></div>
+<div class="text-center flex-1">
+<p class="text-[10px] text-on-surface-variant uppercase">Blocked</p>
+<p class="font-title-lg text-title-lg text-error">4</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action for Alert Creation -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center group active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-[32px]">add</span>
+<span class="absolute right-16 bg-surface-container text-on-surface px-3 py-1 rounded text-[12px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity font-bold uppercase tracking-widest border border-white/10">New Watch Trigger</span>
+</button>
+<script>
+        // Micro-interaction: Highlight search input on / key press
+        window.addEventListener('keydown', (e) => {
+            if (e.key === '/') {
+                e.preventDefault();
+                document.querySelector('input[type="text"]').focus();
+            }
+        });
+
+        // Simulating live feed additions
+        setInterval(() => {
+            const feed = document.querySelector('tbody');
+            if (feed.children.length > 30) feed.removeChild(feed.lastElementChild);
+            
+            const newRow = feed.rows[1].cloneNode(true);
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            newRow.cells[0].innerText = time;
+            newRow.classList.add('animate-pulse');
+            feed.prepend(newRow);
+            setTimeout(() => newRow.classList.remove('animate-pulse'), 2000);
+        }, 12000);
+    </script>
+</body></html>

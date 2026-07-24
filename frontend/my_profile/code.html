@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile | CYBERGUARD Behavioral Intel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#282a2e",
+                    "surface-container": "#1e2024",
+                    "inverse-on-surface": "#2f3035",
+                    "secondary-fixed-dim": "#b0c6ff",
+                    "outline-variant": "#3b494c",
+                    "primary-container": "#00e5ff",
+                    "inverse-primary": "#006875",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed": "#001f24",
+                    "on-primary-container": "#00626e",
+                    "surface-variant": "#333539",
+                    "on-primary-fixed-variant": "#004f58",
+                    "on-tertiary-fixed-variant": "#8a1d00",
+                    "surface-container-lowest": "#0c0e12",
+                    "tertiary-fixed-dim": "#ffb4a2",
+                    "tertiary": "#ffe7e2",
+                    "primary-fixed-dim": "#00daf3",
+                    "on-secondary": "#002d6e",
+                    "on-tertiary": "#621100",
+                    "secondary-fixed": "#d9e2ff",
+                    "tertiary-fixed": "#ffdad2",
+                    "on-surface": "#e2e2e8",
+                    "surface-container-highest": "#333539",
+                    "surface-tint": "#00daf3",
+                    "on-secondary-fixed-variant": "#00429b",
+                    "primary": "#c3f5ff",
+                    "on-surface-variant": "#bac9cc",
+                    "on-background": "#e2e2e8",
+                    "on-secondary-container": "#f2f3ff",
+                    "outline": "#849396",
+                    "on-primary": "#00363d",
+                    "inverse-surface": "#e2e2e8",
+                    "on-tertiary-container": "#aa2600",
+                    "tertiary-container": "#ffc2b3",
+                    "on-secondary-fixed": "#001945",
+                    "background": "#111318",
+                    "secondary": "#b0c6ff",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#0068ed",
+                    "surface-bright": "#37393e",
+                    "on-tertiary-fixed": "#3c0700",
+                    "surface-container-low": "#1a1c20",
+                    "surface-dim": "#111318",
+                    "on-error": "#690005",
+                    "surface": "#111318",
+                    "primary-fixed": "#9cf0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "component-gap-md": "16px",
+                    "unit": "4px",
+                    "container-padding-mobile": "16px",
+                    "container-padding-desktop": "24px",
+                    "component-gap-sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["JetBrains Mono"],
+                    "display-lg": ["Inter"],
+                    "label-sm": ["JetBrains Mono"],
+                    "title-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #111318;
+            color: #e2e2e8;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(30, 32, 36, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 218, 243, 0.3), transparent);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .active-glow {
+            box-shadow: 0 0 15px rgba(0, 218, 243, 0.15);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #111318; }
+        ::-webkit-scrollbar-thumb { background: #3b494c; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00daf3; }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container/80 backdrop-blur-xl border-r border-white/10 py-spacing-gutter flex flex-col z-50">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-primary-fixed-dim tracking-tight">CYBERGUARD</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest opacity-60">Behavioral Intel</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-label-md text-label-md">Employees</span>
+</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">visibility</span>
+<span class="font-label-md text-label-md">Monitoring</span>
+</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">security</span>
+<span class="font-label-md text-label-md">Threat Detection</span>
+</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">notifications_active</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-white/5 transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center px-4 py-3 text-primary-fixed-dim bg-primary-container/10 border-r-2 border-primary-fixed-dim rounded shadow-sm" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="px-6 py-4 border-t border-white/5">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a Chief Information Security Officer, a man in his late 40s with sharp features and a focused gaze, wearing a modern dark suit. The lighting is dramatic and cinematic with teal rim lighting, reflecting the high-stakes cybersecurity environment. He is positioned in front of a blurred background of glowing server monitors and data streams." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgRyoN5H5a5DcIDrRQPLTibV4GZ26MZ5rZqdiGFZplNH_JsPdNRJrRTVyzlh4aK4ct3YA2pXM27O3cGNJKA7jGY0HQdvi8GqhXAXpNY_uMYgOGbjv6VCAyMBmlEzDbaRD5AxgdQdecwPRn1SS7ncFVJGrSHb7M6i-nmeuB6Q6TNnFrwe3ONx5gaasl_5qPAOpIk2NqowUZuxr6XKHnTofIJ793VF-cyqozYvRAoo3fe4T3u7jxGUP2cmMe2jz2kWhMr7z0ckOjHI0"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-bold">Marcus Chen</p>
+<p class="text-[10px] text-on-surface-variant">CISO • Level 5 Auth</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[280px] min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="h-16 flex justify-between items-center px-container-desktop bg-surface-dim/90 backdrop-blur-md border-b border-white/5 sticky top-0 z-40">
+<div class="flex items-center">
+<span class="font-title-lg text-title-lg text-on-surface-variant">Profile Settings</span>
+</div>
+<div class="flex items-center space-x-spacing-gutter">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-all rounded">
+<span class="material-symbols-outlined">search</span>
+</button>
+<div class="flex space-x-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-all rounded">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-all rounded">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-all rounded">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Profile Content -->
+<div class="flex-1 p-spacing-gutter max-w-6xl mx-auto w-full">
+<!-- User Identity Card -->
+<section class="glass-panel p-8 mb-spacing-component-gap-md rounded-xl flex flex-col md:flex-row items-center md:items-start gap-8">
+<div class="relative">
+<div class="w-32 h-32 rounded-full border-2 border-primary-fixed-dim/30 p-1">
+<img class="w-full h-full rounded-full object-cover" data-alt="Close up portrait of a senior cybersecurity executive with salt and pepper hair, looking authoritative and vigilant. The shot is set against a dark, high-tech control room background with subtle cyan data visualizations. High contrast lighting emphasizes the precision and analytical nature of the profession, using a cool color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3ENX9C31GSYioZdbWwMeePUHBolU8fKf_3qt3M2jmGCOEO6lD1I2XsrSleqTZWDL6x3hOVx5wzjnU_kD-siH06d494XSzgUqCaU3kQsXtKEyp73K835dkcV4MxJvAwX4s2OzH9T_J-Hxp5eIsV2KURjk4hgdBSggaj_2LNa8E5K8IVbt3AyMwnzmJYRfkLNFuLE2l5REUOITPfpNQhKA6XtJXUI01unRN9bL_MInlp0BaVOvrpKXxoieuu5plI8eq38V8Tu72bLA"/>
+</div>
+<button class="absolute bottom-1 right-1 w-8 h-8 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center border-2 border-surface-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</button>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">Marcus Chen</h2>
+<button class="mt-4 md:mt-0 px-6 py-2 bg-primary-container text-on-primary-container font-label-md text-label-md rounded font-bold uppercase tracking-wider hover:opacity-90 transition-all">
+                            Edit Profile
+                        </button>
+</div>
+<p class="font-label-md text-label-md text-primary-fixed-dim mb-4">Chief Information Security Officer • Global Operations</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined mr-2 text-[20px]">mail</span>
+<span class="font-label-md text-label-md">m.chen@cyberguard.internal</span>
+</div>
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined mr-2 text-[20px]">location_on</span>
+<span class="font-label-md text-label-md">HQ Node-01 (Zurich)</span>
+</div>
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined mr-2 text-[20px]">verified_user</span>
+<span class="font-label-md text-label-md">Security Clearance: LEVEL 5</span>
+</div>
+<div class="flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined mr-2 text-[20px]">event_available</span>
+<span class="font-label-md text-label-md">Active since: Jan 2021</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Settings -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-spacing-component-gap-md">
+<!-- Security & Privacy Card -->
+<div class="lg:col-span-2 glass-panel p-6 rounded-xl">
+<div class="flex items-center mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim mr-3">shield_lock</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Security &amp; Privacy</h3>
+</div>
+<div class="space-y-6">
+<!-- Password Change -->
+<div class="flex items-center justify-between p-4 bg-surface-container-high/50 rounded border border-white/5">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Password Credentials</p>
+<p class="text-xs text-on-surface-variant mt-1">Last changed 42 days ago. Required update in 48 days.</p>
+</div>
+<button class="px-4 py-1.5 border border-primary-fixed-dim/40 text-primary-fixed-dim font-label-sm text-label-sm rounded hover:bg-primary-fixed-dim/10 transition-colors uppercase">
+                                Change
+                            </button>
+</div>
+<!-- 2FA Toggle -->
+<div class="flex items-center justify-between p-4 bg-surface-container-high/50 rounded border border-white/5">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Two-Factor Authentication</p>
+<p class="text-xs text-on-surface-variant mt-1">Hardware token and biometric verification active.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- Login History -->
+<div>
+<p class="font-label-md text-label-md text-on-surface mb-4">Account Activity Log</p>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs py-2 border-b border-white/5">
+<div class="flex items-center">
+<span class="status-dot bg-primary mr-3"></span>
+<span class="text-on-surface">Successful Login via SSH</span>
+</div>
+<span class="text-on-surface-variant font-mono">2023-10-27 14:02:11</span>
+</div>
+<div class="flex items-center justify-between text-xs py-2 border-b border-white/5">
+<div class="flex items-center">
+<span class="status-dot bg-primary mr-3"></span>
+<span class="text-on-surface">API Key Rotation</span>
+</div>
+<span class="text-on-surface-variant font-mono">2023-10-25 09:45:00</span>
+</div>
+<div class="flex items-center justify-between text-xs py-2">
+<div class="flex items-center">
+<span class="status-dot bg-error mr-3"></span>
+<span class="text-on-surface">Failed Login Attempt (IP Blocked)</span>
+</div>
+<span class="text-on-surface-variant font-mono">2023-10-24 23:11:05</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Sessions Card -->
+<div class="glass-panel p-6 rounded-xl border-t-2 border-primary-fixed-dim/50">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim mr-3">devices</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Sessions</h3>
+</div>
+<span class="px-2 py-0.5 bg-primary-container/20 text-primary-fixed-dim text-[10px] font-bold rounded">3 ACTIVE</span>
+</div>
+<div class="space-y-4">
+<!-- Session 1 -->
+<div class="p-4 bg-surface-container-lowest border border-white/5 rounded">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim mr-2">desktop_windows</span>
+<span class="font-label-md text-label-md text-on-surface">SOC Workstation 09</span>
+</div>
+<span class="text-[10px] text-primary-fixed-dim font-bold">CURRENT</span>
+</div>
+<div class="space-y-1 text-xs text-on-surface-variant font-mono">
+<p>IP: 10.0.4.155</p>
+<p>Location: Zurich, CH</p>
+</div>
+</div>
+<!-- Session 2 -->
+<div class="p-4 bg-surface-container-high/30 border border-white/5 rounded opacity-80 group hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">smartphone</span>
+<span class="font-label-md text-label-md text-on-surface">Mobile Auth App</span>
+</div>
+<button class="text-error font-label-sm text-label-sm hover:underline opacity-0 group-hover:opacity-100 transition-opacity">TERMINATE</button>
+</div>
+<div class="space-y-1 text-xs text-on-surface-variant font-mono">
+<p>IP: 172.16.8.21</p>
+<p>OS: Android 14 / CyberGuard App</p>
+</div>
+</div>
+<!-- Session 3 -->
+<div class="p-4 bg-surface-container-high/30 border border-white/5 rounded opacity-80 group hover:opacity-100 transition-opacity">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">terminal</span>
+<span class="font-label-md text-label-md text-on-surface">Remote Console (SSH)</span>
+</div>
+<button class="text-error font-label-sm text-label-sm hover:underline opacity-0 group-hover:opacity-100 transition-opacity">TERMINATE</button>
+</div>
+<div class="space-y-1 text-xs text-on-surface-variant font-mono">
+<p>IP: 192.168.1.5</p>
+<p>Last Active: 14m ago</p>
+</div>
+</div>
+<button class="w-full py-3 mt-4 text-error border border-error/30 hover:bg-error/10 transition-colors font-label-md text-label-md rounded font-bold uppercase tracking-widest">
+                            Terminate All Sessions
+                        </button>
+</div>
+</div>
+<!-- Preferences / Notifications -->
+<div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-spacing-component-gap-md">
+<div class="glass-panel p-6 rounded-xl">
+<h4 class="font-title-lg text-title-lg text-on-surface mb-6">Threat Notification Rules</h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-sm">Critical Insider Threat Alerts</span>
+<span class="text-primary-fixed-dim text-xs font-bold uppercase">Immediate SMS</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm">Weekly Behavioral Summary</span>
+<span class="text-on-surface-variant text-xs font-bold uppercase">Email Monday 08:00</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm">Auth Anomaly Reports</span>
+<span class="text-primary-fixed-dim text-xs font-bold uppercase">Dashboard Push</span>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-20">
+<!-- Background pattern/image placeholder -->
+<div class="w-full h-full bg-cover bg-center" data-alt="A futuristic technological texture with complex circuit-like patterns and glowing neon blue data lines on a deep black background. The image has a depth of field effect where some nodes are in sharp focus while others blur into a bokeh of cyan light. It represents the abstract concept of behavioral intelligence and neural data processing in a high-security environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPY1X2sXyRdgDWETF7xxkv8UXMLXP6atOw_olkqhBblFx1FEFnZXVTVm0I6Y5d-57egVxIZMrB5re3SwK1X5GowXZTvF_aH7CnnwCw0Jd-7qJGa0sBNfAAIwSrEPBUBpEJlPjKG3cRtnyx4lEOsxsg9_b55_T6fybcJkL2sVsNoLDZQ60Tov1eq4rxN9EhRAM4K2MgAZWE32nHfNzmsVGk61lv4ffOAFDaouXZ2xfoZ3vkEszmkkWQgkqhdGJNroRTmkWlszl7OmQ')"></div>
+</div>
+<div class="relative z-10 text-center">
+<span class="material-symbols-outlined text-[48px] text-primary-fixed-dim mb-4" style="font-variation-settings: 'FILL' 1;">verified</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Data Integrity Confirmed</h4>
+<p class="text-on-surface-variant mt-2 max-w-xs mx-auto">Your account is fully compliant with the Behavioral Intel protocol v4.2. Last audit: 12h ago.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / System Info -->
+<footer class="mt-auto py-8 px-container-desktop text-center border-t border-white/5 bg-surface-container-lowest/30">
+<div class="flex flex-col md:flex-row justify-between items-center opacity-40 hover:opacity-80 transition-opacity">
+<p class="text-[10px] font-mono tracking-widest uppercase">Encryption: AES-256-GCM • System Integrity: STABLE</p>
+<p class="text-[10px] font-mono tracking-widest uppercase">CYBERGUARD OS v24.10.3 • © 2023 BEHAVIORAL INTEL SYSTEMS</p>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for Toggles
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const parent = this.closest('.glass-panel');
+                if (this.checked) {
+                    parent.classList.add('active-glow');
+                    console.log('Security feature enabled');
+                } else {
+                    parent.classList.remove('active-glow');
+                    console.log('Security feature disabled');
+                }
+            });
+        });
+
+        // Simple Session Terminate Interaction
+        document.querySelectorAll('.group button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const sessionCard = this.closest('.p-4');
+                sessionCard.style.transition = 'all 0.5s ease';
+                sessionCard.style.opacity = '0';
+                sessionCard.style.transform = 'translateX(20px)';
+                setTimeout(() => sessionCard.remove(), 500);
+            });
+        });
+    </script>
+</body></html>

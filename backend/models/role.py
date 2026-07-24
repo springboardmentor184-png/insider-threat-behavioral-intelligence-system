@@ -8,6 +8,7 @@ class Role(db.Model):
 
     # Relationships
     users = db.relationship('User', back_populates='role', lazy=True)
+    role_permissions = db.relationship('RolePermission', back_populates='role', lazy=True, cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"<Role {self.role_name}>"
@@ -17,3 +18,8 @@ class Role(db.Model):
             'id': self.id,
             'role_name': self.role_name
         }
+    
+    def get_permissions(self):
+        """Get all permissions for this role"""
+        return [rp.permission.permission_name for rp in self.role_permissions]
+

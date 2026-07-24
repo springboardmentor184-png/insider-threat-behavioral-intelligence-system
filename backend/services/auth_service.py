@@ -102,9 +102,15 @@ class AuthService:
     def login_user(username, password):
         """
         Authenticates a user, logs the success/failure, and returns access/refresh JWT tokens.
+        Supports authentication via username or email.
         """
+        # Lookup user by username first, then fallback to looking up by email
         user = User.query.filter_by(username=username).first()
-        
+        if not user:
+            employee = Employee.query.filter_by(email=username).first()
+            if employee and employee.user:
+                user = employee.user
+                
         if not user or not bcrypt.check_password_hash(user.password_hash, password):
             # Log failure
             # If the user exists, log with their employee ID

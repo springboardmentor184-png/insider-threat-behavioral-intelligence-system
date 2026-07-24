@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Behavioral Analytics Deep-Dive | CyberGuard SOC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1e2024",
+                        "inverse-on-surface": "#2f3035",
+                        "secondary-fixed-dim": "#b0c6ff",
+                        "outline-variant": "#3b494c",
+                        "primary-container": "#00e5ff",
+                        "inverse-primary": "#006875",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#001f24",
+                        "on-primary-container": "#00626e",
+                        "surface-variant": "#333539",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-tertiary-fixed-variant": "#8a1d00",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-fixed-dim": "#ffb4a2",
+                        "tertiary": "#ffe7e2",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-secondary": "#002d6e",
+                        "on-tertiary": "#621100",
+                        "secondary-fixed": "#d9e2ff",
+                        "tertiary-fixed": "#ffdad2",
+                        "on-surface": "#e2e2e8",
+                        "surface-container-highest": "#333539",
+                        "surface-tint": "#00daf3",
+                        "on-secondary-fixed-variant": "#00429b",
+                        "primary": "#c3f5ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-background": "#e2e2e8",
+                        "on-secondary-container": "#f2f3ff",
+                        "outline": "#849396",
+                        "on-primary": "#00363d",
+                        "inverse-surface": "#e2e2e8",
+                        "on-tertiary-container": "#aa2600",
+                        "tertiary-container": "#ffc2b3",
+                        "on-secondary-fixed": "#001945",
+                        "background": "#111318",
+                        "secondary": "#b0c6ff",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#0068ed",
+                        "surface-bright": "#37393e",
+                        "on-tertiary-fixed": "#3c0700",
+                        "surface-container-low": "#1a1c20",
+                        "surface-dim": "#111318",
+                        "on-error": "#690005",
+                        "surface": "#111318",
+                        "primary-fixed": "#9cf0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "component-gap-md": "16px",
+                        "unit": "4px",
+                        "container-padding-mobile": "16px",
+                        "container-padding-desktop": "24px",
+                        "component-gap-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "title-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(30, 32, 36, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 218, 243, 0.3);
+            box-shadow: 0 0 20px rgba(0, 218, 243, 0.05);
+        }
+        .accent-bar {
+            height: 1px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .glow-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(186, 201, 204, 0.2);
+            border-radius: 2px;
+        }
+        .radar-grid {
+            stroke: rgba(132, 147, 150, 0.2);
+            stroke-width: 1;
+        }
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .animate-pulse-cyan {
+            animation: pulse-cyan 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Side Navigation Bar -->
+<nav class="fixed left-0 top-0 h-screen w-[280px] border-r border-outline-variant/20 bg-surface-container/80 backdrop-blur-xl z-50 flex flex-col py-spacing-gutter">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-primary-fixed-dim tracking-tight">CYBERGUARD</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mt-1">Behavioral Intel</p>
+</div>
+<div class="flex-1 flex flex-col gap-1 px-3">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">group</span>
+<span class="font-label-md text-label-md">Employees</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">visibility</span>
+<span class="font-label-md text-label-md">Monitoring</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">security</span>
+<span class="font-label-md text-label-md">Threat Detection</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-primary-fixed-dim bg-primary-container/10 border-r-2 border-primary-fixed-dim transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">notifications_active</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<div class="mt-auto">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Top App Bar -->
+<header class="fixed top-0 left-[280px] w-[calc(100%-280px)] h-16 bg-surface-dim/90 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-container-desktop z-40 shadow-sm">
+<div class="flex items-center gap-6 flex-1">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-on-surface font-body-md focus:ring-1 focus:ring-primary-fixed-dim/50 transition-all placeholder:text-on-surface-variant/50" placeholder="Query user identity or behavior pattern..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2 mr-4">
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface-dim"></span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="flex items-center gap-3 border-l border-white/10 pl-6 h-8">
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-primary-fixed-dim font-label-sm uppercase tracking-tighter">Chief Information Security Officer</p>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged male security officer with a sharp, focused expression, wearing a tailored charcoal suit in a high-tech corporate office environment. The background is softly blurred with glowing blue computer monitors displaying network graphs. The lighting is cold and clinical, emphasizing a mood of authority and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqNi8XiHKR9BqX_zjAcPkzBbto5FNTi0LHeucfZxfTRp9QXcRUViKC2p08aZ4ME02WkGFSNjW16_nk7tnxBqYDMekZO9YYtdB7_boSF4_ySK2sDJQjfx2ZQ-qYFsUFA62AC0mVFnc4IqEq40Q33yyNaq_KW8WSUlEkqwVlvoIJnQ230JDOJiLn20fcpFSaicjwkwxN3p2FY78B5AeMhnfk6f52txKlyoL9lGjpJRqb9ItCNasjVYIcnVY4DpWxoginmJ2_5xEF6OM"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[280px] pt-16 h-screen overflow-y-auto custom-scrollbar bg-background">
+<div class="p-gutter space-y-gutter pb-24">
+<!-- Hero Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="glass-card relative p-6 rounded-lg overflow-hidden group">
+<div class="accent-bar bg-primary-container"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Active User Sessions</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">2,481</h3>
+<span class="text-primary-fixed-dim text-[12px] font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12%
+                        </span>
+</div>
+<div class="mt-4 h-8 w-full opacity-40 group-hover:opacity-80 transition-opacity">
+<svg class="w-full h-full stroke-primary-fixed-dim fill-none" viewbox="0 0 200 40">
+<path d="M0 35 Q 20 20 40 30 T 80 15 T 120 25 T 160 10 T 200 20" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<div class="glass-card relative p-6 rounded-lg overflow-hidden group">
+<div class="accent-bar bg-error"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">High Risk Entities</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">14</h3>
+<span class="text-error text-[12px] font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Critical
+                        </span>
+</div>
+<div class="mt-4 flex gap-1 items-end h-8">
+<div class="bg-error/30 w-full h-1/2"></div>
+<div class="bg-error/30 w-full h-3/4"></div>
+<div class="bg-error w-full h-full animate-pulse"></div>
+<div class="bg-error/30 w-full h-2/3"></div>
+<div class="bg-error/30 w-full h-4/5"></div>
+</div>
+</div>
+<div class="glass-card relative p-6 rounded-lg overflow-hidden">
+<div class="accent-bar bg-secondary"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Behavior Baseline</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">94.2%</h3>
+<span class="text-secondary text-[12px] font-label-md">Stable</span>
+</div>
+<div class="mt-4 relative h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-secondary w-[94.2%]"></div>
+</div>
+</div>
+<div class="glass-card relative p-6 rounded-lg overflow-hidden">
+<div class="accent-bar bg-tertiary"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Anomaly Detection Latency</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">140ms</h3>
+<span class="text-tertiary text-[12px] font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Real-time
+                        </span>
+</div>
+<div class="mt-4 flex justify-between">
+<div class="flex items-center gap-1"><div class="glow-dot text-tertiary bg-tertiary"></div><span class="text-[10px] text-on-surface-variant">Core-1</span></div>
+<div class="flex items-center gap-1"><div class="glow-dot text-tertiary bg-tertiary"></div><span class="text-[10px] text-on-surface-variant">Edge-4</span></div>
+<div class="flex items-center gap-1"><div class="glow-dot text-tertiary bg-tertiary"></div><span class="text-[10px] text-on-surface-variant">Cloud-A</span></div>
+</div>
+</div>
+</div>
+<!-- Main Analytics Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- User Behavior Node-Link Graph -->
+<div class="col-span-12 lg:col-span-8 glass-card rounded-lg p-6 flex flex-col h-[600px] relative">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">User Interaction Graph</h2>
+<p class="font-body-md text-on-surface-variant mt-1">Global node-link correlation between user identities and asset access.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container-highest rounded border border-white/10 text-label-sm font-label-sm hover:border-primary-fixed-dim/50 transition-all">Filter: Critical</button>
+<button class="px-3 py-1 bg-primary-container text-on-primary-container rounded font-label-sm text-label-sm hover:opacity-90 transition-all">Export Mapping</button>
+</div>
+</div>
+<!-- SVG Graph Placeholder - Simplified for UI -->
+<div class="flex-1 relative overflow-hidden bg-black/20 rounded border border-white/5 group">
+<svg class="w-full h-full" viewbox="0 0 800 500">
+<!-- Connections -->
+<path d="M400 250 L200 100" stroke="rgba(0, 218, 243, 0.2)" stroke-width="1.5"></path>
+<path d="M400 250 L600 100" stroke="rgba(0, 218, 243, 0.2)" stroke-width="1.5"></path>
+<path class="animate-pulse" d="M400 250 L400 400" stroke="rgba(255, 180, 171, 0.4)" stroke-width="2"></path>
+<path d="M200 100 L100 150" stroke="rgba(0, 218, 243, 0.2)" stroke-width="1"></path>
+<path d="M600 100 L700 80" stroke="rgba(0, 218, 243, 0.2)" stroke-width="1"></path>
+<!-- Nodes -->
+<circle class="animate-pulse-cyan shadow-[0_0_10px_rgba(0,218,243,0.5)]" cx="400" cy="250" fill="#00daf3" r="12"></circle>
+<circle cx="200" cy="100" fill="#c3f5ff" r="8"></circle>
+<circle cx="600" cy="100" fill="#c3f5ff" r="8"></circle>
+<circle class="animate-pulse" cx="400" cy="400" fill="#ffb4ab" r="10"></circle>
+<circle cx="100" cy="150" fill="#c3f5ff" r="6"></circle>
+<circle cx="700" cy="80" fill="#c3f5ff" r="6"></circle>
+<!-- Tooltips Labels (Visual only) -->
+<g transform="translate(415, 240)">
+<rect fill="rgba(30, 32, 36, 0.9)" height="40" rx="4" stroke="rgba(255,255,255,0.1)" width="120"></rect>
+<text fill="#e2e2e8" font-family="Inter" font-size="10" x="10" y="25">DB_CLUSTER_01</text>
+</g>
+<g transform="translate(415, 390)">
+<rect fill="rgba(147, 0, 10, 0.9)" height="40" rx="4" stroke="rgba(255,255,255,0.2)" width="140"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="10" x="10" y="25">UNAUTH_ACCESS_ATTEMPT</text>
+</g>
+</svg>
+<div class="absolute bottom-4 left-4 bg-surface-dim/80 backdrop-blur-md p-3 border border-white/5 rounded">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Graph Legend</p>
+<div class="space-y-1">
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary-fixed-dim"></span> <span class="text-[10px] text-on-surface">Secure Asset</span></div>
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error"></span> <span class="text-[10px] text-on-surface">Target Entity</span></div>
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-white/20"></span> <span class="text-[10px] text-on-surface">Standard User</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Radar Chart: Risk Dimensions -->
+<div class="col-span-12 lg:col-span-4 glass-card rounded-lg p-6 flex flex-col h-[600px]">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Risk Vector Analysis</h2>
+<p class="font-body-md text-on-surface-variant mb-6">Dimensional analysis of current threat landscape.</p>
+<div class="flex-1 flex items-center justify-center relative">
+<svg class="w-full h-full max-w-[300px]" viewbox="0 0 200 200">
+<!-- Radar Hexagon Grids -->
+<polygon class="radar-grid fill-none" points="100,20 170,60 170,140 100,180 30,140 30,60"></polygon>
+<polygon class="radar-grid fill-none" points="100,40 155,73 155,127 100,160 45,127 45,73"></polygon>
+<polygon class="radar-grid fill-none" points="100,60 140,86 140,114 100,140 60,114 60,86"></polygon>
+<!-- Axis Lines -->
+<line class="radar-grid" x1="100" x2="100" y1="100" y2="20"></line>
+<line class="radar-grid" x1="100" x2="170" y1="100" y2="60"></line>
+<line class="radar-grid" x1="100" x2="170" y1="100" y2="140"></line>
+<line class="radar-grid" x1="100" x2="100" y1="100" y2="180"></line>
+<line class="radar-grid" x1="100" x2="30" y1="100" y2="140"></line>
+<line class="radar-grid" x1="100" x2="30" y1="100" y2="60"></line>
+<!-- Data Shape -->
+<polygon fill="rgba(0, 218, 243, 0.15)" points="100,50 160,70 120,130 100,170 50,130 40,70" stroke="#00daf3" stroke-width="1.5"></polygon>
+<!-- Labels -->
+<text fill="#bac9cc" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="100" y="15">INSIDER</text>
+<text fill="#bac9cc" font-family="JetBrains Mono" font-size="8" text-anchor="start" x="180" y="55">EXFIL</text>
+<text fill="#bac9cc" font-family="JetBrains Mono" font-size="8" text-anchor="start" x="180" y="145">MALWARE</text>
+<text fill="#bac9cc" font-family="JetBrains Mono" font-size="8" text-anchor="middle" x="100" y="195">ACCESS</text>
+<text fill="#bac9cc" font-family="JetBrains Mono" font-size="8" text-anchor="end" x="20" y="145">VOL</text>
+<text fill="#bac9cc" font-family="JetBrains Mono" font-size="8" text-anchor="end" x="20" y="55">LATERAL</text>
+</svg>
+</div>
+<div class="mt-4 space-y-3">
+<div class="flex justify-between items-center p-2 rounded bg-surface-container-highest/50">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Insider Threat Score</span>
+<span class="text-label-md font-label-md text-primary-fixed-dim">78/100</span>
+</div>
+<div class="flex justify-between items-center p-2 rounded bg-surface-container-highest/50">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Volume Anomaly</span>
+<span class="text-label-md font-label-md text-secondary-fixed-dim">22%</span>
+</div>
+</div>
+</div>
+<!-- Login Pattern Heatmap -->
+<div class="col-span-12 glass-card rounded-lg p-6">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Temporal Login Patterns</h2>
+<p class="font-body-md text-on-surface-variant mt-1">Heatmap distribution of authentication events by hour (EST).</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-on-surface-variant">Low</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 bg-surface-container-high border border-white/5"></div>
+<div class="w-3 h-3 bg-primary/20"></div>
+<div class="w-3 h-3 bg-primary/40"></div>
+<div class="w-3 h-3 bg-primary/60"></div>
+<div class="w-3 h-3 bg-primary-container"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">Peak</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-[auto_repeat(24,1fr)] gap-1 overflow-x-auto custom-scrollbar pb-2">
+<!-- Y-axis labels -->
+<div class="flex flex-col gap-1 pr-4">
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">MON</span>
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">TUE</span>
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">WED</span>
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">THU</span>
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">FRI</span>
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">SAT</span>
+<span class="h-6 flex items-center justify-end text-[10px] font-label-sm text-on-surface-variant">SUN</span>
+</div>
+<!-- Heatmap Grid (Simulated with random opacities) -->
+<div class="grid grid-rows-7 grid-cols-24 gap-1 flex-1">
+<!-- Loop simulation for 24h x 7d -->
+<script>
+                                const grid = document.currentScript.parentElement;
+                                const opacities = [0.1, 0.2, 0.4, 0.6, 0.8, 1, 0.2, 0.1];
+                                for (let day = 0; day < 7; day++) {
+                                    for (let hour = 0; hour < 24; hour++) {
+                                        const div = document.createElement('div');
+                                        const intensity = (hour > 8 && hour < 18) ? (Math.random() * 0.7 + 0.3) : (Math.random() * 0.3);
+                                        div.className = `h-6 w-full rounded-sm transition-all hover:ring-1 ring-primary-fixed-dim cursor-crosshair`;
+                                        div.style.backgroundColor = `rgba(0, 229, 255, ${intensity})`;
+                                        grid.appendChild(div);
+                                    }
+                                }
+                            </script>
+</div>
+</div>
+<div class="grid grid-cols-[auto_repeat(24,1fr)] gap-1 mt-2">
+<div class="w-[45px]"></div> <!-- Offset for Y labels -->
+<script>
+                            const timeGrid = document.currentScript.parentElement;
+                            for (let i = 0; i < 24; i += 2) {
+                                const span = document.createElement('span');
+                                span.className = "text-[9px] font-label-sm text-on-surface-variant col-span-2 text-center";
+                                span.innerText = `${i}:00`;
+                                timeGrid.appendChild(span);
+                            }
+                        </script>
+</div>
+</div>
+<!-- Activity Trends & File Access -->
+<div class="col-span-12 lg:col-span-6 glass-card rounded-lg p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Activity Momentum</h2>
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-primary-container"></div><span class="text-[10px] font-label-sm uppercase tracking-wider text-on-surface-variant">Network</span></div>
+<div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-secondary"></div><span class="text-[10px] font-label-sm uppercase tracking-wider text-on-surface-variant">System</span></div>
+</div>
+</div>
+<div class="h-[280px] w-full relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 100">
+<!-- Network Trend -->
+<defs>
+<lineargradient id="grad-net" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00e5ff" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#00e5ff" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 80 Q 50 60 100 75 T 200 40 T 300 65 T 400 30 L 400 100 L 0 100 Z" fill="url(#grad-net)"></path>
+<path d="M0 80 Q 50 60 100 75 T 200 40 T 300 65 T 400 30" fill="none" stroke="#00e5ff" stroke-width="1.5"></path>
+<!-- System Trend -->
+<path d="M0 90 Q 50 85 100 80 T 200 70 T 300 75 T 400 60" fill="none" stroke="#b0c6ff" stroke-dasharray="2 2" stroke-width="1"></path>
+</svg>
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-b border-on-surface-variant w-full"></div>
+<div class="border-b border-on-surface-variant w-full"></div>
+<div class="border-b border-on-surface-variant w-full"></div>
+<div class="border-b border-on-surface-variant w-full"></div>
+</div>
+</div>
+</div>
+<!-- File Access Logs -->
+<div class="col-span-12 lg:col-span-6 glass-card rounded-lg overflow-hidden flex flex-col">
+<div class="p-6 border-b border-white/5 bg-white/2">
+<h2 class="font-headline-md text-headline-md text-on-surface">File Access Forensics</h2>
+<p class="font-body-md text-on-surface-variant mt-1">Real-time object sensitivity monitoring.</p>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50">
+<th class="px-6 py-3 font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Object Name</th>
+<th class="px-6 py-3 font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Identity</th>
+<th class="px-6 py-3 font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Action</th>
+<th class="px-6 py-3 font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Risk</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">draft</span>
+<span class="font-label-md text-on-surface">Financial_Q4_Projections.xlsx</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant font-label-md">m_thompson_ext</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-md bg-secondary-container/20 text-secondary">DOWNLOAD</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></div>
+<span class="text-error font-label-md">HIGH</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">key</span>
+<span class="font-label-md text-on-surface">Root_Vault_Keys.pem</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant font-label-md">svc_admin_primary</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-md bg-primary-container/10 text-primary-fixed-dim">QUERY</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="text-secondary font-label-md">LOW</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">description</span>
+<span class="font-label-md text-on-surface">Compliance_Audit_2023.pdf</span>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant font-label-md">j_smith_sec</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-md bg-primary-container/10 text-primary-fixed-dim">READ</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="text-secondary font-label-md">LOW</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Polish: Atmosphere Particles -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[60]">
+<svg height="100%" width="100%">
+<filter id="noise">
+<feturbulence basefrequency="0.6" numoctaves="3" stitchtiles="stitch" type="fractalNoise"></feturbulence>
+</filter>
+<rect filter="url(#noise)" height="100%" width="100%"></rect>
+</svg>
+</div>
+<!-- Micro-interaction JS -->
+<script>
+        // Interactive Node-Link Highlight simulation
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.createElement('div');
+            glow.className = 'fixed w-32 h-32 bg-primary-fixed-dim/10 blur-3xl rounded-full pointer-events-none z-[100]';
+            glow.style.left = `${e.clientX - 64}px`;
+            glow.style.top = `${e.clientY - 64}px`;
+            // This is just for flavor, real production would optimize this
+            // document.body.appendChild(glow);
+            // setTimeout(() => glow.remove(), 100);
+        });
+
+        // Simulating live data updates
+        setInterval(() => {
+            const riskValue = document.querySelector('.text-error.font-label-md');
+            if (riskValue) {
+                const baseValue = 14;
+                const variation = Math.floor(Math.random() * 2) - 1;
+                // document.querySelectorAll('.font-headline-lg')[1].innerText = baseValue + variation;
+            }
+        }, 3000);
+    </script>
+</body></html>

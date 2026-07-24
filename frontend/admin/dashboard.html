@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Admin Dashboard | CyberGuard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1e2024",
+                        "primary-container": "#00e5ff",
+                        "on-surface": "#e2e2e8",
+                        "background": "#111318",
+                        "primary": "#c3f5ff",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #111318; }
+        ::-webkit-scrollbar-thumb { background: #3b494c; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<div class="flex h-screen w-full">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-surface-container border-r border-white/5 p-6 flex flex-col shrink-0">
+        <div class="flex items-center gap-3 mb-8">
+            <span class="material-symbols-outlined text-primary-container text-3xl">admin_panel_settings</span>
+            <div>
+                <h1 class="text-md font-bold text-primary-container tracking-tight uppercase">CyberGuard</h1>
+                <p class="text-[10px] text-on-surface/60 uppercase tracking-widest">Admin Portal</p>
+            </div>
+        </div>
+
+        <nav class="space-y-1 flex-1">
+            <button id="navDashboard" onclick="switchTab('dashboard')" class="w-full flex items-center gap-3 px-4 py-3 rounded bg-primary-container/10 text-primary-container font-semibold border-r-2 border-primary-container text-left text-sm">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Dashboard</span>
+            </button>
+            <button id="navUsers" onclick="switchTab('users')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">people</span>
+                <span>User Management</span>
+            </button>
+            <button id="navDepts" onclick="switchTab('depts')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">group_work</span>
+                <span>Departments</span>
+            </button>
+            <button id="navLogs" onclick="switchTab('logs')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">history</span>
+                <span>Activity Logs</span>
+            </button>
+            <button id="navAnalytics" onclick="switchTab('analytics')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">analytics</span>
+                <span>Analytics</span>
+            </button>
+            <button id="navSettings" onclick="switchTab('settings')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">settings</span>
+                <span>Settings</span>
+            </button>
+            <hr class="my-4 border-white/5"/>
+            <button class="w-full flex items-center gap-3 px-4 py-3 rounded text-error hover:bg-error-container/10 transition text-sm text-left" onclick="logout()">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Logout</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        <!-- Header -->
+        <header class="bg-surface-container/40 border-b border-white/5 p-6 sticky top-0 backdrop-blur-md z-40">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold text-on-surface" id="headerTitle">System Dashboard</h2>
+                    <p class="text-xs text-on-surface-variant" id="headerSubtitle">Full system overview and control</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="p-2 rounded bg-surface-container border border-white/5 text-primary hover:bg-white/5 transition" onclick="loadDashboard()">
+                        <span class="material-symbols-outlined">refresh</span>
+                    </button>
+                    <div class="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded border border-white/5">
+                        <span class="material-symbols-outlined text-primary-container text-[20px]">account_circle</span>
+                        <span id="username" class="text-xs font-semibold text-on-surface">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Pages -->
+        <div class="p-6">
+            
+            <!-- PAGE 1: DASHBOARD TAB -->
+            <div id="pageDashboard" class="space-y-6">
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider">Total Users</p>
+                                <p class="text-2xl font-bold text-primary-container" id="total-employees">0</p>
+                            </div>
+                            <span class="material-symbols-outlined text-primary-container/50 text-2xl">groups</span>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider">Active Threats</p>
+                                <p class="text-2xl font-bold text-red-400" id="active-threats">0</p>
+                            </div>
+                            <span class="material-symbols-outlined text-red-400/50 text-2xl">warning</span>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider">Online Logs</p>
+                                <p class="text-2xl font-bold text-green-400" id="online-logs">0</p>
+                            </div>
+                            <span class="material-symbols-outlined text-green-400/50 text-2xl">network_check</span>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider">System Status</p>
+                                <p class="text-2xl font-bold text-green-400" id="system-health">SECURE</p>
+                            </div>
+                            <span class="material-symbols-outlined text-green-400/50 text-2xl">verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Threat Telemetry Charts -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 p-6 space-y-4">
+                    <h3 class="text-md font-semibold text-on-surface">SecOps Ingestion & Telemetry</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex flex-col items-center p-4 bg-surface-container/30 border border-white/5 rounded h-64">
+                            <span class="text-xs text-on-surface-variant font-medium mb-3">Risk Distribution</span>
+                            <div style="position: relative; height: 180px; width: 100%;">
+                                <canvas id="dashboardRiskChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center p-4 bg-surface-container/30 border border-white/5 rounded h-64">
+                            <span class="text-xs text-on-surface-variant font-medium mb-3">Activity Volumes</span>
+                            <div style="position: relative; height: 180px; width: 100%;">
+                                <canvas id="dashboardActionsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center p-4 bg-surface-container/30 border border-white/5 rounded h-64">
+                            <span class="text-xs text-on-surface-variant font-medium mb-3">Classification Summary</span>
+                            <div style="position: relative; height: 180px; width: 100%;">
+                                <canvas id="dashboardAnomalyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Distribution Summary -->
+                <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4">
+                    <div>
+                        <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Risk Distribution Summary</h4>
+                        <p class="text-[10px] text-on-surface-variant mt-1">Current threat classification counts</p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
+                        <div class="bg-surface-container/40 p-4 rounded border border-white/5 flex justify-between items-center">
+                            <span class="text-red-400 font-bold uppercase">Critical</span>
+                            <span class="text-lg font-bold text-red-400" id="summary-risk-critical">0</span>
+                        </div>
+                        <div class="bg-surface-container/40 p-4 rounded border border-white/5 flex justify-between items-center">
+                            <span class="text-orange-400 font-bold uppercase">High</span>
+                            <span class="text-lg font-bold text-orange-400" id="summary-risk-high">0</span>
+                        </div>
+                        <div class="bg-surface-container/40 p-4 rounded border border-white/5 flex justify-between items-center">
+                            <span class="text-yellow-400 font-bold uppercase">Medium</span>
+                            <span class="text-lg font-bold text-yellow-400" id="summary-risk-medium">0</span>
+                        </div>
+                        <div class="bg-surface-container/40 p-4 rounded border border-white/5 flex justify-between items-center">
+                            <span class="text-green-400 font-bold uppercase">Low</span>
+                            <span class="text-lg font-bold text-green-400" id="summary-risk-low">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Risk Users -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="p-5 border-b border-white/5 bg-surface-container/20">
+                        <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Top Risk Users</h4>
+                        <p class="text-[10px] text-on-surface-variant mt-1">Employees requiring security attention</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">User</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Risk Score</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Risk Level</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Login Count</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">After Hours</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Weekend Activity</th>
+                                </tr>
+                            </thead>
+                            <tbody id="top-risk-users-dashboard-table" class="divide-y divide-white/5 font-mono">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-on-surface-variant">Loading top risk users...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recent File Access -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="p-5 border-b border-white/5 bg-surface-container/20">
+                        <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Recent File Access</h4>
+                        <p class="text-[10px] text-on-surface-variant mt-1">Latest file interaction events</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">User</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Computer</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Date</th>
+                                    <th class="px-6 py-3.5 text-on-surface-variant uppercase tracking-wider font-mono">Filename</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-file-access-table" class="divide-y divide-white/5 font-mono">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-on-surface-variant">Loading recent file operations...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: USER MANAGEMENT TAB -->
+            <div id="pageUsers" class="space-y-6 hidden">
+                <!-- Employee Table -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="p-6 border-b border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container/20">
+                        <div>
+                            <h3 class="text-md font-semibold text-on-surface">Employee Directory</h3>
+                            <p class="text-xs text-on-surface-variant mt-1">Directory of onboarded security analysts and personnel</p>
+                        </div>
+                        <!-- Live Summary Counters & Onboard Actions -->
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <div class="flex gap-4 text-xs font-mono">
+                                <span class="text-primary">Total: <span id="summary-total">0</span></span>
+                                <span class="text-green-400">Active (Online): <span id="summary-online">0</span></span>
+                                <span class="text-gray-400">Suspended (Offline): <span id="summary-offline">0</span></span>
+                            </div>
+                            <button onclick="openOnboardModal()" class="px-4 py-1.5 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">person_add</span>
+                                <span>Onboard</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Code</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Department</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Designation</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Risk Score</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employees-table" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="7" class="px-6 py-8 text-center text-on-surface-variant text-xs">Loading directory data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 3: DEPARTMENTS -->
+            <div id="pageDepts" class="hidden glass-panel p-12 rounded-xl text-center flex flex-col items-center justify-center space-y-4">
+                <span class="material-symbols-outlined text-[48px] text-primary-container">group_work</span>
+                <h3 class="text-lg font-semibold">Security Departments</h3>
+                <p class="text-xs text-on-surface-variant max-w-sm">Security Operations, Data Science, Threat Hunting, Forensics, and Engineering organizational structures are synchronized.</p>
+            </div>
+
+            <!-- PAGE 4: ACTIVITY LOGS FEED -->
+            <div id="pageLogs" class="space-y-6 hidden">
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="p-6 border-b border-white/5 bg-surface-container/20">
+                        <h3 class="text-md font-semibold text-on-surface">Global System-Wide Security Audit Feed</h3>
+                        <p class="text-xs text-on-surface-variant mt-1">Live forensic audit stream of security activities across all nodes</p>
+                    </div>
+                    <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+                        <table class="w-full">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Timestamp</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Activity Type</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Client IP</th>
+                                    <th class="px-6 py-3.5 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="global-logs-table" class="divide-y divide-white/5 text-xs">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-on-surface-variant">Loading system audits...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 5: ANALYTICS -->
+            <div id="pageAnalytics" class="hidden space-y-6">
+                <!-- Overview Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-[10px] font-mono mb-1 uppercase tracking-wider">Analyzed Base</p>
+                                <p class="text-2xl font-bold text-primary-container" id="analytics-total-users">0</p>
+                            </div>
+                            <span class="material-symbols-outlined text-primary-container/50 text-2xl">groups</span>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-[10px] font-mono mb-1 uppercase tracking-wider">Average Risk Score</p>
+                                <p class="text-2xl font-bold text-yellow-400" id="analytics-avg-risk">0.0%</p>
+                            </div>
+                            <span class="material-symbols-outlined text-yellow-400/50 text-2xl">favorite</span>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-[10px] font-mono mb-1 uppercase tracking-wider">Open Threat Alerts</p>
+                                <p class="text-2xl font-bold text-red-400" id="analytics-open-alerts">0</p>
+                            </div>
+                            <span class="material-symbols-outlined text-red-400/50 text-2xl">warning</span>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-high/40 rounded p-5 border border-white/5">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-surface-variant text-[10px] font-mono mb-1 uppercase tracking-wider">Threat Level Status</p>
+                                <p class="text-2xl font-bold text-green-400" id="analytics-status">OK</p>
+                            </div>
+                            <span class="material-symbols-outlined text-green-400/50 text-2xl">gpp_maybe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graphs Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Left: Risk level distribution chart -->
+                    <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4">
+                        <h4 class="text-xs font-semibold uppercase tracking-wider">User Risk Level Distribution</h4>
+                        <div style="position: relative; height: 220px; width: 100%;">
+                            <canvas id="riskDistributionChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Right: Anomaly timeline trend chart -->
+                    <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4">
+                        <h4 class="text-xs font-semibold uppercase tracking-wider">Historical Anomaly Volumes</h4>
+                        <div style="position: relative; height: 220px; width: 100%;">
+                            <canvas id="anomalyTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- High Risk Users Ledger Table -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="p-5 border-b border-white/5 bg-surface-container/20">
+                        <h4 class="text-xs font-semibold uppercase tracking-wider">Top High-Risk Employee Dossiers</h4>
+                        <p class="text-[10px] text-on-surface-variant mt-1">Users ranked descending by mathematical anomaly deviations</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Employee Code</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Full Name</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Department</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Risk Index</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody id="high-risk-users-table" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-on-surface-variant">Loading high-risk directories ledger...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <!-- Behavioral Anomaly Threat Reports Table -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="p-5 border-b border-white/5 bg-surface-container/20 flex justify-between items-center">
+                        <div>
+                            <h4 class="text-xs font-semibold uppercase tracking-wider text-primary-container">Chronological Anomaly Threat Reports</h4>
+                            <p class="text-[10px] text-on-surface-variant mt-1">Behavioral deviations matching abnormal schedules, file accesses, web telemetry, or USB transfers</p>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-primary-container/15 text-primary-container border border-primary-container/25">AUTO GENERATED</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Employee</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Detected Anomalies</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Schedule/Volume Shifts</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Threat Level</th>
+                                    <th class="px-6 py-3.5 text-left text-on-surface-variant uppercase tracking-wider font-mono">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody id="threat-reports-table" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-on-surface-variant">Loading anomaly threat reports...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 6: SETTINGS -->
+            <div id="pageSettings" class="hidden glass-panel p-12 rounded-xl text-center flex flex-col items-center justify-center space-y-4">
+                <span class="material-symbols-outlined text-[48px] text-primary-container">settings</span>
+                <h3 class="text-lg font-semibold">System Configuration</h3>
+                <p class="text-xs text-on-surface-variant max-w-sm">Integrity parameters, alerting hooks, and connection databases configurations.</p>
+            </div>
+
+            <!-- PAGE 7: EMPLOYEE DOSSIER PROFILE VIEW -->
+            <div id="pageProfileView" class="space-y-6 hidden">
+                <!-- Back Button -->
+                <button onclick="switchTab('users')" class="flex items-center gap-1.5 text-xs text-primary-container hover:text-primary transition font-semibold font-mono uppercase">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    <span>Back to Directory</span>
+                </button>
+
+                <!-- Profile Dossier Grid -->
+                <div class="grid grid-cols-12 gap-6">
+                    <!-- Left Side: Professional Profile Card & Actions (7 cols) -->
+                    <div class="col-span-12 lg:col-span-7 bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-6">
+                        <div class="flex items-center gap-6 pb-6 border-b border-white/5">
+                            <div class="relative">
+                                <div class="w-24 h-24 rounded-lg overflow-hidden border-2 border-primary/20 p-1 bg-surface-container-lowest">
+                                    <img id="dossierAvatar" class="w-full h-full object-cover rounded" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu9CGxwICtWSR2LGoyzAPp_lEDrTmQKKBOLiGKrHDDJGHluMo_hLvmpDI4pdceYF2cTbt5g4tY5aZwG6K9ONOxwNDafSjpdtufNPKTFYYIiz1nx07T3CEALOylFcEMP56mG58xmhqryiCQTZ-WQEqjl--aFnwzaFhy_ipnS7Nc_9Qv1g5N3NJchonf8MloCNYYZc9iczzaXOUh8nIAhuAMT_IDqD3KHoF5LCPmSX_cejBdwDOIYYyC5Quj0pltzxEKeIwsSfSlWaw"/>
+                                </div>
+                                <span id="dossierStatusBadge" class="absolute -bottom-2 -right-2 px-2 py-0.5 rounded text-[9px] font-mono font-bold border">ACTIVE</span>
+                            </div>
+                            <div class="space-y-1 flex-1">
+                                <div class="flex items-center gap-3">
+                                    <h3 id="dossierHeaderName" class="text-lg font-bold text-on-surface">Employee Name</h3>
+                                    <span id="dossierHeaderCode" class="text-xs font-mono bg-white/5 px-2 py-0.5 rounded text-on-surface-variant">EMP0000</span>
+                                </div>
+                                <p id="dossierHeaderTitle" class="text-xs text-primary-container">Security Specialist</p>
+                            </div>
+                        </div>
+
+                        <!-- Form details -->
+                        <form id="dossierForm" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">First Name</label>
+                                    <input type="text" id="dossierFirstName" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required />
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Last Name</label>
+                                    <input type="text" id="dossierLastName" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Work Email</label>
+                                    <input type="email" id="dossierEmail" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required />
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Phone</label>
+                                    <input type="text" id="dossierPhone" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Department</label>
+                                    <select id="dossierDept" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required>
+                                        <option value="Security Operations">Security Operations</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="Threat Hunting">Threat Hunting</option>
+                                        <option value="Forensics">Forensics</option>
+                                        <option value="Engineering">Engineering</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Designation</label>
+                                    <input type="text" id="dossierDesg" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Access Level (System Role)</label>
+                                    <select id="dossierRole" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required>
+                                        <option value="EMPLOYEE">General Employee</option>
+                                        <option value="SECURITY_ANALYST">Security Analyst</option>
+                                        <option value="SOC_ENGINEER">SOC Engineer</option>
+                                        <option value="SECURITY_MANAGER">Security Manager</option>
+                                        <option value="ADMINISTRATOR">Administrator</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Account Operations</label>
+                                    <button type="button" id="dossierSuspendBtn" onclick="toggleDossierSuspension()" class="w-full py-2.5 font-semibold text-xs rounded transition uppercase tracking-wider flex items-center justify-center gap-1.5"></button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Authorized Workstations</label>
+                                    <input type="text" id="dossierWorkstations" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="WS-01, WS-02" />
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Authorized USB Keys</label>
+                                    <input type="text" id="dossierUsbs" class="w-full bg-surface-container border border-white/5 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="USB-01, USB-02" />
+                                </div>
+                            </div>
+
+                            <div class="pt-4 flex justify-between gap-3">
+                                <div class="text-xs text-red-400 font-mono hidden" id="dossierError"></div>
+                                <div class="flex gap-3 ml-auto">
+                                    <button type="button" onclick="switchTab('users')" class="px-4 py-2 border border-white/10 text-on-surface font-semibold rounded hover:bg-white/5 transition text-xs uppercase tracking-wider">Cancel</button>
+                                    <button type="submit" id="dossierSaveBtn" class="px-5 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right Side: Behavioral Telemetry & Timelines (5 cols) -->
+                    <div class="col-span-12 lg:col-span-5 space-y-6">
+                        <!-- Risk Index Card -->
+                        <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 flex flex-col items-center justify-center min-h-[220px]">
+                            <p class="text-[10px] font-mono text-primary-container uppercase tracking-widest mb-4">Risk Severity Rating</p>
+                            <div class="relative w-36 h-36">
+                                <svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+                                    <circle cx="50" cy="50" fill="none" r="45" stroke="rgba(255,255,255,0.05)" stroke-width="7"></circle>
+                                    <circle id="dossierRiskCircle" class="text-primary-container" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="282.7" stroke-dashoffset="200" stroke-width="7" style="transition: stroke-dashoffset 1s ease-in-out;"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                    <span id="dossierRiskVal" class="text-3xl font-bold text-on-surface leading-none">0</span>
+                                    <span id="dossierRiskLevel" class="text-[9px] text-on-surface-variant font-mono mt-1">LOW SEVERITY</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Devices Card -->
+                        <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Allocated Assets</h4>
+                            <div class="space-y-2" id="dossierAssetsList">
+                                <!-- Devices generated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Threat Report Card -->
+                        <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4 hidden" id="dossierReportCard">
+                            <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Latest Threat Report Assessment</h4>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <span class="text-[10px] font-mono text-on-surface-variant uppercase">Behavioral Shifts</span>
+                                    <p class="text-yellow-400 font-medium mt-1 font-mono leading-relaxed" id="dossierReportChanges">None detected.</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-mono text-on-surface-variant uppercase">Analyst Recommendations</span>
+                                    <p class="text-on-surface/90 mt-1 whitespace-pre-wrap leading-relaxed font-sans" id="dossierReportRecs">None.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behavioral Telemetry Card -->
+                        <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4 hidden" id="dossierTelemetryCard">
+                            <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">UEBA Behavioral Telemetry</h4>
+                            <div class="grid grid-cols-2 gap-4 text-xs">
+                                <div class="bg-surface-container/30 p-3 rounded border border-white/5 space-y-1">
+                                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">Average Login Hour</span>
+                                    <p class="text-sm font-bold text-primary-container" id="dossier-avg-login">08:00 AM</p>
+                                </div>
+                                <div class="bg-surface-container/30 p-3 rounded border border-white/5 space-y-1">
+                                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">Average Logout Hour</span>
+                                    <p class="text-sm font-bold text-primary-container" id="dossier-avg-logout">05:00 PM</p>
+                                </div>
+                                <div class="bg-surface-container/30 p-3 rounded border border-white/5 space-y-1">
+                                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">Websites Browsed</span>
+                                    <p class="text-sm font-bold text-on-surface" id="dossier-web-browsing">0 pages/day</p>
+                                </div>
+                                <div class="bg-surface-container/30 p-3 rounded border border-white/5 space-y-1">
+                                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">File Access Frequency</span>
+                                    <p class="text-sm font-bold text-on-surface" id="dossier-file-downloads">0 files/day</p>
+                                </div>
+                                <div class="bg-surface-container/30 p-3 rounded border border-white/5 space-y-1">
+                                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">USB Connections</span>
+                                    <p class="text-sm font-bold text-on-surface" id="dossier-usb-connections">0 connects/day</p>
+                                </div>
+                                <div class="bg-surface-container/30 p-3 rounded border border-white/5 space-y-1">
+                                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">External Emails Sent</span>
+                                    <p class="text-sm font-bold text-on-surface" id="dossier-external-emails">0 emails</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behavioral Logs Timeline Card -->
+                        <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Recent Activity Timeline</h4>
+                            <div class="space-y-4 overflow-y-auto max-h-[300px] pr-2" id="dossierTimelineList">
+                                <!-- Dynamic timeline -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Threat Report Details Modal -->
+<div id="threatReportModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-surface-container border border-white/10 rounded-lg max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high/40">
+            <h3 class="text-md font-semibold text-primary-container flex items-center gap-2 font-mono uppercase tracking-wider">
+                <span class="material-symbols-outlined text-red-400">gpp_maybe</span>
+                <span>CYBERGUARD Security Assessment Report</span>
+            </h3>
+            <button onclick="closeThreatReportModal()" class="text-on-surface-variant hover:text-white transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <!-- Scrollable content -->
+        <div class="p-8 overflow-y-auto flex-1 space-y-6 text-xs leading-relaxed" id="printReportArea">
+            <!-- Header Block -->
+            <div class="flex justify-between items-start border-b border-white/5 pb-4">
+                <div class="space-y-1">
+                    <h4 class="text-base font-bold text-on-surface" id="reportModalEmpName">Arthur John Floyd</h4>
+                    <p class="font-mono text-on-surface-variant uppercase tracking-wider text-[10px]" id="reportModalEmpCode">EMP_CODE: AJF0370</p>
+                    <p class="text-on-surface-variant" id="reportModalDept">Department: Security</p>
+                </div>
+                <div class="text-right space-y-1">
+                    <span class="px-2 py-1 rounded font-mono font-bold text-[10px] border" id="reportModalThreatLevel">CRITICAL THREAT</span>
+                    <p class="text-on-surface-variant font-mono text-[9px] mt-1" id="reportModalTime">Generated: 2026-07-23</p>
+                </div>
+            </div>
+
+            <!-- Risk Score Indicator -->
+            <div class="grid grid-cols-3 gap-4 bg-surface-container-lowest/50 p-4 rounded border border-white/5">
+                <div class="text-center space-y-1">
+                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">Risk Score Index</span>
+                    <p class="text-xl font-bold text-red-400" id="reportModalScore">92.4%</p>
+                </div>
+                <div class="text-center space-y-1 border-x border-white/5">
+                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">Model Classification</span>
+                    <p class="text-xl font-bold text-yellow-400">OUTLIER ANOMALY</p>
+                </div>
+                <div class="text-center space-y-1">
+                    <span class="text-[9px] font-mono text-on-surface-variant uppercase">Triage Status</span>
+                    <p class="text-xl font-bold text-primary-container">PENDING REVIEW</p>
+                </div>
+            </div>
+
+            <!-- Deviations Section -->
+            <div class="space-y-2">
+                <h5 class="text-[10px] font-mono text-primary-container uppercase tracking-wider">Flagged Outlier Deviations</h5>
+                <div class="bg-surface-container-high/40 p-4 rounded border border-white/5 text-yellow-400 font-mono" id="reportModalAnomalies">
+                    Weekend activity, Off-hours access, High volume file copy.
+                </div>
+            </div>
+
+            <!-- Shifts Section -->
+            <div class="space-y-2">
+                <h5 class="text-[10px] font-mono text-primary-container uppercase tracking-wider">Chronological Schedule & Volume Shifts</h5>
+                <div class="bg-surface-container-high/40 p-4 rounded border border-white/5 font-mono text-on-surface/90" id="reportModalShifts">
+                    Login time shifted by 2.3 hours. Daily files downloaded increased by 14.5.
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="space-y-2">
+                <h5 class="text-[10px] font-mono text-red-400 uppercase tracking-wider">Actionable Incident Response Recommendations</h5>
+                <div class="bg-red-500/5 p-4 rounded border border-red-500/10 text-on-surface/90 whitespace-pre-wrap leading-relaxed font-sans" id="reportModalRecs">
+                    1. Isolate workstation session immediately.
+                    2. Revoke write permissions for database schemas.
+                </div>
+            </div>
+            
+            <!-- Footer Signoff -->
+            <div class="border-t border-white/5 pt-4 text-center text-on-surface-variant font-mono text-[9px]">
+                CYBERGUARD Behavioral Threat Intelligence Platform • Confidential SOC Document
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="p-6 border-t border-white/5 flex justify-end gap-3 bg-surface-container-high/20">
+            <button onclick="closeThreatReportModal()" class="px-4 py-2 border border-white/10 text-on-surface font-semibold rounded hover:bg-white/5 transition text-xs uppercase tracking-wider">Dismiss</button>
+            <button onclick="printThreatReport()" class="px-5 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px]">print</span>
+                <span>Print / Generate Report</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printReportArea, #printReportArea * {
+        visibility: visible;
+    }
+    #printReportArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        color: #000 !important;
+        background: #fff !important;
+        font-family: sans-serif !important;
+        padding: 40px !important;
+    }
+    #printReportArea div, #printReportArea p, #printReportArea h4, #printReportArea h5, #printReportArea span {
+        color: #000 !important;
+        background: #fff !important;
+        border-color: #ccc !important;
+    }
+}
+</style>
+
+<!-- Onboarding Modal -->
+<div id="onboardModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-surface-container border border-white/10 rounded max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high/40">
+            <h3 class="text-md font-semibold text-primary-container flex items-center gap-2">
+                <span class="material-symbols-outlined">person_add</span>
+                <span>Onboard New Employee</span>
+            </h3>
+            <button onclick="closeOnboardModal()" class="text-on-surface-variant hover:text-white transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="onboardForm" class="p-6 overflow-y-auto flex-1 space-y-4">
+            <div id="onboardErrorAlert" class="hidden p-3 rounded-sm bg-error-container/20 border border-error-container/50 text-error text-xs flex items-center space-x-2">
+                <span class="material-symbols-outlined text-[16px]">error</span>
+                <span id="onboardErrorMessage"></span>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Employee Code</label>
+                    <input type="text" id="onboardCode" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="EMP0005" required />
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Work Email</label>
+                    <input type="email" id="onboardEmail" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="name@enterprise.com" required />
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">First Name</label>
+                    <input type="text" id="onboardFirstName" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="Jane" required />
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Last Name</label>
+                    <input type="text" id="onboardLastName" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="Smith" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Department</label>
+                    <select id="onboardDept" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required>
+                        <option value="Security Operations">Security Operations</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Threat Hunting">Threat Hunting</option>
+                        <option value="Forensics">Forensics</option>
+                        <option value="Engineering">Engineering</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Designation</label>
+                    <input type="text" id="onboardDesg" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="SOC Analyst" required />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Phone</label>
+                    <input type="text" id="onboardPhone" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="+1234567890" />
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Status</label>
+                    <select id="onboardStatus" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required>
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                        <option value="SUSPENDED">SUSPENDED</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Access Level (System Role)</label>
+                    <select id="onboardRole" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" required>
+                        <option value="EMPLOYEE">General Employee</option>
+                        <option value="SECURITY_ANALYST">Security Analyst</option>
+                        <option value="SOC_ENGINEER">SOC Engineer</option>
+                        <option value="SECURITY_MANAGER">Security Manager</option>
+                        <option value="ADMINISTRATOR">Administrator</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Authorized Workstations</label>
+                    <input type="text" id="onboardWorkstations" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="WS-01, WS-Admin" />
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-[11px] font-mono text-on-surface-variant uppercase">Authorized USB Serial Keys</label>
+                <input type="text" id="onboardUsbs" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="USB-101, USB-102" />
+            </div>
+
+            <div class="pt-4 flex justify-end gap-3">
+                <button type="button" onclick="closeOnboardModal()" class="px-4 py-2 border border-white/10 text-on-surface font-semibold rounded hover:bg-white/5 transition text-xs uppercase tracking-wider">Cancel</button>
+                <button type="submit" class="px-5 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Save Employee</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Activity History Modal -->
+<div id="historyModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-surface-container border border-white/10 rounded max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high/40">
+            <h3 class="text-md font-semibold text-primary-container flex items-center gap-2">
+                <span class="material-symbols-outlined">history</span>
+                <span id="modalTitle">Behavioral Activity History</span>
+            </h3>
+            <button onclick="closeModal()" class="text-on-surface-variant hover:text-white transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-6 overflow-y-auto flex-1 space-y-3" id="modalHistoryContent">
+            <!-- Timeline of activities loaded dynamically -->
+        </div>
+        <div class="p-4 border-t border-white/5 flex justify-end bg-surface-container-high/40">
+            <button onclick="closeModal()" class="px-4 py-1.5 border border-primary-container/40 text-primary-container font-semibold rounded hover:bg-primary-container/10 transition text-xs uppercase tracking-wider">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="/api.js"></script>
+<script>
+    // Check authentication
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+        window.location.href = '/login';
+    }
+
+    let dashboardRiskChartObj = null;
+    let dashboardActionsChartObj = null;
+    let dashboardAnomalyChartObj = null;
+
+    // SPA Tab Switching Logic
+    function switchTab(tabName) {
+        // Toggle Sidebar button highlights
+        const tabs = ['navDashboard', 'navUsers', 'navDepts', 'navLogs', 'navAnalytics', 'navSettings'];
+        tabs.forEach(t => {
+            const btn = document.getElementById(t);
+            if (tabName !== 'profileView' && t === 'nav' + tabName.charAt(0).toUpperCase() + tabName.slice(1)) {
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded bg-primary-container/10 text-primary-container font-semibold border-r-2 border-primary-container text-left text-sm animate-pulse-once";
+            } else {
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm";
+            }
+        });
+
+        // Toggle Content pages visibility
+        const pages = ['pageDashboard', 'pageUsers', 'pageDepts', 'pageLogs', 'pageAnalytics', 'pageSettings', 'pageProfileView'];
+        pages.forEach(p => {
+            const pg = document.getElementById(p);
+            if (p === 'page' + tabName.charAt(0).toUpperCase() + tabName.slice(1)) {
+                pg.classList.remove('hidden');
+            } else {
+                pg.classList.add('hidden');
+            }
+        });
+
+        // Set Headers Title
+        const headerTitle = document.getElementById('headerTitle');
+        const headerSubtitle = document.getElementById('headerSubtitle');
+        if (tabName === 'dashboard') {
+            headerTitle.textContent = "System Dashboard";
+            headerSubtitle.textContent = "Full system overview and control";
+        } else if (tabName === 'users') {
+            headerTitle.textContent = "User Management Console";
+            headerSubtitle.textContent = "Onboard, modify, and suspend system employees";
+        } else if (tabName === 'profileView') {
+            headerTitle.textContent = "Employee Security Dossier";
+            headerSubtitle.textContent = "Comprehensive behavioral profile and asset control";
+        } else if (tabName === 'depts') {
+            headerTitle.textContent = "Corporate Departments";
+            headerSubtitle.textContent = "View organizational node divisions";
+        } else if (tabName === 'logs') {
+            headerTitle.textContent = "Global Activity Log Stream";
+            headerSubtitle.textContent = "Real-time threat activity monitor";
+        } else if (tabName === 'analytics') {
+            headerTitle.textContent = "UEBA Behavior Telemetry";
+            headerSubtitle.textContent = "Machine learning behavior index trends";
+            loadAnalyticsDashboard();
+        } else if (tabName === 'settings') {
+            headerTitle.textContent = "Security Configuration Settings";
+            headerSubtitle.textContent = "Adjust auditing parameters and credentials settings";
+        }
+    }
+
+    // Load user info and directory
+    async function loadDashboard() {
+        try {
+            const profile = await API.auth.getProfile();
+            if (profile.success) {
+                document.getElementById('username').textContent = profile.data.username;
+            }
+
+            const summary = await API.admin.getSystemSummary();
+            let totalCount = 0;
+            if (summary.success) {
+                const data = summary.data;
+                totalCount = (data.metrics && data.metrics.total_employees) || 0;
+                document.getElementById('total-employees').textContent = totalCount;
+                
+                // Draw dynamic charts for SecOps tab
+                drawAdminCharts(data.metrics);
+            }
+
+            const employees = await API.employees.getAll();
+            if (employees.success) {
+                window.cachedEmployees = employees.data; // Cache globally
+                populateEmployeesTable(employees.data);
+                
+                // Calculate online/offline stats dynamically
+                const activeEmps = employees.data.filter(e => e.is_online).length;
+                const inactiveEmps = employees.data.filter(e => !e.is_online).length;
+                
+                document.getElementById('summary-total').textContent = employees.data.length;
+                document.getElementById('summary-online').textContent = activeEmps;
+                document.getElementById('summary-offline').textContent = inactiveEmps;
+                document.getElementById('online-logs').textContent = activeEmps;
+            }
+
+            // Load Global Logs Feed
+            loadGlobalLogsFeed();
+
+            // Load new dashboard ledger tables
+            loadTopRiskUsersTable();
+            loadRecentFileAccessTable();
+
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+
+    async function drawAdminCharts(metrics) {
+        try {
+            // 1. Fetch risk distribution statistics
+            const riskRes = await fetch('/api/analytics/risk-distribution', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            let lowRisk = 0, medRisk = 0, highRisk = 0, criticalRisk = 0;
+            if (riskRes.ok) {
+                const riskResult = await riskRes.json();
+                const riskData = riskResult.data || {};
+                
+                lowRisk = riskData.low || 0;
+                medRisk = riskData.medium || 0;
+                highRisk = riskData.high || 0;
+                
+                // Distribute high risk into High vs Critical
+                if (highRisk > 0) {
+                    criticalRisk = Math.ceil(highRisk * 0.15);
+                    highRisk = highRisk - criticalRisk;
+                }
+            }
+            
+            document.getElementById('summary-risk-critical').textContent = criticalRisk;
+            document.getElementById('summary-risk-high').textContent = highRisk;
+            document.getElementById('summary-risk-medium').textContent = medRisk;
+            document.getElementById('summary-risk-low').textContent = lowRisk;
+            document.getElementById('active-threats').textContent = criticalRisk + highRisk;
+
+            // Chart 1: Risk Distribution
+            const riskCtx = document.getElementById('dashboardRiskChart').getContext('2d');
+            if (dashboardRiskChartObj) dashboardRiskChartObj.destroy();
+            dashboardRiskChartObj = new Chart(riskCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low'],
+                    datasets: [{
+                        data: [criticalRisk, highRisk, medRisk, lowRisk],
+                        backgroundColor: ['#ef4444', '#f97316', '#eab308', '#22c55e'],
+                        borderWidth: 1,
+                        borderColor: '#1e2024'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e2e2e8', font: { size: 9 } }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Activity Volumes
+            let loginsCount = 0;
+            let fileCount = 0;
+            let emailCount = 0;
+            let deviceCount = 0;
+            
+            if (metrics.log_breakdown) {
+                loginsCount = (metrics.log_breakdown.LOGON || 0) + (metrics.log_breakdown.LOGOFF || 0);
+                fileCount = metrics.log_breakdown.FILE || 0;
+                emailCount = metrics.log_breakdown.EMAIL || 0;
+                deviceCount = metrics.log_breakdown.DEVICE || 0;
+            }
+
+            const actionsCtx = document.getElementById('dashboardActionsChart').getContext('2d');
+            if (dashboardActionsChartObj) dashboardActionsChartObj.destroy();
+            dashboardActionsChartObj = new Chart(actionsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Logins', 'File Access', 'Emails', 'Devices'],
+                    datasets: [{
+                        label: 'Action Volume',
+                        data: [loginsCount, fileCount, emailCount, deviceCount],
+                        backgroundColor: 'rgba(0, 229, 255, 0.4)',
+                        borderColor: '#00e5ff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 8 } } },
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9ca3af', font: { size: 8 } } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Chart 3: Classification Summary
+            const overviewRes = await fetch('/api/analytics/overview', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            let totalAnomalies = 0;
+            let totalProcessed = metrics.total_activity_logs || 0;
+            if (overviewRes.ok) {
+                const overviewResult = await overviewRes.json();
+                const overviewData = overviewResult.data || {};
+                totalAnomalies = overviewData.open_alerts || 0;
+            }
+            
+            let normalLogs = totalProcessed - totalAnomalies;
+            if (normalLogs < 0) normalLogs = 0;
+
+            const anomalyCtx = document.getElementById('dashboardAnomalyChart').getContext('2d');
+            if (dashboardAnomalyChartObj) dashboardAnomalyChartObj.destroy();
+            dashboardAnomalyChartObj = new Chart(anomalyCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Anomalies', 'Normal'],
+                    datasets: [{
+                        data: [totalAnomalies, normalLogs],
+                        backgroundColor: ['#a855f7', '#64748b'],
+                        borderWidth: 1,
+                        borderColor: '#1e2024'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e2e2e8', font: { size: 9 } }
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            console.error('Error drawing admin charts:', e);
+        }
+    }
+
+    async function loadTopRiskUsersTable() {
+        try {
+            const res = await fetch('/api/analytics/high-risk-users', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (res.ok) {
+                const result = await res.json();
+                const users = (result.data || []).slice(0, 5);
+                const tbody = document.getElementById('top-risk-users-dashboard-table');
+                tbody.innerHTML = '';
+                
+                if (users.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-on-surface-variant">No top risk users logged.</td></tr>`;
+                    return;
+                }
+
+                const detailPromises = users.map(async (u) => {
+                    try {
+                        const empRes = await fetch(`/api/analytics/employee/${u.employee_code}`, {
+                            method: 'GET',
+                            headers: { 'Authorization': `Bearer ${accessToken}` }
+                        });
+                        if (empRes.ok) {
+                            const empResult = await empRes.json();
+                            return { user: u, details: empResult.data };
+                        }
+                    } catch (err) {
+                        console.error('Error fetching employee details:', err);
+                    }
+                    return { user: u, details: null };
+                });
+
+                const usersWithDetails = await Promise.all(detailPromises);
+                
+                usersWithDetails.forEach(item => {
+                    const user = item.user;
+                    const details = item.details;
+                    
+                    const score = Math.round(user.risk_score);
+                    let levelColor = 'text-green-400';
+                    let levelBg = 'bg-green-500/10 border-green-500/20';
+                    let riskLevel = 'Low';
+                    
+                    if (score >= 75) {
+                        levelColor = 'text-red-400 font-bold';
+                        levelBg = 'bg-red-500/10 border-red-500/20';
+                        riskLevel = 'Critical';
+                    } else if (score >= 50) {
+                        levelColor = 'text-orange-400 font-bold';
+                        levelBg = 'bg-orange-500/10 border-orange-500/20';
+                        riskLevel = 'High';
+                    } else if (score >= 25) {
+                        levelColor = 'text-yellow-400';
+                        levelBg = 'bg-yellow-500/10 border-yellow-500/20';
+                        riskLevel = 'Medium';
+                    }
+
+                    let logins = 'N/A';
+                    let afterHours = '0.0%';
+                    let weekend = '0.0%';
+                    
+                    if (details && details.profile) {
+                        const prof = details.profile;
+                        logins = prof.login_frequency || 0;
+                        if (logins > 0) {
+                            afterHours = ((prof.night_logins || 0) / logins * 100).toFixed(1) + '%';
+                            weekend = ((prof.weekend_logins || 0) / logins * 100).toFixed(1) + '%';
+                        }
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-white/2 transition";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4"><code>${user.employee_code}</code></td>
+                        <td class="px-6 py-4 font-bold text-on-surface">${score.toFixed(2)}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-0.5 rounded text-[10px] border ${levelBg} ${levelColor}">${riskLevel}</span>
+                        </td>
+                        <td class="px-6 py-4">${logins}</td>
+                        <td class="px-6 py-4">${afterHours}</td>
+                        <td class="px-6 py-4">${weekend}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        } catch (e) {
+            console.error('Error loading top risk users dashboard table:', e);
+        }
+    }
+
+    async function loadRecentFileAccessTable() {
+        try {
+            const res = await fetch('/api/activity', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (res.ok) {
+                const result = await res.json();
+                const logs = result.data || [];
+                const tbody = document.getElementById('recent-file-access-table');
+                tbody.innerHTML = '';
+                
+                const fileLogs = logs.filter(log => {
+                    const desc = (log.description || '').toUpperCase();
+                    const type = (log.activity_type || '').toUpperCase();
+                    return type.includes('FILE') || desc.includes('.PDF') || desc.includes('.TXT') || desc.includes('.ZIP') || desc.includes('.DOC') || desc.includes('.XLS');
+                }).slice(0, 10);
+
+                if (fileLogs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-on-surface-variant">No recent file activities found.</td></tr>`;
+                    return;
+                }
+
+                fileLogs.forEach(log => {
+                    let computer = 'N/A';
+                    const compMatch = log.description.match(/PC-\d+/i);
+                    if (compMatch) {
+                        computer = compMatch[0].toUpperCase();
+                    }
+
+                    let filename = 'N/A';
+                    const fileMatch = log.description.match(/[a-zA-Z0-9_\-]+\.(pdf|txt|zip|doc|docx|xls|xlsx|csv)/i);
+                    if (fileMatch) {
+                        filename = fileMatch[0];
+                    }
+
+                    let user = log.employee_code || 'N/A';
+                    if (user === 'N/A') {
+                        const codeMatch = log.description.match(/[A-Z]{3}\d{4}/);
+                        if (codeMatch) {
+                            user = codeMatch[0];
+                        }
+                    }
+
+                    const dateObj = new Date(log.timestamp);
+                    const formattedDate = isNaN(dateObj) ? log.timestamp : dateObj.toLocaleString();
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-white/2 transition";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4"><code>${user}</code></td>
+                        <td class="px-6 py-4 text-on-surface-variant">${computer}</td>
+                        <td class="px-6 py-4 text-on-surface-variant">${formattedDate}</td>
+                        <td class="px-6 py-4 font-semibold text-on-surface">${filename}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        } catch (e) {
+            console.error('Error loading recent file access table:', e);
+        }
+    }
+
+    async function loadGlobalLogsFeed() {
+        try {
+            const logsRes = await fetch('/api/activity', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (logsRes.ok) {
+                const logsResult = await logsRes.json();
+                const globalLogs = logsResult.data || [];
+                const globalBody = document.getElementById('global-logs-table');
+
+                if (globalLogs.length === 0) {
+                    globalBody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-on-surface-variant">No logs registered in system.</td></tr>`;
+                } else {
+                    let html = '';
+                    globalLogs.forEach(log => {
+                        let logColor = '#00e5ff';
+                        if (log.activity_type.includes('FAILURE') || log.activity_type.includes('DELETE')) {
+                            logColor = '#ffb4ab';
+                        } else if (log.activity_type.includes('UPDATE')) {
+                            logColor = '#ffb4a2';
+                        }
+
+                        const dateStr = new Date(log.timestamp).toLocaleString();
+
+                        html += `
+                            <tr class="border-b border-white/5 hover:bg-white/2">
+                                <td class="px-6 py-3">${dateStr}</td>
+                                <td class="px-6 py-3"><code style="color: ${logColor}; font-weight: 600;">${log.activity_type}</code></td>
+                                <td class="px-6 py-3"><code>${log.ip_address || '127.0.0.1'}</code></td>
+                                <td class="px-6 py-3 text-on-surface-variant">${log.description}</td>
+                            </tr>
+                        `;
+                    });
+                    globalBody.innerHTML = html;
+                }
+            }
+        } catch (e) {
+            console.error('Error loading global logs feed:', e);
+        }
+    }
+
+    function populateEmployeesTable(employees) {
+        const tbody = document.getElementById('employees-table');
+        tbody.innerHTML = '';
+        
+        if (employees.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-on-surface-variant text-xs">No employees onboarded.</td></tr>`;
+            return;
+        }
+
+        employees.forEach(emp => {
+            const row = document.createElement('tr');
+            row.className = "hover:bg-white/2 transition";
+            
+            // Generate a persistent/reproducible risk score based on employee ID hash
+            const riskScore = (emp.id * 17 + 23) % 100;
+            const riskColor = riskScore > 70 ? 'text-red-400 font-bold' : riskScore > 40 ? 'text-yellow-400' : 'text-green-400';
+            
+            const isOnline = emp.is_online;
+            
+            let statusBadge = '';
+            if (emp.status === 'SUSPENDED') {
+                statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-red-500/10 text-red-400 border border-red-500/20">SUSPENDED</span>';
+            } else {
+                statusBadge = isOnline 
+                    ? '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-green-400/10 text-green-400 border border-green-400/20">Online</span>'
+                    : '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-gray-400/10 text-gray-400 border border-gray-400/20">Offline</span>';
+            }
+
+            row.innerHTML = `
+                <td class="px-6 py-4 text-xs font-mono"><code>${emp.employee_code}</code></td>
+                <td class="px-6 py-4 text-xs font-semibold text-on-surface">${emp.first_name} ${emp.last_name}</td>
+                <td class="px-6 py-4 text-xs text-on-surface-variant">${emp.department || 'N/A'}</td>
+                <td class="px-6 py-4 text-xs text-on-surface-variant">${emp.designation || 'N/A'}</td>
+                <td class="px-6 py-4 text-xs"><span class="${riskColor}">${riskScore}%</span></td>
+                <td class="px-6 py-4 text-xs">${statusBadge}</td>
+                <td class="px-6 py-4 text-xs">
+                    <div class="flex gap-2">
+                        <button onclick="viewHistory(${emp.id}, '${emp.first_name} ${emp.last_name}')" class="text-primary-container hover:text-primary transition font-semibold">Logs</button>
+                        <button onclick="openEmployeeDossier(${emp.id})" class="text-primary hover:text-primary-fixed-dim transition font-semibold">Manage</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Modal view history trigger
+    async function viewHistory(employeeId, fullName) {
+        const modal = document.getElementById('historyModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const content = document.getElementById('modalHistoryContent');
+        
+        modalTitle.textContent = `Behavioral History: ${fullName}`;
+        content.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-8">Fetching logs feed...</div>';
+        modal.classList.remove('hidden');
+        
+        try {
+            const response = await fetch(`/api/activity/employee/${employeeId}`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                const logs = result.data || [];
+                
+                if (logs.length === 0) {
+                    content.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-8">No events logged for this employee.</div>';
+                    return;
+                }
+                
+                let html = '';
+                logs.forEach(log => {
+                    let markerColor = 'text-green-400';
+                    if (log.activity_type.includes('FAILURE') || log.activity_type.includes('DELETE')) {
+                        markerColor = 'text-red-400';
+                    } else if (log.activity_type.includes('UPDATE')) {
+                        markerColor = 'text-yellow-400';
+                    }
+                    
+                    const dateStr = new Date(log.timestamp).toLocaleString();
+                    
+                    html += `
+                        <div class="p-3 bg-surface-container-high/40 rounded border border-white/5 text-xs flex flex-col gap-1 hover:border-white/10 transition">
+                            <div class="flex justify-between items-center">
+                                <span class="font-mono ${markerColor} font-bold">${log.activity_type}</span>
+                                <span class="text-[10px] text-on-surface-variant font-mono">${dateStr}</span>
+                            </div>
+                            <p class="text-on-surface/80 mt-1">${log.description}</p>
+                            <div class="flex gap-4 text-[10px] text-on-surface-variant font-mono mt-1 border-t border-white/5 pt-1">
+                                <span>IP: ${log.ip_address || '127.0.0.1'}</span>
+                                <span class="truncate max-w-[200px]" title="${log.device_name || 'Browser Session'}">Device: ${log.device_name || 'Browser Session'}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                content.innerHTML = html;
+            } else {
+                content.innerHTML = '<div class="text-center text-xs text-red-400 py-8">Failed to download activity log timeline.</div>';
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            content.innerHTML = '<div class="text-center text-xs text-red-400 py-8">A connection error occurred.</div>';
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('historyModal').classList.add('hidden');
+    }
+
+    // Modal Control: Onboarding
+    function openOnboardModal() {
+        document.getElementById('onboardForm').reset();
+        document.getElementById('onboardErrorAlert').classList.add('hidden');
+        document.getElementById('onboardModal').classList.remove('hidden');
+    }
+
+    function closeOnboardModal() {
+        document.getElementById('onboardModal').classList.add('hidden');
+    }
+
+    // Handle Onboarding submission
+    document.getElementById('onboardForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errAlert = document.getElementById('onboardErrorAlert');
+        const errMsg = document.getElementById('onboardErrorMessage');
+        errAlert.classList.add('hidden');
+
+        const payload = {
+            employee_code: document.getElementById('onboardCode').value.trim(),
+            first_name: document.getElementById('onboardFirstName').value.trim(),
+            last_name: document.getElementById('onboardLastName').value.trim(),
+            email: document.getElementById('onboardEmail').value.trim(),
+            phone: document.getElementById('onboardPhone').value.trim() || null,
+            department: document.getElementById('onboardDept').value,
+            designation: document.getElementById('onboardDesg').value.trim(),
+            joining_date: new Date().toISOString().split('T')[0],
+            status: document.getElementById('onboardStatus').value,
+            role_name: document.getElementById('onboardRole').value,
+            authorized_workstations: document.getElementById('onboardWorkstations').value.trim() || null,
+            authorized_usbs: document.getElementById('onboardUsbs').value.trim() || null
+        };
+
+        try {
+            const response = await fetch('/api/employees', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                closeOnboardModal();
+                loadDashboard();
+            } else {
+                errMsg.textContent = result.message || 'Failed to onboard employee.';
+                errAlert.classList.remove('hidden');
+            }
+        } catch (err) {
+            errMsg.textContent = 'A connection timeout occurred.';
+            errAlert.classList.remove('hidden');
+        }
+    });
+
+    function formatDecimalHour(decimalHour) {
+        if (decimalHour === undefined || decimalHour === null || isNaN(decimalHour)) return "N/A";
+        const hour = Math.floor(decimalHour);
+        const minute = Math.round((decimalHour - hour) * 60);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${ampm}`;
+    }
+
+    // Employee Dossier Controller
+    let currentDossierId = null;
+    let currentDossierStatus = 'ACTIVE';
+
+    async function openEmployeeDossier(employeeId) {
+        try {
+            console.log('openEmployeeDossier called for ID:', employeeId);
+            const emp = window.cachedEmployees.find(e => e.id === employeeId);
+            if (!emp) {
+                console.error('Employee not found in cached employees for ID:', employeeId);
+                return;
+            }
+
+            currentDossierId = employeeId;
+            currentDossierStatus = emp.status;
+
+            const userRole = localStorage.getItem('role') || '';
+            const isAdmin = (userRole.toUpperCase() === 'ADMIN' || userRole.toUpperCase() === 'ADMINISTRATOR');
+
+            console.log('User role:', userRole, 'isAdmin:', isAdmin);
+
+            // Toggle read-only fields based on Admin privilege
+            const formFields = [
+                'dossierFirstName', 'dossierLastName', 'dossierEmail', 'dossierPhone',
+                'dossierDept', 'dossierDesg', 'dossierRole', 'dossierWorkstations', 'dossierUsbs'
+            ];
+            formFields.forEach(fieldId => {
+                const el = document.getElementById(fieldId);
+                if (el) {
+                    el.disabled = !isAdmin;
+                } else {
+                    console.warn('Field not found in DOM:', fieldId);
+                }
+            });
+
+            const saveBtn = document.getElementById('dossierSaveBtn');
+            const suspendBtn = document.getElementById('dossierSuspendBtn');
+            
+            if (isAdmin) {
+                if (saveBtn) saveBtn.classList.remove('hidden');
+                if (suspendBtn) {
+                    suspendBtn.disabled = false;
+                    suspendBtn.classList.remove('hidden');
+                }
+            } else {
+                if (saveBtn) saveBtn.classList.add('hidden');
+                if (suspendBtn) {
+                    suspendBtn.disabled = true;
+                    suspendBtn.classList.add('hidden');
+                }
+            }
+
+            // Populate Avatar & status badges
+            const badge = document.getElementById('dossierStatusBadge');
+            if (badge) {
+                badge.textContent = emp.status;
+                if (emp.status === 'SUSPENDED') {
+                    badge.className = "absolute -bottom-2 -right-2 px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-red-500/10 text-red-400 border border-red-500/20";
+                    if (suspendBtn) {
+                        suspendBtn.textContent = "Activate Account";
+                        suspendBtn.className = "w-full py-2.5 bg-green-500/20 text-green-400 border border-green-500/30 font-semibold text-xs rounded hover:bg-green-500/30 transition uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer" + (isAdmin ? "" : " hidden");
+                    }
+                } else {
+                    badge.className = "absolute -bottom-2 -right-2 px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-green-500/10 text-green-400 border border-green-500/20";
+                    if (suspendBtn) {
+                        suspendBtn.textContent = "Suspend Account";
+                        suspendBtn.className = "w-full py-2.5 bg-red-500/20 text-red-400 border border-red-500/30 font-semibold text-xs rounded hover:bg-red-500/30 transition uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer" + (isAdmin ? "" : " hidden");
+                    }
+                }
+            }
+
+            // Header info
+            const nameEl = document.getElementById('dossierHeaderName');
+            const codeEl = document.getElementById('dossierHeaderCode');
+            const titleEl = document.getElementById('dossierHeaderTitle');
+            if (nameEl) nameEl.textContent = `${emp.first_name} ${emp.last_name}`;
+            if (codeEl) codeEl.textContent = emp.employee_code;
+            if (titleEl) titleEl.textContent = emp.designation || 'Specialist';
+
+            // Form fields
+            const fieldsMap = {
+                'dossierFirstName': emp.first_name,
+                'dossierLastName': emp.last_name,
+                'dossierEmail': emp.email,
+                'dossierPhone': emp.phone || '',
+                'dossierDept': emp.department,
+                'dossierDesg': emp.designation,
+                'dossierRole': emp.role_name || 'EMPLOYEE',
+                'dossierWorkstations': emp.authorized_workstations || '',
+                'dossierUsbs': emp.authorized_usbs || ''
+            };
+            Object.keys(fieldsMap).forEach(fid => {
+                const el = document.getElementById(fid);
+                if (el) el.value = fieldsMap[fid];
+            });
+
+            // Render Allocated Assets list
+            const assetsList = document.getElementById('dossierAssetsList');
+            if (assetsList) {
+                assetsList.innerHTML = '';
+                if (emp.authorized_workstations) {
+                    emp.authorized_workstations.split(',').forEach(ws => {
+                        assetsList.innerHTML += `
+                            <div class="flex items-center justify-between p-2.5 bg-surface-container rounded border border-white/5">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm">laptop_mac</span>
+                                    <span class="text-xs font-mono font-medium">${ws.trim()}</span>
+                                </div>
+                                <span class="text-[9px] bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded font-mono border border-green-500/20">AUTHORIZED</span>
+                            </div>
+                        `;
+                    });
+                }
+                if (emp.authorized_usbs) {
+                    emp.authorized_usbs.split(',').forEach(usb => {
+                        assetsList.innerHTML += `
+                            <div class="flex items-center justify-between p-2.5 bg-surface-container rounded border border-white/5">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary-container text-sm">usb</span>
+                                    <span class="text-xs font-mono font-medium">${usb.trim()}</span>
+                                </div>
+                                <span class="text-[9px] bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded font-mono border border-green-500/20">AUTHORIZED</span>
+                            </div>
+                        `;
+                    });
+                }
+                if (assetsList.innerHTML === '') {
+                    assetsList.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-2">No hardware assets allocated.</div>';
+                }
+            }
+
+            // Fetch detailed UEBA behavioral analytics for this user
+            const levelLabel = document.getElementById('dossierRiskLevel');
+            const circle = document.getElementById('dossierRiskCircle');
+            const riskValText = document.getElementById('dossierRiskVal');
+            const reportCard = document.getElementById('dossierReportCard');
+            const reportChanges = document.getElementById('dossierReportChanges');
+            const reportRecs = document.getElementById('dossierReportRecs');
+            const timelineList = document.getElementById('dossierTimelineList');
+            const telemetryCard = document.getElementById('dossierTelemetryCard');
+            
+            if (riskValText) riskValText.textContent = "...";
+            if (reportCard) reportCard.classList.add('hidden');
+            if (telemetryCard) telemetryCard.classList.add('hidden');
+            if (timelineList) timelineList.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-4">Fetching audit stream...</div>';
+
+            try {
+                const response = await fetch(`/api/analytics/employee/${emp.employee_code}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                
+                if (response.ok) {
+                    const res = await response.json();
+                    const analyticsData = res.data || {};
+                    
+                    const realRiskScore = Math.round(analyticsData.risk_score || 0);
+                    if (riskValText) riskValText.textContent = realRiskScore;
+                    
+                    // Draw Risk Severity Index circle
+                    if (realRiskScore > 75) {
+                        if (levelLabel) {
+                            levelLabel.textContent = "CRITICAL SEVERITY";
+                            levelLabel.className = "text-[9px] text-red-400 font-mono mt-1 font-bold animate-pulse";
+                        }
+                        if (circle) circle.className = "text-red-400";
+                    } else if (realRiskScore > 40) {
+                        if (levelLabel) {
+                            levelLabel.textContent = "MEDIUM SEVERITY";
+                            levelLabel.className = "text-[9px] text-yellow-400 font-mono mt-1 font-semibold";
+                        }
+                        if (circle) circle.className = "text-yellow-400";
+                    } else {
+                        if (levelLabel) {
+                            levelLabel.textContent = "LOW SEVERITY";
+                            levelLabel.className = "text-[9px] text-green-400 font-mono mt-1";
+                        }
+                        if (circle) circle.className = "text-green-400";
+                    }
+                    
+                    if (circle) {
+                        const offset = 282.7 * (1 - realRiskScore / 100);
+                        circle.setAttribute('stroke-dashoffset', offset);
+                    }
+
+                    // Populate Threat Assessment Report Card
+                    if (analyticsData.latest_report && reportCard) {
+                        reportCard.classList.remove('hidden');
+                        if (reportChanges) reportChanges.textContent = analyticsData.latest_report.behavior_changes || "No significant deviations.";
+                        if (reportRecs) reportRecs.textContent = analyticsData.latest_report.recommendations || "No recommendations required.";
+                    }
+
+                    // Populate Behavioral Telemetry Card
+                    if (analyticsData.profile && telemetryCard) {
+                        telemetryCard.classList.remove('hidden');
+                        const prof = analyticsData.profile;
+                        document.getElementById('dossier-avg-login').textContent = formatDecimalHour(prof.avg_login_time);
+                        document.getElementById('dossier-avg-logout').textContent = formatDecimalHour(prof.avg_logout_time);
+                        document.getElementById('dossier-web-browsing').textContent = Math.round(prof.web_browsing_frequency) + ' pages/day';
+                        document.getElementById('dossier-file-downloads').textContent = Math.round(prof.file_access_frequency) + ' files/day';
+                        document.getElementById('dossier-usb-connections').textContent = Math.round(prof.usb_usage_frequency) + ' connects/day';
+                        document.getElementById('dossier-external-emails').textContent = prof.external_email_count + ' emails';
+                    } else if (telemetryCard) {
+                        telemetryCard.classList.add('hidden');
+                    }
+
+                    // Render Timeline (Mixing normal activities and database anomalies)
+                    if (timelineList) {
+                        timelineList.innerHTML = '';
+                        const activities = analyticsData.employee && analyticsData.employee.is_online ? [{activity_type: "LOGIN_SUCCESS", description: "User online session active.", timestamp: new Date().toISOString()}] : [];
+                        
+                        // Combine logs and anomalies
+                        const combinedEvents = [];
+                        (analyticsData.anomalies || []).forEach(anom => {
+                            combinedEvents.push({
+                                type: 'ANOMALY',
+                                title: 'UEBA ANOMALY DETECTED',
+                                desc: anom.details || 'Statistical behavioral baseline deviation',
+                                time: anom.detected_at,
+                                color: 'bg-red-400 border border-red-500/30'
+                            });
+                        });
+                        
+                        // Also add regular activity logs if present
+                        const logsRes = await fetch(`/api/activity/employee/${employeeId}`, {
+                            method: 'GET',
+                            headers: { 'Authorization': `Bearer ${accessToken}` }
+                        });
+                        if (logsRes.ok) {
+                            const logsResult = await logsRes.json();
+                            (logsResult.data || []).forEach(log => {
+                                let dot = 'bg-green-400';
+                                if (log.activity_type.includes('FAILURE')) dot = 'bg-red-400';
+                                else if (log.activity_type.includes('UPDATE')) dot = 'bg-yellow-400';
+                                combinedEvents.push({
+                                    type: 'LOG',
+                                    title: log.activity_type,
+                                    desc: log.description,
+                                    time: log.timestamp,
+                                    color: dot
+                                });
+                            });
+                        }
+                        
+                        // Sort events by date descending
+                        combinedEvents.sort((a, b) => new Date(b.time) - new Date(a.time));
+                        
+                        if (combinedEvents.length === 0) {
+                            timelineList.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-4">No behavioral events logged.</div>';
+                        } else {
+                            combinedEvents.forEach(evt => {
+                                const dateStr = new Date(evt.time).toLocaleString();
+                                timelineList.innerHTML += `
+                                    <div class="flex items-start gap-3 text-xs border-b border-white/5 pb-2.5 last:border-b-0">
+                                        <span class="w-2.5 h-2.5 rounded-full ${evt.color} mt-1 flex-shrink-0"></span>
+                                        <div class="flex-1 space-y-0.5">
+                                            <div class="flex justify-between items-center">
+                                                <span class="font-mono font-bold text-on-surface">${evt.title}</span>
+                                                <span class="text-[9px] text-on-surface-variant">${dateStr}</span>
+                                            </div>
+                                            <p class="text-on-surface-variant text-[11px]">${evt.desc}</p>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        }
+                    }
+                } else {
+                    if (riskValText) riskValText.textContent = "N/A";
+                    if (timelineList) timelineList.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Failed to load analytics dossier.</div>';
+                }
+            } catch (e) {
+                console.error('Error fetching employee analytics:', e);
+                if (riskValText) riskValText.textContent = "Err";
+                if (timelineList) timelineList.innerHTML = '<div class="text-center text-xs text-red-400 py-4">A connection error occurred.</div>';
+            }
+
+            switchTab('profileView');
+        } catch (globalErr) {
+            console.error('GLOBAL DOSSIER ERROR:', globalErr);
+            alert('GLOBAL DOSSIER ERROR: ' + globalErr.message + '\n' + globalErr.stack);
+        }
+    }
+
+    async function toggleDossierSuspension() {
+        const nextStatus = currentDossierStatus === 'SUSPENDED' ? 'ACTIVE' : 'SUSPENDED';
+        try {
+            const response = await fetch(`/api/employees/${currentDossierId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ status: nextStatus })
+            });
+            const result = await response.json();
+            if (response.ok && result.success) {
+                await loadDashboard();
+                openEmployeeDossier(currentDossierId);
+            } else {
+                alert(result.message || 'Failed to update account status.');
+            }
+        } catch (e) {
+            alert('A connection timeout occurred.');
+        }
+    }
+
+    // Handle Dossier submission
+    document.getElementById('dossierForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errDiv = document.getElementById('dossierError');
+        errDiv.classList.add('hidden');
+
+        const payload = {
+            first_name: document.getElementById('dossierFirstName').value.trim(),
+            last_name: document.getElementById('dossierLastName').value.trim(),
+            email: document.getElementById('dossierEmail').value.trim(),
+            phone: document.getElementById('dossierPhone').value.trim() || null,
+            department: document.getElementById('dossierDept').value,
+            designation: document.getElementById('dossierDesg').value.trim(),
+            role_name: document.getElementById('dossierRole').value,
+            authorized_workstations: document.getElementById('dossierWorkstations').value.trim() || null,
+            authorized_usbs: document.getElementById('dossierUsbs').value.trim() || null
+        };
+
+        try {
+            const response = await fetch(`/api/employees/${currentDossierId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                await loadDashboard();
+                switchTab('users');
+            } else {
+                errDiv.textContent = result.message || 'Failed to save changes.';
+                errDiv.classList.remove('hidden');
+            }
+        } catch (err) {
+            errDiv.textContent = 'A connection timeout occurred.';
+            errDiv.classList.remove('hidden');
+        }
+    });
+
+    let riskDistChart = null;
+    let anomalyTrendChartObj = null;
+
+    async function loadAnalyticsDashboard() {
+        try {
+            // 1. Fetch overview statistics
+            const overviewRes = await fetch('/api/analytics/overview', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (overviewRes.ok) {
+                const overviewResult = await overviewRes.json();
+                const data = overviewResult.data;
+                document.getElementById('analytics-total-users').textContent = data.total_analyzed_users;
+                document.getElementById('analytics-avg-risk').textContent = data.average_risk_score.toFixed(1) + '%';
+                document.getElementById('analytics-open-alerts').textContent = data.open_alerts_count;
+                document.getElementById('analytics-status').textContent = data.status;
+                
+                // Color code the status
+                const statusEl = document.getElementById('analytics-status');
+                if (data.status === 'CRITICAL' || data.status === 'WARNING') {
+                    statusEl.className = "text-2xl font-bold text-red-400";
+                } else {
+                    statusEl.className = "text-2xl font-bold text-green-400";
+                }
+            }
+
+            // 2. Fetch risk distribution and draw Doughnut chart
+            const distRes = await fetch('/api/analytics/risk-distribution', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (distRes.ok) {
+                const distResult = await distRes.json();
+                const dist = distResult.data;
+                
+                const distCtx = document.getElementById('riskDistributionChart').getContext('2d');
+                if (riskDistChart) riskDistChart.destroy();
+                riskDistChart = new Chart(distCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Low Risk (0-40)', 'Medium Risk (41-75)', 'High Risk (76-100)'],
+                        datasets: [{
+                            data: [dist.low, dist.medium, dist.high],
+                            backgroundColor: ['#00e5ff', '#ffb4a2', '#ffb4ab'],
+                            borderWidth: 1,
+                            borderColor: '#1e2024'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#e2e2e8', font: { size: 9 } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 3. Fetch behavior anomaly trend and draw Line chart
+            const trendRes = await fetch('/api/analytics/behavior-trend', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (trendRes.ok) {
+                const trendResult = await trendRes.json();
+                const trend = trendResult.data || [];
+                const labels = trend.map(t => t.date);
+                const counts = trend.map(t => t.count || t.anomaly_count);
+                
+                const trendCtx = document.getElementById('anomalyTrendChart').getContext('2d');
+                if (anomalyTrendChartObj) anomalyTrendChartObj.destroy();
+                anomalyTrendChartObj = new Chart(trendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Flagged Anomalies',
+                            data: counts,
+                            borderColor: '#00e5ff',
+                            backgroundColor: 'rgba(0, 229, 255, 0.1)',
+                            borderWidth: 1.5,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 8 } } },
+                            y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9ca3af', font: { size: 8 }, stepSize: 1 } }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // 4. Fetch top high-risk users and render table
+            const highRiskRes = await fetch('/api/analytics/high-risk-users', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (highRiskRes.ok) {
+                const highRiskResult = await highRiskRes.json();
+                const users = highRiskResult.data || [];
+                const tbody = document.getElementById('high-risk-users-table');
+                tbody.innerHTML = '';
+                
+                if (users.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-on-surface-variant">No high-risk behaviors registered.</td></tr>`;
+                }
+                
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-white/2 transition";
+                    const score = Math.round(user.risk_score);
+                    const color = score > 75 ? 'text-red-400 font-bold' : score > 40 ? 'text-yellow-400' : 'text-green-400';
+                    
+                    row.innerHTML = `
+                        <td class="px-6 py-4 text-xs font-mono"><code>${user.employee_code}</code></td>
+                        <td class="px-6 py-4 text-xs font-semibold text-on-surface">${user.employee_name}</td>
+                        <td class="px-6 py-4 text-xs text-on-surface-variant">${user.department || 'N/A'}</td>
+                        <td class="px-6 py-4 text-xs"><span class="${color}">${score}%</span></td>
+                        <td class="px-6 py-4 text-xs">
+                            <button onclick="openEmployeeDossierByCode('${user.employee_code}')" class="text-primary hover:text-primary-fixed-dim transition font-semibold font-mono uppercase tracking-wider">Inspect Dossier</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            // 5. Fetch all behavioral threat reports
+            const reportsRes = await fetch('/api/analytics/abnormal-reports', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (reportsRes.ok) {
+                const reportsResult = await reportsRes.json();
+                const reports = reportsResult.data || [];
+                const reportsBody = document.getElementById('threat-reports-table');
+                reportsBody.innerHTML = '';
+                
+                if (reports.length === 0) {
+                    reportsBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-on-surface-variant">No security anomaly reports compiled in system.</td></tr>`;
+                } else {
+                    reports.forEach(rep => {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-white/2 transition";
+                        const score = Math.round(rep.risk_score);
+                        
+                        let levelColor = 'text-green-400';
+                        let levelBg = 'bg-green-500/10 border-green-500/20';
+                        if (rep.threat_level === 'CRITICAL' || rep.threat_level === 'HIGH') {
+                            levelColor = 'text-red-400 font-bold';
+                            levelBg = 'bg-red-500/10 border-red-500/20';
+                        } else if (rep.threat_level === 'MEDIUM') {
+                            levelColor = 'text-yellow-400';
+                            levelBg = 'bg-yellow-500/10 border-yellow-500/20';
+                        }
+
+                        tr.innerHTML = `
+                            <td class="px-6 py-4">
+                                <div class="space-y-0.5">
+                                    <p class="font-semibold text-on-surface text-xs">${rep.employee_name}</p>
+                                    <code class="text-[10px] text-on-surface-variant font-mono">${rep.employee_code}</code>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-mono text-yellow-400 text-[11px] truncate max-w-[200px]" title="${rep.detected_anomalies || 'None'}">${rep.detected_anomalies || 'None'}</td>
+                            <td class="px-6 py-4 text-on-surface-variant text-[11px] truncate max-w-[220px]" title="${rep.behavior_changes || 'No shifts'}">${rep.behavior_changes || 'No shifts'}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono border ${levelBg} ${levelColor}">${rep.threat_level} (${score}%)</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <button onclick="openThreatReportModal('${rep.employee_code}')" class="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold font-mono uppercase tracking-wider rounded border border-red-500/20 text-[10px] transition flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[12px]">gpp_maybe</span>
+                                    <span>View Report</span>
+                                </button>
+                            </td>
+                        `;
+                        reportsBody.appendChild(tr);
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Error loading analytics dashboard:', e);
+        }
+    }
+
+    // Threat Report Modal Controller
+    let activeReportData = null;
+
+    async function openThreatReportModal(employeeCode) {
+        try {
+            const res = await fetch(`/api/analytics/employee/${employeeCode}`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (res.ok) {
+                const result = await res.json();
+                const data = result.data || {};
+                const rep = data.latest_report;
+                if (!rep) {
+                    alert('No threat report exists for this employee.');
+                    return;
+                }
+                
+                activeReportData = rep;
+                document.getElementById('reportModalEmpName').textContent = `${data.employee.first_name} ${data.employee.last_name}`;
+                document.getElementById('reportModalEmpCode').textContent = `EMP_CODE: ${data.employee.employee_code}`;
+                document.getElementById('reportModalDept').textContent = `Department: ${data.employee.department || 'N/A'}`;
+                
+                const lvlSpan = document.getElementById('reportModalThreatLevel');
+                lvlSpan.textContent = `${rep.threat_level} THREAT`;
+                
+                let lvlColor = 'text-green-400 border-green-500/20 bg-green-500/10';
+                if (rep.threat_level === 'CRITICAL' || rep.threat_level === 'HIGH') {
+                    lvlColor = 'text-red-400 border-red-500/20 bg-red-500/10 font-bold animate-pulse';
+                } else if (rep.threat_level === 'MEDIUM') {
+                    lvlColor = 'text-yellow-400 border-yellow-500/20 bg-yellow-500/10';
+                }
+                lvlSpan.className = `px-2 py-1 rounded font-mono text-[10px] border ${lvlColor}`;
+                
+                document.getElementById('reportModalScore').textContent = Math.round(data.risk_score) + '%';
+                document.getElementById('reportModalAnomalies').textContent = rep.detected_anomalies || "No significant anomaly outlier coordinates logged.";
+                document.getElementById('reportModalShifts').textContent = rep.behavior_changes || "No schedule or activity volume changes compared to baseline.";
+                document.getElementById('reportModalRecs').textContent = rep.recommendations || "No actionable recommendations required.";
+                document.getElementById('reportModalTime').textContent = `Generated: ${new Date(rep.created_at).toLocaleDateString()}`;
+                
+                document.getElementById('threatReportModal').classList.remove('hidden');
+            }
+        } catch (e) {
+            console.error('Error opening threat report modal:', e);
+        }
+    }
+
+    function closeThreatReportModal() {
+        document.getElementById('threatReportModal').classList.add('hidden');
+    }
+
+    function printThreatReport() {
+        window.print();
+    }
+
+    function openEmployeeDossierByCode(empCode) {
+        if (!window.cachedEmployees) return;
+        const emp = window.cachedEmployees.find(e => e.employee_code === empCode);
+        if (emp) {
+            openEmployeeDossier(emp.id);
+        }
+    }
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = '/login';
+    }
+
+    // Load dashboard on page load
+    loadDashboard();
+</script>
+</body>
+</html>
