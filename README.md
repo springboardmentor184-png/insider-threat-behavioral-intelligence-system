@@ -102,3 +102,25 @@ Runs at `http://localhost:5173`
 ## Datasets
 
 The CERT Insider Threat Dataset (Kaggle) has been identified as the data source for activity log ingestion. A sample of real `logon.csv` records has been prepared for loading through the ingestion pipeline via `ingest_cert_data.py` to validate the pipeline against realistic data shapes ahead of Milestone 2's model training work.
+
+**Status:** Milestone 2 in progress (Week 3 & 4 — CERT Dataset Ingestion & Behavioral Analysis)
+
+## Milestone 2 Progress
+
+✅ Dataset acquisition — CERT r4.2 (Kaggle: andrihjonior/cert-insider-threat-dataset-r4-2)
+✅ Files: logon.csv, device.csv, file.csv, email.csv, http.csv (5% sampled), psychometric.csv, LDAP snapshots (3 months)
+✅ Ingestion pipeline (`ingest_cert_data.py`) — loads all files into PostgreSQL (`itbis_db`)
+✅ EDA — structural checks (nulls, dtypes, row counts) and pattern analysis (login times, after-hours activity, top users by device/file/email activity)
+✅ Feature engineering (`feature_engineering.py`) — per-user behavioral features: total logons, after-hours logons, after-hours ratio, device activity, file access count, emails sent, http activity, combined activity score. Saved to `user_features` table.
+
+🔄 Next: Isolation Forest anomaly/risk scoring model on `user_features`
+⬜ Expose risk scores via FastAPI endpoint
+⬜ Display risk scores on frontend dashboard
+
+## Scripts (data-processing/)
+- `download_r42.py` — downloads CERT r4.2 via kagglehub
+- `copy_r42.py` — copies/samples relevant files into `data/raw_r42`
+- `check_files.py` — verifies row counts and columns
+- `ingest_cert_data.py` — loads CSVs into PostgreSQL
+- `eda.py` / `eda_patterns.py` — exploratory data analysis
+- `feature_engineering.py` — builds per-user risk features
