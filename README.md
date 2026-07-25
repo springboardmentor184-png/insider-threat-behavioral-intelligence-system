@@ -156,6 +156,35 @@ During Week 1 development, several technical challenges were encountered and suc
 * **User and Entity Behavior Analytics (UEBA)**: Understood how mathematical deviation metrics ($\mu$, $\sigma$, Z-Scores) are utilized in cybersecurity to identify insider risks.
 
 ---
-## 9. Conclusion
+## 9. Verification & Local Launch
+
+### Backend Setup
+1. Navigate to the backend folder:
+   ```bash
+   cd backend
+   ```
+2. Activate virtual environment:
+   ```bash
+   venv\Scripts\activate
+   ```
+
+3. Start the FastAPI server:
+   ```bash
+   uvicorn app.main:app --reload --port 8000
+   ```
+
+### Frontend Setup
+1. Navigate to the frontend folder:
+   ```bash
+   cd frontend
+   ```
+2. Start the Vite server:
+   ```bash
+   npm run dev
+   ```
+3. Open **[http://localhost:5173](http://localhost:5173)** in your browser.
+
+---
+## 10. Conclusion
 
 Milestone 2 has successfully transitioned the **Insider Threat Behavioral Intelligence System** from a basic employee identity mapping CRUD application into an operational, intelligent User Behavior Analytics (UEBA) platform. 
