@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Login from './components/Login';
 import EmployeeManager from './components/EmployeeManager';
 import AssetAssociator from './components/AssetAssociator';
+import ActivityMonitor from './components/ActivityMonitor';
+import AnomalyConsole from './components/AnomalyConsole';
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem('access_token') || '');
@@ -128,6 +130,26 @@ export default function App() {
             <button 
               style={{
                 ...styles.navBtn, 
+                borderBottom: activeTab === 'logs' ? '2px solid var(--accent-cyan)' : '2px solid transparent',
+                color: activeTab === 'logs' ? 'var(--accent-cyan)' : 'var(--text-secondary)'
+              }}
+              onClick={() => setActiveTab('logs')}
+            >
+              Activity Ingestion Monitor
+            </button>
+            <button 
+              style={{
+                ...styles.navBtn, 
+                borderBottom: activeTab === 'anomalies' ? '2px solid var(--accent-cyan)' : '2px solid transparent',
+                color: activeTab === 'anomalies' ? 'var(--accent-cyan)' : 'var(--text-secondary)'
+              }}
+              onClick={() => setActiveTab('anomalies')}
+            >
+              Behavioral Alerts Console
+            </button>
+            <button 
+              style={{
+                ...styles.navBtn, 
                 borderBottom: activeTab === 'audit' ? '2px solid var(--accent-cyan)' : '2px solid transparent',
                 color: activeTab === 'audit' ? 'var(--accent-cyan)' : 'var(--text-secondary)'
               }}
@@ -150,7 +172,7 @@ export default function App() {
       </header>
 
       <main className="container" style={styles.mainContent}>
-        {activeTab === 'directory' ? (
+        {activeTab === 'directory' && (
           <div style={styles.dashboardGrid}>
             <div style={styles.leftCol}>
               <EmployeeManager 
@@ -169,7 +191,17 @@ export default function App() {
               />
             </div>
           </div>
-        ) : (
+        )}
+        
+        {activeTab === 'logs' && (
+          <ActivityMonitor token={token} />
+        )}
+        
+        {activeTab === 'anomalies' && (
+          <AnomalyConsole token={token} currentUser={currentUser} />
+        )}
+        
+        {activeTab === 'audit' && (
           <div className="glass-panel fade-in" style={styles.auditPanel}>
             <div style={styles.auditHeader}>
               <h3 style={styles.auditTitle}>Real-time Security Audit Log Ledger</h3>
@@ -220,7 +252,7 @@ export default function App() {
       </main>
 
       <footer style={styles.footer}>
-        <p>© 2026 Insider Threat Behavioral Intelligence System. Setup Completed: Milestone 1, Day 1 Tasks.</p>
+        <p>© 2026 Insider Threat Behavioral Intelligence System. Setup Completed: Milestone 1 Completed (Week 1 & 2).</p>
         <p style={{fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px'}}>
           Primary: PostgreSQL | Secondary: MongoDB | Active Session: JWT (Bearer Auth)
         </p>

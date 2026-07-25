@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import get_db
 from app.models import User
+
 import bcrypt
 import httpx
 
@@ -78,7 +79,7 @@ def verify_google_token(id_token: str) -> dict:
         
         # Verify audience matches client ID if client ID is set
         aud = token_info.get("aud")
-        if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_ID != "680755342879-n2lln1sfips9uk15slcrdk2ou97vt7l5.apps.googleusercontent.com":
+        if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_ID != "your-copied-client-id-here.apps.googleusercontent.com":
             if aud != settings.GOOGLE_CLIENT_ID:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,

@@ -32,6 +32,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from app.routers.logs import router as logs_router
+from app.routers.anomalies import router as anomalies_router
+app.include_router(logs_router)
+app.include_router(anomalies_router)
+
 # Helper to log actions in AuditLog table
 def create_audit_log(db: Session, email: str, action: str, status: str, ip: str = None):
     log = AuditLog(user_email=email, action=action, status=status, ip_address=ip)
