@@ -1,7 +1,5 @@
 # Insider-Threat-Behavioral-Intelligence-System
 
-### 1️⃣ Root `README.md` (project root లో — `backend`/`frontend` folders unna చోట) — COMPLETE
-
 ```markdown
 # Aegis — AI Insider Threat Behavioral Intelligence System
 
