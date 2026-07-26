@@ -58,13 +58,55 @@ backend/
 │
 ├── app/
 │   ├── api/
+│   │   ├── auth.py
+│   │   └── activity.py
 │   ├── models/
+│   │   ├── user.py
+│   │   ├── employee.py
+│   │   ├── department.py
+│   │   ├── device.py
+│   │   └── activity_event.py
 │   ├── schemas/
+│   │   ├── user.py
+│   │   ├── employee.py
+│   │   ├── department.py
+│   │   ├── device.py
+│   │   └── activity_event.py
 │   ├── services/
 │   ├── database.py
 │   └── main.py
 │
-├── requirements.txt
+└── requirements.txt
+
+frontend/
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── ProtectedRoute.jsx
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── GoogleSuccess.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Profile.jsx
+│   │   ├── EmployeePage.jsx
+│   │   ├── DepartmentPage.jsx
+│   │   └── DevicePage.jsx
+│   ├── routes/
+│   │   └── AppRoutes.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── styles/
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── index.html
+├── package.json
+└── vite.config.js
 
 ```
 
