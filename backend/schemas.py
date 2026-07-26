@@ -1,14 +1,24 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date
 from typing import Optional
+from models import UserRole
 
 
-# What the client sends when registering
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-    role: str = "employee"
+    role: UserRole = UserRole.SECURITY_ANALYST
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+    role: UserRole
+
+    class Config:
+        from_attributes = True
 
 
 # What the client sends when logging in
@@ -53,4 +63,4 @@ class ProfileOut(BaseModel):
     device_ids: Optional[str] = None
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
