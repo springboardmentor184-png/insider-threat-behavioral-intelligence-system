@@ -144,6 +144,7 @@ async def detect_anomaly(
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
+    # Get all activities for this employee
     activities = await activity_collection.find({"employee_id": activity.employee_id}).to_list(length=1000)
     
     if not activities:
@@ -154,6 +155,7 @@ async def detect_anomaly(
             "reason": "No baseline data available"
         }
     
+    # --- Build Baseline from existing activities ---
     event_types = {}
     source_systems = {}
     ip_addresses = {}
@@ -179,28 +181,33 @@ async def detect_anomaly(
     most_common_ip = max(ip_addresses, key=ip_addresses.get) if ip_addresses else None
     most_active_hour = max(hour_distribution, key=hour_distribution.get) if hour_distribution else None
     
+    # --- Check for anomalies ---
     anomalies = []
     is_anomaly = False
     
-    # FIXED: Check if activity fields are NOT in the baseline
+    # 1. Check event type
     if activity.event_type not in event_types:
-        anomalies.append(f"Unusual event type: '{activity.event_type}' (baseline: {list(event_types.keys())})")
+        anomalies.append(f"Unusual event type: '{activity.event_type}'")
         is_anomaly = True
     
+    # 2. Check source system
     if activity.source_system not in source_systems:
-        anomalies.append(f"Unusual source system: '{activity.source_system}' (baseline: {list(source_systems.keys())})")
+        anomalies.append(f"Unusual source system: '{activity.source_system}'")
         is_anomaly = True
     
+    # 3. Check IP address
     if activity.ip_address and activity.ip_address not in ip_addresses:
-        anomalies.append(f"Unusual IP address: '{activity.ip_address}' (baseline: {list(ip_addresses.keys())})")
+        anomalies.append(f"Unusual IP address: '{activity.ip_address}'")
         is_anomaly = True
     
+    # --- Determine severity based on anomalies ---
     severity = "INFO"
     if len(anomalies) >= 3:
         severity = "CRITICAL"
     elif len(anomalies) >= 1:
         severity = "WARNING"
     
+    # --- Return result ---
     return {
         "employee_id": activity.employee_id,
         "employee_name": f"{employee.first_name} {employee.last_name}",
@@ -218,7 +225,7 @@ async def detect_anomaly(
     }
 
 # ============================================
-# GET /activities/report/{employee_id} - Generate anomaly report
+# GET /activities/report/{employee_id} - Generate anomaly report (FIXED)
 # ============================================
 @router.get("/report/{employee_id}")
 async def generate_anomaly_report(
@@ -240,6 +247,7 @@ async def generate_anomaly_report(
             "report": None
         }
     
+    # --- Build Baseline ---
     event_types = {}
     source_systems = {}
     ip_addresses = {}
@@ -260,24 +268,35 @@ async def generate_anomaly_report(
             hour = timestamp.hour
             hour_distribution[hour] = hour_distribution.get(hour, 0) + 1
     
-    top_events = sorted(event_types.items(), key=lambda x: x[1], reverse=True)[:2]
-    top_sources = sorted(source_systems.items(), key=lambda x: x[1], reverse=True)[:2]
-    top_ips = sorted(ip_addresses.items(), key=lambda x: x[1], reverse=True)[:2]
+    # --- Get top 5 most common for each category ---
+    top_events = sorted(event_types.items(), key=lambda x: x[1], reverse=True)[:5]
+    top_sources = sorted(source_systems.items(), key=lambda x: x[1], reverse=True)[:5]
+    top_ips = sorted(ip_addresses.items(), key=lambda x: x[1], reverse=True)[:5]
     
+    # --- Define what's "normal" (top 5 of each) ---
+    normal_events = [e[0] for e in top_events]
+    normal_sources = [s[0] for s in top_sources]
+    normal_ips = [i[0] for i in top_ips]
+    
+    # --- Detect anomalies: activities NOT in the top 5 ---
     anomalies = []
     for act in activities:
         anomaly_reasons = []
         
         event = act.get("event_type", "UNKNOWN")
-        if event not in event_types:
+        source = act.get("source_system", "UNKNOWN")
+        ip = act.get("ip_address", "UNKNOWN")
+        
+        # Check if event type is NOT in top 5
+        if event not in normal_events:
             anomaly_reasons.append(f"Unusual event: {event}")
         
-        source = act.get("source_system", "UNKNOWN")
-        if source not in source_systems:
+        # Check if source system is NOT in top 5
+        if source not in normal_sources:
             anomaly_reasons.append(f"Unusual source: {source}")
         
-        ip = act.get("ip_address", "UNKNOWN")
-        if ip not in ip_addresses:
+        # Check if IP address is NOT in top 5
+        if ip not in normal_ips:
             anomaly_reasons.append(f"Unusual IP: {ip}")
         
         if anomaly_reasons:
@@ -290,6 +309,7 @@ async def generate_anomaly_report(
                 "metadata": act.get("metadata", {})
             })
     
+    # --- Generate Report ---
     report = {
         "employee_id": employee_id,
         "employee_name": f"{employee.first_name} {employee.last_name}",
@@ -306,10 +326,13 @@ async def generate_anomaly_report(
         "recommendations": []
     }
     
+    # --- Generate Recommendations ---
     if len(anomalies) > 50:
         report["recommendations"].append("🔴 High anomaly count - Investigate immediately!")
     elif len(anomalies) > 20:
         report["recommendations"].append("🟡 Medium anomaly count - Monitor closely")
+    elif len(anomalies) > 0:
+        report["recommendations"].append("🟡 Some anomalies detected - Review recent activities")
     else:
         report["recommendations"].append("🟢 Low anomaly count - Normal behavior")
     
@@ -323,6 +346,10 @@ async def generate_anomaly_report(
 
 # ============================================
 # GET /activities/risk-score/{employee_id} - Calculate risk score
+# ============================================
+@router.get("/risk-score/{employee_id}")
+# ============================================
+# GET /activities/risk-score/{employee_id} - Calculate risk score (FIXED)
 # ============================================
 @router.get("/risk-score/{employee_id}")
 async def calculate_risk_score(
@@ -342,9 +369,14 @@ async def calculate_risk_score(
             "employee_name": f"{employee.first_name} {employee.last_name}",
             "risk_score": 0,
             "risk_level": "No Risk",
+            "total_activities": 0,
+            "total_anomalies": 0,
+            "anomaly_percentage": 0,
+            "risk_factors": [],
             "message": "No activities found for this employee"
         }
     
+    # --- Build Baseline for risk scoring ---
     event_types = {}
     source_systems = {}
     ip_addresses = {}
@@ -359,20 +391,30 @@ async def calculate_risk_score(
         ip = act.get("ip_address", "UNKNOWN")
         ip_addresses[ip] = ip_addresses.get(ip, 0) + 1
     
+    # --- Detect anomalies (using TOP 5 approach) ---
+    top_events = sorted(event_types.items(), key=lambda x: x[1], reverse=True)[:5]
+    top_sources = sorted(source_systems.items(), key=lambda x: x[1], reverse=True)[:5]
+    top_ips = sorted(ip_addresses.items(), key=lambda x: x[1], reverse=True)[:5]
+    
+    normal_events = [e[0] for e in top_events]
+    normal_sources = [s[0] for s in top_sources]
+    normal_ips = [i[0] for i in top_ips]
+    
     anomalies = []
     for act in activities:
         anomaly_reasons = []
         
         event = act.get("event_type", "UNKNOWN")
-        if event not in event_types:
+        source = act.get("source_system", "UNKNOWN")
+        ip = act.get("ip_address", "UNKNOWN")
+        
+        if event not in normal_events:
             anomaly_reasons.append(f"Unusual event: {event}")
         
-        source = act.get("source_system", "UNKNOWN")
-        if source not in source_systems:
+        if source not in normal_sources:
             anomaly_reasons.append(f"Unusual source: {source}")
         
-        ip = act.get("ip_address", "UNKNOWN")
-        if ip not in ip_addresses:
+        if ip not in normal_ips:
             anomaly_reasons.append(f"Unusual IP: {ip}")
         
         if anomaly_reasons:
@@ -393,11 +435,8 @@ async def calculate_risk_score(
     else:
         anomaly_ratio = (total_anomalies / total_activities) * 100
         risk_score = min(100, anomaly_ratio * 2)
-        
-        critical_count = sum(1 for a in anomalies if a.get("metadata", {}).get("severity") == "CRITICAL")
-        if critical_count > 0:
-            risk_score = min(100, risk_score + (critical_count * 5))
     
+    # --- Determine Risk Level ---
     if risk_score == 0:
         risk_level = "🟢 No Risk"
     elif risk_score < 30:
@@ -409,14 +448,14 @@ async def calculate_risk_score(
     else:
         risk_level = "🔴 Critical Risk"
     
+    # --- Generate Risk Factors ---
     risk_factors = []
-    if risk_score > 50:
-        if total_anomalies > 10:
-            risk_factors.append("⚠️ High number of anomalies detected")
-        if any("Unusual event" in a["reasons"][0] for a in anomalies):
-            risk_factors.append("⚠️ Unusual event types detected")
-        if any("Unusual IP" in a["reasons"][0] for a in anomalies):
-            risk_factors.append("⚠️ Access from unusual IP addresses")
+    if total_anomalies > 10:
+        risk_factors.append(f"⚠️ High number of anomalies detected ({total_anomalies})")
+    if total_anomalies > 0:
+        risk_factors.append(f"⚠️ {total_anomalies} unusual activities detected")
+    if len(set([a["event_type"] for a in anomalies])) > 3:
+        risk_factors.append("⚠️ Multiple unusual event types detected")
     
     return {
         "employee_id": employee_id,
