@@ -110,6 +110,15 @@ backend/
 - Record individual live activity events
 - Retrieve activity events, filterable by user or event type
 
+## Frontend
+
+- Login, Register, and Google OAuth login pages
+- Role-based dashboard with sidebar navigation
+- Employee management UI (view all, create/update/delete own profile)
+- Department management UI (view all, create)
+- Device management UI (create/update/delete own device)
+- JWT auto-attached to all requests via Axios interceptor
+
 ---
 
 # API Endpoints
@@ -131,13 +140,14 @@ backend/
 | GET | `/employee/profile` | Retrieve employee profile |
 | PUT | `/employee/profile` | Update employee profile |
 | DELETE | `/employee/profile` | Delete employee profile |
+| GET | `/employee/all` | Retrieve all employee profiles |
 
 ## Department
 
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/department` | Create department |
-| GET | `/department` | Retrieve departments *(planned — not yet implemented)* |
+| GET | `/department` | Retrieve all departments |
 | PUT | `/department/{department_id}` | Update department *(planned — not yet implemented)* |
 | DELETE | `/department/{department_id}` | Delete department *(planned — not yet implemented)* |
 
@@ -157,6 +167,7 @@ backend/
 | POST | `/activity/event` | Record a single activity event |
 | POST | `/activity/ingest` | Bulk-ingest activity events from a CSV file |
 | GET | `/activity/events` | Retrieve recent activity events (filterable) |
+
 
 ---
 
@@ -206,6 +217,34 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+
+## Frontend Setup
+
+Navigate to the frontend directory
+
+```bash
+cd frontend
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run the development server
+
+```bash
+npm run dev
+```
+
+The frontend will be available at:
+
+```
+http://localhost:5173
+```
+
+
 ## API Documentation
 
 Swagger UI
@@ -224,20 +263,22 @@ http://127.0.0.1:8000/docs
 - JWT Authentication
 - Role-Based Access Control
 - Google OAuth Authentication
-- Employee Management Module
-- Department Management Module (create only — full CRUD planned)
+- Employee Management Module (with full employee listing)
+- Department Management Module (create + view all — update/delete planned)
 - Device Management Module
 - Activity Log Ingestion Pipeline
+- React Frontend (Milestone 1 scope: auth, employee/department/device management, role-based dashboard shell)
 
 ## In Progress
 
-- React Frontend Development
+- Behavioral Analytics Engine 
+- Anomaly Detection Workflows
 
 ## Planned
 
-- Behavioral Analytics
+
 - Insider Threat Detection
-- Machine Learning Model Integration
+- Machine Learning Model Integration (Isolation Forest-based anomaly detection)
 - Risk Score Prediction
 - Dashboard and Reporting
 
