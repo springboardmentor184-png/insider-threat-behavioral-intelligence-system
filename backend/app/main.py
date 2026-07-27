@@ -8,7 +8,8 @@ import os
 from app.api.auth import router as auth_router
 from app.api.activity import router as activity_router
 from app.database import Base, engine
-from app.models import user, employee, department, device, activity_event
+from app.models import user, employee, department, device, activity_event, risk_score
+from app.api.analytics import router as analytics_router
 
 load_dotenv()
 
@@ -33,6 +34,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(activity_router)
+app.include_router(analytics_router)
 
 @app.get("/")
 def home():
