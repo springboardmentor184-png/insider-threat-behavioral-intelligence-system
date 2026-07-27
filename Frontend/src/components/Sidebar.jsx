@@ -9,6 +9,7 @@ function Sidebar() {
 
   return (
     <aside className="sidebar">
+
       {/* Logo */}
       <div className="sidebar-logo">
         <div className="logo-icon">
@@ -24,6 +25,7 @@ function Sidebar() {
       {/* Navigation */}
       <nav className="sidebar-menu">
 
+        {/* Dashboard */}
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
@@ -34,6 +36,7 @@ function Sidebar() {
           <span>Dashboard</span>
         </NavLink>
 
+        {/* Employees */}
         <NavLink
           to="/employees"
           className={({ isActive }) =>
@@ -44,6 +47,7 @@ function Sidebar() {
           <span>Employees</span>
         </NavLink>
 
+        {/* Analytics */}
         <NavLink
           to="/analytics"
           className={({ isActive }) =>
@@ -54,6 +58,7 @@ function Sidebar() {
           <span>Analytics</span>
         </NavLink>
 
+        {/* Activity Logs */}
         <NavLink
           to="/activitylogs"
           className={({ isActive }) =>
@@ -64,6 +69,7 @@ function Sidebar() {
           <span>Activity Logs</span>
         </NavLink>
 
+        {/* Threat Alerts */}
         <NavLink
           to="/threatalerts"
           className={({ isActive }) =>
@@ -74,6 +80,18 @@ function Sidebar() {
           <span>Threat Alerts</span>
         </NavLink>
 
+        {/* AI Prediction */}
+        <NavLink
+          to="/prediction"
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <i className="bi bi-cpu-fill"></i>
+          <span>AI Prediction</span>
+        </NavLink>
+
+        {/* Settings */}
         <NavLink
           to="/settings"
           className={({ isActive }) =>
@@ -93,6 +111,7 @@ function Sidebar() {
           <span> Logout</span>
         </button>
       </div>
+
     </aside>
   );
 }

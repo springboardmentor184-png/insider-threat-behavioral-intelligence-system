@@ -1,49 +1,56 @@
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  CartesianGrid,
+  ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { day: "Mon", activity: 40 },
-  { day: "Tue", activity: 55 },
-  { day: "Wed", activity: 68 },
-  { day: "Thu", activity: 90 },
-  { day: "Fri", activity: 78 },
-  { day: "Sat", activity: 35 },
-  { day: "Sun", activity: 50 }
-];
+function ActivityChart({ employees }) {
 
-function ActivityChart() {
+  const departmentCount = {};
+
+  employees.forEach((emp) => {
+
+    if (departmentCount[emp.department]) {
+      departmentCount[emp.department]++;
+    } else {
+      departmentCount[emp.department] = 1;
+    }
+
+  });
+
+  const data = Object.keys(departmentCount).map((department) => ({
+    department,
+    employees: departmentCount[department],
+  }));
+
   return (
     <div className="chart-card">
 
-      <h4>Employee Activity</h4>
+      <h4>Employees by Department</h4>
 
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={320}>
 
-        <LineChart data={data}>
+        <BarChart data={data}>
 
           <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis dataKey="day" />
+          <XAxis dataKey="department" />
 
           <YAxis />
 
           <Tooltip />
 
-          <Line
-            type="monotone"
-            dataKey="activity"
-            stroke="#2563eb"
-            strokeWidth={3}
+          <Bar
+            dataKey="employees"
+            fill="#2563EB"
+            radius={[6, 6, 0, 0]}
           />
 
-        </LineChart>
+        </BarChart>
 
       </ResponsiveContainer>
 

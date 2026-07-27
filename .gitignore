@@ -216,3 +216,30 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# ==========================================
+# AI Insider Threat Project
+# ==========================================
+
+# Generated PDF Reports
+Backend/reports/
+
+# Uploaded Dataset Files
+Backend/uploads/
+
+# Temporary Test Files
+Backend/test_predict.py
+
+# React Dependencies
+Frontend/node_modules/
+
+# VS Code
+.vscode/
+
+# IntelliJ / PyCharm
+.idea/
+
+# Operating System Files
+Thumbs.db
+.DS_Store

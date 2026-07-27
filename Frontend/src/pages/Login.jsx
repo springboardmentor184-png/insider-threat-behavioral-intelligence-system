@@ -1,12 +1,49 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService";
 import "../styles/auth.css";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await loginUser(formData);
+
+      localStorage.setItem(
+        "access_token",
+        response.data.access_token
+      );
+
+      alert("Login Successful!");
+
+      navigate("/dashboard");
+    } catch (error) {
+      alert(
+        error.response?.data?.detail ||
+          "Invalid email or password"
+      );
+    }
   };
 
   return (
@@ -14,6 +51,7 @@ function Login() {
       <div className="row min-vh-100">
 
         {/* Left Section */}
+
         <div className="col-lg-6 left-panel d-none d-lg-flex">
 
           <div className="left-content">
@@ -77,14 +115,14 @@ function Login() {
             </span>
 
             <h2 className="mb-2 fw-bold">
-              Welcome Back 
+              Welcome Back
             </h2>
 
             <p className="text-muted mb-4">
               Sign in to continue to your dashboard.
             </p>
 
-            <form>
+            <form onSubmit={handleLogin}>
 
               {/* Email */}
 
@@ -104,6 +142,10 @@ function Login() {
                     type="email"
                     className="form-control"
                     placeholder="Enter your email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                   />
 
                 </div>
@@ -128,6 +170,10 @@ function Login() {
                     type={showPassword ? "text" : "password"}
                     className="form-control"
                     placeholder="Enter your password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
                   />
 
                   <button
@@ -147,6 +193,8 @@ function Login() {
                 </div>
 
               </div>
+
+              {/* Remember Me */}
 
               <div className="d-flex justify-content-between align-items-center mb-4">
 
@@ -187,7 +235,12 @@ function Login() {
 
                   Don't have an account?
 
-                  <Link to="/register"className="register-link ms-2">Register</Link>
+                  <Link
+                    to="/register"
+                    className="register-link ms-2"
+                  >
+                    Register
+                  </Link>
 
                 </p>
 

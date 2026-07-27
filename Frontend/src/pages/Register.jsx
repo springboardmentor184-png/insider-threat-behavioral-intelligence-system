@@ -1,11 +1,53 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../services/authService";
 import "../styles/auth.css";
 
 function Register() {
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [formData, setFormData] = useState({
+    full_name: "",
+    employee_id: "",
+    email: "",
+    department: "",
+    role: "Employee",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      await registerUser({
+        full_name: formData.full_name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      alert("Registration Successful!");
+
+      navigate("/login");
+    } catch (error) {
+      alert(error.response?.data?.detail || "Registration Failed");
+    }
+  };
 
   return (
     <div className="container-fluid login-page">
@@ -81,12 +123,14 @@ function Register() {
               Register to access the security dashboard.
             </p>
 
-            <form>
+            <form onSubmit={handleRegister}>
 
               {/* Full Name */}
 
               <div className="mb-3">
-                <label className="form-label">Full Name</label>
+                <label className="form-label">
+                  Full Name
+                </label>
 
                 <div className="input-group">
 
@@ -98,9 +142,14 @@ function Register() {
                     type="text"
                     className="form-control"
                     placeholder="Enter your full name"
+                    name="full_name"
+                    value={formData.full_name}
+                    onChange={handleChange}
+                    required
                   />
 
                 </div>
+
               </div>
 
               {/* Employee ID */}
@@ -121,6 +170,9 @@ function Register() {
                     type="text"
                     className="form-control"
                     placeholder="Enter Employee ID"
+                    name="employee_id"
+                    value={formData.employee_id}
+                    onChange={handleChange}
                   />
 
                 </div>
@@ -145,6 +197,10 @@ function Register() {
                     type="email"
                     className="form-control"
                     placeholder="Enter your email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                   />
 
                 </div>
@@ -159,9 +215,14 @@ function Register() {
                   Department
                 </label>
 
-                <select className="form-select">
+                <select
+                  className="form-select"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                >
 
-                  <option>Select Department</option>
+                  <option value="">Select Department</option>
                   <option>IT</option>
                   <option>Cyber Security</option>
                   <option>HR</option>
@@ -190,6 +251,10 @@ function Register() {
                     type={showPassword ? "text" : "password"}
                     className="form-control"
                     placeholder="Create Password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
                   />
 
                   <button
@@ -197,7 +262,13 @@ function Register() {
                     className="btn btn-outline-secondary"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    <i className={showPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
+                    <i
+                      className={
+                        showPassword
+                          ? "bi bi-eye-slash-fill"
+                          : "bi bi-eye-fill"
+                      }
+                    ></i>
                   </button>
 
                 </div>
@@ -222,14 +293,26 @@ function Register() {
                     type={showConfirmPassword ? "text" : "password"}
                     className="form-control"
                     placeholder="Confirm Password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
                   />
 
                   <button
                     type="button"
                     className="btn btn-outline-secondary"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
                   >
-                    <i className={showConfirmPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
+                    <i
+                      className={
+                        showConfirmPassword
+                          ? "bi bi-eye-slash-fill"
+                          : "bi bi-eye-fill"
+                      }
+                    ></i>
                   </button>
 
                 </div>
@@ -244,11 +327,14 @@ function Register() {
                   Role
                 </label>
 
-                <select className="form-select">
-
+                <select
+                  className="form-select"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                >
                   <option>Employee</option>
                   <option>Admin</option>
-
                 </select>
 
               </div>
@@ -261,6 +347,7 @@ function Register() {
                   className="form-check-input"
                   type="checkbox"
                   id="terms"
+                  required
                 />
 
                 <label
@@ -273,6 +360,7 @@ function Register() {
               </div>
 
               <button
+                type="submit"
                 className="btn btn-primary login-btn w-100"
               >
                 <i className="bi bi-person-plus-fill me-2"></i>
@@ -285,7 +373,12 @@ function Register() {
 
                   Already have an account?
 
-                  <Link to="/login"className="register-link ms-2">Login</Link>
+                  <Link
+                    to="/login"
+                    className="register-link ms-2"
+                  >
+                    Login
+                  </Link>
 
                 </p>
 

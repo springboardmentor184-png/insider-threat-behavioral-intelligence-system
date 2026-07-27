@@ -545,3 +545,148 @@ body {
 .alert-content small {
   color: #9ca3af;
 }
+
+/* ==========================================
+   Activity Logs Page
+========================================== */
+
+/* Card Styling */
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Table */
+.table {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.table thead th {
+  background: #111827 !important;
+  color: #fff !important;
+  text-align: center;
+  vertical-align: middle;
+  padding: 14px;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 14px 10px;
+  white-space: nowrap;
+}
+
+/* Zebra Rows */
+.table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* Hover Effect */
+.table tbody tr:hover {
+  background-color: #eaf4ff;
+  transition: all 0.3s ease;
+}
+
+/* Search & Filters */
+.form-control,
+.form-select {
+  border-radius: 10px;
+  min-height: 45px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* Dashboard Header */
+.dashboard-header h2 {
+  font-weight: 700;
+  color: #111827;
+}
+
+.dashboard-header p {
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+/* Bootstrap Badge Override */
+.badge {
+  font-size: 12px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  min-width: 70px;
+  display: inline-block;
+}
+
+/* Card Body */
+.card-body {
+  padding: 20px;
+}
+
+/* Table Responsive */
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Scrollbar */
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+/* ==========================================
+   AI Prediction
+========================================== */
+
+.prediction-card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.prediction-card h4{
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.prediction-result{
+    margin-top:20px;
+    padding:20px;
+    border-radius:15px;
+    background:#f8fafc;
+}
+
+.prediction-result h5{
+    font-weight:700;
+}
+
+.prediction-result p{
+    margin-bottom:10px;
+}
+
+.ai-icon{
+    font-size:70px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.form-label{
+    font-weight:600;
+}
+
+.btn-primary{
+    font-weight:600;
+}

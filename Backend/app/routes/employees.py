@@ -39,7 +39,13 @@ def get_employees(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    return db.query(Employee).all()
+    employees = (
+        db.query(Employee)
+        .order_by(Employee.employee_id.asc())
+        .all()
+    )
+
+    return employees
 
 
 # ==========================
