@@ -17,6 +17,7 @@ function Sidebar() {
 
   return (
     <div
+      className="sidebar-nav no-print"
       style={{
         width: "200px",
         minHeight: "100vh",
@@ -33,6 +34,7 @@ function Sidebar() {
       <Link to="/departments" style={linkStyle}>Departments</Link>
       <Link to="/device" style={linkStyle}>Device</Link>
       <Link to="/profile" style={linkStyle}>Profile</Link>
+      <Link to="/reports" style={linkStyle}>Reports</Link>
 
       <button
         onClick={handleLogout}

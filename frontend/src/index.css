@@ -2,3 +2,13 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .report-content {
+    margin-left: 0 !important;
+  }
+}

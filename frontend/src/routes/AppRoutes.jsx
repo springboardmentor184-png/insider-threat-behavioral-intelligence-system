@@ -9,6 +9,7 @@ import GoogleSuccess from "../pages/GoogleSuccess";
 import EmployeePage from "../pages/EmployeePage";   {/* add */}
 import DepartmentPage from "../pages/DepartmentPage";
 import DevicePage from "../pages/DevicePage";
+import ReportsPage from "../pages/ReportsPage";
 
 function AppRoutes() {
   return (
@@ -52,6 +53,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <DevicePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <ReportsPage />
             </ProtectedRoute>
           }
         />
