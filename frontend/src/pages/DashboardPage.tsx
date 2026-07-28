@@ -40,6 +40,7 @@ const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [downloading, setDownloading] = useState<boolean>(false);
 
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
@@ -47,6 +48,39 @@ const DashboardPage: React.FC = () => {
 
   const EMPLOYEE_ID = '33901353-84ca-11f1-9e39-e4fd457b80cb';
 
+  // --- PDF Download Function ---
+  const downloadPDF = async (): Promise<void> => {
+    try {
+      setDownloading(true);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `http://127.0.0.1:8000/reports/pdf/${EMPLOYEE_ID}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          responseType: 'blob'
+        }
+      );
+      
+      // Create a download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `threat_report_${new Date().toISOString().slice(0,10)}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setDownloading(false);
+    } catch (error) {
+      console.error('❌ Error downloading PDF:', error);
+      alert('Failed to download PDF report. Please try again.');
+      setDownloading(false);
+    }
+  };
+
+  // --- Fetch Data Function ---
   const fetchData = async (): Promise<void> => {
     if (!token) {
       setError('No authentication token found');
@@ -80,6 +114,7 @@ const DashboardPage: React.FC = () => {
     }
   };
 
+  // --- Initial Fetch ---
   useEffect(() => {
     if (token) {
       fetchData();
@@ -89,11 +124,13 @@ const DashboardPage: React.FC = () => {
     }
   }, [token]);
 
+  // --- Refresh Handler ---
   const handleRefresh = (): void => {
     setRefreshing(true);
     fetchData();
   };
 
+  // --- Helper: Risk Color ---
   const getRiskColor = (level: string | undefined): string => {
     if (!level) return 'bg-gray-400';
     if (level.includes('Critical')) return 'bg-red-600';
@@ -103,12 +140,14 @@ const DashboardPage: React.FC = () => {
     return 'bg-gray-400';
   };
 
+  // --- Helper: Severity Color ---
   const getSeverityColor = (severity: string | undefined): string => {
     if (severity === 'CRITICAL') return 'text-red-600 font-bold';
     if (severity === 'WARNING') return 'text-yellow-600 font-bold';
     return 'text-green-600';
   };
 
+  // --- Loading State ---
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -117,6 +156,7 @@ const DashboardPage: React.FC = () => {
     );
   }
 
+  // --- Error State ---
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -134,10 +174,11 @@ const DashboardPage: React.FC = () => {
     );
   }
 
+  // --- Main Render ---
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header with PDF Download Button */}
         <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
           <h1 className="text-3xl font-bold text-gray-800">
             🛡️ Insider Threat Dashboard
@@ -146,6 +187,17 @@ const DashboardPage: React.FC = () => {
             <span className="text-sm text-gray-600">
               👤 {username || 'User'} ({role || 'No Role'})
             </span>
+            <button
+              onClick={downloadPDF}
+              disabled={downloading}
+              className={`px-4 py-2 text-white rounded transition ${
+                downloading
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-red-500 hover:bg-red-600'
+              }`}
+            >
+              {downloading ? '📄 Generating...' : '📄 Download PDF'}
+            </button>
             <button
               onClick={handleRefresh}
               disabled={refreshing}
@@ -162,7 +214,7 @@ const DashboardPage: React.FC = () => {
                 localStorage.clear();
                 window.location.href = '/';
               }}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
             >
               Logout
             </button>

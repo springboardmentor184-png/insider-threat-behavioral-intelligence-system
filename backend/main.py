@@ -6,13 +6,14 @@ from app.api import auth
 from app.api import admin
 from app.api import employees
 from app.api import activities
-from app.api import anomaly  # <-- Import here
+from app.api import reports  # <-- IMPORT HERE
 from app.core.mongodb import database
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()  # <-- app is CREATED HERE
 
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -21,12 +22,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ALL routers go AFTER app = FastAPI()
+# --- ROUTERS (MUST BE AFTER app = FastAPI()) ---
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(admin.router)
 app.include_router(employees.router)
 app.include_router(activities.router)
-app.include_router(anomaly.router)  # <-- This MUST be AFTER app = FastAPI()
+app.include_router(reports.router)  # <-- ADD THIS AFTER app = FastAPI()
 
 @app.get("/")
 async def read_root():
