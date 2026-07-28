@@ -1,36 +1,30 @@
 import os
 import sys
 import pandas as pd
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
 DATASET_DIR = os.path.join(ROOT_DIR, "dataset")
 sys.path.insert(0, ROOT_DIR)
 from database.db_connection import get_connection
-
 def load_logon_data(sample=True):
     filename = "logon_sample.csv" if sample else "logon.csv"
     path = os.path.join(DATASET_DIR, filename)
     return pd.read_csv(path)
-
 
 def load_device_data(sample=True):
     filename = "device_sample.csv" if sample else "device.csv"
     path = os.path.join(DATASET_DIR, filename)
     return pd.read_csv(path)
 
-
 def clean_logon_data(df: pd.DataFrame) -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["date"], format="%m/%d/%Y %H:%M:%S", errors="coerce")
     df = df.dropna(subset=["user", "pc", "date"])
     return df
 
-
 def clean_device_data(df: pd.DataFrame) -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["date"], format="%m/%d/%Y %H:%M:%S", errors="coerce")
     df = df.dropna(subset=["user", "pc", "date"])
     return df
-
 
 def engineer_logon_features(df: pd.DataFrame) -> pd.DataFrame:
     """Per-user logon behavior features."""
@@ -63,7 +57,6 @@ def engineer_device_features(df: pd.DataFrame) -> pd.DataFrame:
         .reset_index()
     )
     return features
-
 
 def run_preprocessing_pipeline(sample=True):
     """Full pipeline: load, clean, and merge logon + device features per user."""
@@ -111,10 +104,6 @@ def save_to_database(df):
     conn.close()
 
     print("Data inserted successfully!")
-
-
-
-
 
 def create_sample_files(nrows=5000):
     """One-time utility: create small sample CSVs from the full datasets."""

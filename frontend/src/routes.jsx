@@ -9,6 +9,7 @@ import Alerts from "./pages/Alerts";
 import Users from "./pages/Users";
 import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
+import Employees from "./pages/Employees";
 
 
 function AppRoutes() {
@@ -24,6 +25,7 @@ function AppRoutes() {
             <Route path="/reports" element={<Reports />} />
             <Route path="*" element={<NotFound />} />
             <Route path="/oauth-success" element={<OAuthSuccess />} />
+            <Route path="/employees" element={<Employees/>}/>
         </Routes>
     );
 }

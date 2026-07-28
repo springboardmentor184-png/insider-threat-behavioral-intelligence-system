@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 import os
 from .database import Base, engine
-
+from .routers import behavior
 from .routers import auth
 from .routers import dashboard
 from .routers import profile
@@ -12,6 +12,9 @@ from .routers import users
 from .routers import reports
 
 from .routers import oauth2
+from app.routers import activity
+
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -35,6 +38,8 @@ app.include_router(profile.router)
 app.include_router(alerts.router)
 app.include_router(users.router)
 app.include_router(reports.router)
+app.include_router(activity.router)
+app.include_router(behavior.router)
 
 
 @app.get("/")

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-
+from datetime import datetime
 class UserRegister(BaseModel):
     full_name: str
     email: EmailStr
@@ -72,5 +72,21 @@ class ProfileOut(BaseModel):
     phone: Optional[str] = None
     address: Optional[str] = None
     
+    class Config:
+        from_attributes = True
+
+class ActivityLogBase(BaseModel):
+    employee: str
+    activity: str
+    device: str
+    ip_address: str
+
+class ActivityCreate(ActivityLogBase):
+    pass
+
+class ActivityLogOut(ActivityLogBase):
+    id: int
+    timestamp: datetime
+
     class Config:
         from_attributes = True

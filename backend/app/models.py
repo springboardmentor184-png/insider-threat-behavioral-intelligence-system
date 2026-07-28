@@ -5,6 +5,7 @@ from sqlalchemy import Boolean
 from sqlalchemy import DateTime
 from sqlalchemy import Float
 from sqlalchemy.sql import func
+from datetime import datetime
 from sqlalchemy import ForeignKey
 from .database import Base
 
@@ -69,13 +70,11 @@ class ActivityLog(Base):
     __tablename__ = "activity_logs"
 
     id = Column(Integer, primary_key=True, index=True)
-
     employee = Column(String(150))
-
     activity = Column(String(255))
-
     device = Column(String(100))
-
     ip_address = Column(String(100))
+    timestamp = Column(DateTime, default=datetime.utcnow)
 
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+   
+   

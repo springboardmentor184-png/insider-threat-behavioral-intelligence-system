@@ -1,25 +1,10 @@
+from app.services.risk_score import risk_score_calculator
+
+
 class AlertSystem:
 
-    def generate_alert(
-        self,
-        employee,
-        risk_score
-    ):
-        if risk_score >= 80:
-
-            severity = "Critical"
-
-        elif risk_score >= 60:
-
-            severity = "High"
-
-        elif risk_score >= 40:
-
-            severity = "Medium"
-
-        else:
-
-            severity = "Low"
+    def generate_alert(self, employee, risk_score, usb_count=0):
+        severity = risk_score_calculator.categorize(risk_score)
 
         return {
             "employee": employee,
@@ -27,3 +12,6 @@ class AlertSystem:
             "severity": severity,
             "status": "Open"
         }
+
+
+alert_system = AlertSystem()

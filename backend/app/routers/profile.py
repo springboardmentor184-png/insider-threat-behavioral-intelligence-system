@@ -32,7 +32,7 @@ def update_profile(
     db: Session = Depends(get_db)
 ):
     profile = db.query(models.UserProfile).filter(
-        UserProfile.id == profile_id
+       models.UserProfile.id == profile_id
     ).first()
 
     if profile is None:

@@ -5,11 +5,14 @@ __pycache__/
 
 # C extensions
 *.so
-
-
+dataset/
+datatset/LDAP
 dataset/device.csv
 dataset/logon.csv
-
+dataset/email.csv
+dataset/http.csv
+dataset/file.csv
+dataset/psychometric.csv
 # Distribution / packaging
 .Python
 build/

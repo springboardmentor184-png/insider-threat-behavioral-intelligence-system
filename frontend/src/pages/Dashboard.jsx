@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import API_URL from "../services/api";
+import { fetchAnomalies } from "../services/behaviorservice";
 import "../styles/Dashboard.css";
+import RiskDistributionChart from "./RiskDistributionChart.jsx";
 
 function Dashboard() {
     const role = localStorage.getItem("role");
@@ -18,14 +22,21 @@ function Dashboard() {
             <div className="dashboard-body">
                 <nav className="sidebar">
                     <ul>
-                        <li>Dashboard</li>
-                        {(role === "Administrator") && <li>User Management</li>}
-                        {(role === "Administrator" || role === "Security Manager") && <li>Reports</li>}
-                        {(role === "Administrator" || role === "Security Manager" || role === "SOC Engineer") && <li>Alerts</li>}
-                        {role === "SOC Engineer" && <li>Incident Response</li>}
-                        {role === "Security Analyst" && <li>My Investigations</li>}
-                        {role === "Administrator" && <li>System Settings</li>}
-                        <li>Profile</li>
+                        <li><Link to="/dashboard">Dashboard</Link></li>
+                        <li><Link to="/employees">Employees</Link></li>
+                        {role === "Administrator" && (
+                            <li><Link to="/users">User Management</Link></li>
+                        )}
+                        {(role === "Administrator" || role === "Security Manager") && (
+                            <li><Link to="/reports">Reports</Link></li>
+                        )}
+                        {(role === "Administrator" ||
+                            role === "Security Manager" ||
+                            role === "SOC Engineer" ||
+                            role === "Security Analyst") && (
+                                <li><Link to="/alerts">Alerts</Link></li>
+                            )}
+                        <li><Link to="/profile">Profile</Link></li>
                     </ul>
                 </nav>
 
@@ -50,62 +61,54 @@ function Dashboard() {
     );
 }
 
-
 function AdminOverview() {
+    const [stats, setStats] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetch(`${API_URL}/dashboard`)
+            .then((res) => {
+                if (!res.ok) throw new Error(`Status ${res.status}`);
+                return res.json();
+            })
+            .then((data) => setStats(data))
+            .catch((err) => {
+                console.error("Dashboard fetch failed:", err);
+                setError(err.message);
+            });
+    }, []);
+
+    if (error) {
+        return <p style={{ color: "red" }}>Failed to load dashboard data: {error}</p>;
+    }
+
+    if (!stats) {
+        return <p>Loading dashboard...</p>;
+    }
+
     return (
         <>
             <div className="overview-cards">
                 <div className="card">
-                    <span>System Health</span>
-                    <h2 className="green">99.9%</h2>
-                </div>
-                <div className="card">
                     <span>Total Users</span>
-                    <h2>24</h2>
+                    <h2>{stats.total_users}</h2>
                 </div>
                 <div className="card">
-                    <span>Active Sessions</span>
-                    <h2>3</h2>
+                    <span>High Risk Users</span>
+                    <h2 className="red">{stats.high_risk_users}</h2>
                 </div>
                 <div className="card">
-                    <span>Database Status</span>
-                    <h2 className="green">ONLINE</h2>
+                    <span>Low Risk Users</span>
+                    <h2 className="green">{stats.low_risk_users}</h2>
+                </div>
+                <div className="card">
+                    <span>System Status</span>
+                    <h2 className="green">{stats.system_status}</h2>
                 </div>
             </div>
-
-            <div className="panel-split">
-                <div className="panel-box">
-                    <h3>System Audit Logs</h3>
-                    <table className="log-table">
-                        <thead>
-                            <tr><th>Time</th><th>Operator</th><th>Action</th><th>Status</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>5:41:35 PM</td><td>admin_operator</td>
-                                <td>Accessed Settings Panel</td>
-                                <td><span className="badge success">SUCCESS</span></td>
-                            </tr>
-                            <tr>
-                                <td>5:40:45 PM</td><td>sec_analyst</td>
-                                <td>Generated Security Report</td>
-                                <td><span className="badge success">SUCCESS</span></td>
-                            </tr>
-                            <tr>
-                                <td>5:39:35 PM</td><td>soc_engineer</td>
-                                <td>Triggered Log Ingestion</td>
-                                <td><span className="badge success">SUCCESS</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="panel-box">
-                    <h3>Quick Controls</h3>
-                    <button className="control-btn primary">User Management</button>
-                    <button className="control-btn secondary">System Personnel Directory</button>
-                    <button className="control-btn secondary">Platform Analytics</button>
-                </div>
+            <div style={{ marginTop: "30px" }}>
+                <h3>Risk Distribution</h3>
+                <RiskDistributionChart />
             </div>
         </>
     );
@@ -117,16 +120,40 @@ function ManagerOverview() {
             <div className="card"><span>Organizational Risk</span><h2 className="amber">Medium</h2></div>
             <div className="card"><span>Open Insider Reports</span><h2>6</h2></div>
             <div className="card"><span>Compliance Score</span><h2 className="green">92%</h2></div>
-            <div className="card"><span>Risk Trend (7d)</span><h2 className="red">↑ 4%</h2></div>
+            <div className="card"><span>Risk Trend (7d)</span><h2 className="red">4%</h2></div>
         </div>
     );
 }
 
 function SOCOverview() {
+    const [anomalies, setAnomalies] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchAnomalies()
+            .then((data) => setAnomalies(data))
+            .catch((err) => {
+                console.error("Anomalies fetch failed:", err);
+                setError(err.message);
+            });
+    }, []);
+
+    if (error) {
+        return <p style={{ color: "red" }}>Failed to load SOC data: {error}</p>;
+    }
+
+    if (!anomalies) {
+        return <p>Loading SOC data...</p>;
+    }
+
+    const highRiskCount = anomalies.filter(
+        (a) => a.severity === "High" || a.severity === "Critical"
+    ).length;
+
     return (
         <div className="overview-cards">
-            <div className="card"><span>Live Alerts</span><h2 className="red">5</h2></div>
-            <div className="card"><span>Behavioral Anomalies</span><h2>12</h2></div>
+            <div className="card"><span>Live Alerts</span><h2 className="red">{highRiskCount}</h2></div>
+            <div className="card"><span>Behavioral Anomalies</span><h2>{anomalies.length}</h2></div>
             <div className="card"><span>Active Investigations</span><h2>3</h2></div>
             <div className="card"><span>Threat Intel Feed</span><h2 className="green">Updated</h2></div>
         </div>
@@ -134,10 +161,38 @@ function SOCOverview() {
 }
 
 function AnalystOverview() {
+    const [anomalies, setAnomalies] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchAnomalies()
+            .then((data) => setAnomalies(data))
+            .catch((err) => {
+                console.error("Anomalies fetch failed:", err);
+                setError(err.message);
+            });
+    }, []);
+
+    if (error) {
+        return <p style={{ color: "red" }}>Failed to load analyst data: {error}</p>;
+    }
+
+    if (!anomalies) {
+        return <p>Loading analyst data...</p>;
+    }
+
+    const avgRisk = anomalies.length
+        ? (anomalies.reduce((sum, a) => sum + a.risk_score, 0) / anomalies.length).toFixed(1)
+        : 0;
+
+    const assignedAlerts = anomalies.filter(
+        (a) => a.severity === "High" || a.severity === "Critical"
+    ).length;
+
     return (
         <div className="overview-cards">
-            <div className="card"><span>Assigned Alerts</span><h2>4</h2></div>
-            <div className="card"><span>Insider Risk Scores</span><h2>Avg 38</h2></div>
+            <div className="card"><span>Assigned Alerts</span><h2>{assignedAlerts}</h2></div>
+            <div className="card"><span>Insider Risk Scores</span><h2>Avg {avgRisk}</h2></div>
             <div className="card"><span>Investigation Queue</span><h2>7</h2></div>
             <div className="card"><span>Incidents Closed (30d)</span><h2 className="green">15</h2></div>
         </div>

@@ -3,10 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/auth";
 import "../styles/Login.css";
 
-
 function Login() {
     const navigate = useNavigate();
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
