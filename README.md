@@ -38,16 +38,18 @@ The system provides secure authentication, employee management, department manag
 - Google OAuth 2.0
 - Uvicorn
 
-## Frontend (Planned)
+## Frontend
 
-- React.js
+- React.js (Vite)
+- React Router
+- Axios
+- Recharts (data visualization)
 
-## AI / Machine Learning (Planned)
+## AI / Machine Learning
 
 - Pandas
 - NumPy
-- Scikit-learn
-- TensorFlow
+- Scikit-learn (Isolation Forest)
 
 ---
 
@@ -58,21 +60,29 @@ backend/
 │
 ├── app/
 │   ├── api/
-│   │   ├── auth.py
-│   │   └── activity.py
+│   │   ├── auth.py            # Authentication, employee, department, device routes
+│   │   ├── activity.py        # Activity log ingestion and retrieval
+│   │   └── analytics.py       # Behavioral analytics and risk scoring routes
 │   ├── models/
 │   │   ├── user.py
 │   │   ├── employee.py
 │   │   ├── department.py
 │   │   ├── device.py
-│   │   └── activity_event.py
+│   │   ├── activity_event.py
+│   │   └── risk_score.py
 │   ├── schemas/
 │   │   ├── user.py
 │   │   ├── employee.py
 │   │   ├── department.py
 │   │   ├── device.py
-│   │   └── activity_event.py
+│   │   ├── activity_event.py
+│   │   └── risk_score.py
 │   ├── services/
+│   │   ├── jwt_handler.py
+│   │   ├── oauth.py
+│   │   ├── rbac.py
+│   │   ├── security.py
+│   │   └── behavioral_analytics.py   # Feature engineering + Isolation Forest model
 │   ├── database.py
 │   └── main.py
 │
@@ -90,11 +100,12 @@ frontend/
 │   │   ├── Login.jsx
 │   │   ├── Register.jsx
 │   │   ├── GoogleSuccess.jsx
-│   │   ├── Dashboard.jsx
+│   │   ├── Dashboard.jsx          # Live risk overview
 │   │   ├── Profile.jsx
 │   │   ├── EmployeePage.jsx
 │   │   ├── DepartmentPage.jsx
-│   │   └── DevicePage.jsx
+│   │   ├── DevicePage.jsx
+│   │   └── ReportsPage.jsx        # Anomaly report: charts + printable PDF
 │   ├── routes/
 │   │   └── AppRoutes.jsx
 │   ├── services/
@@ -152,10 +163,19 @@ frontend/
 - Record individual live activity events
 - Retrieve activity events, filterable by user or event type
 
+## Behavioral Analytics & Risk Scoring
+
+- Feature engineering from raw activity events (per-user behavioral baseline)
+- Anomaly detection using Isolation Forest (unsupervised)
+- Risk scoring with Low / Medium / High / Critical categorization
+- On-demand model recomputation via API
+
 ## Frontend
 
 - Login, Register, and Google OAuth login pages
-- Role-based dashboard with sidebar navigation
+- Sidebar navigation across all pages
+- Live risk dashboard (category breakdown, top flagged users)
+- Anomaly report page with pie chart, bar chart, full flagged-user table, and printable PDF export
 - Employee management UI (view all, create/update/delete own profile)
 - Department management UI (view all, create)
 - Device management UI (create/update/delete own device)
@@ -209,6 +229,14 @@ frontend/
 | POST | `/activity/event` | Record a single activity event |
 | POST | `/activity/ingest` | Bulk-ingest activity events from a CSV file |
 | GET | `/activity/events` | Retrieve recent activity events (filterable) |
+
+## Behavioral Analytics
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/analytics/compute` | Run anomaly detection model and store fresh risk scores |
+| GET | `/analytics/risk-scores` | Retrieve computed risk scores (filterable by category) |
+| GET | `/analytics/risk-summary` | Get risk category counts for dashboard |
 
 
 ---
@@ -301,28 +329,28 @@ http://127.0.0.1:8000/docs
 
 ## Completed
 
-- User Authentication
-- JWT Authentication
-- Role-Based Access Control
-- Google OAuth Authentication
-- Employee Management Module (with full employee listing)
-- Department Management Module (create + view all — update/delete planned)
-- Device Management Module
-- Activity Log Ingestion Pipeline
-- React Frontend (Milestone 1 scope: auth, employee/department/device management, role-based dashboard shell)
+- User Authentication, JWT, RBAC, Google OAuth
+- Employee Management Module (full listing + own-profile CRUD)
+- Department Management Module (create + view all)
+- Device Management Module (own-device CRUD)
+- Activity Log Ingestion Pipeline (CERT and CMU datasets)
+- React Frontend — Milestone 1 scope (auth, employee/department/device management, sidebar navigation)
+- Behavioral Profiling Engine (feature engineering from activity data)
+- Anomaly Detection (Isolation Forest model)
+- Insider Risk Scoring Engine (Low/Medium/High/Critical)
+- Risk Dashboard with live analytics
+- Anomaly Report page (charts + printable PDF export)
 
 ## In Progress
 
-- Behavioral Analytics Engine 
-- Anomaly Detection Workflows
+- UEBA workflows (peer comparison, behavioral trend analysis)
+- Threat investigation module
 
 ## Planned
 
-
-- Insider Threat Detection
-- Machine Learning Model Integration (Isolation Forest-based anomaly detection)
-- Risk Score Prediction
-- Dashboard and Reporting
+- Role-specific dashboards (Analyst / SOC / Manager / Admin views)
+- Notification & escalation system
+- Docker deployment
 
 ---
 
