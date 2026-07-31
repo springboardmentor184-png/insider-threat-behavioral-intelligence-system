@@ -8,11 +8,15 @@ from app.api import employees
 from app.api import activities
 from app.api import reports  # <-- IMPORT HERE
 from app.core.mongodb import database
+from app.api import risk
+from app.api import ueba
+from app.api import investigations
 
+app = FastAPI()  
+app.include_router(investigations.router)
+app.include_router(ueba.router)
 Base.metadata.create_all(bind=engine)
-
-app = FastAPI()  # <-- app is CREATED HERE
-
+app.include_router(risk.router)
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,

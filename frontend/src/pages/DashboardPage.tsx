@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// --- Type Definitions ---
-interface RiskData {
+// --- Type Definitions for New Risk Engine ---
+interface RiskFactor {
+  factor: string;
+  weight: number;
+  description: string;
+  reason: string;
+}
+
+interface RiskScoreResponse {
+  employee_id: string;
+  employee_name: string;
   risk_score: number;
   risk_level: string;
-  total_activities: number;
-  total_anomalies: number;
-  anomaly_percentage: number;
-  risk_factors: string[];
+  risk_level_icon: string;
+  risk_level_color: string;
+  raw_weight: number;
+  anomaly_count: number;
+  total_activities?: number;
+  risk_factors: RiskFactor[];
   recommendations: string[];
-  employee_name: string;
-  employee_id: string;
+  last_updated: string;
 }
 
 interface Anomaly {
@@ -33,10 +43,26 @@ interface ReportResponse {
   };
 }
 
+interface TrendData {
+  date: string;
+  risk_score: number;
+  risk_level: string;
+  anomaly_count: number;
+  activity_count: number;
+}
+
+interface TrendResponse {
+  employee_id: string;
+  employee_name: string;
+  days: number;
+  trend: TrendData[];
+}
+
 // --- Component ---
 const DashboardPage: React.FC = () => {
-  const [riskData, setRiskData] = useState<RiskData | null>(null);
+  const [riskData, setRiskData] = useState<RiskScoreResponse | null>(null);
   const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
+  const [trendData, setTrendData] = useState<TrendData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -63,7 +89,6 @@ const DashboardPage: React.FC = () => {
         }
       );
       
-      // Create a download link
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -92,19 +117,25 @@ const DashboardPage: React.FC = () => {
       setLoading(true);
       setError('');
 
-      const [riskResponse, anomalyResponse] = await Promise.all([
-        axios.get<RiskData>(
-          `http://127.0.0.1:8000/activities/risk-score/${EMPLOYEE_ID}`,
+      // Fetch from new Risk Engine
+      const [riskResponse, anomalyResponse, trendResponse] = await Promise.all([
+        axios.get<RiskScoreResponse>(
+          `http://127.0.0.1:8000/risk/score/${EMPLOYEE_ID}`,
           { headers: { Authorization: `Bearer ${token}` } }
         ),
         axios.get<ReportResponse>(
           `http://127.0.0.1:8000/activities/report/${EMPLOYEE_ID}?days=7`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        ),
+        axios.get<TrendResponse>(
+          `http://127.0.0.1:8000/risk/trend/${EMPLOYEE_ID}?days=7`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
       ]);
 
       setRiskData(riskResponse.data);
       setAnomalies(anomalyResponse.data.report?.recent_anomalies || []);
+      setTrendData(trendResponse.data.trend || []);
     } catch (err) {
       console.error('Fetch error:', err);
       setError('Failed to fetch dashboard data. Please try again.');
@@ -147,6 +178,18 @@ const DashboardPage: React.FC = () => {
     return 'text-green-600';
   };
 
+  // --- Helper: Get Risk Level Badge ---
+  const getRiskBadge = (level: string): string => {
+    const map: Record<string, string> = {
+      'Critical Risk': '🔴',
+      'High Risk': '🟠',
+      'Medium Risk': '🟡',
+      'Low Risk': '🟢',
+      'No Risk': '⚪'
+    };
+    return map[level] || '⚪';
+  };
+
   // --- Loading State ---
   if (loading) {
     return (
@@ -178,7 +221,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header with PDF Download Button */}
+        {/* Header */}
         <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
           <h1 className="text-3xl font-bold text-gray-800">
             🛡️ Insider Threat Dashboard
@@ -221,54 +264,125 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* ============================================ */}
+        {/* NEW: Risk Score Card (Using New Risk Engine) */}
+        {/* ============================================ */}
         {riskData && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-sm text-gray-500 mb-1">Risk Score</h3>
-              <p className="text-3xl font-bold">{riskData.risk_score ?? 0}%</p>
-              <span
-                className={`inline-block px-2 py-1 text-sm rounded text-white ${getRiskColor(
-                  riskData.risk_level
-                )}`}
-              >
-                {riskData.risk_level || 'Unknown'}
-              </span>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-sm text-gray-500 mb-1">Risk Score</h3>
+                <p className="text-3xl font-bold">{riskData.risk_score}%</p>
+                <span
+                  className={`inline-block px-2 py-1 text-sm rounded text-white ${getRiskColor(
+                    riskData.risk_level
+                  )}`}
+                >
+                  {riskData.risk_level_icon} {riskData.risk_level}
+                </span>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-sm text-gray-500 mb-1">Raw Weight</h3>
+                <p className="text-3xl font-bold">{riskData.raw_weight}</p>
+                <span className="text-xs text-gray-400">Total risk weight</span>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-sm text-gray-500 mb-1">Total Anomalies</h3>
+                <p className="text-3xl font-bold">{riskData.anomaly_count}</p>
+                <span className="text-xs text-gray-400">Detected anomalies</span>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-sm text-gray-500 mb-1">Activities</h3>
+                <p className="text-3xl font-bold">{riskData.total_activities || 0}</p>
+                <span className="text-xs text-gray-400">Total logged</span>
+              </div>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-sm text-gray-500 mb-1">Total Activities</h3>
-              <p className="text-3xl font-bold">{riskData.total_activities ?? 0}</p>
-            </div>
+            {/* ============================================ */}
+            {/* NEW: Risk Factors Section */}
+            {/* ============================================ */}
+            {riskData.risk_factors && riskData.risk_factors.length > 0 && (
+              <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 className="text-lg font-bold mb-3">⚠️ Top Risk Factors</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="text-left p-2">Risk Factor</th>
+                        <th className="text-left p-2">Weight</th>
+                        <th className="text-left p-2">Description</th>
+                        <th className="text-left p-2">Reason</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {riskData.risk_factors.map((factor: RiskFactor, index: number) => (
+                        <tr key={index} className="border-t">
+                          <td className="p-2 font-medium">{factor.factor.replace(/_/g, ' ').toUpperCase()}</td>
+                          <td className="p-2">
+                            <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-bold">
+                              {factor.weight}
+                            </span>
+                          </td>
+                          <td className="p-2">{factor.description}</td>
+                          <td className="p-2 text-xs text-gray-500">{factor.reason}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-sm text-gray-500 mb-1">Total Anomalies</h3>
-              <p className="text-3xl font-bold">{riskData.total_anomalies ?? 0}</p>
-            </div>
+            {/* ============================================ */}
+            {/* NEW: Risk Trend Section */}
+            {/* ============================================ */}
+            {trendData && trendData.length > 0 && (
+              <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 className="text-lg font-bold mb-3">📈 Risk Trend (Last {trendData.length} Days)</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {trendData.map((day: TrendData, index: number) => (
+                    <div key={index} className="bg-gray-50 p-3 rounded">
+                      <div className="text-sm font-medium text-gray-600">{day.date}</div>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xl font-bold ${getRiskColor(day.risk_level)}`}>
+                          {day.risk_score}%
+                        </span>
+                        <span className="text-xs">{getRiskBadge(day.risk_level)}</span>
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        {day.anomaly_count} anomalies · {day.activity_count} activities
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-sm text-gray-500 mb-1">Anomaly Rate</h3>
-              <p className="text-3xl font-bold">{riskData.anomaly_percentage ?? 0}%</p>
-            </div>
-          </div>
+            {/* ============================================ */}
+            {/* Recommendations Section */}
+            {/* ============================================ */}
+            {riskData.recommendations && riskData.recommendations.length > 0 && (
+              <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 className="text-lg font-bold mb-3">💡 Recommendations</h2>
+                <ul className="list-disc pl-5 space-y-1">
+                  {riskData.recommendations.map((rec: string, index: number) => (
+                    <li key={index} className="text-gray-700">
+                      {rec}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
 
-        {/* Risk Factors */}
-        {riskData?.risk_factors && riskData.risk_factors.length > 0 && (
-          <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-lg font-bold mb-3">⚠️ Risk Factors</h2>
-            <ul className="list-disc pl-5">
-              {riskData.risk_factors.map((factor: string, index: number) => (
-                <li key={index} className="text-yellow-700">
-                  {factor}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Recent Anomalies */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        {/* ============================================ */}
+        {/* Recent Anomalies (Unchanged) */}
+        {/* ============================================ */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-lg font-bold mb-3">🔍 Recent Anomalies</h2>
           {anomalies.length === 0 ? (
             <p className="text-gray-500">✅ No anomalies detected</p>
@@ -307,20 +421,6 @@ const DashboardPage: React.FC = () => {
             </div>
           )}
         </div>
-
-        {/* Recommendations */}
-        {riskData?.recommendations && riskData.recommendations.length > 0 && (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-bold mb-3">💡 Recommendations</h2>
-            <ul className="list-disc pl-5 space-y-1">
-              {riskData.recommendations.map((rec: string, index: number) => (
-                <li key={index} className="text-gray-700">
-                  {rec}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );
