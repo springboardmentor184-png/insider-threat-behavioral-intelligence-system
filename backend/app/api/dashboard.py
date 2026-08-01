@@ -20,7 +20,9 @@ def dashboard(
     current_user: User = Depends(
         require_roles([
             "Administrator",
-            "Security Manager"
+            "Security Manager",
+            "SOC Engineer",
+            "Security Analyst"
         ])
     )
 ):

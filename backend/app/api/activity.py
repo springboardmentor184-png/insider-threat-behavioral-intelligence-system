@@ -32,7 +32,8 @@ def get_activity(
         require_roles([
             "Administrator",
             "Security Manager",
-            "SOC Engineer"
+            "SOC Engineer",
+            "Security Analyst"
         ])
     )
 ):

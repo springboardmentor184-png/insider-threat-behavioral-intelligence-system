@@ -46,14 +46,14 @@ def create_audit_log(
         db.commit()
         db.refresh(log)
 
-        print("✅ Audit log inserted successfully.")
+        print("[Audit Log] Log inserted successfully.")
 
         return log
 
     except Exception as e:
         db.rollback()
 
-        print("❌ Audit Log Error:")
+        print("[Audit Log Error]:")
         print(type(e))
         print(e)
 
