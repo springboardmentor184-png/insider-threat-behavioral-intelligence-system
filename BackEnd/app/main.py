@@ -14,7 +14,6 @@ from app.routes import ml
 from app.routes import alert
 from app.routes import investigation
 from app.routes import risk
-from app.routes import report
 from app.routes import profile
 
 Base.metadata.create_all(bind=engine)
@@ -47,7 +46,6 @@ app.include_router(ml.router)
 app.include_router(alert.router)
 app.include_router(investigation.router)
 app.include_router(risk.router)
-app.include_router(report.router)
 app.include_router(profile.router)
 
 

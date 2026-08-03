@@ -1,4 +1,5 @@
 import "./Sidebar.css";
+
 import {
   LayoutDashboard,
   Users,
@@ -6,12 +7,15 @@ import {
   ShieldAlert,
   BarChart3,
   Search,
-  FileText,
   User,
   Settings,
   LogOut,
 } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
+
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -48,11 +52,6 @@ function Sidebar() {
       icon: <Search size={20} />,
     },
     {
-      title: "Reports",
-      path: "/reports",
-      icon: <FileText size={20} />,
-    },
-    {
       title: "Profile",
       path: "/profile",
       icon: <User size={20} />,
@@ -69,7 +68,9 @@ function Sidebar() {
     localStorage.removeItem("token_type");
     localStorage.removeItem("user");
 
-    navigate("/", { replace: true });
+    navigate("/", {
+      replace: true,
+    });
   };
 
   return (
@@ -84,18 +85,26 @@ function Sidebar() {
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              isActive ? "menu-item active" : "menu-item"
+              isActive
+                ? "menu-item active"
+                : "menu-item"
             }
           >
             {item.icon}
-            <span>{item.title}</span>
+
+            <span>
+              {item.title}
+            </span>
           </NavLink>
         ))}
       </nav>
 
       <div className="logout">
-        <button onClick={handleLogout}>
+        <button
+          onClick={handleLogout}
+        >
           <LogOut size={18} />
+
           Logout
         </button>
       </div>

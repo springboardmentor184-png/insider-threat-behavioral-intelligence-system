@@ -26,11 +26,6 @@ function Navbar() {
       </div>
 
       <div className="navbar-right">
-        <div className="notification">
-          <Bell size={20} />
-          <span className="badge">5</span>
-        </div>
-
         <div
           className="profile"
           onClick={() => navigate("/profile")}

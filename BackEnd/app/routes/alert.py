@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.models.models import Employee
 
+
 router = APIRouter(
     prefix="/alerts",
     tags=["Alerts"]
@@ -18,7 +19,11 @@ def get_alerts(
         db.query(Employee)
         .filter(
             Employee.risk_level.in_(
-                ["High", "Critical"]
+                [
+                    "Critical",
+                    "High",
+                    "Medium"
+                ]
             )
         )
         .order_by(
@@ -31,27 +36,81 @@ def get_alerts(
 
     for employee in employees:
 
-        if employee.risk_level == "Critical":
+        risk_level = str(
+            employee.risk_level or ""
+        ).strip().lower()
+
+        if risk_level == "critical":
             severity = "Critical"
-        else:
+            title = (
+                "Critical Insider Threat Risk"
+            )
+
+        elif risk_level == "high":
             severity = "High"
+            title = (
+                "High Insider Threat Risk"
+            )
+
+        elif risk_level == "medium":
+            severity = "Medium"
+            title = (
+                "Medium Insider Threat Risk"
+            )
+
+        else:
+            continue
 
         alerts.append(
             {
                 "id": employee.id,
-                "employee_id": employee.id,
-                "user": employee.user,
-                "title": "High Insider Threat Risk",
-                "description": (
-                    f"Employee {employee.user} "
-                    f"has a risk score of "
-                    f"{employee.risk_score}"
+
+                "employee_id": (
+                    employee.id
                 ),
+
+                "user": (
+                    employee.user
+                    or "Unknown"
+                ),
+
+                "title": title,
+
+                "description": (
+                    f"Employee "
+                    f"{employee.user or 'Unknown'} "
+                    f"has a "
+                    f"{severity.lower()} "
+                    f"risk score of "
+                    f"{employee.risk_score or 0}"
+                ),
+
+                "alert_type": (
+                    "Insider Threat"
+                ),
+
                 "severity": severity,
-                "risk_score": employee.risk_score,
-                "risk_level": employee.risk_level,
-                "anomaly_score": employee.anomaly_score,
-                "status": "Open"
+
+                "risk_score": (
+                    employee.risk_score
+                    or 0
+                ),
+
+                "risk_level": (
+                    employee.risk_level
+                    or severity
+                ),
+
+                "anomaly_score": (
+                    employee.anomaly_score
+                    or 0
+                ),
+
+                "status": "Open",
+
+                "created_at": None,
+
+                "resolved_at": None
             }
         )
 

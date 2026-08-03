@@ -1,18 +1,28 @@
-# insider-threat-behavioral-intelligence-system
-AI-powered Insider Threat Behavioral Intelligence System developed as part of the Infosys Internship Program.
 # 🛡️ Insider Threat Behavioral Intelligence System
 
-An AI-assisted cybersecurity platform designed to monitor employee behavior, analyze organizational activity, identify abnormal patterns, and support early detection of potential insider threats.
+An AI-assisted cybersecurity platform designed to monitor employee behavior, analyze organizational activity, detect abnormal patterns, calculate insider risk, and support security investigations.
 
-The system combines behavioral analytics, machine learning, a FastAPI backend, a React-based security dashboard, and PostgreSQL database storage to provide a centralized platform for insider-threat monitoring and investigation.
+The system combines:
+
+* React-based security dashboard
+* FastAPI backend
+* PostgreSQL database
+* Machine learning anomaly detection
+* Behavioral risk scoring
+* Security alert generation
+* Investigation workflows
+
+The objective is to provide a centralized platform for identifying suspicious insider activities through behavioral intelligence.
 
 ---
 
-## 📌 Project Overview
+# 📌 Project Overview
 
-Insider threats are security risks caused by individuals who already have authorized access to an organization's systems, data, and resources. Unlike traditional external attacks, insider threats can be difficult to detect because the activity may initially appear legitimate.
+Insider threats are security risks caused by authorized users who misuse access privileges intentionally or unintentionally.
 
-The **Insider Threat Behavioral Intelligence System** is being developed to address this problem by analyzing user activity across multiple behavioral sources, including:
+Traditional security monitoring focuses mainly on individual events. This project focuses on **behavioral intelligence**, where multiple activity sources are analyzed together to identify deviations from normal user behavior.
+
+The system analyzes:
 
 * Login activity
 * File access behavior
@@ -20,429 +30,236 @@ The **Insider Threat Behavioral Intelligence System** is being developed to addr
 * Device activity
 * Email activity
 * Security events
-* Abnormal behavioral patterns
+* Behavioral anomalies
 
-The goal is to move from simple activity monitoring toward **behavioral intelligence**, where the system analyzes patterns over time and helps security teams identify users whose activity may indicate elevated risk.
-
----
-
-## 🎯 Project Objectives
-
-The main objectives of this project are:
-
-* Monitor employee and user activity across organizational systems.
-* Collect and store behavioral security data in a centralized database.
-* Identify abnormal or suspicious activity patterns.
-* Calculate behavioral risk scores for users.
-* Detect potential insider-threat behavior using machine learning.
-* Generate alerts for suspicious activities.
-* Provide security teams with a centralized monitoring dashboard.
-* Support investigation and analysis of suspicious user behavior.
-* Present security data through clear visual analytics and reports.
+The platform helps security teams identify high-risk users, investigate suspicious activities, and make informed security decisions.
 
 ---
 
-## 🏗️ System Architecture
+# 🏗️ System Architecture
 
-The application follows a full-stack architecture:
-
-```text
-┌──────────────────────────────────────────────┐
-│              React Frontend                  │
-│                                              │
-│  Dashboard | Employees | Activity Logs       │
-│  Alerts | Risk Analysis | Investigations     │
-│  Reports | Profile | Settings                │
-└──────────────────────┬───────────────────────┘
-                       │
-                       │ REST API
-                       │
-┌──────────────────────▼───────────────────────┐
-│              FastAPI Backend                 │
-│                                              │
-│  Authentication                              │
-│  Employee APIs                               │
-│  Login Activity APIs                         │
-│  File Access APIs                            │
-│  Risk Analysis APIs                          │
-│  Alert APIs                                  │
-│  Machine Learning APIs                       │
-│  Dashboard APIs                              │
-└──────────────────────┬───────────────────────┘
-                       │
-                       │ SQLAlchemy
-                       │
-┌──────────────────────▼───────────────────────┐
-│              PostgreSQL Database              │
-│                                              │
-│  Users / Employees                           │
-│  Login Activity                              │
-│  File Access                                 │
-│  Email Activity                               │
-│  Device Activity                              │
-│  Threat Events                                │
-│  Alerts                                      │
-└──────────────────────────────────────────────┘
+```
+React Frontend
+        |
+        | REST API
+        |
+FastAPI Backend
+        |
+        | SQLAlchemy ORM
+        |
+PostgreSQL Database
+        |
+        |
+Behavioral Analytics
+        |
+Machine Learning Detection
+        |
+Risk Scoring
+        |
+Alerts & Investigation
 ```
 
 ---
 
-# 🚀 Current Implementation
+# 🚀 Current Implementation Status
 
-## 1. Full-Stack Project Structure
+## ✅ Completed Features
 
-The project is organized into two primary applications:
+### Full Stack Application
 
-```text
-Insider-Threat-Behavioral-Intelligence-System/
-│
-├── backend/
-│   ├── app/
-│   │   ├── main.py
-│   │   ├── database/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── schemas/
-│   │
-│   └── .venv/
-│
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   ├── layouts/
-    │   ├── pages/
-    │   └── services/
-    │
-    └── package.json
-```
+Implemented:
 
-This separation allows the React frontend and FastAPI backend to be developed and maintained independently.
+* React + Vite frontend
+* FastAPI backend
+* PostgreSQL database integration
+* SQLAlchemy ORM
+* REST API architecture
+* CORS configuration
 
 ---
 
 # 🔐 Authentication System
 
-A complete user authentication foundation has been implemented.
+Completed authentication workflow:
 
 ### Registration
 
-Users can register by providing:
+Implemented:
 
-* Full name
-* Email address
-* Password
-* Role
-
-Supported security-oriented roles include:
-
-* SOC Engineer
-* Security Manager
-* Administrator
-
-During registration:
-
-1. The backend receives the registration request.
-2. The email address is checked for existing accounts.
-3. The password is securely hashed.
-4. The user is stored in PostgreSQL.
-5. The newly created user is returned to the application.
+* User registration
+* Role selection
+* Password hashing
+* PostgreSQL user storage
 
 ### Login
 
-The login system:
+Implemented:
 
-1. Accepts the user's email and password.
-2. Retrieves the user from PostgreSQL.
-3. Verifies the password hash.
-4. Generates a JWT access token.
-5. Returns the authentication token to the frontend.
-6. Stores the token in browser local storage.
-7. Redirects the authenticated user to the dashboard.
+* Email/password authentication
+* Password verification
+* JWT token generation
+* Protected dashboard access
+* Frontend token management
 
-The authentication flow is:
+Authentication flow:
 
-```text
+```
 Register
-   ↓
+    ↓
 Password Hashing
-   ↓
-PostgreSQL User Storage
-   ↓
+    ↓
+Database Storage
+    ↓
 Login
-   ↓
-Password Verification
-   ↓
-JWT Token Generation
-   ↓
-Authenticated Dashboard
+    ↓
+JWT Token
+    ↓
+Dashboard Access
 ```
 
 ---
 
-# 🗄️ Database Layer
+# 🗄️ Database Implementation
 
-The application uses **PostgreSQL** as the primary relational database.
+PostgreSQL database is configured with security-related tables:
 
-SQLAlchemy is used as the ORM layer between the FastAPI application and PostgreSQL.
+Implemented tables:
 
-The database foundation includes tables for:
+* Users
+* Employees
+* Login Activity
+* File Access
+* Threat Events
+* Alerts
+* Email Activity
+* Device Activity
 
-### Users / Employees
-
-Stores user identity and organizational information.
-
-Example information includes:
-
-* User ID
-* Full name
-* Email
-* Password hash
-* Role
-* Account information
-
-### Login Activity
-
-Stores authentication and login-related behavior.
-
-Potential behavioral information includes:
-
-* Employee
-* Login timestamp
-* IP address
-* Location
-* Login success or failure
-
-### File Access
-
-Stores user interactions with organizational files.
-
-Potential behavioral information includes:
-
-* Employee
-* File accessed
-* Access timestamp
-* File type
-* Access behavior
-
-### Threat Events
-
-Stores suspicious or detected behavioral events.
-
-### Alerts
-
-Stores security alerts generated from suspicious activity.
-
-### Email Activity
-
-Provides a foundation for analyzing email-related behavior.
-
-### Device Activity
-
-Provides a foundation for analyzing device and endpoint interactions.
+The database stores organizational activity data required for behavioral analysis.
 
 ---
 
-# 📊 Dashboard
+# 📊 Security Dashboard
 
-The React frontend includes a security-focused dashboard layout designed for security operations and behavioral intelligence monitoring.
+The React dashboard is implemented with security monitoring modules:
 
-The dashboard is intended to provide a centralized view of:
+Available modules:
 
-* Total monitored employees
-* Active security alerts
-* High-risk users
-* Suspicious activities
-* Behavioral risk trends
+* Dashboard
+* Employees
+* Activity Logs
+* Alerts
+* Risk Analysis
+* Investigations
+* Reports
+* Profile
+* Settings
+
+Dashboard displays:
+
+* Total employees
 * Activity statistics
-* Threat events
-
-The frontend communicates with the FastAPI backend using REST APIs and Axios.
-
-The dashboard architecture is designed to support real-time or near-real-time security analytics as the backend data processing layer is expanded.
+* Risk categories
+* Security alerts
+* Anomaly information
 
 ---
 
-# 🧭 Application Modules
+# 🤖 Machine Learning Implementation
 
-The frontend application is structured around the following security modules:
+## Isolation Forest Anomaly Detection
 
-## 👥 Employees
+The project uses Isolation Forest for identifying abnormal behavioral patterns.
 
-Provides an employee-focused view for monitoring users and their behavioral risk information.
+Isolation Forest is an unsupervised machine learning algorithm that detects unusual observations by isolating abnormal data points.
 
-Potential functionality includes:
+Behavioral features include:
 
-* Employee listing
-* Employee profiles
-* Risk scores
-* Activity summaries
-* Behavioral history
-
----
-
-## 📜 Activity Logs
-
-Centralizes activity information collected from the system.
-
-Activity types can include:
-
-* Login events
-* File access events
-* Device activity
-* Email activity
-* Suspicious behavior
-
-This provides security analysts with a chronological view of user behavior.
-
----
-
-## 🚨 Alerts
-
-Provides a centralized location for security alerts.
-
-Alerts can be used to highlight:
-
-* Suspicious login behavior
-* Unusual file access
-* Abnormal activity spikes
-* Potential data exfiltration behavior
-* High-risk user activity
-
----
-
-## 📈 Risk Analysis
-
-The Risk Analysis module is designed to evaluate user behavior and identify users who may require further investigation.
-
-A behavioral risk score can be generated from multiple factors, including:
-
-```text
-Login Behavior
-      +
-File Access Behavior
-      +
-Device Activity
-      +
-Email Activity
-      +
-Anomaly Detection
-      ↓
-Behavioral Risk Score
 ```
-
-Users can then be classified into risk categories such as:
-
-* Low Risk
-* Medium Risk
-* High Risk
-* Critical Risk
-
----
-
-## 🔍 Investigations
-
-The Investigations module is designed to help security teams analyze suspicious behavior.
-
-A typical investigation workflow can include:
-
-```text
-Suspicious Activity
-        ↓
-Security Alert
-        ↓
-User Risk Analysis
-        ↓
-Activity Timeline
-        ↓
-Investigation
-        ↓
-Security Decision
-```
-
-This module is intended to provide context instead of treating each activity as an isolated event.
-
----
-
-## 📄 Reports
-
-The Reports module provides a foundation for generating security and behavioral intelligence reports.
-
-Possible reports include:
-
-* Employee risk reports
-* Alert summaries
-* Activity reports
-* Threat analysis reports
-* Behavioral trend reports
-
----
-
-# 🤖 Machine Learning and Behavioral Analytics
-
-Machine learning is being integrated into the project to help identify abnormal employee behavior.
-
-The system is designed around the idea that insider threats can often be detected through **behavioral deviations from normal activity patterns**.
-
-Instead of relying only on predefined rules, the system can analyze activity patterns and identify behavior that differs significantly from expected behavior.
-
-### Example behavioral indicators
-
-* Unusual login times
-* Excessive file access
-* Unusual access frequency
-* Sudden changes in normal behavior
-* Repeated failed logins
-* Unusual device activity
-* Abnormal activity across multiple systems
-
----
-
-# 🧠 Isolation Forest
-
-The project uses the concept of **Isolation Forest** for anomaly detection.
-
-Isolation Forest is an unsupervised machine learning algorithm designed to identify unusual data points.
-
-In this project, behavioral activity can be represented using features such as:
-
-```text
 Login Frequency
 File Access Count
-Failed Login Count
+Failed Login Attempts
 After-Hours Activity
 Device Activity
 Email Activity
 ```
 
-The model analyzes these behavioral features and identifies observations that appear significantly different from normal user behavior.
+Processing flow:
 
-A simplified flow is:
-
-```text
-Raw User Activity
+```
+User Activity Data
         ↓
 Feature Extraction
         ↓
 Behavioral Feature Vector
         ↓
-Isolation Forest
+Isolation Forest Model
         ↓
-Anomaly Score
+Anomaly Detection
         ↓
 Risk Analysis
         ↓
 Security Alert
 ```
 
-The anomaly detection layer can be combined with rule-based indicators and other behavioral metrics to produce a more meaningful user risk score.
+---
+
+# 🚨 Risk Analysis and Alert System
+
+Completed:
+
+* Risk analysis module
+* Behavioral risk evaluation
+* Risk classification
+* Alert generation
+
+Risk categories:
+
+* Low Risk
+* Medium Risk
+* High Risk
+* Critical Risk
+
+Risk calculation considers:
+
+```
+Login Behavior
+        +
+File Activity
+        +
+Anomaly Score
+        +
+Suspicious Events
+        ↓
+User Risk Score
+```
+
+---
+
+# 🔍 Threat Investigation Module
+
+Investigation workflow implemented:
+
+```
+Suspicious Activity
+        ↓
+Generated Alert
+        ↓
+Risk Evaluation
+        ↓
+Activity Review
+        ↓
+Investigation Decision
+```
+
+The investigation module provides security analysts with contextual information about suspicious user behavior.
 
 ---
 
 # 📚 CERT Insider Threat Dataset
 
-The project uses the **CERT Insider Threat Dataset** as a source of simulated organizational activity for insider-threat research and behavioral analysis.
+The project uses the CERT Insider Threat Dataset for behavioral analysis.
 
-The dataset contains different types of user activity, including information related to:
+Dataset activities include:
 
 * Logon activity
 * File activity
@@ -450,157 +267,132 @@ The dataset contains different types of user activity, including information rel
 * Device activity
 * HTTP activity
 
-The project includes work toward:
+Completed dataset workflow:
 
-1. Downloading the dataset.
-2. Extracting the dataset locally.
-3. Inspecting the CSV files.
-4. Understanding the available data fields.
-5. Mapping dataset fields to application database models.
-6. Importing relevant activity data into PostgreSQL.
-7. Preparing the data for behavioral analytics.
-
-The dataset preprocessing process is:
-
-```text
+```
 CERT Dataset
-     ↓
-CSV Activity Files
-     ↓
+      ↓
+CSV Processing
+      ↓
 Data Inspection
-     ↓
-Data Cleaning
-     ↓
+      ↓
 Field Mapping
-     ↓
+      ↓
 Database Import
-     ↓
-Behavioral Analysis
+      ↓
+Behavior Analysis
+      ↓
+Anomaly Detection
 ```
 
 ---
 
-# 🔌 Backend API
+# 🔌 Backend APIs
 
-The backend is built using **FastAPI**.
+Implemented API modules:
 
-The API layer is organized into modular route groups for maintainability.
+* Authentication APIs
+* Employee APIs
+* Login Activity APIs
+* File Access APIs
+* Risk APIs
+* Alert APIs
+* Machine Learning APIs
+* Dashboard APIs
 
-Current API areas include:
+Backend features:
 
-* Authentication
-* Employees
-* Login Activity
-* File Access
-* Risk Analysis
-* Alerts
-* Machine Learning
-* Dashboard Analytics
-
-The application exposes REST API endpoints that allow the frontend to communicate with the backend.
-
-The backend also includes:
-
-* Database dependency injection
-* SQLAlchemy database sessions
+* Database sessions
 * Request validation
-* Response schemas
-* CORS configuration
-* JWT-based authentication
-
----
-
-# 🔒 Security Features
-
-The project includes several security-focused implementation concepts:
-
-### Password Hashing
-
-User passwords are not stored as plain text. Passwords are hashed before being stored in the database.
-
-### JWT Authentication
-
-After successful login, the backend generates a JWT access token.
-
-The token is used to authenticate subsequent API requests.
-
-### Role-Based Foundation
-
-The system includes role information to support different security personnel and administrative users.
-
-Potential roles include:
-
-* SOC Engineer
-* Security Manager
-* Administrator
-
-### CORS Protection
-
-The backend is configured to allow communication with the authorized frontend application during development.
+* JWT authentication
+* API routing
+* Data processing
 
 ---
 
 # 🎨 Frontend Technology
 
-The frontend is built using:
+Technologies used:
 
-* React
-* Vite
-* React Router
-* Axios
-* Lucide React
-* Recharts
-* Framer Motion
-
-The frontend provides:
-
-* Login interface
-* Registration interface
-* Dashboard layout
-* Sidebar navigation
-* Security-focused page structure
-* API integration
-* Protected authentication flow
-
-The application uses a modular page-based architecture so that each security feature can be developed independently.
+| Technology    | Purpose                 |
+| ------------- | ----------------------- |
+| React         | User Interface          |
+| Vite          | Development Environment |
+| React Router  | Navigation              |
+| Axios         | API Communication       |
+| Recharts      | Data Visualization      |
+| Lucide React  | Icons                   |
+| Framer Motion | UI Animation            |
 
 ---
 
-# ⚙️ Technology Stack
+# ⚙️ Backend Technology
 
-## Frontend
+| Technology | Purpose             |
+| ---------- | ------------------- |
+| Python     | Backend Development |
+| FastAPI    | REST API Framework  |
+| Uvicorn    | Server              |
+| SQLAlchemy | ORM                 |
+| PostgreSQL | Database            |
+| Passlib    | Password Hashing    |
+| JWT        | Authentication      |
 
-| Technology    | Purpose                             |
-| ------------- | ----------------------------------- |
-| React         | User interface                      |
-| Vite          | Frontend development and build tool |
-| React Router  | Application routing                 |
-| Axios         | API communication                   |
-| Recharts      | Data visualization                  |
-| Lucide React  | UI icons                            |
-| Framer Motion | UI animations                       |
+---
 
-## Backend
+# 🧠 Machine Learning Technology
 
-| Technology  | Purpose                      |
-| ----------- | ---------------------------- |
-| Python      | Backend programming language |
-| FastAPI     | REST API framework           |
-| Uvicorn     | ASGI server                  |
-| SQLAlchemy  | ORM and database interaction |
-| PostgreSQL  | Relational database          |
-| Passlib     | Password hashing             |
-| Bcrypt      | Password hashing backend     |
-| Python-JOSE | JWT token generation         |
+| Technology       | Purpose              |
+| ---------------- | -------------------- |
+| Scikit-learn     | ML Algorithms        |
+| Isolation Forest | Anomaly Detection    |
+| Pandas           | Data Processing      |
+| NumPy            | Numerical Processing |
 
-## Machine Learning
+---
 
-| Technology       | Purpose                     |
-| ---------------- | --------------------------- |
-| Scikit-learn     | Machine learning algorithms |
-| Isolation Forest | Anomaly detection           |
-| Pandas           | Data processing             |
-| NumPy            | Numerical analysis          |
+# 📈 Development Milestones
+
+## Milestone 1 — Foundation ✅ Completed
+
+Completed:
+
+* Project architecture
+* Frontend setup
+* Backend setup
+* Database configuration
+* Authentication system
+
+---
+
+## Milestone 2 — Data Collection & Anomaly Detection ✅ Completed
+
+Completed:
+
+* CERT dataset integration
+* Database data mapping
+* Activity data processing
+* Isolation Forest implementation
+* Anomaly detection testing
+* Risk analysis foundation
+
+---
+
+## Milestone 3 — Risk Scoring & Threat Investigation 🔄 In Progress
+
+Completed:
+
+✅ Insider risk scoring engine foundation
+✅ Threat investigation module
+✅ Risk analytics processing
+✅ Security alert generation
+
+Remaining improvements:
+
+* Advanced dashboard analytics
+* Automated investigation reports
+* Improved behavioral baselines
+* More detailed risk visualization
 
 ---
 
@@ -608,41 +400,37 @@ The application uses a modular page-based architecture so that each security fea
 
 ## Backend
 
-Navigate to the backend folder:
-
-```bash
+```
 cd backend
 ```
 
-Activate the virtual environment:
+Activate environment:
 
-### Windows PowerShell
-
-```powershell
+```
 .venv\Scripts\Activate.ps1
 ```
 
 Install dependencies:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
-Start the FastAPI server:
+Run:
 
-```bash
+```
 uvicorn app.main:app --reload
 ```
 
-The backend will run at:
+Backend:
 
-```text
+```
 http://127.0.0.1:8000
 ```
 
-FastAPI documentation is available at:
+API Documentation:
 
-```text
+```
 http://127.0.0.1:8000/docs
 ```
 
@@ -650,169 +438,95 @@ http://127.0.0.1:8000/docs
 
 ## Frontend
 
-Open a separate terminal and navigate to the frontend:
-
-```bash
+```
 cd frontend
 ```
 
-Install dependencies:
+Install:
 
-```bash
+```
 npm install
 ```
 
-Start the React development server:
+Run:
 
-```bash
+```
 npm run dev
 ```
 
-The frontend will generally run at:
+Frontend:
 
-```text
+```
 http://localhost:5173
 ```
 
 ---
 
-# 🔄 Application Workflow
+# 🔮 Future Enhancements
 
-The current application workflow is:
+Planned improvements:
 
-```text
-User
- ↓
-React Frontend
- ↓
-Registration / Login
- ↓
-FastAPI Authentication API
- ↓
-Password Verification
- ↓
-JWT Token
- ↓
-Authenticated Dashboard
- ↓
-API Data Requests
- ↓
-PostgreSQL Database
- ↓
-Behavioral Analytics
- ↓
-Risk Analysis
- ↓
-Alerts and Investigations
-```
-
----
-
-# 🚧 Current Development Status
-
-The project is currently under active development.
-
-### ✅ Implemented
-
-* Full-stack project structure
-* React + Vite frontend
-* FastAPI backend
-* PostgreSQL database integration
-* SQLAlchemy ORM setup
-* User registration
-* Password hashing
-* User login
-* JWT token generation
-* Role-based user foundation
-* CORS configuration
-* Dashboard layout
-* Sidebar navigation
-* Multiple security-focused frontend modules
-* REST API structure
-* CERT dataset acquisition and inspection
-* Initial database table structure
-* Foundation for behavioral analytics
-* Foundation for machine learning-based anomaly detection
-
-### 🔄 In Progress
-
-* Connecting dashboard analytics to real database data
-* Importing and mapping CERT activity data into PostgreSQL
-* Completing dashboard summary APIs
-* Building behavioral risk scoring
-* Integrating anomaly detection into the risk pipeline
-* Generating automated security alerts
-* Connecting activity logs to actual backend data
-* Completing investigation workflows
-* Developing reporting functionality
-
-### 🔮 Planned Enhancements
-
-* Advanced behavioral feature engineering
-* Automated anomaly detection pipelines
-* Improved risk scoring models
-* User behavior baselines
-* Peer-group behavioral comparison
-* Time-series activity analysis
-* Automated alert prioritization
+* Advanced user behavior profiling
+* Real-time anomaly detection
+* Peer group analysis
+* Automated incident response
 * Investigation case management
-* Report generation
+* Advanced reporting
 * Production deployment
-* Enhanced authorization and security controls
+* Improved authorization controls
 
 ---
 
-# 🎯 Future System Vision
+# 🎯 Final System Workflow
 
-The long-term goal is to develop a complete behavioral security intelligence platform that can:
-
-```text
-Collect Activity
-      ↓
-Understand Normal Behavior
-      ↓
-Detect Behavioral Deviations
-      ↓
-Calculate Risk
-      ↓
-Generate Alerts
-      ↓
-Support Investigation
-      ↓
-Help Security Teams Respond
+```
+Collect User Activity
+          ↓
+Analyze Behavior Patterns
+          ↓
+Detect Anomalies
+          ↓
+Calculate Risk Score
+          ↓
+Generate Security Alerts
+          ↓
+Investigate Threats
+          ↓
+Support Security Decisions
 ```
 
-The system is designed to move beyond traditional rule-based monitoring by combining:
+---
 
-* Behavioral analytics
-* Machine learning
-* Security event monitoring
-* Risk scoring
-* Data visualization
-* Investigation workflows
+# ⚠️ Disclaimer
 
-This approach aims to help organizations identify potentially risky behavior earlier and provide security analysts with the context needed to investigate possible insider threats.
+This project is developed for educational and cybersecurity research purposes.
+
+The system should only be used on authorized systems and approved datasets while following organizational security policies and applicable laws.
 
 ---
 
-## ⚠️ Disclaimer
-
-This project is developed for educational, research, and cybersecurity experimentation purposes.
-
-The system is intended to analyze simulated or authorized organizational activity. It should not be used to monitor individuals or systems without appropriate authorization, consent, and compliance with applicable laws and organizational policies.
-
----
-
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Goutham Kumar**
 
-GitHub: [Gouthamkumar543](https://github.com/Gouthamkumar543)
+GitHub:
+https://github.com/Gouthamkumar543
 
 ---
 
-## ⭐ Project Status
+# ⭐ Project Status
 
-🚧 **Active Development**
+🚧 Active Development
 
-The core full-stack architecture and authentication foundation are implemented. Behavioral data ingestion, analytics APIs, machine learning-based anomaly detection, risk scoring, and advanced security intelligence features are actively being developed.
+Current progress:
+
+✅ Full-stack architecture completed
+✅ Authentication completed
+✅ Database integration completed
+✅ Dashboard completed
+✅ CERT dataset integrated
+✅ Isolation Forest anomaly detection completed
+✅ Risk analysis completed
+✅ Threat investigation completed
+
+The project is currently being enhanced with advanced risk analytics, dashboards, and intelligent security investigation features.

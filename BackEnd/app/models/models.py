@@ -126,15 +126,36 @@ class Investigation(Base):
 class AnomalyResult(Base):
     __tablename__ = "anomaly_results"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
 
-    employee_id = Column(Integer, nullable=False)
+    employee_id = Column(
+        Integer,
+        ForeignKey("employees.id"),
+        nullable=False
+    )
 
-    anomaly_score = Column(Float, nullable=False)
+    anomaly_score = Column(
+        Float,
+        nullable=False,
+        default=0
+    )
 
-    risk_level = Column(String(50), nullable=False)
+    risk_level = Column(
+        String(50),
+        nullable=False,
+        default="Low"
+    )
 
     detected_at = Column(
         DateTime,
         default=datetime.utcnow
+    )
+
+
+    employee = relationship(
+        "Employee"
     )

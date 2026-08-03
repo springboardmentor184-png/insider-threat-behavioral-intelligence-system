@@ -9,7 +9,6 @@ import ActivityLogs from "../pages/ActivityLogs/ActivityLogs";
 import Alerts from "../pages/Alerts/Alerts";
 import RiskAnalysis from "../pages/RiskAnalysis/RiskAnalysis";
 import Investigations from "../pages/Investigations/Investigations";
-import Reports from "../pages/Reports/Reports";
 import Profile from "../pages/Profile/Profile";
 import Settings from "../pages/Settings/Settings";
 
@@ -45,7 +44,6 @@ function AppRoutes() {
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/risk-analysis" element={<RiskAnalysis />} />
           <Route path="/investigations" element={<Investigations />} />
-          <Route path="/reports" element={<Reports />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
