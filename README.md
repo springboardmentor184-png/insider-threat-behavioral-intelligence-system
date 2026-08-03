@@ -2,9 +2,9 @@
 
 ## Overview
 
-The **AI Insider Threat Behavioral Intelligence System** is a web-based cybersecurity application designed to identify potential insider threats by analyzing employee behavioral patterns. The system leverages **Machine Learning (Isolation Forest)** along with a **Hybrid Rule-Based Detection Engine** to monitor user activities, generate behavioral baselines, detect anomalies, and provide actionable security insights.
+The AI Insider Threat Behavioral Intelligence System is a web-based cybersecurity application designed to identify potential insider threats by analyzing employee behavioral patterns. The system leverages Machine Learning (Isolation Forest) along with a Hybrid Rule-Based Detection Engine to monitor user activities, generate behavioral baselines, detect anomalies, calculate insider risk scores, and provide actionable security insights.
 
-The application is built using **FastAPI**, **PostgreSQL**, **React**, and **Scikit-learn**, offering a secure and intelligent platform for insider threat detection and behavioral analytics.
+The application is built using FastAPI, PostgreSQL, React, and Scikit-learn, providing an intelligent platform for insider threat detection, behavioral analytics, and AI-powered risk assessment.
 
 ---
 
@@ -84,22 +84,59 @@ Hybrid AI-based anomaly detection using:
 - USB Usage Rate ≥ 80%
 - After-Hours Activity ≥ 80%
 
-If **two or more rules** are triggered, the employee is classified as:
+If two or more rules are triggered, the employee is classified as an anomaly.
 
-- **Prediction:** Anomaly
-- **Risk Level:** High
-
-Otherwise, the prediction is generated using the Isolation Forest model.
+Otherwise, prediction is generated using the Isolation Forest Machine Learning model.
 
 ---
 
 ## AI Prediction
 
-Generate intelligent employee risk predictions including:
+Generate intelligent employee threat assessments including:
 
 - Prediction Status (Normal / Anomaly)
-- Risk Level (Low / Medium / High)
-- Detection Method (Isolation Forest / Hybrid Rules)
+- Detection Method
+- Triggered Business Rules
+
+---
+
+## Risk Scoring Engine
+
+The application includes a weighted insider risk scoring engine based on behavioral intelligence.
+
+### Weighted Risk Model
+
+- Behavioural Anomalies – 35%
+- Privilege Misuse Indicators – 25%
+- Data Access Violations – 20%
+- Access Pattern Deviations – 10%
+- Historical Security Events – 10%
+
+### Risk Categories
+
+- Low
+- Medium
+- High
+- Critical
+
+The engine automatically generates:
+
+- Risk Score (0–100)
+- Risk Level
+- Threat Severity
+
+---
+
+## Risk Analysis
+
+The Risk Analysis module provides investigation-ready insights including:
+
+- Threat Severity Assessment
+- Risk Trend
+- Risk Summary
+- Security Recommendations
+- Behaviour Summary
+- Triggered Rules
 
 ---
 
@@ -111,12 +148,13 @@ Automatically generate alerts for suspicious employee activities based on AI pre
 
 ## Dashboard
 
-The dashboard provides an overview of the entire system including:
+The dashboard provides:
 
 - Total Employees
 - Behaviour Logs
-- Threat Alerts
+- Behaviour Baselines
 - AI Predictions
+- Risk Scores
 - Behaviour Analytics Summary
 - Risk Distribution Charts
 
@@ -124,15 +162,19 @@ The dashboard provides an overview of the entire system including:
 
 ## PDF Report Generation
 
-Generate professional AI Anomaly Detection Reports containing:
+Generate professional AI Insider Threat Reports containing:
 
 - Report Information
 - Executive Summary
 - Employee Information
 - Behaviour Analysis
 - AI Prediction
+- Risk Score
+- Risk Level
+- Threat Severity
+- Risk Analysis Summary
 - Risk Factors
-- Recommendations
+- Security Recommendations
 
 ---
 
@@ -158,8 +200,8 @@ Generate professional AI Anomaly Detection Reports containing:
 
 - Scikit-learn
 - Isolation Forest
-- NumPy
 - Pandas
+- NumPy
 
 ## Reporting
 
@@ -169,8 +211,9 @@ Generate professional AI Anomaly Detection Reports containing:
 
 # Project Structure
 
-```text
+```
 insider-threat-behavioral-intelligence-system/
+
 │
 ├── Backend/
 │   ├── app/
@@ -204,15 +247,36 @@ insider-threat-behavioral-intelligence-system/
 
 # Machine Learning Workflow
 
-1. Employee behaviour logs are collected.
-2. Behaviour baselines are generated.
-3. Behaviour analytics are performed.
-4. Hybrid AI model evaluates employee activity.
-5. Business rules are applied.
-6. Isolation Forest predicts anomalies.
-7. Final prediction is generated.
-8. Threat alerts are created.
-9. AI report is generated and downloaded as a PDF.
+```
+Employee Behaviour Logs
+            │
+            ▼
+Behaviour Baseline Generation
+            │
+            ▼
+Behaviour Analytics
+            │
+            ▼
+Business Rule Engine
+            │
+            ▼
+Isolation Forest Prediction
+            │
+            ▼
+Hybrid AI Detection
+            │
+            ▼
+Risk Scoring Engine
+            │
+            ▼
+Risk Analysis
+            │
+            ▼
+Threat Alerts
+            │
+            ▼
+Professional PDF Report
+```
 
 ---
 
@@ -224,6 +288,9 @@ insider-threat-behavioral-intelligence-system/
 - Behaviour Baseline
 - Behaviour Analytics
 - AI Prediction
+- Rule Engine
+- Risk Scoring
+- Risk Analysis
 - Threat Alerts
 - Dashboard
 - PDF Report Generation
@@ -232,31 +299,50 @@ insider-threat-behavioral-intelligence-system/
 
 # Current Project Status
 
-## Completed Modules (Milestone 1 & Milestone 2)
+## Completed Modules
+
+### Milestone 1
 
 - Authentication
 - Employee CRUD Operations
 - Behaviour Logs CRUD
+- Dashboard
+- Threat Alerts
+
+### Milestone 2
+
 - Behaviour Baseline Generation
 - Behaviour Analytics
-- Isolation Forest Machine Learning Model
-- Hybrid Rule Engine
-- AI Prediction
-- Threat Alerts
-- Dashboard
+- Isolation Forest Machine Learning
+- Hybrid AI Prediction
 - Professional PDF Report Generation
+
+### Milestone 3 (Completed So Far)
+
+- Rule Engine
+- Weighted Risk Scoring Engine
+- Risk Level Classification
+- Threat Severity Assessment
+- Risk Analysis Module
+- Risk Recommendations
+- Enhanced Prediction Dashboard
 
 ---
 
-# Future Enhancements
+# Upcoming Modules
 
-- Real-Time User Activity Monitoring
-- Advanced Behaviour Analytics
-- Continuous AI Model Retraining
-- Email Notifications for Threat Alerts
-- Role-Based Access Control (RBAC)
-- Interactive Security Dashboards
-- Advanced Insider Threat Intelligence Features
+- Threat Investigation Module
+- Incident Creation
+- Threat Timeline
+- Evidence Collection
+- Insider Threat Alerts
+- Investigation Notifications
+- Escalation Alerts
+- Risk Analytics Dashboard
+- Executive Dashboard
+- Docker Deployment
+- Cloud Deployment
+- Final Documentation & Presentation
 
 ---
 
@@ -323,12 +409,13 @@ http://localhost:5173
 
 # Screenshots
 
-You can add screenshots of:
+You can add screenshots for:
 
 - Dashboard
 - Employee Management
+- Behaviour Logs
 - AI Prediction
-- Threat Alerts
+- Risk Analysis
 - PDF Report Preview
 
 ---
@@ -345,7 +432,4 @@ This project is developed for educational and research purposes.
 
 Master of Computer Applications (MCA)
 
-**GitHub:**
-https://github.com/springboardmentor184-png
-
----
+GitHub: https://github.com/springboardmentor184-png
