@@ -126,7 +126,22 @@ class AIPredictRequest(BaseModel):
 
 class AIPredictResponse(BaseModel):
     prediction: str
-    risk: str
+
+    risk_score: int
+
+    risk_level: str
+
+    threat_severity: str
+
+    risk_trend: str
+
+    recommendation: str
+
+    risk_summary: str
+
+    detection_method: str
+
+    triggered_rules: list[str]
 
 # ==========================
 # ALERT LIST SCHEMA

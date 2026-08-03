@@ -200,9 +200,9 @@ const handleDownloadReport = async () => {
 
           <div className="row">
 
-            <div className="col-lg-7">
+            <div className="col-lg-7 d-flex">
 
-              <div className="card shadow-sm">
+              <div className="card shadow-sm flex-fill">
 
                 <div className="card-body">
 
@@ -450,9 +450,9 @@ const handleDownloadReport = async () => {
 
             {/* Prediction Result */}
 
-            <div className="col-lg-5">
+            <div className="col-lg-5 d-flex">
 
-              <div className="card shadow-sm">
+              <div className="card shadow-sm flex-fill">
 
                 <div className="card-body">
 
@@ -490,26 +490,149 @@ const handleDownloadReport = async () => {
 
                       <div className="text-center mb-4">
 
-                        <h5>
+                        <div className="text-center mb-3">
+                        <h5>Risk Score</h5>
 
-                          Risk Level
+                        <h2 className="fw-bold text-primary">
+                            {result.risk_score}/100
+                        </h2>
+                    </div>
 
-                        </h5>
+                <div className="mb-4">
 
-                        <span
-                          className={
-                            result.risk === "High"
-                              ? "badge bg-danger p-3 fs-6"
-                              : "badge bg-success p-3 fs-6"
-                          }
+                    <div className="progress" style={{ height: "25px" }}>
+
+                        <div
+                            className={`progress-bar ${
+                                result.risk_level === "High"
+                                    ? "bg-danger"
+                                    : result.risk_level === "Medium"
+                                    ? "bg-warning"
+                                    : "bg-success"
+                            }`}
+                            role="progressbar"
+                            style={{
+                                width: `${result.risk_score}%`
+                            }}
                         >
+                            {result.risk_score}%
+                        </div>
 
-                          {result.risk}
+                    </div>
 
-                        </span>
+                </div>
+
+                <div className="text-center mb-3">
+
+                    <h5>Risk Level</h5>
+
+                    <span
+                        className={
+                            result.risk_level === "High"
+                                ? "badge bg-danger p-3 fs-6"
+                                : result.risk_level === "Medium"
+                                ? "badge bg-warning text-dark p-3 fs-6"
+                                : "badge bg-success p-3 fs-6"
+                        }
+                    >
+                        {result.risk_level}
+                    </span>
+
+                </div>
+                <div className="text-center mb-4">
+
+                          <h5>Detection Method</h5>
+
+                          <span className="badge bg-info text-dark p-2">
+
+                              {result.detection_method}
+
+                          </span>
 
                       </div>
+                      {result.triggered_rules.length > 0 && (
 
+                          <div className="card border-danger mb-3">
+
+                              <div className="card-header bg-danger text-white">
+
+                                  Triggered Rules
+
+                              </div>
+
+                              <div className="card-body">
+
+                                  <ul>
+
+                                      {result.triggered_rules.map((rule,index)=>(
+
+                                      <li key={index}>{rule}</li>
+
+                                      ))}
+
+                                  </ul>
+
+                              </div>
+
+                          </div>
+
+                          )}
+                      </div>
+                      {/* Risk Analysis */}
+
+                      <div className="card border-primary mb-3">
+
+                          <div className="card-header bg-primary text-white">
+
+                              Risk Analysis
+
+                          </div>
+
+                          <div className="card-body">
+
+                              <div className="mb-3">
+
+                                  <strong>Threat Severity :</strong>
+
+                                  {" "}
+
+                                  {result.threat_severity}
+
+                              </div>
+
+                              <div className="mb-3">
+
+                                  <strong>Risk Trend :</strong>
+
+                                  {" "}
+
+                                  {result.risk_trend}
+
+                              </div>
+
+                              <div className="mb-3">
+
+                                  <strong>Recommendation :</strong>
+
+                                  {" "}
+
+                                  {result.recommendation}
+
+                              </div>
+
+                              <hr />
+
+                              <strong>Risk Summary</strong>
+
+                              <p className="mt-3 mb-0">
+
+                                  {result.risk_summary}
+
+                              </p>
+
+                          </div>
+
+                      </div>
                       <hr />
 
                         <div className="d-grid my-4">
@@ -522,46 +645,67 @@ const handleDownloadReport = async () => {
                             </button>
                         </div>
 
-                        {result.risk === "High" ? (
+                        {result.risk_level === "Critical" ? (
 
-                            <div className="alert alert-danger mt-3">
+                    <div className="alert alert-dark mt-3">
 
+                        <h5>🚨 Critical Insider Threat</h5>
 
-                          <h5>
+                        <p className="mb-0">
 
-                            ⚠ High Risk Behaviour
+                            Employee behaviour has been classified as <strong>CRITICAL</strong>.
 
-                          </h5>
+                            Immediate investigation and security response are required.
 
-                          <p className="mb-0">
+                        </p>
 
-                            Isolation Forest has detected this employee
-                            behaviour as abnormal.
+                    </div>
 
-                          </p>
+                    ) : result.risk_level === "High" ? (
 
-                        </div>
+                    <div className="alert alert-danger mt-3">
 
-                      ) : (
+                        <h5>⚠ High Risk Behaviour</h5>
 
-                        <div className="alert alert-success">
+                        <p className="mb-0">
 
-                          <h5>
+                            Employee behaviour has been classified as high risk.
 
-                            ✔ Normal Behaviour
+                            Immediate investigation is recommended.
 
-                          </h5>
+                        </p>
 
-                          <p className="mb-0">
+                    </div>
 
-                            Behaviour is within the employee baseline.
+                    ) : result.risk_level === "Medium" ? (
 
-                          </p>
+                    <div className="alert alert-warning mt-3">
 
-                        </div>
+                        <h5>⚠ Suspicious Behaviour</h5>
 
-                      )}
+                        <p className="mb-0">
 
+                            Continue monitoring this employee.
+
+                        </p>
+
+                    </div>
+
+                    ) : (
+
+                    <div className="alert alert-success mt-3">
+
+                        <h5>✔ Normal Behaviour</h5>
+
+                        <p className="mb-0">
+
+                            No suspicious activity detected.
+
+                        </p>
+
+                    </div>
+
+                    )}
                     </>
 
                   ) : (

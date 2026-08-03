@@ -1,6 +1,10 @@
 import joblib
 import pandas as pd
 
+from app.services.rule_engine import evaluate_rules
+from app.services.risk_scoring import calculate_risk_score
+from app.services.risk_analysis import generate_risk_analysis
+
 # Load trained model
 model = joblib.load("app/ml/isolation_forest.pkl")
 
@@ -11,65 +15,78 @@ def predict_behavior(data: dict):
     print(data)
     print("================================")
 
-    # -------------------------------
-    # Business Rule Based Detection
-    # -------------------------------
+    # ----------------------------------
+    # Step 1: Evaluate Business Rules
+    # ----------------------------------
+    rule_result = evaluate_rules(data)
 
-    risk_flags = 0
+    # ----------------------------------
+    # Step 2: ML Prediction
+    # ----------------------------------
+    ml_prediction = "Normal"
+    detection_method = "Isolation Forest"
 
-    # Excessive failed login attempts
-    if data["avg_failed_logins"] >= 8:
-        risk_flags += 1
+    if rule_result["triggered"]:
 
-    # Large number of downloaded files
-    if data["avg_files_downloaded"] >= 400:
-        risk_flags += 1
-
-    # Unusually high email activity
-    if data["avg_emails_sent"] >= 80:
-        risk_flags += 1
-
-    # Frequent USB device usage
-    if data["usb_usage_rate"] >= 80:
-        risk_flags += 1
-
-    # Frequent after-hours activity
-    if data["after_hours_rate"] >= 80:
-        risk_flags += 1
-
-    print(f"Risk Flags Detected: {risk_flags}")
-
-    # If two or more suspicious behaviours exist,
-    # classify immediately as High Risk.
-    if risk_flags >= 2:
         print("✅ Business Rule Triggered")
 
-        return {
-            "prediction": "Anomaly",
-            "risk": "High"
-        }
+        ml_prediction = "Anomaly"
+        detection_method = "Hybrid Rule Engine"
 
-    # -------------------------------
-    # Machine Learning Prediction
-    # -------------------------------
+    else:
 
-    print("🤖 Isolation Forest Prediction")
+        print("🤖 Isolation Forest Prediction")
 
-    df = pd.DataFrame([data])
+        df = pd.DataFrame([data])
+        prediction = model.predict(df)
 
-    prediction = model.predict(df)
+        if prediction[0] == -1:
 
-    if prediction[0] == -1:
-        print("⚠ Isolation Forest detected anomaly")
+            print("⚠ Isolation Forest detected anomaly")
 
-        return {
-            "prediction": "Anomaly",
-            "risk": "High"
-        }
+            ml_prediction = "Anomaly"
 
-    print("✔ Behaviour is normal")
+        else:
 
+            print("✔ Behaviour is normal")
+
+    # ----------------------------------
+    # Step 3: Weighted Risk Score
+    # ----------------------------------
+    risk_result = calculate_risk_score(
+        rule_result["category_scores"],
+        ml_prediction
+    )
+
+    # ----------------------------------
+    # Step 4: Risk Analysis
+    # ----------------------------------
+    analysis = generate_risk_analysis(
+        risk_result["risk_level"],
+        rule_result["triggered_rules"]
+    )
+
+    # ----------------------------------
+    # Step 5: Final Response
+    # ----------------------------------
     return {
-        "prediction": "Normal",
-        "risk": "Low"
+
+        "prediction": ml_prediction,
+
+        "risk_score": risk_result["risk_score"],
+
+        "risk_level": risk_result["risk_level"],
+
+        "threat_severity": analysis["threat_severity"],
+
+        "risk_trend": analysis["risk_trend"],
+
+        "recommendation": analysis["recommendation"],
+
+        "risk_summary": analysis["risk_summary"],
+
+        "detection_method": detection_method,
+
+        "triggered_rules": rule_result["triggered_rules"]
+
     }

@@ -197,7 +197,11 @@ def generate_report(employee, baseline, prediction):
     )
 
     status = prediction["prediction"]
-    risk = prediction["risk"]
+    risk_score = prediction["risk_score"]
+    risk_level = prediction["risk_level"]
+    threat_severity = prediction["threat_severity"]
+    recommendation = prediction["recommendation"]
+    risk_summary = prediction["risk_summary"]
 
     status_color = (
         colors.red
@@ -206,23 +210,30 @@ def generate_report(employee, baseline, prediction):
     )
 
     summary_table = Table(
-        [
+    [
             [
                 "Overall Status",
                 status
             ],
             [
+                "Risk Score",
+                f"{risk_score}/100"
+            ],
+            [
                 "Risk Level",
-                risk
+                risk_level
+            ],
+            [
+                "Threat Severity",
+                threat_severity
             ],
             [
                 "Detection Engine",
-                "Hybrid AI (Isolation Forest + Business Rules)"
+                prediction["detection_method"]
             ]
-        ],
-        colWidths=[170, 350]
-    )
-
+    ],
+    colWidths=[170, 350]
+)
     summary_table.setStyle(TableStyle([
 
         ("BACKGROUND", (0, 0), (0, -1), colors.HexColor("#D9EAF7")),
@@ -387,12 +398,14 @@ def generate_report(employee, baseline, prediction):
     )
 
     prediction_table = Table(
-        [
-            ["Prediction", prediction["prediction"]],
-            ["Risk Level", prediction["risk"]],
-            ["Detection Method", "Isolation Forest + Business Rules"]
-        ],
-        colWidths=[170, 350]
+    [
+        ["Prediction", prediction["prediction"]],
+        ["Risk Score", f'{prediction["risk_score"]}/100'],
+        ["Risk Level", prediction["risk_level"]],
+        ["Threat Severity", prediction["threat_severity"]],
+        ["Detection Method", prediction["detection_method"]]
+    ],
+    colWidths=[170, 350]
     )
 
     prediction_table.setStyle(TableStyle([
@@ -415,7 +428,44 @@ def generate_report(employee, baseline, prediction):
 
     ]))
 
-    story.append(prediction_table)
+    
+
+    # ==================================================
+# RISK ANALYSIS
+# ==================================================
+
+    story.append(
+        Paragraph(
+            "<b>RISK ANALYSIS</b>",
+            section_style
+        )
+    )
+
+    analysis_table = Table(
+        [
+            ["Recommendation", recommendation],
+            ["Risk Summary", risk_summary]
+        ],
+        colWidths=[170, 350]
+    )
+
+    analysis_table.setStyle(TableStyle([
+
+        ("BACKGROUND", (0, 0), (0, -1), colors.HexColor("#EDF5FC")),
+
+        ("BACKGROUND", (1, 0), (1, -1), colors.white),
+
+        ("FONTNAME", (0, 0), (0, -1), "Helvetica-Bold"),
+
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+
+        ("TOPPADDING", (0, 0), (-1, -1), 8)
+
+    ]))
+
+    story.append(analysis_table)
 
     story.append(Spacer(1, 12))
 
@@ -470,21 +520,21 @@ def generate_report(employee, baseline, prediction):
         )
     )
 
-    if prediction["prediction"] == "Anomaly":
+    if prediction["risk_level"] in ["High", "Critical"]:
 
         recommendations = [
 
-            "• Investigate login history immediately.",
+    f"• {prediction['recommendation']}",
 
-            "• Review downloaded files for sensitive information.",
+    "• Review employee activity logs.",
 
-            "• Audit USB device activities.",
+    "• Verify abnormal access patterns.",
 
-            "• Verify unusual email communication.",
+    "• Review downloaded files.",
 
-            "• Escalate the incident to the Security Operations Center (SOC)."
+    "• Escalate to the Security Operations Center (SOC) if required."
 
-        ]
+]
 
     else:
 
