@@ -1,0 +1,1094 @@
+id,date,user,employee_id,pc,filename,activity,sensitive_flag,off_hours_flag
+F000001,2026-01-08 09:30:11,farah.iyer1,EMP0001,PC-ENG-001,timesheet.xlsx,Copy,0,0
+F000002,2026-02-04 09:39:43,farah.iyer1,EMP0001,PC-ENG-001,presentation.pptx,Open,0,0
+F000003,2026-01-28 08:01:11,farah.iyer1,EMP0001,PC-ENG-001,budget.xlsx,Copy,0,0
+F000004,2026-01-11 12:44:34,farah.iyer1,EMP0001,PC-ENG-001,budget.xlsx,Write,0,0
+F000005,2026-01-31 09:42:06,farah.iyer1,EMP0001,PC-ENG-001,source_code.py,Write,0,0
+F000006,2026-01-24 14:25:24,farah.iyer1,EMP0001,PC-ENG-001,design_spec.docx,Open,0,0
+F000007,2026-01-30 11:27:09,farah.iyer1,EMP0001,PC-ENG-001,report.docx,Rename,0,0
+F000008,2026-01-30 07:24:00,farah.iyer1,EMP0001,PC-ENG-001,source_code.py,Rename,0,0
+F000009,2026-01-03 14:57:42,farah.iyer1,EMP0001,PC-ENG-001,source_code.py,Write,0,0
+F000010,2026-01-03 17:22:08,farah.iyer1,EMP0001,PC-ENG-001,presentation.pptx,Write,0,0
+F000011,2026-01-18 00:10:22,farah.iyer1,EMP0001,PC-ENG-001,source_code.py,Copy,0,0
+F000012,2026-02-03 10:04:11,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Copy,0,0
+F000013,2026-01-23 14:36:21,vikram.menon2,EMP0002,PC-FIN-002,presentation.pptx,Copy,0,0
+F000014,2026-01-18 15:42:19,vikram.menon2,EMP0002,PC-FIN-002,presentation.pptx,Open,0,0
+F000015,2026-02-11 11:30:38,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Copy,0,0
+F000016,2026-02-06 14:32:49,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Rename,0,0
+F000017,2026-01-09 14:37:37,vikram.menon2,EMP0002,PC-FIN-002,meeting_notes.pdf,Write,0,0
+F000018,2026-01-05 04:54:46,vikram.menon2,EMP0002,PC-FIN-002,budget.xlsx,Copy,0,0
+F000019,2026-01-07 14:31:59,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Write,0,0
+F000020,2026-01-21 15:49:51,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Copy,0,0
+F000021,2026-01-07 17:11:46,vikram.menon2,EMP0002,PC-FIN-002,presentation.pptx,Write,0,0
+F000022,2026-01-05 06:16:07,vikram.menon2,EMP0002,PC-FIN-002,report.docx,Open,0,0
+F000023,2026-01-29 15:38:40,vikram.menon2,EMP0002,PC-FIN-002,timesheet.xlsx,Open,0,0
+F000024,2026-01-12 10:44:28,vikram.menon2,EMP0002,PC-FIN-002,presentation.pptx,Copy,0,0
+F000025,2026-02-10 13:12:12,vikram.menon2,EMP0002,PC-FIN-002,meeting_notes.pdf,Write,0,0
+F000026,2026-01-29 14:14:12,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Copy,0,0
+F000027,2026-01-28 15:51:50,vikram.menon2,EMP0002,PC-FIN-002,budget.xlsx,Open,0,0
+F000028,2026-02-07 02:42:06,vikram.menon2,EMP0002,PC-FIN-002,budget.xlsx,Open,0,0
+F000029,2026-01-09 17:23:49,vikram.menon2,EMP0002,PC-FIN-002,presentation.pptx,Open,0,0
+F000030,2026-01-22 08:46:58,vikram.menon2,EMP0002,PC-FIN-002,design_spec.docx,Write,0,0
+F000031,2026-01-13 16:36:52,vikram.menon2,EMP0002,PC-FIN-002,presentation.pptx,Rename,0,0
+F000032,2026-01-23 13:35:54,vikram.menon2,EMP0002,PC-FIN-002,budget.xlsx,Open,0,0
+F000033,2026-01-28 13:55:04,yusuf.naidu3,EMP0003,PC-ENG-003,source_code.py,Open,0,0
+F000034,2026-01-09 15:19:06,yusuf.naidu3,EMP0003,PC-ENG-003,report.docx,Write,0,0
+F000035,2026-01-15 05:34:21,yusuf.naidu3,EMP0003,PC-ENG-003,report.docx,Copy,0,0
+F000036,2026-01-19 17:16:24,yusuf.naidu3,EMP0003,PC-ENG-003,design_spec.docx,Rename,0,0
+F000037,2026-01-05 16:10:18,yusuf.naidu3,EMP0003,PC-ENG-003,report.docx,Copy,0,0
+F000038,2026-02-03 18:32:19,yusuf.naidu3,EMP0003,PC-ENG-003,presentation.pptx,Open,0,0
+F000039,2026-02-04 14:07:37,yusuf.naidu3,EMP0003,PC-ENG-003,presentation.pptx,Rename,0,0
+F000040,2026-02-11 03:21:26,yusuf.naidu3,EMP0003,PC-ENG-003,meeting_notes.pdf,Copy,0,0
+F000041,2026-01-22 17:03:08,yusuf.naidu3,EMP0003,PC-ENG-003,budget.xlsx,Rename,0,0
+F000042,2026-02-12 17:03:15,yusuf.naidu3,EMP0003,PC-ENG-003,presentation.pptx,Open,0,0
+F000043,2026-02-06 17:44:53,yusuf.naidu3,EMP0003,PC-ENG-003,timesheet.xlsx,Open,0,0
+F000044,2026-01-23 21:26:38,yusuf.naidu3,EMP0003,PC-ENG-003,design_spec.docx,Open,0,0
+F000045,2026-02-05 11:08:17,yusuf.naidu3,EMP0003,PC-ENG-003,design_spec.docx,Open,0,0
+F000046,2026-01-07 03:32:14,yusuf.naidu3,EMP0003,PC-ENG-003,design_spec.docx,Rename,0,0
+F000047,2026-01-28 11:50:54,yusuf.naidu3,EMP0003,PC-ENG-003,budget.xlsx,Open,0,0
+F000048,2026-01-04 02:50:51,yusuf.naidu3,EMP0003,PC-ENG-003,budget.xlsx,Write,0,0
+F000049,2026-02-13 14:01:35,yusuf.naidu3,EMP0003,PC-ENG-003,presentation.pptx,Open,0,0
+F000050,2026-01-25 15:44:08,yusuf.naidu3,EMP0003,PC-ENG-003,presentation.pptx,Write,0,0
+F000051,2026-02-05 08:28:07,yusuf.naidu3,EMP0003,PC-ENG-003,source_code.py,Rename,0,0
+F000052,2026-01-23 08:27:58,yusuf.naidu3,EMP0003,PC-ENG-003,report.docx,Copy,0,0
+F000053,2026-01-15 07:00:14,yusuf.naidu3,EMP0003,PC-ENG-003,presentation.pptx,Open,0,0
+F000054,2026-01-01 16:15:52,yusuf.naidu3,EMP0003,PC-ENG-003,report.docx,Open,0,0
+F000055,2026-01-04 07:11:18,yusuf.naidu3,EMP0003,PC-ENG-003,report.docx,Rename,0,0
+F000056,2026-01-23 13:56:15,yusuf.naidu3,EMP0003,PC-ENG-003,meeting_notes.pdf,Copy,0,0
+F000057,2026-01-31 14:42:04,rohan.sharma4,EMP0004,PC-ENG-004,report.docx,Rename,0,0
+F000058,2026-02-04 08:45:47,rohan.sharma4,EMP0004,PC-ENG-004,timesheet.xlsx,Rename,0,0
+F000059,2026-01-15 11:19:23,rohan.sharma4,EMP0004,PC-ENG-004,timesheet.xlsx,Rename,0,0
+F000060,2026-02-11 09:57:17,rohan.sharma4,EMP0004,PC-ENG-004,meeting_notes.pdf,Open,0,0
+F000061,2026-01-04 10:26:45,rohan.sharma4,EMP0004,PC-ENG-004,source_code.py,Write,0,0
+F000062,2026-01-18 07:58:08,rohan.sharma4,EMP0004,PC-ENG-004,timesheet.xlsx,Copy,0,0
+F000063,2026-01-20 15:13:07,rohan.sharma4,EMP0004,PC-ENG-004,meeting_notes.pdf,Copy,0,0
+F000064,2026-01-03 21:44:28,rohan.sharma4,EMP0004,PC-ENG-004,design_spec.docx,Write,0,0
+F000065,2026-01-08 02:53:02,rohan.sharma4,EMP0004,PC-ENG-004,meeting_notes.pdf,Rename,0,0
+F000066,2026-02-07 10:52:05,rohan.sharma4,EMP0004,PC-ENG-004,report.docx,Rename,0,0
+F000067,2026-02-09 10:01:55,rohan.sharma4,EMP0004,PC-ENG-004,presentation.pptx,Write,0,0
+F000068,2026-01-29 04:13:24,rohan.sharma4,EMP0004,PC-ENG-004,budget.xlsx,Write,0,0
+F000069,2026-02-04 05:19:02,rohan.sharma4,EMP0004,PC-ENG-004,source_code.py,Rename,0,0
+F000070,2026-01-02 17:48:57,rohan.sharma4,EMP0004,PC-ENG-004,meeting_notes.pdf,Rename,0,0
+F000071,2026-02-07 08:01:21,rohan.sharma4,EMP0004,PC-ENG-004,design_spec.docx,Write,0,0
+F000072,2026-01-28 15:59:47,rohan.sharma4,EMP0004,PC-ENG-004,timesheet.xlsx,Open,0,0
+F000073,2026-01-07 12:46:59,rohan.sharma4,EMP0004,PC-ENG-004,design_spec.docx,Rename,0,0
+F000074,2026-02-04 11:36:46,rohan.sharma4,EMP0004,PC-ENG-004,source_code.py,Rename,0,0
+F000075,2026-01-11 19:29:47,rohan.sharma4,EMP0004,PC-ENG-004,budget.xlsx,Copy,0,0
+F000076,2026-01-01 09:43:17,rohan.sharma4,EMP0004,PC-ENG-004,report.docx,Copy,0,0
+F000077,2026-02-04 09:36:25,rohan.sharma4,EMP0004,PC-ENG-004,report.docx,Rename,0,0
+F000078,2026-01-24 09:16:50,rohan.sharma4,EMP0004,PC-ENG-004,design_spec.docx,Open,0,0
+F000079,2026-01-20 13:20:53,ritu.bhatt5,EMP0005,PC-ENG-005,meeting_notes.pdf,Copy,0,0
+F000080,2026-01-29 11:28:00,ritu.bhatt5,EMP0005,PC-ENG-005,presentation.pptx,Open,0,0
+F000081,2026-01-23 11:54:35,ritu.bhatt5,EMP0005,PC-ENG-005,budget.xlsx,Write,0,0
+F000082,2026-01-04 13:05:17,ritu.bhatt5,EMP0005,PC-ENG-005,source_code.py,Rename,0,0
+F000083,2026-01-05 11:16:49,ritu.bhatt5,EMP0005,PC-ENG-005,timesheet.xlsx,Rename,0,0
+F000084,2026-01-17 16:08:14,ritu.bhatt5,EMP0005,PC-ENG-005,design_spec.docx,Copy,0,0
+F000085,2026-01-10 16:41:03,ritu.bhatt5,EMP0005,PC-ENG-005,budget.xlsx,Open,0,0
+F000086,2026-02-11 04:43:32,ritu.bhatt5,EMP0005,PC-ENG-005,timesheet.xlsx,Write,0,0
+F000087,2026-02-07 09:35:45,ritu.bhatt5,EMP0005,PC-ENG-005,budget.xlsx,Open,0,0
+F000088,2026-01-17 21:01:43,ritu.bhatt5,EMP0005,PC-ENG-005,timesheet.xlsx,Rename,0,0
+F000089,2026-02-04 14:38:15,ritu.bhatt5,EMP0005,PC-ENG-005,meeting_notes.pdf,Open,0,0
+F000090,2026-01-05 12:07:32,ritu.bhatt5,EMP0005,PC-ENG-005,report.docx,Copy,0,0
+F000091,2026-01-14 10:23:53,ritu.bhatt5,EMP0005,PC-ENG-005,timesheet.xlsx,Write,0,0
+F000092,2026-02-11 11:18:09,lakshmi.naidu6,EMP0006,PC-SAL-006,report.docx,Rename,0,0
+F000093,2026-02-08 15:21:26,lakshmi.naidu6,EMP0006,PC-SAL-006,design_spec.docx,Rename,0,0
+F000094,2026-01-31 18:18:39,lakshmi.naidu6,EMP0006,PC-SAL-006,report.docx,Copy,0,0
+F000095,2026-01-24 04:59:09,lakshmi.naidu6,EMP0006,PC-SAL-006,source_code.py,Open,0,0
+F000096,2026-01-07 13:51:20,lakshmi.naidu6,EMP0006,PC-SAL-006,source_code.py,Rename,0,0
+F000097,2026-01-14 10:37:02,lakshmi.naidu6,EMP0006,PC-SAL-006,design_spec.docx,Copy,0,0
+F000098,2026-01-25 15:41:05,lakshmi.naidu6,EMP0006,PC-SAL-006,report.docx,Copy,0,0
+F000099,2026-02-06 12:36:40,lakshmi.naidu6,EMP0006,PC-SAL-006,source_code.py,Write,0,0
+F000100,2026-02-04 14:54:56,lakshmi.naidu6,EMP0006,PC-SAL-006,source_code.py,Open,0,0
+F000101,2026-02-08 11:33:33,lakshmi.naidu6,EMP0006,PC-SAL-006,presentation.pptx,Rename,0,0
+F000102,2026-01-18 08:36:18,lakshmi.naidu6,EMP0006,PC-SAL-006,budget.xlsx,Rename,0,0
+F000103,2026-01-16 15:23:14,lakshmi.naidu6,EMP0006,PC-SAL-006,presentation.pptx,Rename,0,0
+F000104,2026-02-14 09:46:56,swati.das7,EMP0007,PC-R&D-007,presentation.pptx,Rename,0,0
+F000105,2026-01-06 10:32:04,swati.das7,EMP0007,PC-R&D-007,meeting_notes.pdf,Write,0,0
+F000106,2026-02-08 09:50:26,swati.das7,EMP0007,PC-R&D-007,budget.xlsx,Copy,0,0
+F000107,2026-02-04 09:58:26,swati.das7,EMP0007,PC-R&D-007,design_spec.docx,Copy,0,0
+F000108,2026-02-08 09:18:21,swati.das7,EMP0007,PC-R&D-007,meeting_notes.pdf,Open,0,0
+F000109,2026-01-06 11:32:09,swati.das7,EMP0007,PC-R&D-007,source_code.py,Write,0,0
+F000110,2026-02-10 16:12:57,swati.das7,EMP0007,PC-R&D-007,budget.xlsx,Write,0,0
+F000111,2026-01-01 08:26:16,swati.das7,EMP0007,PC-R&D-007,timesheet.xlsx,Write,0,0
+F000112,2026-01-07 07:02:53,swati.das7,EMP0007,PC-R&D-007,presentation.pptx,Open,0,0
+F000113,2026-02-14 08:04:08,swati.das7,EMP0007,PC-R&D-007,source_code.py,Write,0,0
+F000114,2026-01-28 10:25:44,swati.das7,EMP0007,PC-R&D-007,source_code.py,Copy,0,0
+F000115,2026-01-19 07:57:52,swati.das7,EMP0007,PC-R&D-007,meeting_notes.pdf,Open,0,0
+F000116,2026-01-03 06:58:22,swati.das7,EMP0007,PC-R&D-007,presentation.pptx,Write,0,0
+F000117,2026-01-28 09:30:44,deepak.gupta8,EMP0008,PC-LEG-008,budget.xlsx,Copy,0,0
+F000118,2026-02-07 17:59:32,deepak.gupta8,EMP0008,PC-LEG-008,report.docx,Copy,0,0
+F000119,2026-01-01 13:23:43,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Write,0,0
+F000120,2026-01-25 10:11:32,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Rename,0,0
+F000121,2026-01-07 09:31:21,deepak.gupta8,EMP0008,PC-LEG-008,report.docx,Write,0,0
+F000122,2026-01-19 10:20:48,deepak.gupta8,EMP0008,PC-LEG-008,budget.xlsx,Copy,0,0
+F000123,2026-01-03 15:47:56,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Copy,0,0
+F000124,2026-01-28 12:36:56,deepak.gupta8,EMP0008,PC-LEG-008,source_code.py,Rename,0,0
+F000125,2026-01-07 10:10:07,deepak.gupta8,EMP0008,PC-LEG-008,meeting_notes.pdf,Rename,0,0
+F000126,2026-02-01 11:56:10,deepak.gupta8,EMP0008,PC-LEG-008,meeting_notes.pdf,Rename,0,0
+F000127,2026-02-08 15:59:14,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Rename,0,0
+F000128,2026-01-10 07:35:53,deepak.gupta8,EMP0008,PC-LEG-008,source_code.py,Copy,0,0
+F000129,2026-01-02 13:02:57,deepak.gupta8,EMP0008,PC-LEG-008,source_code.py,Copy,0,0
+F000130,2026-01-01 12:52:01,deepak.gupta8,EMP0008,PC-LEG-008,meeting_notes.pdf,Copy,0,0
+F000131,2026-01-19 18:36:27,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Write,0,0
+F000132,2026-02-03 07:29:18,deepak.gupta8,EMP0008,PC-LEG-008,report.docx,Open,0,0
+F000133,2026-01-29 17:31:16,deepak.gupta8,EMP0008,PC-LEG-008,report.docx,Copy,0,0
+F000134,2026-01-18 14:07:22,deepak.gupta8,EMP0008,PC-LEG-008,timesheet.xlsx,Open,0,0
+F000135,2026-01-15 14:20:10,deepak.gupta8,EMP0008,PC-LEG-008,source_code.py,Rename,0,0
+F000136,2026-01-18 11:47:32,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Open,0,0
+F000137,2026-02-14 09:59:02,deepak.gupta8,EMP0008,PC-LEG-008,presentation.pptx,Open,0,0
+F000138,2026-02-03 09:53:35,deepak.gupta8,EMP0008,PC-LEG-008,design_spec.docx,Open,0,0
+F000139,2026-02-10 13:15:08,deepak.gupta8,EMP0008,PC-LEG-008,source_code.py,Write,0,0
+F000140,2026-01-15 14:16:30,deepak.gupta8,EMP0008,PC-LEG-008,budget.xlsx,Write,0,0
+F000141,2026-02-01 09:12:40,anjali.nair9,EMP0009,PC-FIN-009,report.docx,Copy,0,0
+F000142,2026-01-01 11:31:35,anjali.nair9,EMP0009,PC-FIN-009,source_code.py,Copy,0,0
+F000143,2026-01-12 04:44:16,anjali.nair9,EMP0009,PC-FIN-009,source_code.py,Write,0,0
+F000144,2026-02-10 13:40:22,anjali.nair9,EMP0009,PC-FIN-009,presentation.pptx,Copy,0,0
+F000145,2026-01-20 16:56:18,anjali.nair9,EMP0009,PC-FIN-009,design_spec.docx,Write,0,0
+F000146,2026-02-01 15:25:38,anjali.nair9,EMP0009,PC-FIN-009,meeting_notes.pdf,Write,0,0
+F000147,2026-01-19 07:07:56,anjali.nair9,EMP0009,PC-FIN-009,timesheet.xlsx,Rename,0,0
+F000148,2026-01-27 20:20:15,anjali.nair9,EMP0009,PC-FIN-009,design_spec.docx,Write,0,0
+F000149,2026-01-08 08:20:42,anjali.nair9,EMP0009,PC-FIN-009,report.docx,Rename,0,0
+F000150,2026-02-14 10:08:49,anjali.nair9,EMP0009,PC-FIN-009,presentation.pptx,Write,0,0
+F000151,2026-02-08 11:15:01,anjali.nair9,EMP0009,PC-FIN-009,meeting_notes.pdf,Rename,0,0
+F000152,2026-02-02 08:54:50,anjali.nair9,EMP0009,PC-FIN-009,presentation.pptx,Open,0,0
+F000153,2026-02-05 15:16:43,anjali.nair9,EMP0009,PC-FIN-009,meeting_notes.pdf,Write,0,0
+F000154,2026-01-26 15:27:25,anjali.nair9,EMP0009,PC-FIN-009,meeting_notes.pdf,Open,0,0
+F000155,2026-01-18 11:14:21,anjali.nair9,EMP0009,PC-FIN-009,design_spec.docx,Open,0,0
+F000156,2026-01-29 11:36:56,sneha.joshi10,EMP0010,PC-ENG-010,budget.xlsx,Copy,0,0
+F000157,2026-02-10 07:39:39,sneha.joshi10,EMP0010,PC-ENG-010,meeting_notes.pdf,Copy,0,0
+F000158,2026-02-08 12:46:01,sneha.joshi10,EMP0010,PC-ENG-010,timesheet.xlsx,Write,0,0
+F000159,2026-01-06 15:21:58,sneha.joshi10,EMP0010,PC-ENG-010,meeting_notes.pdf,Open,0,0
+F000160,2026-02-11 05:13:23,sneha.joshi10,EMP0010,PC-ENG-010,source_code.py,Copy,0,0
+F000161,2026-01-11 16:25:55,sneha.joshi10,EMP0010,PC-ENG-010,design_spec.docx,Copy,0,0
+F000162,2026-01-19 15:58:23,sneha.joshi10,EMP0010,PC-ENG-010,meeting_notes.pdf,Write,0,0
+F000163,2026-01-14 12:15:00,sneha.joshi10,EMP0010,PC-ENG-010,report.docx,Open,0,0
+F000164,2026-02-03 07:25:50,sneha.joshi10,EMP0010,PC-ENG-010,presentation.pptx,Open,0,0
+F000165,2026-01-11 09:01:14,sneha.joshi10,EMP0010,PC-ENG-010,design_spec.docx,Copy,0,0
+F000166,2026-01-03 09:07:52,sneha.joshi10,EMP0010,PC-ENG-010,timesheet.xlsx,Write,0,0
+F000167,2026-02-11 10:52:47,sneha.joshi10,EMP0010,PC-ENG-010,meeting_notes.pdf,Open,0,0
+F000168,2026-01-05 06:46:45,sneha.joshi10,EMP0010,PC-ENG-010,timesheet.xlsx,Write,0,0
+F000169,2026-01-02 01:53:34,sneha.joshi10,EMP0010,PC-ENG-010,source_code.py,Copy,0,0
+F000170,2026-01-07 14:50:25,sneha.joshi10,EMP0010,PC-ENG-010,budget.xlsx,Rename,0,0
+F000171,2026-01-21 11:47:01,sneha.joshi10,EMP0010,PC-ENG-010,meeting_notes.pdf,Rename,0,0
+F000172,2026-01-30 08:16:41,sneha.joshi10,EMP0010,PC-ENG-010,source_code.py,Write,0,0
+F000173,2026-01-25 09:05:14,sneha.joshi10,EMP0010,PC-ENG-010,presentation.pptx,Rename,0,0
+F000174,2026-01-31 09:44:34,sneha.joshi10,EMP0010,PC-ENG-010,source_code.py,Copy,0,0
+F000175,2026-01-02 23:46:25,rahul.bhatt11,EMP0011,PC-HR-011,meeting_notes.pdf,Open,0,0
+F000176,2026-01-29 08:01:25,rahul.bhatt11,EMP0011,PC-HR-011,timesheet.xlsx,Copy,0,0
+F000177,2026-01-29 10:36:06,rahul.bhatt11,EMP0011,PC-HR-011,design_spec.docx,Rename,0,0
+F000178,2026-01-22 08:40:05,rahul.bhatt11,EMP0011,PC-HR-011,report.docx,Copy,0,0
+F000179,2026-01-14 16:31:37,rahul.bhatt11,EMP0011,PC-HR-011,budget.xlsx,Open,0,0
+F000180,2026-01-10 11:53:30,rahul.bhatt11,EMP0011,PC-HR-011,source_code.py,Copy,0,0
+F000181,2026-01-04 15:16:26,rahul.bhatt11,EMP0011,PC-HR-011,meeting_notes.pdf,Rename,0,0
+F000182,2026-01-10 03:44:36,rahul.bhatt11,EMP0011,PC-HR-011,source_code.py,Write,0,0
+F000183,2026-01-01 09:13:48,rahul.bhatt11,EMP0011,PC-HR-011,source_code.py,Write,0,0
+F000184,2026-02-04 12:41:15,rahul.bhatt11,EMP0011,PC-HR-011,meeting_notes.pdf,Write,0,0
+F000185,2026-01-31 12:54:47,rahul.bhatt11,EMP0011,PC-HR-011,design_spec.docx,Open,0,0
+F000186,2026-01-07 11:04:24,rahul.bhatt11,EMP0011,PC-HR-011,budget.xlsx,Open,0,0
+F000187,2026-01-11 12:07:10,rahul.bhatt11,EMP0011,PC-HR-011,budget.xlsx,Write,0,0
+F000188,2026-01-08 04:27:31,rahul.bhatt11,EMP0011,PC-HR-011,budget.xlsx,Write,0,0
+F000189,2026-01-09 15:35:26,rahul.bhatt11,EMP0011,PC-HR-011,presentation.pptx,Open,0,0
+F000190,2026-01-19 07:18:46,rahul.bhatt11,EMP0011,PC-HR-011,design_spec.docx,Rename,0,0
+F000191,2026-02-03 10:56:23,rahul.bhatt11,EMP0011,PC-HR-011,source_code.py,Copy,0,0
+F000192,2026-01-10 09:43:13,rahul.bhatt11,EMP0011,PC-HR-011,timesheet.xlsx,Rename,0,0
+F000193,2026-02-03 13:30:29,rahul.bhatt11,EMP0011,PC-HR-011,budget.xlsx,Rename,0,0
+F000194,2026-01-09 08:45:53,rahul.bhatt11,EMP0011,PC-HR-011,presentation.pptx,Open,0,0
+F000195,2026-01-21 11:09:30,rahul.bhatt11,EMP0011,PC-HR-011,report.docx,Open,0,0
+F000196,2026-01-20 14:12:44,rahul.bhatt11,EMP0011,PC-HR-011,report.docx,Write,0,0
+F000197,2026-01-07 06:29:38,neha.naidu12,EMP0012,PC-ENG-012,budget.xlsx,Open,0,0
+F000198,2026-01-23 13:56:14,neha.naidu12,EMP0012,PC-ENG-012,meeting_notes.pdf,Open,0,0
+F000199,2026-01-13 09:52:58,neha.naidu12,EMP0012,PC-ENG-012,timesheet.xlsx,Write,0,0
+F000200,2026-02-07 14:23:39,neha.naidu12,EMP0012,PC-ENG-012,timesheet.xlsx,Write,0,0
+F000201,2026-01-17 13:41:42,neha.naidu12,EMP0012,PC-ENG-012,budget.xlsx,Open,0,0
+F000202,2026-02-07 08:46:13,neha.naidu12,EMP0012,PC-ENG-012,meeting_notes.pdf,Copy,0,0
+F000203,2026-01-17 13:08:51,neha.naidu12,EMP0012,PC-ENG-012,source_code.py,Write,0,0
+F000204,2026-01-22 13:54:37,neha.naidu12,EMP0012,PC-ENG-012,source_code.py,Rename,0,0
+F000205,2026-02-09 14:30:13,neha.naidu12,EMP0012,PC-ENG-012,budget.xlsx,Open,0,0
+F000206,2026-01-15 22:05:59,neha.naidu12,EMP0012,PC-ENG-012,timesheet.xlsx,Copy,0,0
+F000207,2026-01-10 08:55:00,neha.naidu12,EMP0012,PC-ENG-012,meeting_notes.pdf,Open,0,0
+F000208,2026-01-04 08:51:28,neha.naidu12,EMP0012,PC-ENG-012,presentation.pptx,Write,0,0
+F000209,2026-01-21 09:48:07,neha.naidu12,EMP0012,PC-ENG-012,budget.xlsx,Write,0,0
+F000210,2026-01-25 15:45:30,neha.naidu12,EMP0012,PC-ENG-012,meeting_notes.pdf,Rename,0,0
+F000211,2026-02-03 09:05:56,neha.naidu12,EMP0012,PC-ENG-012,source_code.py,Copy,0,0
+F000212,2026-01-11 19:53:17,neha.naidu12,EMP0012,PC-ENG-012,design_spec.docx,Copy,0,0
+F000213,2026-01-28 12:31:44,neha.naidu12,EMP0012,PC-ENG-012,timesheet.xlsx,Rename,0,0
+F000214,2026-02-13 07:57:27,neha.naidu12,EMP0012,PC-ENG-012,design_spec.docx,Rename,0,0
+F000215,2026-01-12 02:23:54,neha.naidu12,EMP0012,PC-ENG-012,presentation.pptx,Rename,0,0
+F000216,2026-01-28 08:35:56,neha.naidu12,EMP0012,PC-ENG-012,budget.xlsx,Write,0,0
+F000217,2026-01-12 18:00:12,manoj.khan13,EMP0013,PC-R&D-013,presentation.pptx,Rename,0,0
+F000218,2026-02-03 08:37:19,manoj.khan13,EMP0013,PC-R&D-013,meeting_notes.pdf,Open,0,0
+F000219,2026-01-24 17:32:58,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Rename,0,0
+F000220,2026-01-03 14:41:30,manoj.khan13,EMP0013,PC-R&D-013,presentation.pptx,Open,0,0
+F000221,2026-02-14 14:17:40,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Open,0,0
+F000222,2026-01-31 23:40:29,manoj.khan13,EMP0013,PC-R&D-013,presentation.pptx,Copy,0,0
+F000223,2026-01-31 15:41:48,manoj.khan13,EMP0013,PC-R&D-013,source_code.py,Open,0,0
+F000224,2026-01-03 10:39:57,manoj.khan13,EMP0013,PC-R&D-013,design_spec.docx,Copy,0,0
+F000225,2026-01-12 16:08:05,manoj.khan13,EMP0013,PC-R&D-013,presentation.pptx,Open,0,0
+F000226,2026-01-04 11:45:03,manoj.khan13,EMP0013,PC-R&D-013,meeting_notes.pdf,Open,0,0
+F000227,2026-02-04 09:54:12,manoj.khan13,EMP0013,PC-R&D-013,design_spec.docx,Open,0,0
+F000228,2026-01-22 16:54:57,manoj.khan13,EMP0013,PC-R&D-013,meeting_notes.pdf,Copy,0,0
+F000229,2026-02-07 14:23:33,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Write,0,0
+F000230,2026-01-27 16:42:03,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Copy,0,0
+F000231,2026-02-02 08:17:05,manoj.khan13,EMP0013,PC-R&D-013,budget.xlsx,Write,0,0
+F000232,2026-01-03 09:12:44,manoj.khan13,EMP0013,PC-R&D-013,source_code.py,Write,0,0
+F000233,2026-01-12 13:53:53,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Rename,0,0
+F000234,2026-01-18 12:07:21,manoj.khan13,EMP0013,PC-R&D-013,presentation.pptx,Open,0,0
+F000235,2026-02-06 18:05:07,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Copy,0,0
+F000236,2026-01-06 08:37:40,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Copy,0,0
+F000237,2026-01-01 08:23:29,manoj.khan13,EMP0013,PC-R&D-013,report.docx,Copy,0,0
+F000238,2026-02-13 17:12:47,meera.reddy14,EMP0014,PC-ENG-014,timesheet.xlsx,Copy,0,0
+F000239,2026-01-20 04:11:17,meera.reddy14,EMP0014,PC-ENG-014,client_database.csv,Copy,1,1
+F000240,2026-01-13 03:11:18,meera.reddy14,EMP0014,PC-ENG-014,source_code_core.zip,Copy,1,1
+F000241,2026-02-01 05:22:49,meera.reddy14,EMP0014,PC-ENG-014,customer_pii.csv,Write,1,1
+F000242,2026-02-13 03:53:37,meera.reddy14,EMP0014,PC-ENG-014,presentation.pptx,Copy,0,0
+F000243,2026-02-04 23:27:22,meera.reddy14,EMP0014,PC-ENG-014,design_spec.docx,Rename,0,0
+F000244,2026-01-14 04:05:32,meera.reddy14,EMP0014,PC-ENG-014,client_database.csv,Copy,1,1
+F000245,2026-01-17 01:33:42,meera.reddy14,EMP0014,PC-ENG-014,customer_pii.csv,Copy,1,1
+F000246,2026-01-30 10:24:42,meera.reddy14,EMP0014,PC-ENG-014,source_code.py,Open,0,0
+F000247,2026-01-21 13:55:57,meera.reddy14,EMP0014,PC-ENG-014,report.docx,Copy,0,0
+F000248,2026-01-27 10:57:06,meera.reddy14,EMP0014,PC-ENG-014,budget.xlsx,Rename,0,0
+F000249,2026-01-20 02:48:01,meera.reddy14,EMP0014,PC-ENG-014,server_credentials.txt,Write,1,1
+F000250,2026-02-14 10:53:15,meera.reddy14,EMP0014,PC-ENG-014,meeting_notes.pdf,Rename,0,0
+F000251,2026-02-08 22:19:02,meera.reddy14,EMP0014,PC-ENG-014,client_database.csv,Copy,1,1
+F000252,2026-01-18 10:01:10,meera.reddy14,EMP0014,PC-ENG-014,source_code.py,Copy,0,0
+F000253,2026-01-20 20:33:12,meera.reddy14,EMP0014,PC-ENG-014,source_code.py,Copy,0,0
+F000254,2026-01-09 15:03:05,meera.reddy14,EMP0014,PC-ENG-014,meeting_notes.pdf,Copy,0,0
+F000255,2026-01-23 08:00:42,meera.reddy14,EMP0014,PC-ENG-014,budget.xlsx,Copy,0,0
+F000256,2026-01-12 01:11:15,meera.reddy14,EMP0014,PC-ENG-014,client_database.csv,Copy,1,1
+F000257,2026-01-10 14:54:49,tanya.khan15,EMP0015,PC-ENG-015,meeting_notes.pdf,Open,0,0
+F000258,2026-01-31 08:06:30,tanya.khan15,EMP0015,PC-ENG-015,source_code.py,Write,0,0
+F000259,2026-02-14 08:30:42,tanya.khan15,EMP0015,PC-ENG-015,presentation.pptx,Write,0,0
+F000260,2026-01-16 15:06:24,tanya.khan15,EMP0015,PC-ENG-015,budget.xlsx,Rename,0,0
+F000261,2026-01-09 10:20:57,tanya.khan15,EMP0015,PC-ENG-015,meeting_notes.pdf,Write,0,0
+F000262,2026-02-08 10:04:22,tanya.khan15,EMP0015,PC-ENG-015,presentation.pptx,Open,0,0
+F000263,2026-01-15 16:11:49,tanya.khan15,EMP0015,PC-ENG-015,budget.xlsx,Rename,0,0
+F000264,2026-01-24 10:52:00,tanya.khan15,EMP0015,PC-ENG-015,source_code.py,Write,0,0
+F000265,2026-01-05 14:08:31,tanya.khan15,EMP0015,PC-ENG-015,budget.xlsx,Open,0,0
+F000266,2026-01-14 09:05:21,tanya.khan15,EMP0015,PC-ENG-015,presentation.pptx,Copy,0,0
+F000267,2026-01-28 08:19:24,tanya.khan15,EMP0015,PC-ENG-015,design_spec.docx,Write,0,0
+F000268,2026-01-03 09:26:11,tanya.khan15,EMP0015,PC-ENG-015,budget.xlsx,Write,0,0
+F000269,2026-02-13 12:06:29,tanya.khan15,EMP0015,PC-ENG-015,timesheet.xlsx,Open,0,0
+F000270,2026-01-23 14:06:41,tanya.khan15,EMP0015,PC-ENG-015,timesheet.xlsx,Write,0,0
+F000271,2026-01-01 08:08:36,tanya.khan15,EMP0015,PC-ENG-015,source_code.py,Write,0,0
+F000272,2026-02-13 11:31:41,tanya.khan15,EMP0015,PC-ENG-015,design_spec.docx,Write,0,0
+F000273,2026-01-28 15:19:27,tanya.khan15,EMP0015,PC-ENG-015,meeting_notes.pdf,Open,0,0
+F000274,2026-02-02 10:30:45,kiran.joshi16,EMP0016,PC-HR-016,meeting_notes.pdf,Rename,0,0
+F000275,2026-01-08 15:27:34,kiran.joshi16,EMP0016,PC-HR-016,timesheet.xlsx,Write,0,0
+F000276,2026-02-13 07:00:21,kiran.joshi16,EMP0016,PC-HR-016,design_spec.docx,Rename,0,0
+F000277,2026-01-13 12:39:46,kiran.joshi16,EMP0016,PC-HR-016,timesheet.xlsx,Write,0,0
+F000278,2026-01-28 05:18:02,kiran.joshi16,EMP0016,PC-HR-016,report.docx,Write,0,0
+F000279,2026-01-30 10:56:38,kiran.joshi16,EMP0016,PC-HR-016,design_spec.docx,Rename,0,0
+F000280,2026-01-17 11:43:18,kiran.joshi16,EMP0016,PC-HR-016,timesheet.xlsx,Open,0,0
+F000281,2026-02-04 09:18:22,kiran.joshi16,EMP0016,PC-HR-016,presentation.pptx,Open,0,0
+F000282,2026-01-29 10:40:02,kiran.joshi16,EMP0016,PC-HR-016,source_code.py,Open,0,0
+F000283,2026-01-23 14:34:47,kiran.joshi16,EMP0016,PC-HR-016,presentation.pptx,Copy,0,0
+F000284,2026-01-12 07:06:08,kiran.joshi16,EMP0016,PC-HR-016,design_spec.docx,Copy,0,0
+F000285,2026-02-10 12:57:17,kiran.joshi16,EMP0016,PC-HR-016,meeting_notes.pdf,Write,0,0
+F000286,2026-02-14 13:58:52,kiran.joshi16,EMP0016,PC-HR-016,timesheet.xlsx,Write,0,0
+F000287,2026-01-03 07:23:02,kiran.joshi16,EMP0016,PC-HR-016,budget.xlsx,Open,0,0
+F000288,2026-01-25 12:46:05,kiran.joshi16,EMP0016,PC-HR-016,meeting_notes.pdf,Rename,0,0
+F000289,2026-01-28 10:11:47,kiran.joshi16,EMP0016,PC-HR-016,meeting_notes.pdf,Open,0,0
+F000290,2026-01-28 20:50:12,kiran.joshi16,EMP0016,PC-HR-016,source_code.py,Rename,0,0
+F000291,2026-01-20 13:34:54,kiran.joshi16,EMP0016,PC-HR-016,timesheet.xlsx,Copy,0,0
+F000292,2026-02-14 15:23:36,kiran.joshi16,EMP0016,PC-HR-016,presentation.pptx,Copy,0,0
+F000293,2026-01-28 09:44:49,kiran.joshi16,EMP0016,PC-HR-016,budget.xlsx,Rename,0,0
+F000294,2026-02-02 14:38:25,kiran.joshi16,EMP0016,PC-HR-016,budget.xlsx,Rename,0,0
+F000295,2026-01-18 00:13:01,kiran.joshi16,EMP0016,PC-HR-016,timesheet.xlsx,Write,0,0
+F000296,2026-02-12 07:17:29,kiran.joshi16,EMP0016,PC-HR-016,source_code.py,Rename,0,0
+F000297,2026-01-07 08:01:45,kiran.joshi16,EMP0016,PC-HR-016,meeting_notes.pdf,Copy,0,0
+F000298,2026-02-09 09:45:38,kavya.patil17,EMP0017,PC-FIN-017,timesheet.xlsx,Write,0,0
+F000299,2026-02-07 11:38:21,kavya.patil17,EMP0017,PC-FIN-017,source_code.py,Write,0,0
+F000300,2026-01-31 18:00:21,kavya.patil17,EMP0017,PC-FIN-017,meeting_notes.pdf,Rename,0,0
+F000301,2026-01-23 16:09:29,kavya.patil17,EMP0017,PC-FIN-017,timesheet.xlsx,Write,0,0
+F000302,2026-01-14 12:10:43,kavya.patil17,EMP0017,PC-FIN-017,presentation.pptx,Rename,0,0
+F000303,2026-01-26 03:54:36,kavya.patil17,EMP0017,PC-FIN-017,report.docx,Write,0,0
+F000304,2026-02-05 22:05:13,kavya.patil17,EMP0017,PC-FIN-017,design_spec.docx,Rename,0,0
+F000305,2026-01-20 09:20:28,kavya.patil17,EMP0017,PC-FIN-017,design_spec.docx,Write,0,0
+F000306,2026-01-02 08:37:10,kavya.patil17,EMP0017,PC-FIN-017,source_code.py,Rename,0,0
+F000307,2026-02-06 11:48:01,kavya.patil17,EMP0017,PC-FIN-017,timesheet.xlsx,Rename,0,0
+F000308,2026-02-05 15:15:24,kavya.patil17,EMP0017,PC-FIN-017,source_code.py,Copy,0,0
+F000309,2026-01-25 13:54:07,kavya.patil17,EMP0017,PC-FIN-017,report.docx,Write,0,0
+F000310,2026-01-14 23:36:18,meera.das18,EMP0018,PC-LEG-018,budget.xlsx,Copy,0,0
+F000311,2026-01-26 12:22:48,meera.das18,EMP0018,PC-LEG-018,budget.xlsx,Write,0,0
+F000312,2026-02-08 09:49:23,meera.das18,EMP0018,PC-LEG-018,design_spec.docx,Open,0,0
+F000313,2026-02-12 16:40:48,meera.das18,EMP0018,PC-LEG-018,design_spec.docx,Rename,0,0
+F000314,2026-02-02 12:25:14,meera.das18,EMP0018,PC-LEG-018,timesheet.xlsx,Write,0,0
+F000315,2026-02-01 15:18:52,meera.das18,EMP0018,PC-LEG-018,presentation.pptx,Copy,0,0
+F000316,2026-01-12 10:00:34,meera.das18,EMP0018,PC-LEG-018,timesheet.xlsx,Rename,0,0
+F000317,2026-01-30 14:43:58,meera.das18,EMP0018,PC-LEG-018,report.docx,Write,0,0
+F000318,2026-02-07 14:26:26,meera.das18,EMP0018,PC-LEG-018,budget.xlsx,Open,0,0
+F000319,2026-02-09 08:39:39,meera.das18,EMP0018,PC-LEG-018,source_code.py,Open,0,0
+F000320,2026-02-08 13:26:01,meera.das18,EMP0018,PC-LEG-018,meeting_notes.pdf,Copy,0,0
+F000321,2026-01-11 13:30:43,meera.das18,EMP0018,PC-LEG-018,report.docx,Rename,0,0
+F000322,2026-01-02 15:56:50,meera.das18,EMP0018,PC-LEG-018,design_spec.docx,Write,0,0
+F000323,2026-02-05 12:12:54,meera.das18,EMP0018,PC-LEG-018,budget.xlsx,Write,0,0
+F000324,2026-01-24 14:15:11,meera.das18,EMP0018,PC-LEG-018,presentation.pptx,Copy,0,0
+F000325,2026-01-21 08:04:57,meera.das18,EMP0018,PC-LEG-018,report.docx,Copy,0,0
+F000326,2026-01-30 09:38:28,farah.gupta19,EMP0019,PC-IT -019,budget.xlsx,Copy,0,0
+F000327,2026-01-30 12:07:51,farah.gupta19,EMP0019,PC-IT -019,source_code.py,Rename,0,0
+F000328,2026-01-11 09:46:04,farah.gupta19,EMP0019,PC-IT -019,report.docx,Open,0,0
+F000329,2026-02-13 14:55:33,farah.gupta19,EMP0019,PC-IT -019,presentation.pptx,Write,0,0
+F000330,2026-01-05 15:16:56,farah.gupta19,EMP0019,PC-IT -019,design_spec.docx,Open,0,0
+F000331,2026-02-08 14:34:45,farah.gupta19,EMP0019,PC-IT -019,report.docx,Write,0,0
+F000332,2026-01-31 16:03:18,farah.gupta19,EMP0019,PC-IT -019,timesheet.xlsx,Write,0,0
+F000333,2026-01-03 10:45:59,farah.gupta19,EMP0019,PC-IT -019,source_code.py,Write,0,0
+F000334,2026-01-28 15:06:09,farah.gupta19,EMP0019,PC-IT -019,timesheet.xlsx,Rename,0,0
+F000335,2026-02-07 15:07:46,farah.gupta19,EMP0019,PC-IT -019,budget.xlsx,Rename,0,0
+F000336,2026-01-27 14:09:58,farah.gupta19,EMP0019,PC-IT -019,budget.xlsx,Write,0,0
+F000337,2026-01-14 09:21:41,farah.gupta19,EMP0019,PC-IT -019,design_spec.docx,Open,0,0
+F000338,2026-01-30 17:31:48,farah.gupta19,EMP0019,PC-IT -019,budget.xlsx,Rename,0,0
+F000339,2026-01-22 09:28:21,farah.gupta19,EMP0019,PC-IT -019,timesheet.xlsx,Write,0,0
+F000340,2026-02-14 09:17:38,farah.gupta19,EMP0019,PC-IT -019,report.docx,Copy,0,0
+F000341,2026-01-10 12:01:14,farah.gupta19,EMP0019,PC-IT -019,meeting_notes.pdf,Rename,0,0
+F000342,2026-01-19 09:45:10,farah.gupta19,EMP0019,PC-IT -019,source_code.py,Rename,0,0
+F000343,2026-01-31 14:43:18,farah.gupta19,EMP0019,PC-IT -019,budget.xlsx,Copy,0,0
+F000344,2026-01-10 13:54:24,farah.gupta19,EMP0019,PC-IT -019,meeting_notes.pdf,Copy,0,0
+F000345,2026-01-02 16:37:19,farah.gupta19,EMP0019,PC-IT -019,budget.xlsx,Open,0,0
+F000346,2026-01-17 10:32:47,farah.gupta19,EMP0019,PC-IT -019,timesheet.xlsx,Write,0,0
+F000347,2026-01-31 13:10:22,farah.gupta19,EMP0019,PC-IT -019,design_spec.docx,Copy,0,0
+F000348,2026-02-07 16:20:33,farah.gupta19,EMP0019,PC-IT -019,meeting_notes.pdf,Write,0,0
+F000349,2026-02-01 14:55:33,farah.gupta19,EMP0019,PC-IT -019,presentation.pptx,Copy,0,0
+F000350,2026-01-25 01:04:21,neha.joshi20,EMP0020,PC-HR-020,budget.xlsx,Rename,0,0
+F000351,2026-01-14 09:17:38,neha.joshi20,EMP0020,PC-HR-020,timesheet.xlsx,Open,0,0
+F000352,2026-02-11 08:31:29,neha.joshi20,EMP0020,PC-HR-020,source_code.py,Open,0,0
+F000353,2026-02-03 17:47:12,neha.joshi20,EMP0020,PC-HR-020,meeting_notes.pdf,Open,0,0
+F000354,2026-01-26 13:21:32,neha.joshi20,EMP0020,PC-HR-020,report.docx,Rename,0,0
+F000355,2026-02-05 19:54:47,neha.joshi20,EMP0020,PC-HR-020,source_code.py,Open,0,0
+F000356,2026-01-04 11:33:15,neha.joshi20,EMP0020,PC-HR-020,budget.xlsx,Rename,0,0
+F000357,2026-01-12 14:41:54,neha.joshi20,EMP0020,PC-HR-020,budget.xlsx,Copy,0,0
+F000358,2026-02-14 14:11:02,neha.joshi20,EMP0020,PC-HR-020,source_code.py,Rename,0,0
+F000359,2026-02-05 09:47:12,neha.joshi20,EMP0020,PC-HR-020,design_spec.docx,Open,0,0
+F000360,2026-01-09 12:03:13,neha.joshi20,EMP0020,PC-HR-020,budget.xlsx,Copy,0,0
+F000361,2026-02-07 15:30:29,neha.joshi20,EMP0020,PC-HR-020,report.docx,Open,0,0
+F000362,2026-01-21 15:04:12,neha.joshi20,EMP0020,PC-HR-020,presentation.pptx,Open,0,0
+F000363,2026-01-29 07:12:06,neha.joshi20,EMP0020,PC-HR-020,source_code.py,Copy,0,0
+F000364,2026-02-08 12:36:00,neha.joshi20,EMP0020,PC-HR-020,source_code.py,Write,0,0
+F000365,2026-01-08 14:28:49,neha.joshi20,EMP0020,PC-HR-020,design_spec.docx,Copy,0,0
+F000366,2026-02-07 15:39:48,neha.joshi20,EMP0020,PC-HR-020,presentation.pptx,Open,0,0
+F000367,2026-01-17 15:38:17,neha.joshi20,EMP0020,PC-HR-020,presentation.pptx,Copy,0,0
+F000368,2026-01-22 12:32:18,neha.joshi20,EMP0020,PC-HR-020,design_spec.docx,Rename,0,0
+F000369,2026-01-17 16:15:21,neha.joshi20,EMP0020,PC-HR-020,meeting_notes.pdf,Rename,0,0
+F000370,2026-02-10 11:48:11,neha.joshi20,EMP0020,PC-HR-020,presentation.pptx,Open,0,0
+F000371,2026-01-21 17:32:30,neha.joshi20,EMP0020,PC-HR-020,presentation.pptx,Copy,0,0
+F000372,2026-01-12 06:27:43,neha.joshi20,EMP0020,PC-HR-020,meeting_notes.pdf,Open,0,0
+F000373,2026-01-29 10:43:34,neha.joshi20,EMP0020,PC-HR-020,timesheet.xlsx,Copy,0,0
+F000374,2026-01-13 15:48:14,neha.joshi20,EMP0020,PC-HR-020,budget.xlsx,Rename,0,0
+F000375,2026-01-21 15:30:06,divya.verma21,EMP0021,PC-FIN-021,design_spec.docx,Rename,0,0
+F000376,2026-02-09 08:43:09,divya.verma21,EMP0021,PC-FIN-021,meeting_notes.pdf,Copy,0,0
+F000377,2026-01-13 15:50:10,divya.verma21,EMP0021,PC-FIN-021,timesheet.xlsx,Copy,0,0
+F000378,2026-02-09 14:20:33,divya.verma21,EMP0021,PC-FIN-021,presentation.pptx,Write,0,0
+F000379,2026-01-18 09:16:30,divya.verma21,EMP0021,PC-FIN-021,timesheet.xlsx,Rename,0,0
+F000380,2026-01-24 08:21:46,divya.verma21,EMP0021,PC-FIN-021,meeting_notes.pdf,Rename,0,0
+F000381,2026-01-29 09:36:25,divya.verma21,EMP0021,PC-FIN-021,timesheet.xlsx,Write,0,0
+F000382,2026-01-01 15:25:03,divya.verma21,EMP0021,PC-FIN-021,presentation.pptx,Rename,0,0
+F000383,2026-02-11 15:29:49,divya.verma21,EMP0021,PC-FIN-021,meeting_notes.pdf,Open,0,0
+F000384,2026-01-13 08:45:16,divya.verma21,EMP0021,PC-FIN-021,meeting_notes.pdf,Rename,0,0
+F000385,2026-01-02 10:50:24,divya.verma21,EMP0021,PC-FIN-021,meeting_notes.pdf,Copy,0,0
+F000386,2026-01-14 13:28:54,divya.verma21,EMP0021,PC-FIN-021,meeting_notes.pdf,Open,0,0
+F000387,2026-01-05 09:20:46,divya.verma21,EMP0021,PC-FIN-021,presentation.pptx,Write,0,0
+F000388,2026-01-03 15:24:44,divya.verma21,EMP0021,PC-FIN-021,design_spec.docx,Write,0,0
+F000389,2026-01-16 09:38:37,divya.verma21,EMP0021,PC-FIN-021,presentation.pptx,Open,0,0
+F000390,2026-01-07 06:21:17,divya.verma21,EMP0021,PC-FIN-021,source_code.py,Rename,0,0
+F000391,2026-01-29 17:07:30,divya.verma21,EMP0021,PC-FIN-021,budget.xlsx,Open,0,0
+F000392,2026-01-21 21:46:26,divya.verma21,EMP0021,PC-FIN-021,timesheet.xlsx,Copy,0,0
+F000393,2026-01-10 13:36:12,divya.verma21,EMP0021,PC-FIN-021,source_code.py,Open,0,0
+F000394,2026-01-16 10:34:48,divya.joshi22,EMP0022,PC-HR-022,design_spec.docx,Rename,0,0
+F000395,2026-02-05 12:18:44,divya.joshi22,EMP0022,PC-HR-022,report.docx,Copy,0,0
+F000396,2026-01-05 16:44:45,divya.joshi22,EMP0022,PC-HR-022,design_spec.docx,Rename,0,0
+F000397,2026-01-24 17:28:47,divya.joshi22,EMP0022,PC-HR-022,budget.xlsx,Copy,0,0
+F000398,2026-01-21 11:29:23,divya.joshi22,EMP0022,PC-HR-022,meeting_notes.pdf,Copy,0,0
+F000399,2026-02-13 20:16:16,divya.joshi22,EMP0022,PC-HR-022,source_code.py,Open,0,0
+F000400,2026-01-09 07:26:27,divya.joshi22,EMP0022,PC-HR-022,presentation.pptx,Write,0,0
+F000401,2026-01-04 16:03:58,divya.joshi22,EMP0022,PC-HR-022,source_code.py,Rename,0,0
+F000402,2026-01-02 13:02:32,divya.joshi22,EMP0022,PC-HR-022,timesheet.xlsx,Rename,0,0
+F000403,2026-02-04 12:36:21,divya.joshi22,EMP0022,PC-HR-022,design_spec.docx,Open,0,0
+F000404,2026-01-05 13:35:49,divya.joshi22,EMP0022,PC-HR-022,report.docx,Copy,0,0
+F000405,2026-02-02 16:05:36,divya.joshi22,EMP0022,PC-HR-022,presentation.pptx,Copy,0,0
+F000406,2026-01-05 15:27:52,divya.joshi22,EMP0022,PC-HR-022,meeting_notes.pdf,Write,0,0
+F000407,2026-01-29 17:47:09,divya.joshi22,EMP0022,PC-HR-022,design_spec.docx,Rename,0,0
+F000408,2026-01-05 08:36:21,divya.joshi22,EMP0022,PC-HR-022,presentation.pptx,Write,0,0
+F000409,2026-01-02 10:18:00,divya.joshi22,EMP0022,PC-HR-022,source_code.py,Write,0,0
+F000410,2026-01-02 00:20:27,divya.joshi22,EMP0022,PC-HR-022,budget.xlsx,Rename,0,0
+F000411,2026-01-15 13:49:20,divya.joshi22,EMP0022,PC-HR-022,source_code.py,Write,0,0
+F000412,2026-02-11 14:49:52,divya.joshi22,EMP0022,PC-HR-022,source_code.py,Rename,0,0
+F000413,2026-02-06 08:49:09,divya.joshi22,EMP0022,PC-HR-022,budget.xlsx,Rename,0,0
+F000414,2026-01-12 07:34:38,divya.joshi22,EMP0022,PC-HR-022,timesheet.xlsx,Open,0,0
+F000415,2026-01-09 12:04:20,divya.joshi22,EMP0022,PC-HR-022,timesheet.xlsx,Rename,0,0
+F000416,2026-01-15 14:12:19,divya.joshi22,EMP0022,PC-HR-022,budget.xlsx,Write,0,0
+F000417,2026-01-18 09:58:13,divya.joshi22,EMP0022,PC-HR-022,timesheet.xlsx,Rename,0,0
+F000418,2026-01-09 16:28:07,varun.saxena23,EMP0023,PC-LEG-023,timesheet.xlsx,Write,0,0
+F000419,2026-01-02 11:47:54,varun.saxena23,EMP0023,PC-LEG-023,design_spec.docx,Copy,0,0
+F000420,2026-01-25 05:28:25,varun.saxena23,EMP0023,PC-LEG-023,budget.xlsx,Copy,0,0
+F000421,2026-01-25 13:07:05,varun.saxena23,EMP0023,PC-LEG-023,budget.xlsx,Open,0,0
+F000422,2026-01-11 15:07:31,varun.saxena23,EMP0023,PC-LEG-023,design_spec.docx,Rename,0,0
+F000423,2026-01-21 11:13:05,varun.saxena23,EMP0023,PC-LEG-023,timesheet.xlsx,Rename,0,0
+F000424,2026-01-31 09:07:29,varun.saxena23,EMP0023,PC-LEG-023,report.docx,Open,0,0
+F000425,2026-01-25 15:25:54,varun.saxena23,EMP0023,PC-LEG-023,report.docx,Rename,0,0
+F000426,2026-01-24 19:53:04,varun.saxena23,EMP0023,PC-LEG-023,presentation.pptx,Rename,0,0
+F000427,2026-01-15 23:05:41,varun.saxena23,EMP0023,PC-LEG-023,design_spec.docx,Write,0,0
+F000428,2026-01-02 19:17:46,farah.kapoor24,EMP0024,PC-SAL-024,design_spec.docx,Rename,0,0
+F000429,2026-01-03 08:15:11,farah.kapoor24,EMP0024,PC-SAL-024,source_code.py,Open,0,0
+F000430,2026-01-09 12:08:44,farah.kapoor24,EMP0024,PC-SAL-024,presentation.pptx,Open,0,0
+F000431,2026-01-04 13:13:55,farah.kapoor24,EMP0024,PC-SAL-024,design_spec.docx,Rename,0,0
+F000432,2026-01-24 13:52:10,farah.kapoor24,EMP0024,PC-SAL-024,presentation.pptx,Copy,0,0
+F000433,2026-01-12 18:09:47,farah.kapoor24,EMP0024,PC-SAL-024,timesheet.xlsx,Copy,0,0
+F000434,2026-01-24 16:07:50,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Open,0,0
+F000435,2026-02-01 08:25:40,farah.kapoor24,EMP0024,PC-SAL-024,meeting_notes.pdf,Rename,0,0
+F000436,2026-02-09 10:50:01,farah.kapoor24,EMP0024,PC-SAL-024,meeting_notes.pdf,Open,0,0
+F000437,2026-01-31 03:55:09,farah.kapoor24,EMP0024,PC-SAL-024,presentation.pptx,Open,0,0
+F000438,2026-02-04 10:38:46,farah.kapoor24,EMP0024,PC-SAL-024,source_code.py,Copy,0,0
+F000439,2026-01-11 07:22:57,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Open,0,0
+F000440,2026-01-27 22:07:30,farah.kapoor24,EMP0024,PC-SAL-024,presentation.pptx,Write,0,0
+F000441,2026-02-04 11:54:38,farah.kapoor24,EMP0024,PC-SAL-024,timesheet.xlsx,Open,0,0
+F000442,2026-01-20 11:57:57,farah.kapoor24,EMP0024,PC-SAL-024,meeting_notes.pdf,Copy,0,0
+F000443,2026-01-21 14:23:39,farah.kapoor24,EMP0024,PC-SAL-024,design_spec.docx,Open,0,0
+F000444,2026-01-31 12:53:54,farah.kapoor24,EMP0024,PC-SAL-024,source_code.py,Copy,0,0
+F000445,2026-01-09 08:08:51,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Copy,0,0
+F000446,2026-02-12 07:06:45,farah.kapoor24,EMP0024,PC-SAL-024,presentation.pptx,Rename,0,0
+F000447,2026-02-09 07:14:16,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Rename,0,0
+F000448,2026-01-22 14:29:42,farah.kapoor24,EMP0024,PC-SAL-024,source_code.py,Rename,0,0
+F000449,2026-01-09 10:23:42,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Open,0,0
+F000450,2026-01-25 13:50:12,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Open,0,0
+F000451,2026-01-10 13:53:50,farah.kapoor24,EMP0024,PC-SAL-024,budget.xlsx,Copy,0,0
+F000452,2026-01-26 10:36:30,farah.kapoor24,EMP0024,PC-SAL-024,presentation.pptx,Rename,0,0
+F000453,2026-02-10 16:36:25,vikram.naidu25,EMP0025,PC-IT -025,presentation.pptx,Copy,0,0
+F000454,2026-01-30 13:34:28,vikram.naidu25,EMP0025,PC-IT -025,report.docx,Rename,0,0
+F000455,2026-02-11 15:59:21,vikram.naidu25,EMP0025,PC-IT -025,meeting_notes.pdf,Copy,0,0
+F000456,2026-01-17 10:55:31,vikram.naidu25,EMP0025,PC-IT -025,timesheet.xlsx,Write,0,0
+F000457,2026-02-12 07:54:21,vikram.naidu25,EMP0025,PC-IT -025,timesheet.xlsx,Rename,0,0
+F000458,2026-01-05 15:27:41,vikram.naidu25,EMP0025,PC-IT -025,report.docx,Copy,0,0
+F000459,2026-01-07 09:29:53,vikram.naidu25,EMP0025,PC-IT -025,report.docx,Open,0,0
+F000460,2026-02-05 14:08:55,vikram.naidu25,EMP0025,PC-IT -025,meeting_notes.pdf,Rename,0,0
+F000461,2026-01-29 11:05:55,vikram.naidu25,EMP0025,PC-IT -025,source_code.py,Copy,0,0
+F000462,2026-01-26 15:56:32,vikram.naidu25,EMP0025,PC-IT -025,budget.xlsx,Copy,0,0
+F000463,2026-02-13 08:01:12,vikram.naidu25,EMP0025,PC-IT -025,design_spec.docx,Rename,0,0
+F000464,2026-02-03 13:09:36,vikram.naidu25,EMP0025,PC-IT -025,timesheet.xlsx,Open,0,0
+F000465,2026-02-04 10:14:44,vikram.naidu25,EMP0025,PC-IT -025,source_code.py,Copy,0,0
+F000466,2026-01-24 08:43:10,vikram.naidu25,EMP0025,PC-IT -025,design_spec.docx,Copy,0,0
+F000467,2026-01-10 12:39:27,vikram.naidu25,EMP0025,PC-IT -025,timesheet.xlsx,Copy,0,0
+F000468,2026-01-18 05:25:18,vikram.naidu25,EMP0025,PC-IT -025,presentation.pptx,Write,0,0
+F000469,2026-01-30 04:00:04,swati.bose26,EMP0026,PC-IT -026,source_code_core.zip,Copy,1,1
+F000470,2026-02-09 06:48:26,swati.bose26,EMP0026,PC-IT -026,budget.xlsx,Copy,0,0
+F000471,2026-01-31 15:51:15,swati.bose26,EMP0026,PC-IT -026,presentation.pptx,Copy,0,0
+F000472,2026-02-11 13:15:53,swati.bose26,EMP0026,PC-IT -026,meeting_notes.pdf,Open,0,0
+F000473,2026-01-15 09:57:25,swati.bose26,EMP0026,PC-IT -026,report.docx,Copy,0,0
+F000474,2026-01-14 14:48:20,swati.bose26,EMP0026,PC-IT -026,report.docx,Open,0,0
+F000475,2026-02-03 01:49:40,swati.bose26,EMP0026,PC-IT -026,merger_plan.docx,Copy,1,1
+F000476,2026-01-29 01:34:47,swati.bose26,EMP0026,PC-IT -026,merger_plan.docx,Copy,1,1
+F000477,2026-01-22 19:02:24,swati.bose26,EMP0026,PC-IT -026,timesheet.xlsx,Rename,0,0
+F000478,2026-01-08 11:10:56,swati.bose26,EMP0026,PC-IT -026,design_spec.docx,Write,0,0
+F000479,2026-01-19 01:05:46,swati.bose26,EMP0026,PC-IT -026,merger_plan.docx,Copy,1,1
+F000480,2026-02-12 14:27:26,swati.bose26,EMP0026,PC-IT -026,report.docx,Open,0,0
+F000481,2026-01-18 14:57:16,swati.bose26,EMP0026,PC-IT -026,design_spec.docx,Rename,0,0
+F000482,2026-01-27 09:22:05,swati.bose26,EMP0026,PC-IT -026,report.docx,Open,0,0
+F000483,2026-02-01 23:14:37,swati.bose26,EMP0026,PC-IT -026,server_credentials.txt,Copy,1,1
+F000484,2026-02-01 16:24:38,swati.bose26,EMP0026,PC-IT -026,source_code.py,Write,0,0
+F000485,2026-01-03 13:50:41,swati.bose26,EMP0026,PC-IT -026,report.docx,Open,0,0
+F000486,2026-01-08 09:37:43,swati.bose26,EMP0026,PC-IT -026,design_spec.docx,Write,0,0
+F000487,2026-01-26 04:41:50,swati.bose26,EMP0026,PC-IT -026,presentation.pptx,Write,0,0
+F000488,2026-02-06 03:25:52,swati.bose26,EMP0026,PC-IT -026,timesheet.xlsx,Write,0,0
+F000489,2026-02-12 08:11:01,swati.bose26,EMP0026,PC-IT -026,design_spec.docx,Rename,0,0
+F000490,2026-01-07 22:51:01,swati.bose26,EMP0026,PC-IT -026,customer_pii.csv,Write,1,1
+F000491,2026-01-17 05:22:15,swati.bose26,EMP0026,PC-IT -026,source_code_core.zip,Write,1,1
+F000492,2026-01-21 23:16:49,swati.bose26,EMP0026,PC-IT -026,timesheet.xlsx,Copy,0,0
+F000493,2026-01-14 16:41:20,swati.bose26,EMP0026,PC-IT -026,design_spec.docx,Write,0,0
+F000494,2026-01-12 16:21:22,vikram.nair27,EMP0027,PC-IT -027,source_code.py,Copy,0,0
+F000495,2026-01-21 07:46:05,vikram.nair27,EMP0027,PC-IT -027,design_spec.docx,Write,0,0
+F000496,2026-01-21 13:48:24,vikram.nair27,EMP0027,PC-IT -027,budget.xlsx,Rename,0,0
+F000497,2026-02-01 23:57:23,vikram.nair27,EMP0027,PC-IT -027,client_database.csv,Copy,1,1
+F000498,2026-01-08 04:58:32,vikram.nair27,EMP0027,PC-IT -027,customer_pii.csv,Rename,1,1
+F000499,2026-02-04 01:12:05,vikram.nair27,EMP0027,PC-IT -027,employee_salaries.xlsx,Write,1,1
+F000500,2026-01-10 12:25:08,vikram.nair27,EMP0027,PC-IT -027,presentation.pptx,Open,0,0
+F000501,2026-01-19 20:20:14,vikram.nair27,EMP0027,PC-IT -027,presentation.pptx,Open,0,0
+F000502,2026-01-16 14:17:01,vikram.nair27,EMP0027,PC-IT -027,presentation.pptx,Copy,0,0
+F000503,2026-02-14 09:14:28,vikram.nair27,EMP0027,PC-IT -027,design_spec.docx,Copy,0,0
+F000504,2026-01-10 03:01:54,vikram.nair27,EMP0027,PC-IT -027,merger_plan.docx,Write,1,1
+F000505,2026-01-27 23:12:26,vikram.nair27,EMP0027,PC-IT -027,budget.xlsx,Write,0,0
+F000506,2026-02-10 17:24:47,vikram.nair27,EMP0027,PC-IT -027,meeting_notes.pdf,Rename,0,0
+F000507,2026-01-17 10:59:59,vikram.nair27,EMP0027,PC-IT -027,budget.xlsx,Rename,0,0
+F000508,2026-02-04 02:20:55,vikram.nair27,EMP0027,PC-IT -027,customer_pii.csv,Copy,1,1
+F000509,2026-02-07 23:34:20,vikram.nair27,EMP0027,PC-IT -027,employee_salaries.xlsx,Copy,1,1
+F000510,2026-02-14 12:14:29,vikram.nair27,EMP0027,PC-IT -027,meeting_notes.pdf,Open,0,0
+F000511,2026-01-30 12:27:04,vikram.nair27,EMP0027,PC-IT -027,budget.xlsx,Open,0,0
+F000512,2026-02-05 14:57:22,vikram.nair27,EMP0027,PC-IT -027,presentation.pptx,Copy,0,0
+F000513,2026-01-05 06:46:17,vikram.nair27,EMP0027,PC-IT -027,source_code.py,Rename,0,0
+F000514,2026-01-02 12:45:48,vikram.nair27,EMP0027,PC-IT -027,budget.xlsx,Write,0,0
+F000515,2026-02-12 11:34:44,tanya.verma28,EMP0028,PC-R&D-028,design_spec.docx,Rename,0,0
+F000516,2026-01-22 09:51:56,tanya.verma28,EMP0028,PC-R&D-028,source_code.py,Write,0,0
+F000517,2026-01-10 15:43:37,tanya.verma28,EMP0028,PC-R&D-028,meeting_notes.pdf,Open,0,0
+F000518,2026-02-09 05:48:22,tanya.verma28,EMP0028,PC-R&D-028,source_code.py,Open,0,0
+F000519,2026-01-05 13:33:26,tanya.verma28,EMP0028,PC-R&D-028,design_spec.docx,Copy,0,0
+F000520,2026-01-13 09:38:49,tanya.verma28,EMP0028,PC-R&D-028,timesheet.xlsx,Copy,0,0
+F000521,2026-01-12 03:59:31,tanya.verma28,EMP0028,PC-R&D-028,design_spec.docx,Open,0,0
+F000522,2026-01-22 07:25:36,tanya.verma28,EMP0028,PC-R&D-028,design_spec.docx,Write,0,0
+F000523,2026-01-27 10:30:08,tanya.verma28,EMP0028,PC-R&D-028,timesheet.xlsx,Rename,0,0
+F000524,2026-01-12 07:22:11,tanya.verma28,EMP0028,PC-R&D-028,design_spec.docx,Write,0,0
+F000525,2026-01-17 12:11:16,tanya.verma28,EMP0028,PC-R&D-028,presentation.pptx,Copy,0,0
+F000526,2026-01-15 10:41:40,tanya.verma28,EMP0028,PC-R&D-028,report.docx,Rename,0,0
+F000527,2026-01-29 15:33:16,tanya.verma28,EMP0028,PC-R&D-028,report.docx,Open,0,0
+F000528,2026-02-05 06:23:06,tanya.verma28,EMP0028,PC-R&D-028,budget.xlsx,Open,0,0
+F000529,2026-02-03 01:20:24,tanya.verma28,EMP0028,PC-R&D-028,meeting_notes.pdf,Open,0,0
+F000530,2026-02-06 13:54:04,tanya.verma28,EMP0028,PC-R&D-028,budget.xlsx,Copy,0,0
+F000531,2026-01-12 12:22:06,deepak.bose29,EMP0029,PC-IT -029,timesheet.xlsx,Copy,0,0
+F000532,2026-02-08 10:11:57,deepak.bose29,EMP0029,PC-IT -029,presentation.pptx,Copy,0,0
+F000533,2026-02-02 08:52:28,deepak.bose29,EMP0029,PC-IT -029,report.docx,Open,0,0
+F000534,2026-02-04 17:50:07,deepak.bose29,EMP0029,PC-IT -029,timesheet.xlsx,Rename,0,0
+F000535,2026-01-19 07:43:11,deepak.bose29,EMP0029,PC-IT -029,source_code.py,Copy,0,0
+F000536,2026-01-07 12:38:09,deepak.bose29,EMP0029,PC-IT -029,source_code.py,Rename,0,0
+F000537,2026-01-30 18:35:53,deepak.bose29,EMP0029,PC-IT -029,presentation.pptx,Write,0,0
+F000538,2026-01-08 14:04:21,deepak.bose29,EMP0029,PC-IT -029,budget.xlsx,Rename,0,0
+F000539,2026-01-10 09:52:31,deepak.bose29,EMP0029,PC-IT -029,budget.xlsx,Write,0,0
+F000540,2026-01-03 10:58:58,deepak.bose29,EMP0029,PC-IT -029,presentation.pptx,Open,0,0
+F000541,2026-02-03 07:41:20,deepak.bose29,EMP0029,PC-IT -029,source_code.py,Write,0,0
+F000542,2026-02-04 13:18:20,deepak.bose29,EMP0029,PC-IT -029,budget.xlsx,Write,0,0
+F000543,2026-01-13 09:40:27,deepak.bose29,EMP0029,PC-IT -029,presentation.pptx,Write,0,0
+F000544,2026-01-25 07:01:31,deepak.bose29,EMP0029,PC-IT -029,report.docx,Rename,0,0
+F000545,2026-02-05 11:24:19,deepak.bose29,EMP0029,PC-IT -029,presentation.pptx,Rename,0,0
+F000546,2026-02-13 14:33:53,deepak.bose29,EMP0029,PC-IT -029,report.docx,Copy,0,0
+F000547,2026-01-06 09:37:47,deepak.bose29,EMP0029,PC-IT -029,source_code.py,Copy,0,0
+F000548,2026-02-11 09:03:34,deepak.bose29,EMP0029,PC-IT -029,report.docx,Open,0,0
+F000549,2026-01-20 10:22:34,deepak.bose29,EMP0029,PC-IT -029,report.docx,Write,0,0
+F000550,2026-02-02 12:11:32,deepak.bose29,EMP0029,PC-IT -029,meeting_notes.pdf,Open,0,0
+F000551,2026-01-14 07:11:57,deepak.bose29,EMP0029,PC-IT -029,budget.xlsx,Rename,0,0
+F000552,2026-01-05 14:31:13,deepak.bose29,EMP0029,PC-IT -029,source_code.py,Open,0,0
+F000553,2026-01-03 17:13:57,deepak.bose29,EMP0029,PC-IT -029,design_spec.docx,Open,0,0
+F000554,2026-01-19 00:15:42,deepak.bose29,EMP0029,PC-IT -029,timesheet.xlsx,Rename,0,0
+F000555,2026-01-12 22:52:14,deepak.bose29,EMP0029,PC-IT -029,meeting_notes.pdf,Write,0,0
+F000556,2026-01-10 08:15:39,pooja.bhatt30,EMP0030,PC-SAL-030,design_spec.docx,Rename,0,0
+F000557,2026-01-28 14:45:55,pooja.bhatt30,EMP0030,PC-SAL-030,design_spec.docx,Rename,0,0
+F000558,2026-01-14 18:41:47,pooja.bhatt30,EMP0030,PC-SAL-030,meeting_notes.pdf,Write,0,0
+F000559,2026-02-14 01:52:26,pooja.bhatt30,EMP0030,PC-SAL-030,presentation.pptx,Rename,0,0
+F000560,2026-01-13 15:31:16,pooja.bhatt30,EMP0030,PC-SAL-030,source_code.py,Open,0,0
+F000561,2026-02-10 14:02:44,pooja.bhatt30,EMP0030,PC-SAL-030,timesheet.xlsx,Write,0,0
+F000562,2026-01-09 14:14:04,pooja.bhatt30,EMP0030,PC-SAL-030,design_spec.docx,Open,0,0
+F000563,2026-01-08 08:50:31,pooja.bhatt30,EMP0030,PC-SAL-030,report.docx,Copy,0,0
+F000564,2026-02-04 10:47:16,pooja.bhatt30,EMP0030,PC-SAL-030,design_spec.docx,Write,0,0
+F000565,2026-01-19 12:18:54,pooja.bhatt30,EMP0030,PC-SAL-030,source_code.py,Rename,0,0
+F000566,2026-01-07 15:25:52,pooja.bhatt30,EMP0030,PC-SAL-030,budget.xlsx,Open,0,0
+F000567,2026-01-13 00:30:30,rajesh.sharma31,EMP0031,PC-LEG-031,employee_salaries.xlsx,Copy,1,1
+F000568,2026-01-25 01:15:27,rajesh.sharma31,EMP0031,PC-LEG-031,merger_plan.docx,Copy,1,1
+F000569,2026-01-10 15:42:59,rajesh.sharma31,EMP0031,PC-LEG-031,source_code.py,Copy,0,0
+F000570,2026-01-14 04:00:09,rajesh.sharma31,EMP0031,PC-LEG-031,meeting_notes.pdf,Rename,0,0
+F000571,2026-01-12 03:57:41,rajesh.sharma31,EMP0031,PC-LEG-031,employee_salaries.xlsx,Copy,1,1
+F000572,2026-01-19 09:40:12,rajesh.sharma31,EMP0031,PC-LEG-031,meeting_notes.pdf,Write,0,0
+F000573,2026-01-02 06:15:38,rajesh.sharma31,EMP0031,PC-LEG-031,source_code.py,Rename,0,0
+F000574,2026-02-05 05:03:07,rajesh.sharma31,EMP0031,PC-LEG-031,customer_pii.csv,Copy,1,1
+F000575,2026-02-04 02:46:59,rajesh.sharma31,EMP0031,PC-LEG-031,source_code_core.zip,Copy,1,1
+F000576,2026-01-07 00:00:36,rajesh.sharma31,EMP0031,PC-LEG-031,report.docx,Write,0,0
+F000577,2026-02-06 03:48:40,rajesh.sharma31,EMP0031,PC-LEG-031,employee_salaries.xlsx,Copy,1,1
+F000578,2026-01-31 13:18:43,rajesh.sharma31,EMP0031,PC-LEG-031,source_code.py,Write,0,0
+F000579,2026-01-29 09:31:39,rajesh.sharma31,EMP0031,PC-LEG-031,meeting_notes.pdf,Rename,0,0
+F000580,2026-02-10 17:09:29,rajesh.sharma31,EMP0031,PC-LEG-031,source_code.py,Rename,0,0
+F000581,2026-01-15 02:24:16,rajesh.sharma31,EMP0031,PC-LEG-031,client_database.csv,Rename,1,1
+F000582,2026-01-28 08:29:26,rajesh.sharma31,EMP0031,PC-LEG-031,design_spec.docx,Copy,0,0
+F000583,2026-01-26 05:13:25,rajesh.sharma31,EMP0031,PC-LEG-031,server_credentials.txt,Copy,1,1
+F000584,2026-01-29 10:23:21,rajesh.sharma31,EMP0031,PC-LEG-031,meeting_notes.pdf,Write,0,0
+F000585,2026-01-09 08:13:45,rajesh.sharma31,EMP0031,PC-LEG-031,budget.xlsx,Copy,0,0
+F000586,2026-02-12 10:29:35,rajesh.sharma31,EMP0031,PC-LEG-031,timesheet.xlsx,Write,0,0
+F000587,2026-01-24 08:09:30,rajesh.sharma31,EMP0031,PC-LEG-031,report.docx,Write,0,0
+F000588,2026-01-20 19:55:39,rajesh.sharma31,EMP0031,PC-LEG-031,presentation.pptx,Open,0,0
+F000589,2026-01-13 02:42:24,rajesh.sharma31,EMP0031,PC-LEG-031,merger_plan.docx,Copy,1,1
+F000590,2026-01-29 03:24:36,rajesh.sharma31,EMP0031,PC-LEG-031,customer_pii.csv,Copy,1,1
+F000591,2026-02-13 08:25:36,rajesh.sharma31,EMP0031,PC-LEG-031,timesheet.xlsx,Copy,0,0
+F000592,2026-01-27 03:55:47,isha.naidu32,EMP0032,PC-R&D-032,client_database.csv,Copy,1,1
+F000593,2026-02-09 13:02:43,isha.naidu32,EMP0032,PC-R&D-032,report.docx,Open,0,0
+F000594,2026-01-06 00:21:54,isha.naidu32,EMP0032,PC-R&D-032,employee_salaries.xlsx,Rename,1,1
+F000595,2026-01-23 02:13:19,isha.naidu32,EMP0032,PC-R&D-032,employee_salaries.xlsx,Rename,1,1
+F000596,2026-01-21 16:30:21,isha.naidu32,EMP0032,PC-R&D-032,design_spec.docx,Copy,0,0
+F000597,2026-01-19 02:57:56,isha.naidu32,EMP0032,PC-R&D-032,client_database.csv,Copy,1,1
+F000598,2026-02-04 11:35:35,isha.naidu32,EMP0032,PC-R&D-032,design_spec.docx,Write,0,0
+F000599,2026-02-14 14:57:15,isha.naidu32,EMP0032,PC-R&D-032,report.docx,Copy,0,0
+F000600,2026-01-29 00:08:56,isha.naidu32,EMP0032,PC-R&D-032,server_credentials.txt,Copy,1,1
+F000601,2026-01-11 13:52:23,isha.naidu32,EMP0032,PC-R&D-032,presentation.pptx,Copy,0,0
+F000602,2026-01-29 20:42:36,isha.naidu32,EMP0032,PC-R&D-032,meeting_notes.pdf,Rename,0,0
+F000603,2026-01-06 06:08:39,isha.naidu32,EMP0032,PC-R&D-032,meeting_notes.pdf,Write,0,0
+F000604,2026-01-10 03:40:20,isha.naidu32,EMP0032,PC-R&D-032,source_code_core.zip,Copy,1,1
+F000605,2026-02-01 22:10:23,isha.naidu32,EMP0032,PC-R&D-032,source_code_core.zip,Copy,1,1
+F000606,2026-02-01 10:10:03,farah.chatterjee33,EMP0033,PC-ENG-033,design_spec.docx,Copy,0,0
+F000607,2026-02-14 09:28:27,farah.chatterjee33,EMP0033,PC-ENG-033,meeting_notes.pdf,Open,0,0
+F000608,2026-01-18 15:48:42,farah.chatterjee33,EMP0033,PC-ENG-033,presentation.pptx,Open,0,0
+F000609,2026-01-22 12:08:55,farah.chatterjee33,EMP0033,PC-ENG-033,source_code.py,Open,0,0
+F000610,2026-02-06 02:24:12,farah.chatterjee33,EMP0033,PC-ENG-033,presentation.pptx,Write,0,0
+F000611,2026-01-25 03:43:17,farah.chatterjee33,EMP0033,PC-ENG-033,design_spec.docx,Write,0,0
+F000612,2026-01-22 10:32:54,farah.chatterjee33,EMP0033,PC-ENG-033,timesheet.xlsx,Write,0,0
+F000613,2026-01-27 14:08:22,farah.chatterjee33,EMP0033,PC-ENG-033,design_spec.docx,Rename,0,0
+F000614,2026-02-05 08:18:17,farah.chatterjee33,EMP0033,PC-ENG-033,report.docx,Write,0,0
+F000615,2026-02-12 07:42:58,farah.chatterjee33,EMP0033,PC-ENG-033,meeting_notes.pdf,Open,0,0
+F000616,2026-01-09 15:06:15,arjun.mehta34,EMP0034,PC-ENG-034,report.docx,Copy,0,0
+F000617,2026-01-24 06:36:51,arjun.mehta34,EMP0034,PC-ENG-034,budget.xlsx,Open,0,0
+F000618,2026-01-05 01:00:47,arjun.mehta34,EMP0034,PC-ENG-034,timesheet.xlsx,Rename,0,0
+F000619,2026-02-09 06:37:40,arjun.mehta34,EMP0034,PC-ENG-034,timesheet.xlsx,Write,0,0
+F000620,2026-02-10 16:50:42,arjun.mehta34,EMP0034,PC-ENG-034,report.docx,Open,0,0
+F000621,2026-01-04 14:12:58,arjun.mehta34,EMP0034,PC-ENG-034,design_spec.docx,Open,0,0
+F000622,2026-01-12 07:05:00,arjun.mehta34,EMP0034,PC-ENG-034,presentation.pptx,Copy,0,0
+F000623,2026-01-14 05:05:24,arjun.mehta34,EMP0034,PC-ENG-034,meeting_notes.pdf,Copy,0,0
+F000624,2026-01-31 15:45:31,arjun.mehta34,EMP0034,PC-ENG-034,source_code.py,Copy,0,0
+F000625,2026-01-31 09:43:37,arjun.mehta34,EMP0034,PC-ENG-034,timesheet.xlsx,Open,0,0
+F000626,2026-01-12 12:05:11,yusuf.das35,EMP0035,PC-IT -035,budget.xlsx,Rename,0,0
+F000627,2026-01-10 16:36:12,yusuf.das35,EMP0035,PC-IT -035,design_spec.docx,Open,0,0
+F000628,2026-02-14 15:12:11,yusuf.das35,EMP0035,PC-IT -035,timesheet.xlsx,Rename,0,0
+F000629,2026-01-15 08:40:53,yusuf.das35,EMP0035,PC-IT -035,source_code.py,Rename,0,0
+F000630,2026-02-08 11:40:18,yusuf.das35,EMP0035,PC-IT -035,budget.xlsx,Write,0,0
+F000631,2026-01-17 16:47:15,yusuf.das35,EMP0035,PC-IT -035,source_code.py,Open,0,0
+F000632,2026-02-11 17:43:16,yusuf.das35,EMP0035,PC-IT -035,meeting_notes.pdf,Copy,0,0
+F000633,2026-01-05 06:31:22,yusuf.das35,EMP0035,PC-IT -035,design_spec.docx,Open,0,0
+F000634,2026-02-09 15:27:05,yusuf.das35,EMP0035,PC-IT -035,design_spec.docx,Write,0,0
+F000635,2026-01-01 21:43:05,yusuf.das35,EMP0035,PC-IT -035,meeting_notes.pdf,Rename,0,0
+F000636,2026-02-14 14:43:04,yusuf.das35,EMP0035,PC-IT -035,source_code.py,Rename,0,0
+F000637,2026-01-21 11:47:51,yusuf.das35,EMP0035,PC-IT -035,presentation.pptx,Rename,0,0
+F000638,2026-02-01 09:31:20,yusuf.das35,EMP0035,PC-IT -035,source_code.py,Copy,0,0
+F000639,2026-01-15 13:02:44,yusuf.das35,EMP0035,PC-IT -035,meeting_notes.pdf,Write,0,0
+F000640,2026-01-30 16:20:59,yusuf.das35,EMP0035,PC-IT -035,timesheet.xlsx,Write,0,0
+F000641,2026-01-30 16:29:28,yusuf.das35,EMP0035,PC-IT -035,budget.xlsx,Copy,0,0
+F000642,2026-01-25 11:01:55,yusuf.das35,EMP0035,PC-IT -035,budget.xlsx,Rename,0,0
+F000643,2026-01-25 22:40:09,yusuf.das35,EMP0035,PC-IT -035,presentation.pptx,Rename,0,0
+F000644,2026-01-01 11:52:42,yusuf.das35,EMP0035,PC-IT -035,budget.xlsx,Copy,0,0
+F000645,2026-02-07 19:13:06,yusuf.das35,EMP0035,PC-IT -035,report.docx,Write,0,0
+F000646,2026-01-31 08:21:12,yusuf.das35,EMP0035,PC-IT -035,report.docx,Write,0,0
+F000647,2026-01-26 08:53:54,yusuf.das35,EMP0035,PC-IT -035,source_code.py,Rename,0,0
+F000648,2026-01-15 08:38:46,yusuf.das35,EMP0035,PC-IT -035,presentation.pptx,Write,0,0
+F000649,2026-01-28 19:10:31,yusuf.das35,EMP0035,PC-IT -035,design_spec.docx,Open,0,0
+F000650,2026-01-07 06:20:45,varun.iyer36,EMP0036,PC-R&D-036,presentation.pptx,Rename,0,0
+F000651,2026-01-10 09:31:51,varun.iyer36,EMP0036,PC-R&D-036,budget.xlsx,Write,0,0
+F000652,2026-02-01 01:19:40,varun.iyer36,EMP0036,PC-R&D-036,budget.xlsx,Rename,0,0
+F000653,2026-02-10 09:39:27,varun.iyer36,EMP0036,PC-R&D-036,source_code.py,Open,0,0
+F000654,2026-02-08 07:18:21,varun.iyer36,EMP0036,PC-R&D-036,design_spec.docx,Rename,0,0
+F000655,2026-02-14 16:23:36,varun.iyer36,EMP0036,PC-R&D-036,presentation.pptx,Open,0,0
+F000656,2026-01-02 11:26:15,varun.iyer36,EMP0036,PC-R&D-036,budget.xlsx,Rename,0,0
+F000657,2026-02-14 09:55:57,varun.iyer36,EMP0036,PC-R&D-036,meeting_notes.pdf,Write,0,0
+F000658,2026-01-18 12:36:50,varun.iyer36,EMP0036,PC-R&D-036,meeting_notes.pdf,Copy,0,0
+F000659,2026-01-09 20:50:40,varun.iyer36,EMP0036,PC-R&D-036,source_code.py,Copy,0,0
+F000660,2026-02-07 13:52:52,varun.iyer36,EMP0036,PC-R&D-036,budget.xlsx,Write,0,0
+F000661,2026-02-06 11:01:20,varun.iyer36,EMP0036,PC-R&D-036,source_code.py,Open,0,0
+F000662,2026-01-25 15:39:20,varun.iyer36,EMP0036,PC-R&D-036,report.docx,Write,0,0
+F000663,2026-01-30 13:57:46,varun.iyer36,EMP0036,PC-R&D-036,meeting_notes.pdf,Open,0,0
+F000664,2026-01-29 10:12:50,varun.iyer36,EMP0036,PC-R&D-036,timesheet.xlsx,Rename,0,0
+F000665,2026-01-10 10:49:03,varun.iyer36,EMP0036,PC-R&D-036,presentation.pptx,Copy,0,0
+F000666,2026-01-15 13:20:22,varun.iyer36,EMP0036,PC-R&D-036,timesheet.xlsx,Write,0,0
+F000667,2026-02-05 08:17:20,varun.iyer36,EMP0036,PC-R&D-036,presentation.pptx,Rename,0,0
+F000668,2026-02-08 16:12:52,varun.iyer36,EMP0036,PC-R&D-036,timesheet.xlsx,Copy,0,0
+F000669,2026-02-08 13:18:46,varun.iyer36,EMP0036,PC-R&D-036,report.docx,Copy,0,0
+F000670,2026-02-03 15:18:15,varun.iyer36,EMP0036,PC-R&D-036,timesheet.xlsx,Write,0,0
+F000671,2026-02-14 15:00:19,farah.pillai37,EMP0037,PC-IT -037,meeting_notes.pdf,Copy,0,0
+F000672,2026-01-10 09:01:41,farah.pillai37,EMP0037,PC-IT -037,design_spec.docx,Write,0,0
+F000673,2026-01-06 10:49:58,farah.pillai37,EMP0037,PC-IT -037,budget.xlsx,Write,0,0
+F000674,2026-02-10 10:10:38,farah.pillai37,EMP0037,PC-IT -037,presentation.pptx,Rename,0,0
+F000675,2026-01-07 18:29:17,farah.pillai37,EMP0037,PC-IT -037,budget.xlsx,Write,0,0
+F000676,2026-01-19 08:08:20,farah.pillai37,EMP0037,PC-IT -037,report.docx,Open,0,0
+F000677,2026-01-04 16:35:30,farah.pillai37,EMP0037,PC-IT -037,meeting_notes.pdf,Copy,0,0
+F000678,2026-01-21 16:24:35,farah.pillai37,EMP0037,PC-IT -037,report.docx,Write,0,0
+F000679,2026-02-11 10:11:20,farah.pillai37,EMP0037,PC-IT -037,source_code.py,Open,0,0
+F000680,2026-02-11 09:36:48,farah.pillai37,EMP0037,PC-IT -037,source_code.py,Open,0,0
+F000681,2026-02-02 05:45:45,farah.pillai37,EMP0037,PC-IT -037,budget.xlsx,Write,0,0
+F000682,2026-01-05 18:08:09,farah.pillai37,EMP0037,PC-IT -037,report.docx,Copy,0,0
+F000683,2026-01-16 07:23:22,farah.pillai37,EMP0037,PC-IT -037,meeting_notes.pdf,Open,0,0
+F000684,2026-01-27 10:04:31,farah.pillai37,EMP0037,PC-IT -037,presentation.pptx,Open,0,0
+F000685,2026-02-03 11:50:25,farah.pillai37,EMP0037,PC-IT -037,design_spec.docx,Copy,0,0
+F000686,2026-02-05 16:52:13,farah.pillai37,EMP0037,PC-IT -037,presentation.pptx,Copy,0,0
+F000687,2026-01-08 15:55:16,farah.pillai37,EMP0037,PC-IT -037,budget.xlsx,Copy,0,0
+F000688,2026-01-04 13:35:01,farah.pillai37,EMP0037,PC-IT -037,report.docx,Copy,0,0
+F000689,2026-01-31 04:14:48,farah.pillai37,EMP0037,PC-IT -037,budget.xlsx,Copy,0,0
+F000690,2026-01-09 12:20:24,farah.pillai37,EMP0037,PC-IT -037,timesheet.xlsx,Write,0,0
+F000691,2026-01-02 12:18:31,farah.pillai37,EMP0037,PC-IT -037,report.docx,Write,0,0
+F000692,2026-02-05 06:12:37,farah.pillai37,EMP0037,PC-IT -037,report.docx,Copy,0,0
+F000693,2026-01-15 13:00:22,farah.pillai37,EMP0037,PC-IT -037,design_spec.docx,Open,0,0
+F000694,2026-02-02 17:10:25,rahul.gupta38,EMP0038,PC-IT -038,budget.xlsx,Copy,0,0
+F000695,2026-02-04 00:40:47,rahul.gupta38,EMP0038,PC-IT -038,source_code.py,Rename,0,0
+F000696,2026-01-18 12:32:24,rahul.gupta38,EMP0038,PC-IT -038,budget.xlsx,Copy,0,0
+F000697,2026-02-08 09:12:20,rahul.gupta38,EMP0038,PC-IT -038,meeting_notes.pdf,Write,0,0
+F000698,2026-01-08 14:28:01,rahul.gupta38,EMP0038,PC-IT -038,presentation.pptx,Write,0,0
+F000699,2026-01-14 08:02:24,rahul.gupta38,EMP0038,PC-IT -038,timesheet.xlsx,Open,0,0
+F000700,2026-01-14 08:36:47,rahul.gupta38,EMP0038,PC-IT -038,design_spec.docx,Rename,0,0
+F000701,2026-02-14 14:56:37,rahul.gupta38,EMP0038,PC-IT -038,timesheet.xlsx,Rename,0,0
+F000702,2026-01-24 11:41:40,rahul.gupta38,EMP0038,PC-IT -038,budget.xlsx,Rename,0,0
+F000703,2026-01-14 12:19:00,rahul.gupta38,EMP0038,PC-IT -038,budget.xlsx,Copy,0,0
+F000704,2026-01-22 08:46:24,rahul.gupta38,EMP0038,PC-IT -038,design_spec.docx,Rename,0,0
+F000705,2026-01-30 22:38:48,rahul.gupta38,EMP0038,PC-IT -038,budget.xlsx,Write,0,0
+F000706,2026-01-31 13:18:50,rahul.gupta38,EMP0038,PC-IT -038,design_spec.docx,Copy,0,0
+F000707,2026-01-05 13:56:00,rahul.gupta38,EMP0038,PC-IT -038,timesheet.xlsx,Open,0,0
+F000708,2026-02-09 05:00:17,rahul.gupta38,EMP0038,PC-IT -038,report.docx,Rename,0,0
+F000709,2026-01-29 10:36:10,rahul.gupta38,EMP0038,PC-IT -038,report.docx,Open,0,0
+F000710,2026-01-24 08:12:27,rahul.gupta38,EMP0038,PC-IT -038,design_spec.docx,Rename,0,0
+F000711,2026-01-05 09:41:01,rahul.gupta38,EMP0038,PC-IT -038,meeting_notes.pdf,Open,0,0
+F000712,2026-01-08 09:16:29,rahul.gupta38,EMP0038,PC-IT -038,timesheet.xlsx,Copy,0,0
+F000713,2026-01-08 17:47:43,rahul.gupta38,EMP0038,PC-IT -038,timesheet.xlsx,Open,0,0
+F000714,2026-01-31 08:07:05,rahul.gupta38,EMP0038,PC-IT -038,design_spec.docx,Copy,0,0
+F000715,2026-02-07 14:17:17,divya.kapoor39,EMP0039,PC-ENG-039,report.docx,Write,0,0
+F000716,2026-01-05 14:09:13,divya.kapoor39,EMP0039,PC-ENG-039,report.docx,Write,0,0
+F000717,2026-02-13 10:02:31,divya.kapoor39,EMP0039,PC-ENG-039,presentation.pptx,Write,0,0
+F000718,2026-01-27 08:00:36,divya.kapoor39,EMP0039,PC-ENG-039,report.docx,Open,0,0
+F000719,2026-01-18 14:46:30,divya.kapoor39,EMP0039,PC-ENG-039,budget.xlsx,Rename,0,0
+F000720,2026-01-02 14:55:12,divya.kapoor39,EMP0039,PC-ENG-039,budget.xlsx,Write,0,0
+F000721,2026-01-01 23:02:55,divya.kapoor39,EMP0039,PC-ENG-039,source_code.py,Write,0,0
+F000722,2026-02-05 19:31:50,divya.kapoor39,EMP0039,PC-ENG-039,budget.xlsx,Open,0,0
+F000723,2026-01-19 10:38:23,divya.kapoor39,EMP0039,PC-ENG-039,presentation.pptx,Write,0,0
+F000724,2026-02-04 08:42:57,divya.kapoor39,EMP0039,PC-ENG-039,meeting_notes.pdf,Copy,0,0
+F000725,2026-01-21 14:22:26,divya.kapoor39,EMP0039,PC-ENG-039,budget.xlsx,Write,0,0
+F000726,2026-01-24 11:22:49,divya.kapoor39,EMP0039,PC-ENG-039,meeting_notes.pdf,Copy,0,0
+F000727,2026-02-13 15:31:43,divya.kapoor39,EMP0039,PC-ENG-039,source_code.py,Write,0,0
+F000728,2026-01-24 19:05:38,divya.kapoor39,EMP0039,PC-ENG-039,meeting_notes.pdf,Copy,0,0
+F000729,2026-01-22 17:41:29,divya.kapoor39,EMP0039,PC-ENG-039,presentation.pptx,Copy,0,0
+F000730,2026-01-03 10:58:55,divya.kapoor39,EMP0039,PC-ENG-039,design_spec.docx,Copy,0,0
+F000731,2026-02-08 10:40:53,divya.kapoor39,EMP0039,PC-ENG-039,design_spec.docx,Copy,0,0
+F000732,2026-02-06 08:52:50,divya.kapoor39,EMP0039,PC-ENG-039,budget.xlsx,Write,0,0
+F000733,2026-01-06 16:56:07,divya.kapoor39,EMP0039,PC-ENG-039,source_code.py,Open,0,0
+F000734,2026-02-03 07:00:16,divya.kapoor39,EMP0039,PC-ENG-039,source_code.py,Copy,0,0
+F000735,2026-01-15 14:50:21,divya.kapoor39,EMP0039,PC-ENG-039,presentation.pptx,Open,0,0
+F000736,2026-01-21 14:51:23,divya.kapoor39,EMP0039,PC-ENG-039,source_code.py,Write,0,0
+F000737,2026-02-03 14:25:14,divya.kapoor39,EMP0039,PC-ENG-039,source_code.py,Rename,0,0
+F000738,2026-01-27 14:06:14,divya.kapoor39,EMP0039,PC-ENG-039,design_spec.docx,Write,0,0
+F000739,2026-02-14 17:12:45,rahul.khan40,EMP0040,PC-FIN-040,report.docx,Open,0,0
+F000740,2026-02-01 08:04:44,rahul.khan40,EMP0040,PC-FIN-040,meeting_notes.pdf,Copy,0,0
+F000741,2026-01-26 09:13:34,rahul.khan40,EMP0040,PC-FIN-040,design_spec.docx,Open,0,0
+F000742,2026-01-13 02:01:18,rahul.khan40,EMP0040,PC-FIN-040,report.docx,Copy,0,0
+F000743,2026-01-12 16:43:04,rahul.khan40,EMP0040,PC-FIN-040,report.docx,Rename,0,0
+F000744,2026-01-29 19:27:22,rahul.khan40,EMP0040,PC-FIN-040,design_spec.docx,Write,0,0
+F000745,2026-01-01 14:19:21,rahul.khan40,EMP0040,PC-FIN-040,presentation.pptx,Rename,0,0
+F000746,2026-01-14 09:39:37,rahul.khan40,EMP0040,PC-FIN-040,presentation.pptx,Open,0,0
+F000747,2026-02-13 12:02:31,rahul.khan40,EMP0040,PC-FIN-040,meeting_notes.pdf,Rename,0,0
+F000748,2026-01-02 09:30:55,rahul.khan40,EMP0040,PC-FIN-040,timesheet.xlsx,Write,0,0
+F000749,2026-02-04 15:27:44,rahul.khan40,EMP0040,PC-FIN-040,source_code.py,Rename,0,0
+F000750,2026-02-13 12:01:24,rahul.khan40,EMP0040,PC-FIN-040,report.docx,Write,0,0
+F000751,2026-01-06 11:34:05,rahul.khan40,EMP0040,PC-FIN-040,report.docx,Copy,0,0
+F000752,2026-02-10 17:29:24,rahul.khan40,EMP0040,PC-FIN-040,design_spec.docx,Rename,0,0
+F000753,2026-02-08 22:02:20,isha.saxena41,EMP0041,PC-ENG-041,meeting_notes.pdf,Write,0,0
+F000754,2026-01-14 13:06:00,isha.saxena41,EMP0041,PC-ENG-041,design_spec.docx,Copy,0,0
+F000755,2026-02-07 16:49:01,isha.saxena41,EMP0041,PC-ENG-041,source_code.py,Write,0,0
+F000756,2026-01-05 12:29:17,isha.saxena41,EMP0041,PC-ENG-041,design_spec.docx,Write,0,0
+F000757,2026-02-04 14:03:16,isha.saxena41,EMP0041,PC-ENG-041,source_code.py,Open,0,0
+F000758,2026-02-14 12:11:57,isha.saxena41,EMP0041,PC-ENG-041,presentation.pptx,Rename,0,0
+F000759,2026-01-11 04:38:21,isha.saxena41,EMP0041,PC-ENG-041,presentation.pptx,Open,0,0
+F000760,2026-02-13 08:53:04,isha.saxena41,EMP0041,PC-ENG-041,budget.xlsx,Write,0,0
+F000761,2026-02-01 09:24:49,isha.saxena41,EMP0041,PC-ENG-041,design_spec.docx,Copy,0,0
+F000762,2026-01-25 04:11:14,isha.saxena41,EMP0041,PC-ENG-041,meeting_notes.pdf,Write,0,0
+F000763,2026-01-15 14:51:44,isha.saxena41,EMP0041,PC-ENG-041,report.docx,Open,0,0
+F000764,2026-01-11 08:47:38,isha.saxena41,EMP0041,PC-ENG-041,source_code.py,Open,0,0
+F000765,2026-01-29 12:50:44,isha.saxena41,EMP0041,PC-ENG-041,presentation.pptx,Open,0,0
+F000766,2026-02-03 17:23:40,isha.saxena41,EMP0041,PC-ENG-041,source_code.py,Open,0,0
+F000767,2026-01-27 11:17:27,isha.saxena41,EMP0041,PC-ENG-041,source_code.py,Write,0,0
+F000768,2026-01-05 06:16:56,isha.saxena41,EMP0041,PC-ENG-041,design_spec.docx,Rename,0,0
+F000769,2026-01-31 10:58:15,isha.saxena41,EMP0041,PC-ENG-041,budget.xlsx,Open,0,0
+F000770,2026-01-11 07:11:42,sameer.reddy42,EMP0042,PC-R&D-042,budget.xlsx,Write,0,0
+F000771,2026-02-12 23:23:35,sameer.reddy42,EMP0042,PC-R&D-042,meeting_notes.pdf,Write,0,0
+F000772,2026-01-05 20:42:11,sameer.reddy42,EMP0042,PC-R&D-042,source_code.py,Write,0,0
+F000773,2026-01-08 12:14:12,sameer.reddy42,EMP0042,PC-R&D-042,budget.xlsx,Rename,0,0
+F000774,2026-01-09 15:25:00,sameer.reddy42,EMP0042,PC-R&D-042,meeting_notes.pdf,Open,0,0
+F000775,2026-02-02 15:07:33,sameer.reddy42,EMP0042,PC-R&D-042,design_spec.docx,Rename,0,0
+F000776,2026-02-07 12:19:56,sameer.reddy42,EMP0042,PC-R&D-042,timesheet.xlsx,Copy,0,0
+F000777,2026-01-21 17:55:30,sameer.reddy42,EMP0042,PC-R&D-042,timesheet.xlsx,Copy,0,0
+F000778,2026-01-13 14:30:30,sameer.reddy42,EMP0042,PC-R&D-042,budget.xlsx,Open,0,0
+F000779,2026-01-12 10:40:40,sameer.reddy42,EMP0042,PC-R&D-042,source_code.py,Open,0,0
+F000780,2026-02-12 07:32:09,nikhil.kapoor43,EMP0043,PC-IT -043,timesheet.xlsx,Open,0,0
+F000781,2026-01-31 12:04:36,nikhil.kapoor43,EMP0043,PC-IT -043,budget.xlsx,Copy,0,0
+F000782,2026-02-10 15:53:40,nikhil.kapoor43,EMP0043,PC-IT -043,meeting_notes.pdf,Copy,0,0
+F000783,2026-01-17 11:48:27,nikhil.kapoor43,EMP0043,PC-IT -043,report.docx,Rename,0,0
+F000784,2026-01-26 02:42:46,nikhil.kapoor43,EMP0043,PC-IT -043,meeting_notes.pdf,Write,0,0
+F000785,2026-01-29 13:55:14,nikhil.kapoor43,EMP0043,PC-IT -043,design_spec.docx,Copy,0,0
+F000786,2026-01-31 13:50:32,nikhil.kapoor43,EMP0043,PC-IT -043,presentation.pptx,Copy,0,0
+F000787,2026-01-16 13:18:31,nikhil.kapoor43,EMP0043,PC-IT -043,timesheet.xlsx,Open,0,0
+F000788,2026-01-28 13:26:04,nikhil.kapoor43,EMP0043,PC-IT -043,source_code.py,Open,0,0
+F000789,2026-01-10 15:02:23,nikhil.kapoor43,EMP0043,PC-IT -043,meeting_notes.pdf,Write,0,0
+F000790,2026-01-18 11:51:58,nikhil.kapoor43,EMP0043,PC-IT -043,meeting_notes.pdf,Rename,0,0
+F000791,2026-02-04 13:58:19,nikhil.kapoor43,EMP0043,PC-IT -043,timesheet.xlsx,Write,0,0
+F000792,2026-02-02 12:48:55,nikhil.kapoor43,EMP0043,PC-IT -043,timesheet.xlsx,Copy,0,0
+F000793,2026-01-31 10:44:31,nikhil.kapoor43,EMP0043,PC-IT -043,meeting_notes.pdf,Open,0,0
+F000794,2026-02-10 09:17:55,karthik.rao44,EMP0044,PC-IT -044,meeting_notes.pdf,Copy,0,0
+F000795,2026-01-21 18:20:58,karthik.rao44,EMP0044,PC-IT -044,budget.xlsx,Copy,0,0
+F000796,2026-01-23 21:12:52,karthik.rao44,EMP0044,PC-IT -044,meeting_notes.pdf,Write,0,0
+F000797,2026-01-18 09:27:42,karthik.rao44,EMP0044,PC-IT -044,design_spec.docx,Copy,0,0
+F000798,2026-02-09 17:08:51,karthik.rao44,EMP0044,PC-IT -044,timesheet.xlsx,Rename,0,0
+F000799,2026-01-13 14:23:45,karthik.rao44,EMP0044,PC-IT -044,source_code.py,Rename,0,0
+F000800,2026-01-14 15:37:33,karthik.rao44,EMP0044,PC-IT -044,budget.xlsx,Open,0,0
+F000801,2026-01-19 13:13:38,karthik.rao44,EMP0044,PC-IT -044,timesheet.xlsx,Rename,0,0
+F000802,2026-01-12 16:51:31,karthik.rao44,EMP0044,PC-IT -044,meeting_notes.pdf,Copy,0,0
+F000803,2026-01-26 11:17:59,karthik.rao44,EMP0044,PC-IT -044,source_code.py,Write,0,0
+F000804,2026-02-04 10:16:38,karthik.rao44,EMP0044,PC-IT -044,report.docx,Rename,0,0
+F000805,2026-01-08 20:52:35,karthik.rao44,EMP0044,PC-IT -044,presentation.pptx,Open,0,0
+F000806,2026-01-05 08:59:16,karthik.rao44,EMP0044,PC-IT -044,presentation.pptx,Write,0,0
+F000807,2026-02-05 13:17:32,karthik.rao44,EMP0044,PC-IT -044,source_code.py,Write,0,0
+F000808,2026-01-13 09:27:40,karthik.rao44,EMP0044,PC-IT -044,presentation.pptx,Open,0,0
+F000809,2026-01-31 11:20:07,karthik.rao44,EMP0044,PC-IT -044,budget.xlsx,Copy,0,0
+F000810,2026-01-08 10:51:03,karthik.rao44,EMP0044,PC-IT -044,report.docx,Open,0,0
+F000811,2026-01-18 07:34:17,karthik.rao44,EMP0044,PC-IT -044,budget.xlsx,Open,0,0
+F000812,2026-01-14 04:42:36,suresh.joshi45,EMP0045,PC-LEG-045,report.docx,Open,0,0
+F000813,2026-01-08 10:39:46,suresh.joshi45,EMP0045,PC-LEG-045,meeting_notes.pdf,Rename,0,0
+F000814,2026-01-28 09:14:39,suresh.joshi45,EMP0045,PC-LEG-045,source_code.py,Rename,0,0
+F000815,2026-02-05 10:15:09,suresh.joshi45,EMP0045,PC-LEG-045,report.docx,Rename,0,0
+F000816,2026-01-15 08:52:24,suresh.joshi45,EMP0045,PC-LEG-045,budget.xlsx,Open,0,0
+F000817,2026-01-11 07:47:39,suresh.joshi45,EMP0045,PC-LEG-045,meeting_notes.pdf,Write,0,0
+F000818,2026-01-08 07:54:26,suresh.joshi45,EMP0045,PC-LEG-045,budget.xlsx,Copy,0,0
+F000819,2026-01-30 13:57:11,suresh.joshi45,EMP0045,PC-LEG-045,budget.xlsx,Rename,0,0
+F000820,2026-01-07 00:42:19,suresh.joshi45,EMP0045,PC-LEG-045,presentation.pptx,Write,0,0
+F000821,2026-01-29 08:06:54,suresh.joshi45,EMP0045,PC-LEG-045,report.docx,Write,0,0
+F000822,2026-01-29 11:47:56,suresh.joshi45,EMP0045,PC-LEG-045,presentation.pptx,Write,0,0
+F000823,2026-01-02 12:17:13,suresh.joshi45,EMP0045,PC-LEG-045,design_spec.docx,Write,0,0
+F000824,2026-01-28 15:33:21,suresh.joshi45,EMP0045,PC-LEG-045,meeting_notes.pdf,Open,0,0
+F000825,2026-02-01 12:24:53,suresh.joshi45,EMP0045,PC-LEG-045,presentation.pptx,Copy,0,0
+F000826,2026-01-24 08:04:38,suresh.joshi45,EMP0045,PC-LEG-045,timesheet.xlsx,Write,0,0
+F000827,2026-01-11 15:13:13,suresh.joshi45,EMP0045,PC-LEG-045,meeting_notes.pdf,Rename,0,0
+F000828,2026-01-26 09:45:18,suresh.joshi45,EMP0045,PC-LEG-045,budget.xlsx,Write,0,0
+F000829,2026-02-08 16:01:43,suresh.joshi45,EMP0045,PC-LEG-045,source_code.py,Copy,0,0
+F000830,2026-02-11 14:28:45,suresh.joshi45,EMP0045,PC-LEG-045,timesheet.xlsx,Open,0,0
+F000831,2026-01-25 13:23:24,suresh.joshi45,EMP0045,PC-LEG-045,report.docx,Write,0,0
+F000832,2026-01-28 14:58:27,suresh.joshi45,EMP0045,PC-LEG-045,report.docx,Write,0,0
+F000833,2026-01-17 10:17:23,suresh.joshi45,EMP0045,PC-LEG-045,meeting_notes.pdf,Write,0,0
+F000834,2026-01-11 08:54:37,suresh.joshi45,EMP0045,PC-LEG-045,design_spec.docx,Copy,0,0
+F000835,2026-01-25 10:48:14,isha.pillai46,EMP0046,PC-SAL-046,report.docx,Copy,0,0
+F000836,2026-01-06 13:35:03,isha.pillai46,EMP0046,PC-SAL-046,meeting_notes.pdf,Open,0,0
+F000837,2026-02-03 18:28:09,isha.pillai46,EMP0046,PC-SAL-046,meeting_notes.pdf,Copy,0,0
+F000838,2026-01-28 09:58:11,isha.pillai46,EMP0046,PC-SAL-046,budget.xlsx,Write,0,0
+F000839,2026-01-20 08:04:14,isha.pillai46,EMP0046,PC-SAL-046,timesheet.xlsx,Open,0,0
+F000840,2026-02-09 05:41:50,isha.pillai46,EMP0046,PC-SAL-046,timesheet.xlsx,Copy,0,0
+F000841,2026-01-19 12:27:57,isha.pillai46,EMP0046,PC-SAL-046,budget.xlsx,Copy,0,0
+F000842,2026-01-02 15:12:38,isha.pillai46,EMP0046,PC-SAL-046,design_spec.docx,Open,0,0
+F000843,2026-01-05 15:17:52,isha.pillai46,EMP0046,PC-SAL-046,timesheet.xlsx,Copy,0,0
+F000844,2026-02-04 07:29:35,isha.pillai46,EMP0046,PC-SAL-046,timesheet.xlsx,Rename,0,0
+F000845,2026-01-12 08:59:11,isha.pillai46,EMP0046,PC-SAL-046,budget.xlsx,Open,0,0
+F000846,2026-01-11 15:32:52,vikram.reddy47,EMP0047,PC-HR-047,report.docx,Open,0,0
+F000847,2026-01-26 08:03:30,vikram.reddy47,EMP0047,PC-HR-047,budget.xlsx,Copy,0,0
+F000848,2026-01-16 16:53:23,vikram.reddy47,EMP0047,PC-HR-047,source_code.py,Rename,0,0
+F000849,2026-01-30 09:11:45,vikram.reddy47,EMP0047,PC-HR-047,report.docx,Copy,0,0
+F000850,2026-01-11 13:48:02,vikram.reddy47,EMP0047,PC-HR-047,report.docx,Write,0,0
+F000851,2026-01-09 00:29:33,vikram.reddy47,EMP0047,PC-HR-047,timesheet.xlsx,Write,0,0
+F000852,2026-02-13 15:35:34,vikram.reddy47,EMP0047,PC-HR-047,design_spec.docx,Write,0,0
+F000853,2026-02-03 11:41:33,vikram.reddy47,EMP0047,PC-HR-047,meeting_notes.pdf,Write,0,0
+F000854,2026-01-17 12:26:10,vikram.reddy47,EMP0047,PC-HR-047,source_code.py,Write,0,0
+F000855,2026-01-09 15:13:04,vikram.reddy47,EMP0047,PC-HR-047,source_code.py,Rename,0,0
+F000856,2026-01-20 07:57:26,vikram.reddy47,EMP0047,PC-HR-047,presentation.pptx,Write,0,0
+F000857,2026-01-20 10:20:31,vikram.reddy47,EMP0047,PC-HR-047,budget.xlsx,Open,0,0
+F000858,2026-01-14 11:40:48,vikram.reddy47,EMP0047,PC-HR-047,budget.xlsx,Write,0,0
+F000859,2026-02-07 15:47:08,vikram.reddy47,EMP0047,PC-HR-047,design_spec.docx,Rename,0,0
+F000860,2026-01-26 09:01:57,vikram.reddy47,EMP0047,PC-HR-047,budget.xlsx,Write,0,0
+F000861,2026-01-17 12:29:45,vikram.reddy47,EMP0047,PC-HR-047,presentation.pptx,Rename,0,0
+F000862,2026-01-14 11:26:03,vikram.reddy47,EMP0047,PC-HR-047,budget.xlsx,Copy,0,0
+F000863,2026-02-10 17:18:23,vikram.reddy47,EMP0047,PC-HR-047,report.docx,Rename,0,0
+F000864,2026-01-30 17:56:41,vikram.reddy47,EMP0047,PC-HR-047,timesheet.xlsx,Write,0,0
+F000865,2026-01-05 13:22:52,vikram.reddy47,EMP0047,PC-HR-047,source_code.py,Write,0,0
+F000866,2026-01-31 06:21:12,manoj.menon48,EMP0048,PC-IT -048,meeting_notes.pdf,Copy,0,0
+F000867,2026-01-01 23:09:47,manoj.menon48,EMP0048,PC-IT -048,design_spec.docx,Rename,0,0
+F000868,2026-01-04 02:13:40,manoj.menon48,EMP0048,PC-IT -048,source_code.py,Rename,0,0
+F000869,2026-01-02 11:21:51,manoj.menon48,EMP0048,PC-IT -048,source_code.py,Write,0,0
+F000870,2026-01-23 13:18:23,manoj.menon48,EMP0048,PC-IT -048,report.docx,Open,0,0
+F000871,2026-01-29 15:27:48,manoj.menon48,EMP0048,PC-IT -048,source_code.py,Open,0,0
+F000872,2026-02-12 15:46:47,manoj.menon48,EMP0048,PC-IT -048,source_code.py,Open,0,0
+F000873,2026-01-10 18:24:21,manoj.menon48,EMP0048,PC-IT -048,design_spec.docx,Write,0,0
+F000874,2026-02-10 09:09:48,manoj.menon48,EMP0048,PC-IT -048,budget.xlsx,Open,0,0
+F000875,2026-02-09 10:25:14,manoj.menon48,EMP0048,PC-IT -048,report.docx,Open,0,0
+F000876,2026-01-20 01:08:12,manoj.menon48,EMP0048,PC-IT -048,presentation.pptx,Copy,0,0
+F000877,2026-01-10 11:36:16,sneha.verma49,EMP0049,PC-FIN-049,budget.xlsx,Open,0,0
+F000878,2026-01-05 08:02:16,sneha.verma49,EMP0049,PC-FIN-049,design_spec.docx,Write,0,0
+F000879,2026-01-05 08:58:10,sneha.verma49,EMP0049,PC-FIN-049,design_spec.docx,Write,0,0
+F000880,2026-01-08 07:29:51,sneha.verma49,EMP0049,PC-FIN-049,meeting_notes.pdf,Rename,0,0
+F000881,2026-01-31 19:16:36,sneha.verma49,EMP0049,PC-FIN-049,source_code.py,Rename,0,0
+F000882,2026-02-10 14:33:09,sneha.verma49,EMP0049,PC-FIN-049,design_spec.docx,Rename,0,0
+F000883,2026-02-08 15:15:14,sneha.verma49,EMP0049,PC-FIN-049,timesheet.xlsx,Open,0,0
+F000884,2026-01-28 11:21:32,sneha.verma49,EMP0049,PC-FIN-049,meeting_notes.pdf,Write,0,0
+F000885,2026-01-26 05:37:19,sneha.verma49,EMP0049,PC-FIN-049,timesheet.xlsx,Rename,0,0
+F000886,2026-01-07 16:35:14,sneha.verma49,EMP0049,PC-FIN-049,timesheet.xlsx,Copy,0,0
+F000887,2026-01-16 11:09:59,sneha.verma49,EMP0049,PC-FIN-049,report.docx,Rename,0,0
+F000888,2026-01-27 15:26:36,sneha.verma49,EMP0049,PC-FIN-049,meeting_notes.pdf,Rename,0,0
+F000889,2026-01-06 09:39:30,sneha.verma49,EMP0049,PC-FIN-049,design_spec.docx,Open,0,0
+F000890,2026-01-21 18:03:27,sneha.verma49,EMP0049,PC-FIN-049,presentation.pptx,Write,0,0
+F000891,2026-01-10 11:01:21,sneha.verma49,EMP0049,PC-FIN-049,meeting_notes.pdf,Open,0,0
+F000892,2026-01-20 09:56:31,sneha.verma49,EMP0049,PC-FIN-049,presentation.pptx,Copy,0,0
+F000893,2026-01-26 11:15:18,sneha.verma49,EMP0049,PC-FIN-049,budget.xlsx,Copy,0,0
+F000894,2026-01-22 08:20:37,sneha.verma49,EMP0049,PC-FIN-049,presentation.pptx,Open,0,0
+F000895,2026-01-07 07:50:47,sneha.verma49,EMP0049,PC-FIN-049,report.docx,Copy,0,0
+F000896,2026-02-04 11:57:05,sneha.verma49,EMP0049,PC-FIN-049,timesheet.xlsx,Copy,0,0
+F000897,2026-01-04 00:11:02,sneha.verma49,EMP0049,PC-FIN-049,budget.xlsx,Rename,0,0
+F000898,2026-01-24 14:58:52,sneha.verma49,EMP0049,PC-FIN-049,design_spec.docx,Rename,0,0
+F000899,2026-02-12 13:02:10,sneha.verma49,EMP0049,PC-FIN-049,meeting_notes.pdf,Rename,0,0
+F000900,2026-01-03 23:05:02,rohan.chatterjee50,EMP0050,PC-ENG-050,source_code.py,Open,0,0
+F000901,2026-01-13 15:57:25,rohan.chatterjee50,EMP0050,PC-ENG-050,timesheet.xlsx,Write,0,0
+F000902,2026-01-07 09:18:39,rohan.chatterjee50,EMP0050,PC-ENG-050,timesheet.xlsx,Open,0,0
+F000903,2026-02-09 09:04:29,rohan.chatterjee50,EMP0050,PC-ENG-050,source_code.py,Rename,0,0
+F000904,2026-01-11 13:44:32,rohan.chatterjee50,EMP0050,PC-ENG-050,report.docx,Write,0,0
+F000905,2026-02-08 08:18:02,rohan.chatterjee50,EMP0050,PC-ENG-050,presentation.pptx,Rename,0,0
+F000906,2026-02-12 08:30:51,rohan.chatterjee50,EMP0050,PC-ENG-050,presentation.pptx,Rename,0,0
+F000907,2026-02-02 09:41:45,rohan.chatterjee50,EMP0050,PC-ENG-050,timesheet.xlsx,Write,0,0
+F000908,2026-01-27 15:15:50,rohan.chatterjee50,EMP0050,PC-ENG-050,timesheet.xlsx,Rename,0,0
+F000909,2026-02-12 10:15:29,rohan.chatterjee50,EMP0050,PC-ENG-050,budget.xlsx,Copy,0,0
+F000910,2026-01-03 07:37:56,rohan.chatterjee50,EMP0050,PC-ENG-050,report.docx,Copy,0,0
+F000911,2026-01-07 23:08:09,rohan.chatterjee50,EMP0050,PC-ENG-050,design_spec.docx,Open,0,0
+F000912,2026-01-19 15:44:20,rohan.chatterjee50,EMP0050,PC-ENG-050,source_code.py,Copy,0,0
+F000913,2026-01-28 11:59:41,anjali.kapoor51,EMP0051,PC-FIN-051,design_spec.docx,Rename,0,0
+F000914,2026-01-14 17:41:02,anjali.kapoor51,EMP0051,PC-FIN-051,meeting_notes.pdf,Copy,0,0
+F000915,2026-01-26 08:04:03,anjali.kapoor51,EMP0051,PC-FIN-051,report.docx,Rename,0,0
+F000916,2026-01-25 08:31:29,anjali.kapoor51,EMP0051,PC-FIN-051,design_spec.docx,Write,0,0
+F000917,2026-01-21 11:52:20,anjali.kapoor51,EMP0051,PC-FIN-051,design_spec.docx,Write,0,0
+F000918,2026-02-12 09:58:48,anjali.kapoor51,EMP0051,PC-FIN-051,source_code.py,Copy,0,0
+F000919,2026-01-01 16:10:16,anjali.kapoor51,EMP0051,PC-FIN-051,presentation.pptx,Open,0,0
+F000920,2026-02-01 16:21:09,anjali.kapoor51,EMP0051,PC-FIN-051,report.docx,Copy,0,0
+F000921,2026-01-16 12:31:17,anjali.kapoor51,EMP0051,PC-FIN-051,budget.xlsx,Copy,0,0
+F000922,2026-01-27 04:00:40,anjali.kapoor51,EMP0051,PC-FIN-051,meeting_notes.pdf,Rename,0,0
+F000923,2026-02-09 10:00:06,anjali.kapoor51,EMP0051,PC-FIN-051,presentation.pptx,Copy,0,0
+F000924,2026-01-14 08:43:42,anjali.kapoor51,EMP0051,PC-FIN-051,timesheet.xlsx,Rename,0,0
+F000925,2026-02-03 10:33:37,anjali.kapoor51,EMP0051,PC-FIN-051,source_code.py,Copy,0,0
+F000926,2026-01-28 15:46:51,anjali.kapoor51,EMP0051,PC-FIN-051,report.docx,Write,0,0
+F000927,2026-02-07 12:34:48,anjali.kapoor51,EMP0051,PC-FIN-051,presentation.pptx,Open,0,0
+F000928,2026-01-19 10:26:37,anjali.kapoor51,EMP0051,PC-FIN-051,design_spec.docx,Open,0,0
+F000929,2026-01-31 16:26:59,anjali.kapoor51,EMP0051,PC-FIN-051,presentation.pptx,Copy,0,0
+F000930,2026-01-21 16:14:28,anjali.kapoor51,EMP0051,PC-FIN-051,meeting_notes.pdf,Rename,0,0
+F000931,2026-02-11 16:52:14,anjali.kapoor51,EMP0051,PC-FIN-051,design_spec.docx,Rename,0,0
+F000932,2026-01-26 09:33:14,anjali.kapoor51,EMP0051,PC-FIN-051,report.docx,Copy,0,0
+F000933,2026-01-29 09:00:27,anjali.kapoor51,EMP0051,PC-FIN-051,report.docx,Open,0,0
+F000934,2026-01-18 12:57:34,anjali.kapoor51,EMP0051,PC-FIN-051,presentation.pptx,Open,0,0
+F000935,2026-02-02 16:46:50,anjali.kapoor51,EMP0051,PC-FIN-051,timesheet.xlsx,Rename,0,0
+F000936,2026-02-08 14:31:37,anjali.kapoor51,EMP0051,PC-FIN-051,budget.xlsx,Rename,0,0
+F000937,2026-01-08 16:59:24,anjali.kapoor51,EMP0051,PC-FIN-051,source_code.py,Rename,0,0
+F000938,2026-02-04 14:00:43,swati.kapoor52,EMP0052,PC-FIN-052,presentation.pptx,Open,0,0
+F000939,2026-01-22 14:30:01,swati.kapoor52,EMP0052,PC-FIN-052,report.docx,Copy,0,0
+F000940,2026-01-17 08:18:42,swati.kapoor52,EMP0052,PC-FIN-052,meeting_notes.pdf,Write,0,0
+F000941,2026-01-11 17:13:46,swati.kapoor52,EMP0052,PC-FIN-052,budget.xlsx,Rename,0,0
+F000942,2026-01-07 15:18:19,swati.kapoor52,EMP0052,PC-FIN-052,source_code.py,Open,0,0
+F000943,2026-01-05 22:55:07,swati.kapoor52,EMP0052,PC-FIN-052,timesheet.xlsx,Open,0,0
+F000944,2026-01-16 06:49:50,swati.kapoor52,EMP0052,PC-FIN-052,timesheet.xlsx,Rename,0,0
+F000945,2026-01-12 07:28:21,swati.kapoor52,EMP0052,PC-FIN-052,report.docx,Write,0,0
+F000946,2026-02-02 07:42:39,swati.kapoor52,EMP0052,PC-FIN-052,meeting_notes.pdf,Open,0,0
+F000947,2026-01-23 15:22:11,swati.kapoor52,EMP0052,PC-FIN-052,presentation.pptx,Copy,0,0
+F000948,2026-02-04 19:46:01,swati.kapoor52,EMP0052,PC-FIN-052,source_code.py,Open,0,0
+F000949,2026-01-05 08:21:10,swati.kapoor52,EMP0052,PC-FIN-052,source_code.py,Copy,0,0
+F000950,2026-01-31 23:48:40,swati.kapoor52,EMP0052,PC-FIN-052,meeting_notes.pdf,Open,0,0
+F000951,2026-01-22 16:50:48,swati.kapoor52,EMP0052,PC-FIN-052,presentation.pptx,Open,0,0
+F000952,2026-02-02 15:25:13,swati.kapoor52,EMP0052,PC-FIN-052,budget.xlsx,Copy,0,0
+F000953,2026-02-07 15:04:47,kiran.iyer53,EMP0053,PC-LEG-053,budget.xlsx,Write,0,0
+F000954,2026-02-05 15:24:20,kiran.iyer53,EMP0053,PC-LEG-053,design_spec.docx,Rename,0,0
+F000955,2026-01-13 17:02:28,kiran.iyer53,EMP0053,PC-LEG-053,budget.xlsx,Open,0,0
+F000956,2026-02-06 10:42:59,kiran.iyer53,EMP0053,PC-LEG-053,meeting_notes.pdf,Rename,0,0
+F000957,2026-01-27 15:00:20,kiran.iyer53,EMP0053,PC-LEG-053,timesheet.xlsx,Write,0,0
+F000958,2026-01-06 08:06:38,kiran.iyer53,EMP0053,PC-LEG-053,source_code.py,Open,0,0
+F000959,2026-02-07 08:31:35,kiran.iyer53,EMP0053,PC-LEG-053,source_code.py,Rename,0,0
+F000960,2026-01-08 13:02:50,kiran.iyer53,EMP0053,PC-LEG-053,timesheet.xlsx,Rename,0,0
+F000961,2026-01-16 09:52:27,kiran.iyer53,EMP0053,PC-LEG-053,meeting_notes.pdf,Open,0,0
+F000962,2026-01-07 05:19:42,kiran.iyer53,EMP0053,PC-LEG-053,budget.xlsx,Rename,0,0
+F000963,2026-01-25 23:17:21,kiran.iyer53,EMP0053,PC-LEG-053,timesheet.xlsx,Write,0,0
+F000964,2026-01-05 21:23:04,kiran.iyer53,EMP0053,PC-LEG-053,presentation.pptx,Rename,0,0
+F000965,2026-01-20 11:01:18,kiran.iyer53,EMP0053,PC-LEG-053,meeting_notes.pdf,Copy,0,0
+F000966,2026-01-06 16:59:33,kiran.iyer53,EMP0053,PC-LEG-053,source_code.py,Open,0,0
+F000967,2026-01-24 07:16:49,kiran.iyer53,EMP0053,PC-LEG-053,meeting_notes.pdf,Rename,0,0
+F000968,2026-01-08 08:13:37,kiran.iyer53,EMP0053,PC-LEG-053,timesheet.xlsx,Open,0,0
+F000969,2026-01-15 05:19:53,kiran.iyer53,EMP0053,PC-LEG-053,timesheet.xlsx,Open,0,0
+F000970,2026-02-05 18:55:44,kiran.iyer53,EMP0053,PC-LEG-053,source_code.py,Rename,0,0
+F000971,2026-02-05 14:06:57,kiran.iyer53,EMP0053,PC-LEG-053,presentation.pptx,Open,0,0
+F000972,2026-01-20 17:26:05,kiran.iyer53,EMP0053,PC-LEG-053,design_spec.docx,Rename,0,0
+F000973,2026-01-18 15:08:04,kiran.iyer53,EMP0053,PC-LEG-053,report.docx,Open,0,0
+F000974,2026-01-07 17:02:30,kiran.iyer53,EMP0053,PC-LEG-053,timesheet.xlsx,Rename,0,0
+F000975,2026-01-26 12:16:10,kiran.iyer53,EMP0053,PC-LEG-053,source_code.py,Copy,0,0
+F000976,2026-01-06 10:11:41,kiran.iyer53,EMP0053,PC-LEG-053,source_code.py,Open,0,0
+F000977,2026-02-10 15:30:13,kiran.iyer53,EMP0053,PC-LEG-053,design_spec.docx,Copy,0,0
+F000978,2026-02-13 12:26:00,karthik.bose54,EMP0054,PC-SAL-054,design_spec.docx,Rename,0,0
+F000979,2026-02-06 15:49:53,karthik.bose54,EMP0054,PC-SAL-054,budget.xlsx,Write,0,0
+F000980,2026-02-05 09:27:13,karthik.bose54,EMP0054,PC-SAL-054,source_code.py,Write,0,0
+F000981,2026-01-13 16:18:22,karthik.bose54,EMP0054,PC-SAL-054,budget.xlsx,Write,0,0
+F000982,2026-02-07 11:37:18,karthik.bose54,EMP0054,PC-SAL-054,meeting_notes.pdf,Copy,0,0
+F000983,2026-02-09 16:07:45,karthik.bose54,EMP0054,PC-SAL-054,presentation.pptx,Rename,0,0
+F000984,2026-02-11 13:00:07,karthik.bose54,EMP0054,PC-SAL-054,presentation.pptx,Copy,0,0
+F000985,2026-01-17 14:36:11,karthik.bose54,EMP0054,PC-SAL-054,timesheet.xlsx,Open,0,0
+F000986,2026-02-12 09:45:02,karthik.bose54,EMP0054,PC-SAL-054,budget.xlsx,Copy,0,0
+F000987,2026-01-03 14:43:25,karthik.bose54,EMP0054,PC-SAL-054,budget.xlsx,Copy,0,0
+F000988,2026-01-18 19:36:00,karthik.bose54,EMP0054,PC-SAL-054,design_spec.docx,Copy,0,0
+F000989,2026-01-08 16:00:26,karthik.bose54,EMP0054,PC-SAL-054,report.docx,Rename,0,0
+F000990,2026-01-14 11:09:46,karthik.bose54,EMP0054,PC-SAL-054,design_spec.docx,Open,0,0
+F000991,2026-01-24 10:26:24,karthik.bose54,EMP0054,PC-SAL-054,design_spec.docx,Rename,0,0
+F000992,2026-01-29 14:54:40,karthik.bose54,EMP0054,PC-SAL-054,budget.xlsx,Copy,0,0
+F000993,2026-01-23 08:42:54,rohan.joshi55,EMP0055,PC-LEG-055,design_spec.docx,Copy,0,0
+F000994,2026-02-01 12:17:27,rohan.joshi55,EMP0055,PC-LEG-055,report.docx,Rename,0,0
+F000995,2026-01-01 11:10:03,rohan.joshi55,EMP0055,PC-LEG-055,timesheet.xlsx,Open,0,0
+F000996,2026-01-30 12:13:26,rohan.joshi55,EMP0055,PC-LEG-055,report.docx,Rename,0,0
+F000997,2026-01-10 09:11:27,rohan.joshi55,EMP0055,PC-LEG-055,timesheet.xlsx,Open,0,0
+F000998,2026-01-31 15:33:04,rohan.joshi55,EMP0055,PC-LEG-055,source_code.py,Write,0,0
+F000999,2026-01-23 09:14:28,rohan.joshi55,EMP0055,PC-LEG-055,budget.xlsx,Rename,0,0
+F001000,2026-01-31 20:17:10,rohan.joshi55,EMP0055,PC-LEG-055,presentation.pptx,Copy,0,0
+F001001,2026-01-29 17:01:49,rohan.joshi55,EMP0055,PC-LEG-055,budget.xlsx,Write,0,0
+F001002,2026-01-25 08:35:32,rohan.joshi55,EMP0055,PC-LEG-055,design_spec.docx,Copy,0,0
+F001003,2026-01-08 09:23:33,rohan.joshi55,EMP0055,PC-LEG-055,meeting_notes.pdf,Open,0,0
+F001004,2026-01-18 16:33:51,rohan.joshi55,EMP0055,PC-LEG-055,meeting_notes.pdf,Write,0,0
+F001005,2026-01-02 06:56:06,rohan.joshi55,EMP0055,PC-LEG-055,budget.xlsx,Rename,0,0
+F001006,2026-01-17 15:48:42,rohan.joshi55,EMP0055,PC-LEG-055,source_code.py,Copy,0,0
+F001007,2026-02-10 12:33:00,rohan.joshi55,EMP0055,PC-LEG-055,budget.xlsx,Open,0,0
+F001008,2026-01-21 15:49:35,rohan.joshi55,EMP0055,PC-LEG-055,presentation.pptx,Rename,0,0
+F001009,2026-01-01 11:11:06,rohan.joshi55,EMP0055,PC-LEG-055,design_spec.docx,Rename,0,0
+F001010,2026-01-28 09:51:17,rohan.joshi55,EMP0055,PC-LEG-055,source_code.py,Copy,0,0
+F001011,2026-02-10 11:53:38,rohan.joshi55,EMP0055,PC-LEG-055,source_code.py,Rename,0,0
+F001012,2026-01-07 10:39:12,rohan.joshi55,EMP0055,PC-LEG-055,budget.xlsx,Rename,0,0
+F001013,2026-01-03 16:22:30,rohan.joshi55,EMP0055,PC-LEG-055,timesheet.xlsx,Copy,0,0
+F001014,2026-02-04 10:14:27,rohan.joshi55,EMP0055,PC-LEG-055,source_code.py,Open,0,0
+F001015,2026-01-07 08:26:55,rajesh.iyer56,EMP0056,PC-FIN-056,report.docx,Copy,0,0
+F001016,2026-01-30 23:04:06,rajesh.iyer56,EMP0056,PC-FIN-056,design_spec.docx,Write,0,0
+F001017,2026-01-09 03:13:23,rajesh.iyer56,EMP0056,PC-FIN-056,employee_salaries.xlsx,Copy,1,1
+F001018,2026-02-07 23:41:37,rajesh.iyer56,EMP0056,PC-FIN-056,presentation.pptx,Copy,0,0
+F001019,2026-01-06 03:39:07,rajesh.iyer56,EMP0056,PC-FIN-056,employee_salaries.xlsx,Rename,1,1
+F001020,2026-02-04 18:15:02,rajesh.iyer56,EMP0056,PC-FIN-056,presentation.pptx,Rename,0,0
+F001021,2026-02-04 00:59:53,rajesh.iyer56,EMP0056,PC-FIN-056,server_credentials.txt,Copy,1,1
+F001022,2026-01-22 03:59:36,rajesh.iyer56,EMP0056,PC-FIN-056,source_code_core.zip,Copy,1,1
+F001023,2026-01-23 15:35:44,rajesh.iyer56,EMP0056,PC-FIN-056,budget.xlsx,Open,0,0
+F001024,2026-01-07 13:42:17,rajesh.iyer56,EMP0056,PC-FIN-056,budget.xlsx,Copy,0,0
+F001025,2026-01-11 00:46:11,rajesh.iyer56,EMP0056,PC-FIN-056,client_database.csv,Copy,1,1
+F001026,2026-01-19 14:14:39,rajesh.iyer56,EMP0056,PC-FIN-056,budget.xlsx,Open,0,0
+F001027,2026-01-14 10:48:56,manoj.mehta57,EMP0057,PC-FIN-057,timesheet.xlsx,Rename,0,0
+F001028,2026-02-13 11:44:04,manoj.mehta57,EMP0057,PC-FIN-057,timesheet.xlsx,Copy,0,0
+F001029,2026-01-31 10:10:23,manoj.mehta57,EMP0057,PC-FIN-057,report.docx,Copy,0,0
+F001030,2026-02-13 16:26:06,manoj.mehta57,EMP0057,PC-FIN-057,report.docx,Copy,0,0
+F001031,2026-01-14 06:26:06,manoj.mehta57,EMP0057,PC-FIN-057,presentation.pptx,Copy,0,0
+F001032,2026-02-14 15:17:45,manoj.mehta57,EMP0057,PC-FIN-057,source_code.py,Rename,0,0
+F001033,2026-01-29 08:38:34,manoj.mehta57,EMP0057,PC-FIN-057,design_spec.docx,Copy,0,0
+F001034,2026-01-29 11:39:53,manoj.mehta57,EMP0057,PC-FIN-057,timesheet.xlsx,Write,0,0
+F001035,2026-01-18 09:38:13,manoj.mehta57,EMP0057,PC-FIN-057,design_spec.docx,Open,0,0
+F001036,2026-01-13 11:24:49,manoj.mehta57,EMP0057,PC-FIN-057,source_code.py,Write,0,0
+F001037,2026-01-06 16:07:50,manoj.mehta57,EMP0057,PC-FIN-057,design_spec.docx,Copy,0,0
+F001038,2026-01-04 09:44:34,manoj.mehta57,EMP0057,PC-FIN-057,timesheet.xlsx,Open,0,0
+F001039,2026-02-05 11:58:41,manoj.mehta57,EMP0057,PC-FIN-057,source_code.py,Copy,0,0
+F001040,2026-02-03 08:56:14,anjali.mehta58,EMP0058,PC-FIN-058,timesheet.xlsx,Copy,0,0
+F001041,2026-01-16 17:32:54,anjali.mehta58,EMP0058,PC-FIN-058,source_code.py,Open,0,0
+F001042,2026-01-16 12:05:21,anjali.mehta58,EMP0058,PC-FIN-058,source_code.py,Open,0,0
+F001043,2026-01-17 09:35:08,anjali.mehta58,EMP0058,PC-FIN-058,timesheet.xlsx,Copy,0,0
+F001044,2026-01-03 11:54:53,anjali.mehta58,EMP0058,PC-FIN-058,budget.xlsx,Copy,0,0
+F001045,2026-01-15 14:05:33,anjali.mehta58,EMP0058,PC-FIN-058,budget.xlsx,Write,0,0
+F001046,2026-01-05 11:40:34,anjali.mehta58,EMP0058,PC-FIN-058,report.docx,Rename,0,0
+F001047,2026-01-30 08:17:54,anjali.mehta58,EMP0058,PC-FIN-058,meeting_notes.pdf,Open,0,0
+F001048,2026-01-03 15:49:01,anjali.mehta58,EMP0058,PC-FIN-058,timesheet.xlsx,Open,0,0
+F001049,2026-01-02 07:10:48,anjali.mehta58,EMP0058,PC-FIN-058,design_spec.docx,Open,0,0
+F001050,2026-01-06 14:30:51,anjali.mehta58,EMP0058,PC-FIN-058,report.docx,Write,0,0
+F001051,2026-01-04 15:47:38,deepak.naidu59,EMP0059,PC-ENG-059,report.docx,Copy,0,0
+F001052,2026-01-23 09:43:07,deepak.naidu59,EMP0059,PC-ENG-059,timesheet.xlsx,Rename,0,0
+F001053,2026-01-19 09:05:34,deepak.naidu59,EMP0059,PC-ENG-059,timesheet.xlsx,Copy,0,0
+F001054,2026-02-08 14:34:30,deepak.naidu59,EMP0059,PC-ENG-059,meeting_notes.pdf,Write,0,0
+F001055,2026-02-03 17:04:09,deepak.naidu59,EMP0059,PC-ENG-059,budget.xlsx,Rename,0,0
+F001056,2026-02-02 13:02:20,deepak.naidu59,EMP0059,PC-ENG-059,presentation.pptx,Write,0,0
+F001057,2026-01-03 12:29:01,deepak.naidu59,EMP0059,PC-ENG-059,report.docx,Open,0,0
+F001058,2026-01-01 14:56:15,deepak.naidu59,EMP0059,PC-ENG-059,presentation.pptx,Rename,0,0
+F001059,2026-02-10 10:23:46,deepak.naidu59,EMP0059,PC-ENG-059,source_code.py,Rename,0,0
+F001060,2026-02-03 08:24:36,deepak.naidu59,EMP0059,PC-ENG-059,report.docx,Copy,0,0
+F001061,2026-01-27 08:17:32,deepak.naidu59,EMP0059,PC-ENG-059,budget.xlsx,Rename,0,0
+F001062,2026-01-24 14:23:19,deepak.naidu59,EMP0059,PC-ENG-059,timesheet.xlsx,Copy,0,0
+F001063,2026-02-06 10:02:35,deepak.naidu59,EMP0059,PC-ENG-059,design_spec.docx,Open,0,0
+F001064,2026-02-10 11:26:13,deepak.naidu59,EMP0059,PC-ENG-059,budget.xlsx,Write,0,0
+F001065,2026-02-08 16:35:29,deepak.naidu59,EMP0059,PC-ENG-059,source_code.py,Rename,0,0
+F001066,2026-01-02 15:49:40,deepak.naidu59,EMP0059,PC-ENG-059,timesheet.xlsx,Copy,0,0
+F001067,2026-01-09 06:17:51,deepak.naidu59,EMP0059,PC-ENG-059,report.docx,Open,0,0
+F001068,2026-01-26 09:33:07,deepak.naidu59,EMP0059,PC-ENG-059,source_code.py,Open,0,0
+F001069,2026-01-17 13:16:54,deepak.naidu59,EMP0059,PC-ENG-059,design_spec.docx,Copy,0,0
+F001070,2026-02-05 19:31:56,deepak.naidu59,EMP0059,PC-ENG-059,budget.xlsx,Copy,0,0
+F001071,2026-01-25 14:12:33,deepak.naidu59,EMP0059,PC-ENG-059,design_spec.docx,Open,0,0
+F001072,2026-01-18 09:43:04,manoj.sharma60,EMP0060,PC-ENG-060,budget.xlsx,Write,0,0
+F001073,2026-02-09 14:46:10,manoj.sharma60,EMP0060,PC-ENG-060,source_code.py,Rename,0,0
+F001074,2026-01-27 09:01:15,manoj.sharma60,EMP0060,PC-ENG-060,presentation.pptx,Copy,0,0
+F001075,2026-01-24 14:54:33,manoj.sharma60,EMP0060,PC-ENG-060,presentation.pptx,Copy,0,0
+F001076,2026-01-07 09:49:16,manoj.sharma60,EMP0060,PC-ENG-060,report.docx,Write,0,0
+F001077,2026-01-03 15:18:40,manoj.sharma60,EMP0060,PC-ENG-060,presentation.pptx,Copy,0,0
+F001078,2026-01-23 19:23:48,manoj.sharma60,EMP0060,PC-ENG-060,meeting_notes.pdf,Open,0,0
+F001079,2026-01-12 11:14:46,manoj.sharma60,EMP0060,PC-ENG-060,design_spec.docx,Rename,0,0
+F001080,2026-01-22 12:11:18,manoj.sharma60,EMP0060,PC-ENG-060,budget.xlsx,Open,0,0
+F001081,2026-02-12 07:24:19,manoj.sharma60,EMP0060,PC-ENG-060,presentation.pptx,Rename,0,0
+F001082,2026-01-19 12:52:33,manoj.sharma60,EMP0060,PC-ENG-060,source_code.py,Open,0,0
+F001083,2026-01-15 14:23:15,manoj.sharma60,EMP0060,PC-ENG-060,source_code.py,Copy,0,0
+F001084,2026-01-18 10:08:29,manoj.sharma60,EMP0060,PC-ENG-060,source_code.py,Open,0,0
+F001085,2026-02-13 14:02:18,manoj.sharma60,EMP0060,PC-ENG-060,design_spec.docx,Open,0,0
+F001086,2026-01-19 09:58:13,manoj.sharma60,EMP0060,PC-ENG-060,budget.xlsx,Rename,0,0
+F001087,2026-01-13 16:16:37,manoj.sharma60,EMP0060,PC-ENG-060,meeting_notes.pdf,Open,0,0
+F001088,2026-01-26 14:51:09,manoj.sharma60,EMP0060,PC-ENG-060,timesheet.xlsx,Open,0,0
+F001089,2026-01-06 07:38:29,manoj.sharma60,EMP0060,PC-ENG-060,source_code.py,Write,0,0
+F001090,2026-01-08 12:38:12,manoj.sharma60,EMP0060,PC-ENG-060,budget.xlsx,Open,0,0
+F001091,2026-02-10 14:31:13,manoj.sharma60,EMP0060,PC-ENG-060,budget.xlsx,Write,0,0
+F001092,2026-02-11 10:14:02,manoj.sharma60,EMP0060,PC-ENG-060,presentation.pptx,Open,0,0
+F001093,2026-01-05 19:58:48,manoj.sharma60,EMP0060,PC-ENG-060,source_code.py,Write,0,0

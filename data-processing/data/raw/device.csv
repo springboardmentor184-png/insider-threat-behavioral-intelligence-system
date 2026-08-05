@@ -1,0 +1,187 @@
+id,date,user,employee_id,pc,device_type,activity,off_hours_flag
+D000001,2026-01-16 08:14:03,farah.iyer1,EMP0001,PC-ENG-001,Mobile_Device,Connect,0
+D000002,2026-01-08 19:45:09,farah.iyer1,EMP0001,PC-ENG-001,External_HDD,Connect,0
+D000003,2026-02-14 20:23:03,farah.iyer1,EMP0001,PC-ENG-001,Mobile_Device,Connect,0
+D000004,2026-02-12 13:30:53,farah.iyer1,EMP0001,PC-ENG-001,Mobile_Device,Connect,0
+D000005,2026-01-10 10:05:15,vikram.menon2,EMP0002,PC-FIN-002,USB_Drive,Connect,0
+D000006,2026-01-10 15:30:47,yusuf.naidu3,EMP0003,PC-ENG-003,USB_Drive,Disconnect,0
+D000007,2026-01-31 11:21:28,yusuf.naidu3,EMP0003,PC-ENG-003,Mobile_Device,Connect,0
+D000008,2026-01-19 07:03:56,yusuf.naidu3,EMP0003,PC-ENG-003,Mobile_Device,Connect,0
+D000009,2026-02-08 15:32:10,yusuf.naidu3,EMP0003,PC-ENG-003,USB_Drive,Disconnect,0
+D000010,2026-02-13 19:29:35,rohan.sharma4,EMP0004,PC-ENG-004,Mobile_Device,Disconnect,0
+D000011,2026-02-06 12:45:14,rohan.sharma4,EMP0004,PC-ENG-004,External_HDD,Connect,0
+D000012,2026-01-18 21:33:24,rohan.sharma4,EMP0004,PC-ENG-004,USB_Drive,Connect,0
+D000013,2026-01-26 13:14:25,rohan.sharma4,EMP0004,PC-ENG-004,USB_Drive,Connect,0
+D000014,2026-01-31 09:41:25,ritu.bhatt5,EMP0005,PC-ENG-005,External_HDD,Connect,0
+D000015,2026-01-04 15:41:27,ritu.bhatt5,EMP0005,PC-ENG-005,USB_Drive,Disconnect,0
+D000016,2026-01-07 07:23:38,ritu.bhatt5,EMP0005,PC-ENG-005,External_HDD,Connect,0
+D000017,2026-01-16 09:34:06,ritu.bhatt5,EMP0005,PC-ENG-005,USB_Drive,Connect,0
+D000018,2026-01-20 08:12:40,lakshmi.naidu6,EMP0006,PC-SAL-006,USB_Drive,Connect,0
+D000019,2026-01-06 21:36:02,swati.das7,EMP0007,PC-R&D-007,Mobile_Device,Disconnect,0
+D000020,2026-01-03 05:05:19,swati.das7,EMP0007,PC-R&D-007,USB_Drive,Disconnect,0
+D000021,2026-01-19 19:32:12,swati.das7,EMP0007,PC-R&D-007,External_HDD,Disconnect,0
+D000022,2026-01-09 14:06:21,deepak.gupta8,EMP0008,PC-LEG-008,External_HDD,Connect,0
+D000023,2026-02-02 15:09:01,deepak.gupta8,EMP0008,PC-LEG-008,Mobile_Device,Disconnect,0
+D000024,2026-01-31 13:54:02,deepak.gupta8,EMP0008,PC-LEG-008,External_HDD,Connect,0
+D000025,2026-02-13 11:56:40,anjali.nair9,EMP0009,PC-FIN-009,USB_Drive,Connect,0
+D000026,2026-01-14 15:41:09,anjali.nair9,EMP0009,PC-FIN-009,Mobile_Device,Connect,0
+D000027,2026-01-29 15:21:18,sneha.joshi10,EMP0010,PC-ENG-010,External_HDD,Disconnect,0
+D000028,2026-01-03 17:49:43,sneha.joshi10,EMP0010,PC-ENG-010,External_HDD,Connect,0
+D000029,2026-01-14 23:38:04,sneha.joshi10,EMP0010,PC-ENG-010,USB_Drive,Disconnect,0
+D000030,2026-01-01 08:55:19,rahul.bhatt11,EMP0011,PC-HR-011,Mobile_Device,Connect,0
+D000031,2026-01-07 11:10:59,neha.naidu12,EMP0012,PC-ENG-012,External_HDD,Connect,0
+D000032,2026-01-05 09:23:22,neha.naidu12,EMP0012,PC-ENG-012,USB_Drive,Connect,0
+D000033,2026-01-12 14:29:16,neha.naidu12,EMP0012,PC-ENG-012,External_HDD,Disconnect,0
+D000034,2026-01-29 14:08:07,neha.naidu12,EMP0012,PC-ENG-012,Mobile_Device,Disconnect,0
+D000035,2026-01-24 16:25:26,manoj.khan13,EMP0013,PC-R&D-013,Mobile_Device,Connect,0
+D000036,2026-01-24 13:20:23,meera.reddy14,EMP0014,PC-ENG-014,USB_Drive,Disconnect,0
+D000037,2026-02-02 00:39:41,meera.reddy14,EMP0014,PC-ENG-014,USB_Drive,Connect,1
+D000038,2026-02-14 00:54:06,meera.reddy14,EMP0014,PC-ENG-014,External_HDD,Disconnect,0
+D000039,2026-01-11 16:14:24,meera.reddy14,EMP0014,PC-ENG-014,External_HDD,Connect,0
+D000040,2026-01-23 23:06:05,meera.reddy14,EMP0014,PC-ENG-014,USB_Drive,Connect,1
+D000041,2026-01-26 08:21:04,meera.reddy14,EMP0014,PC-ENG-014,External_HDD,Disconnect,0
+D000042,2026-02-08 23:07:17,meera.reddy14,EMP0014,PC-ENG-014,External_HDD,Connect,1
+D000043,2026-02-04 23:09:40,meera.reddy14,EMP0014,PC-ENG-014,USB_Drive,Disconnect,1
+D000044,2026-02-06 22:03:59,meera.reddy14,EMP0014,PC-ENG-014,External_HDD,Disconnect,1
+D000045,2026-01-31 03:55:01,meera.reddy14,EMP0014,PC-ENG-014,Mobile_Device,Disconnect,1
+D000046,2026-01-18 02:05:09,meera.reddy14,EMP0014,PC-ENG-014,USB_Drive,Disconnect,1
+D000047,2026-01-26 23:55:26,meera.reddy14,EMP0014,PC-ENG-014,Mobile_Device,Connect,1
+D000048,2026-01-12 16:05:57,tanya.khan15,EMP0015,PC-ENG-015,External_HDD,Disconnect,0
+D000049,2026-01-20 08:22:26,tanya.khan15,EMP0015,PC-ENG-015,External_HDD,Disconnect,0
+D000050,2026-02-04 14:10:44,tanya.khan15,EMP0015,PC-ENG-015,External_HDD,Disconnect,0
+D000051,2026-01-01 13:57:38,kiran.joshi16,EMP0016,PC-HR-016,USB_Drive,Connect,0
+D000052,2026-02-12 13:09:20,kiran.joshi16,EMP0016,PC-HR-016,Mobile_Device,Disconnect,0
+D000053,2026-01-01 08:29:59,kiran.joshi16,EMP0016,PC-HR-016,USB_Drive,Disconnect,0
+D000054,2026-01-21 07:43:26,kiran.joshi16,EMP0016,PC-HR-016,External_HDD,Connect,0
+D000055,2026-01-09 13:40:37,kavya.patil17,EMP0017,PC-FIN-017,USB_Drive,Connect,0
+D000056,2026-01-14 15:12:26,kavya.patil17,EMP0017,PC-FIN-017,Mobile_Device,Connect,0
+D000057,2026-02-08 10:22:13,kavya.patil17,EMP0017,PC-FIN-017,USB_Drive,Connect,0
+D000058,2026-01-24 15:01:19,kavya.patil17,EMP0017,PC-FIN-017,External_HDD,Connect,0
+D000059,2026-02-11 23:26:26,meera.das18,EMP0018,PC-LEG-018,External_HDD,Disconnect,0
+D000060,2026-02-04 11:48:21,meera.das18,EMP0018,PC-LEG-018,USB_Drive,Connect,0
+D000061,2026-01-30 11:11:35,meera.das18,EMP0018,PC-LEG-018,Mobile_Device,Connect,0
+D000062,2026-02-04 11:18:54,meera.das18,EMP0018,PC-LEG-018,Mobile_Device,Disconnect,0
+D000063,2026-02-14 13:59:57,farah.gupta19,EMP0019,PC-IT -019,USB_Drive,Connect,0
+D000064,2026-01-07 07:01:39,farah.gupta19,EMP0019,PC-IT -019,External_HDD,Connect,0
+D000065,2026-02-01 15:39:59,farah.gupta19,EMP0019,PC-IT -019,Mobile_Device,Connect,0
+D000066,2026-02-02 13:02:42,neha.joshi20,EMP0020,PC-HR-020,External_HDD,Disconnect,0
+D000067,2026-01-14 08:29:35,neha.joshi20,EMP0020,PC-HR-020,External_HDD,Connect,0
+D000068,2026-01-13 16:07:22,neha.joshi20,EMP0020,PC-HR-020,External_HDD,Disconnect,0
+D000069,2026-02-11 14:47:25,neha.joshi20,EMP0020,PC-HR-020,USB_Drive,Disconnect,0
+D000070,2026-02-02 09:56:42,divya.verma21,EMP0021,PC-FIN-021,External_HDD,Disconnect,0
+D000071,2026-01-27 14:00:57,divya.verma21,EMP0021,PC-FIN-021,External_HDD,Connect,0
+D000072,2026-01-02 08:23:53,divya.joshi22,EMP0022,PC-HR-022,Mobile_Device,Disconnect,0
+D000073,2026-01-11 19:27:15,varun.saxena23,EMP0023,PC-LEG-023,Mobile_Device,Disconnect,0
+D000074,2026-01-13 13:25:53,varun.saxena23,EMP0023,PC-LEG-023,USB_Drive,Disconnect,0
+D000075,2026-01-09 18:24:46,varun.saxena23,EMP0023,PC-LEG-023,USB_Drive,Disconnect,0
+D000076,2026-02-03 08:14:06,farah.kapoor24,EMP0024,PC-SAL-024,Mobile_Device,Connect,0
+D000077,2026-02-02 07:36:50,farah.kapoor24,EMP0024,PC-SAL-024,External_HDD,Disconnect,0
+D000078,2026-02-05 08:20:13,farah.kapoor24,EMP0024,PC-SAL-024,USB_Drive,Connect,0
+D000079,2026-01-28 01:49:37,vikram.naidu25,EMP0025,PC-IT -025,USB_Drive,Connect,0
+D000080,2026-02-06 02:29:40,swati.bose26,EMP0026,PC-IT -026,Mobile_Device,Disconnect,1
+D000081,2026-01-12 03:19:12,swati.bose26,EMP0026,PC-IT -026,Mobile_Device,Connect,1
+D000082,2026-01-25 14:17:05,swati.bose26,EMP0026,PC-IT -026,USB_Drive,Connect,0
+D000083,2026-02-10 16:07:29,swati.bose26,EMP0026,PC-IT -026,Mobile_Device,Connect,0
+D000084,2026-01-07 04:57:11,swati.bose26,EMP0026,PC-IT -026,USB_Drive,Connect,1
+D000085,2026-02-01 17:13:25,swati.bose26,EMP0026,PC-IT -026,USB_Drive,Disconnect,0
+D000086,2026-01-27 01:13:43,vikram.nair27,EMP0027,PC-IT -027,External_HDD,Disconnect,1
+D000087,2026-01-21 11:10:11,vikram.nair27,EMP0027,PC-IT -027,External_HDD,Connect,0
+D000088,2026-01-12 13:54:02,vikram.nair27,EMP0027,PC-IT -027,USB_Drive,Disconnect,0
+D000089,2026-01-23 00:10:33,vikram.nair27,EMP0027,PC-IT -027,Mobile_Device,Disconnect,1
+D000090,2026-01-08 00:34:01,vikram.nair27,EMP0027,PC-IT -027,Mobile_Device,Connect,1
+D000091,2026-01-24 07:13:01,tanya.verma28,EMP0028,PC-R&D-028,External_HDD,Connect,0
+D000092,2026-01-15 07:44:08,tanya.verma28,EMP0028,PC-R&D-028,External_HDD,Disconnect,0
+D000093,2026-01-13 19:22:45,deepak.bose29,EMP0029,PC-IT -029,Mobile_Device,Disconnect,0
+D000094,2026-01-30 15:31:27,deepak.bose29,EMP0029,PC-IT -029,Mobile_Device,Disconnect,0
+D000095,2026-01-13 09:12:43,deepak.bose29,EMP0029,PC-IT -029,Mobile_Device,Disconnect,0
+D000096,2026-01-26 07:50:49,deepak.bose29,EMP0029,PC-IT -029,Mobile_Device,Disconnect,0
+D000097,2026-01-14 19:31:27,pooja.bhatt30,EMP0030,PC-SAL-030,External_HDD,Disconnect,0
+D000098,2026-02-08 15:52:20,pooja.bhatt30,EMP0030,PC-SAL-030,Mobile_Device,Connect,0
+D000099,2026-01-28 05:23:57,rajesh.sharma31,EMP0031,PC-LEG-031,Mobile_Device,Connect,1
+D000100,2026-01-29 00:32:16,rajesh.sharma31,EMP0031,PC-LEG-031,Mobile_Device,Disconnect,1
+D000101,2026-01-19 16:33:22,rajesh.sharma31,EMP0031,PC-LEG-031,External_HDD,Connect,0
+D000102,2026-01-08 05:27:50,rajesh.sharma31,EMP0031,PC-LEG-031,USB_Drive,Disconnect,1
+D000103,2026-01-16 05:23:09,rajesh.sharma31,EMP0031,PC-LEG-031,External_HDD,Connect,1
+D000104,2026-01-01 00:45:21,rajesh.sharma31,EMP0031,PC-LEG-031,USB_Drive,Disconnect,1
+D000105,2026-02-06 17:35:04,rajesh.sharma31,EMP0031,PC-LEG-031,External_HDD,Disconnect,0
+D000106,2026-02-08 03:06:35,rajesh.sharma31,EMP0031,PC-LEG-031,External_HDD,Connect,1
+D000107,2026-02-06 11:48:27,rajesh.sharma31,EMP0031,PC-LEG-031,External_HDD,Disconnect,0
+D000108,2026-01-13 23:31:02,rajesh.sharma31,EMP0031,PC-LEG-031,External_HDD,Disconnect,1
+D000109,2026-01-08 02:38:20,rajesh.sharma31,EMP0031,PC-LEG-031,Mobile_Device,Disconnect,1
+D000110,2026-02-06 00:41:50,isha.naidu32,EMP0032,PC-R&D-032,Mobile_Device,Connect,1
+D000111,2026-01-30 22:02:57,isha.naidu32,EMP0032,PC-R&D-032,Mobile_Device,Connect,1
+D000112,2026-01-22 06:06:53,isha.naidu32,EMP0032,PC-R&D-032,External_HDD,Disconnect,0
+D000113,2026-01-18 05:25:05,isha.naidu32,EMP0032,PC-R&D-032,Mobile_Device,Disconnect,1
+D000114,2026-02-01 10:44:29,isha.naidu32,EMP0032,PC-R&D-032,External_HDD,Connect,0
+D000115,2026-01-24 07:14:03,isha.naidu32,EMP0032,PC-R&D-032,USB_Drive,Connect,0
+D000116,2026-01-07 16:46:27,isha.naidu32,EMP0032,PC-R&D-032,USB_Drive,Connect,0
+D000117,2026-01-06 05:52:57,isha.naidu32,EMP0032,PC-R&D-032,Mobile_Device,Connect,1
+D000118,2026-01-17 16:02:07,farah.chatterjee33,EMP0033,PC-ENG-033,USB_Drive,Disconnect,0
+D000119,2026-01-17 10:39:50,arjun.mehta34,EMP0034,PC-ENG-034,External_HDD,Disconnect,0
+D000120,2026-01-09 13:07:08,yusuf.das35,EMP0035,PC-IT -035,External_HDD,Connect,0
+D000121,2026-02-07 16:57:26,yusuf.das35,EMP0035,PC-IT -035,Mobile_Device,Disconnect,0
+D000122,2026-02-03 12:36:30,varun.iyer36,EMP0036,PC-R&D-036,Mobile_Device,Disconnect,0
+D000123,2026-01-21 15:30:14,farah.pillai37,EMP0037,PC-IT -037,USB_Drive,Disconnect,0
+D000124,2026-01-19 14:22:35,farah.pillai37,EMP0037,PC-IT -037,USB_Drive,Connect,0
+D000125,2026-02-14 07:31:03,farah.pillai37,EMP0037,PC-IT -037,USB_Drive,Connect,0
+D000126,2026-01-30 15:12:31,rahul.gupta38,EMP0038,PC-IT -038,USB_Drive,Disconnect,0
+D000127,2026-01-14 15:48:33,rahul.gupta38,EMP0038,PC-IT -038,Mobile_Device,Disconnect,0
+D000128,2026-01-30 14:54:32,divya.kapoor39,EMP0039,PC-ENG-039,USB_Drive,Connect,0
+D000129,2026-01-15 17:24:28,divya.kapoor39,EMP0039,PC-ENG-039,Mobile_Device,Connect,0
+D000130,2026-01-26 08:17:27,divya.kapoor39,EMP0039,PC-ENG-039,USB_Drive,Disconnect,0
+D000131,2026-01-10 11:06:47,rahul.khan40,EMP0040,PC-FIN-040,USB_Drive,Connect,0
+D000132,2026-01-30 08:01:30,isha.saxena41,EMP0041,PC-ENG-041,Mobile_Device,Disconnect,0
+D000133,2026-01-17 07:35:05,sameer.reddy42,EMP0042,PC-R&D-042,External_HDD,Disconnect,0
+D000134,2026-01-14 08:32:27,sameer.reddy42,EMP0042,PC-R&D-042,Mobile_Device,Disconnect,0
+D000135,2026-01-04 11:23:06,sameer.reddy42,EMP0042,PC-R&D-042,USB_Drive,Disconnect,0
+D000136,2026-01-13 09:25:11,nikhil.kapoor43,EMP0043,PC-IT -043,Mobile_Device,Disconnect,0
+D000137,2026-02-03 13:33:27,nikhil.kapoor43,EMP0043,PC-IT -043,USB_Drive,Connect,0
+D000138,2026-02-11 09:07:14,nikhil.kapoor43,EMP0043,PC-IT -043,USB_Drive,Connect,0
+D000139,2026-01-03 13:15:04,nikhil.kapoor43,EMP0043,PC-IT -043,Mobile_Device,Connect,0
+D000140,2026-01-15 16:44:45,karthik.rao44,EMP0044,PC-IT -044,External_HDD,Disconnect,0
+D000141,2026-01-26 07:46:52,karthik.rao44,EMP0044,PC-IT -044,Mobile_Device,Disconnect,0
+D000142,2026-02-01 08:50:13,karthik.rao44,EMP0044,PC-IT -044,External_HDD,Disconnect,0
+D000143,2026-01-01 07:32:58,suresh.joshi45,EMP0045,PC-LEG-045,Mobile_Device,Disconnect,0
+D000144,2026-01-20 16:44:15,suresh.joshi45,EMP0045,PC-LEG-045,USB_Drive,Disconnect,0
+D000145,2026-02-13 06:11:21,suresh.joshi45,EMP0045,PC-LEG-045,External_HDD,Connect,0
+D000146,2026-02-12 11:21:01,isha.pillai46,EMP0046,PC-SAL-046,USB_Drive,Disconnect,0
+D000147,2026-01-11 14:54:00,vikram.reddy47,EMP0047,PC-HR-047,Mobile_Device,Disconnect,0
+D000148,2026-02-07 00:55:15,manoj.menon48,EMP0048,PC-IT -048,External_HDD,Connect,0
+D000149,2026-01-03 15:36:43,manoj.menon48,EMP0048,PC-IT -048,External_HDD,Connect,0
+D000150,2026-02-03 12:48:09,manoj.menon48,EMP0048,PC-IT -048,USB_Drive,Connect,0
+D000151,2026-01-20 15:21:28,manoj.menon48,EMP0048,PC-IT -048,External_HDD,Disconnect,0
+D000152,2026-02-12 12:23:29,sneha.verma49,EMP0049,PC-FIN-049,USB_Drive,Disconnect,0
+D000153,2026-01-20 14:57:33,sneha.verma49,EMP0049,PC-FIN-049,Mobile_Device,Disconnect,0
+D000154,2026-01-08 09:33:46,sneha.verma49,EMP0049,PC-FIN-049,Mobile_Device,Connect,0
+D000155,2026-01-27 16:42:09,rohan.chatterjee50,EMP0050,PC-ENG-050,External_HDD,Disconnect,0
+D000156,2026-01-02 09:47:44,rohan.chatterjee50,EMP0050,PC-ENG-050,External_HDD,Disconnect,0
+D000157,2026-01-06 08:24:40,anjali.kapoor51,EMP0051,PC-FIN-051,USB_Drive,Disconnect,0
+D000158,2026-02-10 14:57:58,anjali.kapoor51,EMP0051,PC-FIN-051,External_HDD,Connect,0
+D000159,2026-02-13 10:21:25,swati.kapoor52,EMP0052,PC-FIN-052,Mobile_Device,Disconnect,0
+D000160,2026-01-18 09:02:37,swati.kapoor52,EMP0052,PC-FIN-052,Mobile_Device,Disconnect,0
+D000161,2026-02-09 07:50:29,swati.kapoor52,EMP0052,PC-FIN-052,Mobile_Device,Disconnect,0
+D000162,2026-01-08 20:31:59,kiran.iyer53,EMP0053,PC-LEG-053,Mobile_Device,Connect,0
+D000163,2026-01-30 14:33:18,kiran.iyer53,EMP0053,PC-LEG-053,Mobile_Device,Connect,0
+D000164,2026-01-20 12:04:51,kiran.iyer53,EMP0053,PC-LEG-053,External_HDD,Connect,0
+D000165,2026-01-03 08:52:37,karthik.bose54,EMP0054,PC-SAL-054,USB_Drive,Connect,0
+D000166,2026-02-01 09:27:22,karthik.bose54,EMP0054,PC-SAL-054,Mobile_Device,Connect,0
+D000167,2026-01-04 09:22:56,karthik.bose54,EMP0054,PC-SAL-054,External_HDD,Connect,0
+D000168,2026-01-06 14:09:46,karthik.bose54,EMP0054,PC-SAL-054,USB_Drive,Disconnect,0
+D000169,2026-01-19 08:30:59,rohan.joshi55,EMP0055,PC-LEG-055,External_HDD,Connect,0
+D000170,2026-01-28 01:57:16,rajesh.iyer56,EMP0056,PC-FIN-056,External_HDD,Disconnect,1
+D000171,2026-01-12 14:20:51,rajesh.iyer56,EMP0056,PC-FIN-056,Mobile_Device,Connect,0
+D000172,2026-02-13 09:26:35,rajesh.iyer56,EMP0056,PC-FIN-056,USB_Drive,Disconnect,0
+D000173,2026-01-20 23:34:11,rajesh.iyer56,EMP0056,PC-FIN-056,External_HDD,Disconnect,1
+D000174,2026-01-07 23:44:20,rajesh.iyer56,EMP0056,PC-FIN-056,Mobile_Device,Disconnect,1
+D000175,2026-01-30 23:26:26,rajesh.iyer56,EMP0056,PC-FIN-056,External_HDD,Connect,1
+D000176,2026-02-05 22:05:48,rajesh.iyer56,EMP0056,PC-FIN-056,USB_Drive,Disconnect,1
+D000177,2026-01-16 10:39:34,rajesh.iyer56,EMP0056,PC-FIN-056,Mobile_Device,Disconnect,0
+D000178,2026-01-04 10:25:42,rajesh.iyer56,EMP0056,PC-FIN-056,USB_Drive,Disconnect,0
+D000179,2026-02-03 00:05:03,rajesh.iyer56,EMP0056,PC-FIN-056,External_HDD,Connect,1
+D000180,2026-01-22 15:36:30,rajesh.iyer56,EMP0056,PC-FIN-056,Mobile_Device,Disconnect,0
+D000181,2026-01-08 15:43:32,manoj.mehta57,EMP0057,PC-FIN-057,Mobile_Device,Connect,0
+D000182,2026-02-03 08:47:31,anjali.mehta58,EMP0058,PC-FIN-058,USB_Drive,Connect,0
+D000183,2026-02-13 13:09:19,anjali.mehta58,EMP0058,PC-FIN-058,Mobile_Device,Disconnect,0
+D000184,2026-02-01 13:12:07,deepak.naidu59,EMP0059,PC-ENG-059,USB_Drive,Connect,0
+D000185,2026-02-08 16:33:06,manoj.sharma60,EMP0060,PC-ENG-060,USB_Drive,Connect,0
+D000186,2026-01-07 11:53:32,manoj.sharma60,EMP0060,PC-ENG-060,External_HDD,Disconnect,0

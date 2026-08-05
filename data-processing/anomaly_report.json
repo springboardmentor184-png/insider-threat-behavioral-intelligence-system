@@ -1,0 +1,997 @@
+[
+  {
+    "user": "swati.bose26",
+    "label": "malicious",
+    "flagged": true,
+    "risk_score": 4.044,
+    "rf_malicious_prob": 1.0,
+    "iso_forest_flag": 1,
+    "reasons": [
+      "Off-hours logon activity (41% of logons)",
+      "Accessed sensitive files (28% of file activity)",
+      "Sent emails to external domains (57% of emails)",
+      "Visited suspicious domains (33% of web activity)",
+      "Off-hours device connections (3 events)"
+    ],
+    "metrics": {
+      "total_logons": 68,
+      "after_hours_logons": 28,
+      "sensitive_file_access": 7,
+      "external_emails": 12,
+      "suspicious_http_hits": 6
+    }
+  },
+  {
+    "user": "meera.reddy14",
+    "label": "malicious",
+    "flagged": true,
+    "risk_score": 3.394,
+    "rf_malicious_prob": 1.0,
+    "iso_forest_flag": 1,
+    "reasons": [
+      "Off-hours logon activity (42% of logons)",
+      "Accessed sensitive files (42% of file activity)",
+      "Sent emails to external domains (38% of emails)",
+      "Off-hours device connections (8 events)"
+    ],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 26,
+      "sensitive_file_access": 8,
+      "external_emails": 6,
+      "suspicious_http_hits": 1
+    }
+  },
+  {
+    "user": "rajesh.sharma31",
+    "label": "malicious",
+    "flagged": true,
+    "risk_score": 3.321,
+    "rf_malicious_prob": 1.0,
+    "iso_forest_flag": 1,
+    "reasons": [
+      "Off-hours logon activity (29% of logons)",
+      "Accessed sensitive files (40% of file activity)",
+      "Sent emails to external domains (35% of emails)",
+      "Visited suspicious domains (25% of web activity)",
+      "Off-hours device connections (8 events)"
+    ],
+    "metrics": {
+      "total_logons": 56,
+      "after_hours_logons": 16,
+      "sensitive_file_access": 10,
+      "external_emails": 14,
+      "suspicious_http_hits": 3
+    }
+  },
+  {
+    "user": "rajesh.iyer56",
+    "label": "malicious",
+    "flagged": true,
+    "risk_score": 3.03,
+    "rf_malicious_prob": 1.0,
+    "iso_forest_flag": 1,
+    "reasons": [
+      "Off-hours logon activity (32% of logons)",
+      "Accessed sensitive files (42% of file activity)",
+      "Sent emails to external domains (24% of emails)",
+      "Visited suspicious domains (21% of web activity)",
+      "Off-hours device connections (6 events)"
+    ],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 20,
+      "sensitive_file_access": 5,
+      "external_emails": 8,
+      "suspicious_http_hits": 3
+    }
+  },
+  {
+    "user": "vikram.nair27",
+    "label": "malicious",
+    "flagged": true,
+    "risk_score": 2.446,
+    "rf_malicious_prob": 1.0,
+    "iso_forest_flag": 1,
+    "reasons": [
+      "Off-hours logon activity (24% of logons)",
+      "Accessed sensitive files (29% of file activity)",
+      "Sent emails to external domains (29% of emails)",
+      "Visited suspicious domains (12% of web activity)",
+      "Off-hours device connections (3 events)"
+    ],
+    "metrics": {
+      "total_logons": 68,
+      "after_hours_logons": 16,
+      "sensitive_file_access": 6,
+      "external_emails": 11,
+      "suspicious_http_hits": 1
+    }
+  },
+  {
+    "user": "isha.naidu32",
+    "label": "malicious",
+    "flagged": true,
+    "risk_score": 3.549,
+    "rf_malicious_prob": 1.0,
+    "iso_forest_flag": 1,
+    "reasons": [
+      "Off-hours logon activity (30% of logons)",
+      "Accessed sensitive files (50% of file activity)",
+      "Sent emails to external domains (28% of emails)",
+      "Visited suspicious domains (31% of web activity)",
+      "Off-hours device connections (4 events)"
+    ],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 18,
+      "sensitive_file_access": 7,
+      "external_emails": 5,
+      "suspicious_http_hits": 4
+    }
+  },
+  {
+    "user": "deepak.gupta8",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 66,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "neha.naidu12",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "rahul.bhatt11",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "sneha.joshi10",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "anjali.nair9",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "ritu.bhatt5",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "swati.das7",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "lakshmi.naidu6",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "kiran.joshi16",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "rohan.sharma4",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "yusuf.naidu3",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "manoj.khan13",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "kavya.patil17",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "pooja.bhatt30",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "vikram.menon2",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "meera.das18",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "farah.gupta19",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 68,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "neha.joshi20",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "divya.verma21",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "divya.joshi22",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "varun.saxena23",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "farah.kapoor24",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "vikram.naidu25",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 58,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "tanya.verma28",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "deepak.bose29",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 70,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "tanya.khan15",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "rohan.joshi55",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 56,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "farah.iyer1",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 68,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "nikhil.kapoor43",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "manoj.mehta57",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "arjun.mehta34",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "yusuf.das35",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 58,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "varun.iyer36",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "farah.pillai37",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "deepak.naidu59",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "rahul.gupta38",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 58,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "divya.kapoor39",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "rahul.khan40",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "isha.saxena41",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 58,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "sameer.reddy42",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "karthik.rao44",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "isha.pillai46",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 58,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "suresh.joshi45",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "farah.chatterjee33",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 68,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "vikram.reddy47",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "manoj.menon48",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "anjali.mehta58",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "sneha.verma49",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "rohan.chatterjee50",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 60,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "anjali.kapoor51",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "swati.kapoor52",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "kiran.iyer53",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 58,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "karthik.bose54",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 64,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  },
+  {
+    "user": "manoj.sharma60",
+    "label": "normal",
+    "flagged": false,
+    "risk_score": 0.0,
+    "rf_malicious_prob": 0.0,
+    "iso_forest_flag": 0,
+    "reasons": [],
+    "metrics": {
+      "total_logons": 62,
+      "after_hours_logons": 0,
+      "sensitive_file_access": 0,
+      "external_emails": 0,
+      "suspicious_http_hits": 0
+    }
+  }
+]

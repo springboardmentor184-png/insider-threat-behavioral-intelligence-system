@@ -1,0 +1,61 @@
+employee_id,username,full_name,department,role,hire_date,pc_id
+EMP0001,farah.iyer1,Farah Iyer,Engineering,DevOps Engineer,2024-04-18,PC-ENG-001
+EMP0002,vikram.menon2,Vikram Menon,Finance,Accountant,2022-01-17,PC-FIN-002
+EMP0003,yusuf.naidu3,Yusuf Naidu,Engineering,DevOps Engineer,2023-06-22,PC-ENG-003
+EMP0004,rohan.sharma4,Rohan Sharma,Engineering,Software Engineer,2024-07-14,PC-ENG-004
+EMP0005,ritu.bhatt5,Ritu Bhatt,Engineering,DevOps Engineer,2024-09-21,PC-ENG-005
+EMP0006,lakshmi.naidu6,Lakshmi Naidu,Sales,Sales Executive,2023-04-28,PC-SAL-006
+EMP0007,swati.das7,Swati Das,R&D,Research Scientist,2021-08-01,PC-R&D-007
+EMP0008,deepak.gupta8,Deepak Gupta,Legal,Compliance Officer,2023-12-07,PC-LEG-008
+EMP0009,anjali.nair9,Anjali Nair,Finance,Financial Analyst,2025-04-07,PC-FIN-009
+EMP0010,sneha.joshi10,Sneha Joshi,Engineering,QA Engineer,2021-02-01,PC-ENG-010
+EMP0011,rahul.bhatt11,Rahul Bhatt,HR,HR Executive,2021-09-30,PC-HR-011
+EMP0012,neha.naidu12,Neha Naidu,Engineering,QA Engineer,2025-05-25,PC-ENG-012
+EMP0013,manoj.khan13,Manoj Khan,R&D,Data Scientist,2022-08-08,PC-R&D-013
+EMP0014,meera.reddy14,Meera Reddy,Engineering,DevOps Engineer,2024-07-24,PC-ENG-014
+EMP0015,tanya.khan15,Tanya Khan,Engineering,Software Engineer,2020-12-24,PC-ENG-015
+EMP0016,kiran.joshi16,Kiran Joshi,HR,Recruiter,2022-04-11,PC-HR-016
+EMP0017,kavya.patil17,Kavya Patil,Finance,Financial Analyst,2023-11-06,PC-FIN-017
+EMP0018,meera.das18,Meera Das,Legal,Legal Associate,2022-06-04,PC-LEG-018
+EMP0019,farah.gupta19,Farah Gupta,IT Support,System Admin,2024-12-03,PC-IT -019
+EMP0020,neha.joshi20,Neha Joshi,HR,HR Executive,2021-12-31,PC-HR-020
+EMP0021,divya.verma21,Divya Verma,Finance,Accountant,2021-04-29,PC-FIN-021
+EMP0022,divya.joshi22,Divya Joshi,HR,HR Executive,2024-08-27,PC-HR-022
+EMP0023,varun.saxena23,Varun Saxena,Legal,Compliance Officer,2024-08-24,PC-LEG-023
+EMP0024,farah.kapoor24,Farah Kapoor,Sales,Account Manager,2025-01-14,PC-SAL-024
+EMP0025,vikram.naidu25,Vikram Naidu,IT Support,Helpdesk Technician,2021-08-26,PC-IT -025
+EMP0026,swati.bose26,Swati Bose,IT Support,Helpdesk Technician,2023-10-23,PC-IT -026
+EMP0027,vikram.nair27,Vikram Nair,IT Support,Helpdesk Technician,2025-04-30,PC-IT -027
+EMP0028,tanya.verma28,Tanya Verma,R&D,Research Scientist,2024-12-24,PC-R&D-028
+EMP0029,deepak.bose29,Deepak Bose,IT Support,System Admin,2023-09-06,PC-IT -029
+EMP0030,pooja.bhatt30,Pooja Bhatt,Sales,Account Manager,2022-09-26,PC-SAL-030
+EMP0031,rajesh.sharma31,Rajesh Sharma,Legal,Legal Associate,2022-01-06,PC-LEG-031
+EMP0032,isha.naidu32,Isha Naidu,R&D,Data Scientist,2021-07-12,PC-R&D-032
+EMP0033,farah.chatterjee33,Farah Chatterjee,Engineering,QA Engineer,2023-05-27,PC-ENG-033
+EMP0034,arjun.mehta34,Arjun Mehta,Engineering,DevOps Engineer,2020-12-05,PC-ENG-034
+EMP0035,yusuf.das35,Yusuf Das,IT Support,System Admin,2022-12-29,PC-IT -035
+EMP0036,varun.iyer36,Varun Iyer,R&D,Data Scientist,2021-02-13,PC-R&D-036
+EMP0037,farah.pillai37,Farah Pillai,IT Support,System Admin,2024-12-24,PC-IT -037
+EMP0038,rahul.gupta38,Rahul Gupta,IT Support,System Admin,2022-06-25,PC-IT -038
+EMP0039,divya.kapoor39,Divya Kapoor,Engineering,Software Engineer,2020-08-18,PC-ENG-039
+EMP0040,rahul.khan40,Rahul Khan,Finance,Accountant,2024-06-27,PC-FIN-040
+EMP0041,isha.saxena41,Isha Saxena,Engineering,Software Engineer,2021-09-26,PC-ENG-041
+EMP0042,sameer.reddy42,Sameer Reddy,R&D,Research Scientist,2025-02-13,PC-R&D-042
+EMP0043,nikhil.kapoor43,Nikhil Kapoor,IT Support,System Admin,2024-05-09,PC-IT -043
+EMP0044,karthik.rao44,Karthik Rao,IT Support,System Admin,2021-11-03,PC-IT -044
+EMP0045,suresh.joshi45,Suresh Joshi,Legal,Compliance Officer,2023-05-20,PC-LEG-045
+EMP0046,isha.pillai46,Isha Pillai,Sales,Sales Executive,2024-06-13,PC-SAL-046
+EMP0047,vikram.reddy47,Vikram Reddy,HR,HR Executive,2022-07-17,PC-HR-047
+EMP0048,manoj.menon48,Manoj Menon,IT Support,System Admin,2025-10-19,PC-IT -048
+EMP0049,sneha.verma49,Sneha Verma,Finance,Accountant,2020-10-05,PC-FIN-049
+EMP0050,rohan.chatterjee50,Rohan Chatterjee,Engineering,DevOps Engineer,2024-07-03,PC-ENG-050
+EMP0051,anjali.kapoor51,Anjali Kapoor,Finance,Accountant,2021-10-13,PC-FIN-051
+EMP0052,swati.kapoor52,Swati Kapoor,Finance,Financial Analyst,2021-04-24,PC-FIN-052
+EMP0053,kiran.iyer53,Kiran Iyer,Legal,Compliance Officer,2023-11-08,PC-LEG-053
+EMP0054,karthik.bose54,Karthik Bose,Sales,Sales Executive,2022-01-23,PC-SAL-054
+EMP0055,rohan.joshi55,Rohan Joshi,Legal,Compliance Officer,2021-05-08,PC-LEG-055
+EMP0056,rajesh.iyer56,Rajesh Iyer,Finance,Accountant,2024-10-09,PC-FIN-056
+EMP0057,manoj.mehta57,Manoj Mehta,Finance,Financial Analyst,2024-10-23,PC-FIN-057
+EMP0058,anjali.mehta58,Anjali Mehta,Finance,Accountant,2023-05-10,PC-FIN-058
+EMP0059,deepak.naidu59,Deepak Naidu,Engineering,Software Engineer,2022-03-08,PC-ENG-059
+EMP0060,manoj.sharma60,Manoj Sharma,Engineering,Software Engineer,2024-11-27,PC-ENG-060
