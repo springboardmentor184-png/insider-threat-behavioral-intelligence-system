@@ -9,6 +9,10 @@ from app.core.config import settings
 def _build_engine():
     database_url = settings.DATABASE_URL
 
+    if database_url.startswith("sqlite:///./") or database_url == "sqlite:///dev.db":
+        db_path = (Path(__file__).resolve().parents[2] / "dev.db").resolve()
+        database_url = f"sqlite:///{db_path}"
+
     if database_url.startswith("postgresql"):
         try:
             engine = create_engine(database_url, pool_pre_ping=True)
@@ -21,6 +25,7 @@ def _build_engine():
             return create_engine(fallback_url, pool_pre_ping=True)
 
     return create_engine(database_url, pool_pre_ping=True)
+
 
 
 engine = _build_engine()

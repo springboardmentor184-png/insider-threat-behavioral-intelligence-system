@@ -71,6 +71,7 @@ class ActivityResponse(BaseModel):
     
     created_at: datetime
     updated_at: datetime
+    employee: Optional[EmployeeResponse] = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -82,10 +83,10 @@ class PaginatedActivityResponse(BaseModel):
     items: List[ActivityResponse]
 
 class ActivityDetailResponse(ActivityResponse):
-    employee: Optional[EmployeeResponse] = None
     department: Optional[DepartmentBase] = None
     role: Optional[RoleBase] = None
     risk_score: Optional[float] = None
+
 
 class ActivityStatisticsResponse(BaseModel):
     total_activities: int

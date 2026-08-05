@@ -7,6 +7,10 @@ export const ROUTES = {
   ACTIVITIES: '/activities',
   BEHAVIOR: '/behavior',
   THREATS: '/threats',
+  RISK: '/risk',
+  UEBA: '/ueba',
+  INVESTIGATIONS: '/investigations',
+  INCIDENTS: '/incidents',
   REPORTS: '/reports',
   SETTINGS: '/settings'
 };

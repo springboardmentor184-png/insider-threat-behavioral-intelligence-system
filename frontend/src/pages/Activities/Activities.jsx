@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Filter, Search, RefreshCcw, Eye } from 'lucide-react';
+import { Filter, Search, RefreshCcw, Eye, ArrowUpDown } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import EmptyState from '../../components/common/EmptyState';
@@ -18,10 +18,12 @@ const Activities = () => {
   const [severity, setSeverity] = useState('');
   const [status, setStatus] = useState('');
   const [department, setDepartment] = useState('');
+  const [riskLevel, setRiskLevel] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [sortBy, setSortBy] = useState('timestamp');
   const [sortOrder, setSortOrder] = useState('desc');
+  const [departmentOptions, setDepartmentOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [total, setTotal] = useState(0);
@@ -38,6 +40,7 @@ const Activities = () => {
         severity,
         status,
         department,
+        riskLevel,
         startDate,
         endDate,
         sortBy,
@@ -52,13 +55,40 @@ const Activities = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, search, activityType, severity, status, department, startDate, endDate, sortBy, sortOrder]);
+  }, [page, search, activityType, severity, status, department, riskLevel, startDate, endDate, sortBy, sortOrder]);
 
   useEffect(() => {
     loadActivities(1);
   }, [loadActivities]);
 
   const sortedActivities = useMemo(() => activities, [activities]);
+
+  useEffect(() => {
+    const loadDepartments = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/employees?limit=100&page=1', {
+          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken') || ''}` },
+        });
+        const data = await response.json();
+        const departments = Array.from(
+          new Set((data?.items || []).map((item) => item.department?.department_name).filter(Boolean))
+        );
+        setDepartmentOptions(departments);
+      } catch (error) {
+        setDepartmentOptions([]);
+      }
+    };
+
+    loadDepartments();
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      loadActivities(1);
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [search, activityType, severity, department, riskLevel, startDate, endDate, sortBy, sortOrder]);
 
   const applyFilters = () => loadActivities(1);
 
@@ -68,6 +98,7 @@ const Activities = () => {
     setSeverity('');
     setStatus('');
     setDepartment('');
+    setRiskLevel('');
     setStartDate('');
     setEndDate('');
     setSortBy('timestamp');
@@ -118,10 +149,10 @@ const Activities = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-3 rounded-[24px] border border-slate-200/80 bg-white/80 px-5 py-4 shadow-[0_18px_45px_-24px_rgba(15,23,42,0.24)] lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 className="text-2xl font-heading font-bold text-text-main">Activities</h1>
-          <p className="text-sm text-subtext mt-1">Review employee activity logs and spot suspicious behavior early.</p>
+          <p className="mt-1 text-sm text-subtext">Review employee activity logs and spot suspicious behavior early.</p>
         </div>
         <div className="text-sm text-subtext">Showing {sortedActivities.length} of {total} activities</div>
       </div>
@@ -135,7 +166,7 @@ const Activities = () => {
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Employee name, activity type, or activity ID"
+                placeholder="Employee name, ID, email, or activity"
                 className="ml-2 w-full border-none bg-transparent text-sm outline-none"
               />
             </div>
@@ -175,15 +206,25 @@ const Activities = () => {
               <label className="mb-2 block text-sm font-medium text-text-main">Department</label>
               <select value={department} onChange={(event) => setDepartment(event.target.value)} className="w-full rounded-[12px] border border-border-color bg-white px-3 py-2 text-sm outline-none">
                 <option value="">All</option>
-                <option value="Engineering">Engineering</option>
-                <option value="HR">HR</option>
-                <option value="Finance">Finance</option>
+                {departmentOptions.map((name) => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-main">Risk Level</label>
+              <select value={riskLevel} onChange={(event) => setRiskLevel(event.target.value)} className="w-full rounded-[12px] border border-border-color bg-white px-3 py-2 text-sm outline-none">
+                <option value="">All</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
               </select>
             </div>
           </div>
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto_auto]">
+        <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_0.8fr_auto_auto]">
           <div>
             <label className="mb-2 block text-sm font-medium text-text-main">From</label>
             <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="w-full rounded-[12px] border border-border-color bg-white px-3 py-2 text-sm outline-none" />
@@ -191,6 +232,21 @@ const Activities = () => {
           <div>
             <label className="mb-2 block text-sm font-medium text-text-main">To</label>
             <input type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} className="w-full rounded-[12px] border border-border-color bg-white px-3 py-2 text-sm outline-none" />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-main">Sort By</label>
+            <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="w-full rounded-[12px] border border-border-color bg-white px-3 py-2 text-sm outline-none">
+              <option value="timestamp">Timestamp</option>
+              <option value="severity">Severity</option>
+              <option value="activity_type">Activity Type</option>
+            </select>
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-text-main">Order</label>
+            <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)} className="w-full rounded-[12px] border border-border-color bg-white px-3 py-2 text-sm outline-none">
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
+            </select>
           </div>
           <div className="flex items-end">
             <Button onClick={applyFilters}>
@@ -201,7 +257,7 @@ const Activities = () => {
           </div>
           <div className="flex items-end">
             <button onClick={resetFilters} className="rounded-[12px] border border-border-color bg-white px-4 py-2 text-sm font-medium text-text-main hover:bg-slate-50">
-              Reset
+              Clear Filters
             </button>
           </div>
         </div>

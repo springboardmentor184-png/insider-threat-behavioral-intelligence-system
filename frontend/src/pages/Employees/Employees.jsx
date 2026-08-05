@@ -137,10 +137,10 @@ const Employees = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-3 rounded-[24px] border border-slate-200/80 bg-white/80 px-5 py-4 shadow-[0_18px_45px_-24px_rgba(15,23,42,0.24)] lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 className="text-2xl font-heading font-bold text-text-main">Employees</h1>
-          <p className="text-sm text-subtext mt-1">Monitor workforce activity, roles, and risk posture.</p>
+          <p className="mt-1 text-sm text-subtext">Monitor workforce activity, roles, and risk posture.</p>
         </div>
         <div className="text-sm text-subtext">Showing {filteredEmployees.length} of {total} employees</div>
       </div>

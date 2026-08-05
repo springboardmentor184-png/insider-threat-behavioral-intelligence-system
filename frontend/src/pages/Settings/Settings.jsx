@@ -8,7 +8,7 @@ const Settings = () => {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="rounded-[24px] border border-slate-200/80 bg-white/80 px-5 py-4 shadow-[0_18px_45px_-24px_rgba(15,23,42,0.24)]">
         <h1 className="text-2xl font-heading font-bold text-text-main">Settings</h1>
         <p className="mt-1 text-sm text-subtext">Manage your account preferences and monitor the alerting experience.</p>
       </div>

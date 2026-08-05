@@ -46,8 +46,25 @@ def get_activities(
     search: Optional[str] = None,
     sort_by: str = Query("timestamp"),
     sort_order: str = Query("desc"),
+    department: Optional[str] = None,
+    risk_level: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user: Employee = Depends(require_roles(["Administrator", "Security Analyst"]))
 ):
     """Return paginated, filterable activity logs"""
-    return activity_service.get_activities(db, page, limit, employee_id, department_id, activity_type, severity, start_date, end_date, search, sort_by, sort_order)
+    return activity_service.get_activities(
+        db,
+        page,
+        limit,
+        employee_id,
+        department_id,
+        activity_type,
+        severity,
+        start_date,
+        end_date,
+        search,
+        sort_by,
+        sort_order,
+        department,
+        risk_level,
+    )

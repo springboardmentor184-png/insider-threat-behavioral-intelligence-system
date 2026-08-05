@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, Bell, LogOut, PieChart, Users, Activity, BarChart3, ShieldCheck, FileText, Settings2 } from 'lucide-react';
+import { Menu, Bell, LogOut, PieChart, Users, Activity, BarChart3, ShieldCheck, FileText, Settings2, Gauge, Layers, FolderSearch, Zap } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ROUTES } from '../../constants/routes';
 
@@ -10,6 +10,10 @@ const navItems = [
   { name: 'Activities', path: ROUTES.ACTIVITIES, icon: <Activity size={18} /> },
   { name: 'Behavior Analytics', path: ROUTES.BEHAVIOR, icon: <BarChart3 size={18} /> },
   { name: 'Threat Detection', path: ROUTES.THREATS, icon: <ShieldCheck size={18} /> },
+  { name: 'Risk Intelligence', path: ROUTES.RISK, icon: <Gauge size={18} /> },
+  { name: 'UEBA Intelligence', path: ROUTES.UEBA, icon: <Layers size={18} /> },
+  { name: 'Threat Investigations', path: ROUTES.INVESTIGATIONS, icon: <FolderSearch size={18} /> },
+  { name: 'Alerts & SOAR Playbooks', path: ROUTES.INCIDENTS, icon: <Zap size={18} /> },
   { name: 'Reports', path: ROUTES.REPORTS, icon: <FileText size={18} /> },
   { name: 'Settings', path: ROUTES.SETTINGS, icon: <Settings2 size={18} /> },
 ];
@@ -29,6 +33,18 @@ const AppLayout = () => {
 
   const getPageTitle = () => {
     const path = location.pathname;
+    if (path.startsWith(ROUTES.INCIDENTS)) {
+      return { title: 'Alerts, Incidents & Automated SOAR Playbooks', subtitle: 'Incident consolidation, security alert feeds, and automated containment response playbooks' };
+    }
+    if (path.startsWith(ROUTES.INVESTIGATIONS)) {
+      return { title: 'Threat Investigation Center', subtitle: 'Microsoft Defender & Sentinel style SOC investigation cases, unified timelines, evidence, and correlation graphs' };
+    }
+    if (path.startsWith(ROUTES.UEBA)) {
+      return { title: 'UEBA & Entity Behavior Intelligence', subtitle: 'User baselines, peer comparison, 4-week behavior drift, risk predictions, and entity telemetry' };
+    }
+    if (path.startsWith(ROUTES.RISK)) {
+      return { title: 'AI Risk Intelligence Engine', subtitle: 'Continuous employee risk scoring, weighted anomalies, and SOC recommendations' };
+    }
     if (path.startsWith(ROUTES.SETTINGS)) {
       return { title: 'Settings', subtitle: 'Manage account preferences and thresholds' };
     }
@@ -63,9 +79,9 @@ const AppLayout = () => {
       )}
 
       {/* Fixed Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-30 w-72 transform bg-cards border-r border-border-color transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:fixed lg:shadow-none`}>
+      <div className={`fixed inset-y-0 left-0 z-30 w-72 transform border-r border-slate-200/80 bg-gradient-to-b from-white to-slate-50/80 shadow-[10px_0_45px_-20px_rgba(15,23,42,0.3)] transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:fixed lg:shadow-none`}>
         <div className="flex h-full flex-col p-5">
-          <div className="mb-8 flex items-center gap-3">
+          <div className="mb-8 flex items-center gap-3 rounded-[20px] border border-slate-200/80 bg-white/80 p-3 shadow-sm">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <ShieldCheck size={24} />
             </div>
@@ -75,14 +91,14 @@ const AppLayout = () => {
             </div>
           </div>
 
-          <nav className="space-y-2 flex-1">
+          <nav className="flex-1 space-y-2">
             {navItems.map((item) => (
               <NavLink
                 key={item.name}
                 to={item.path}
                 className={({ isActive }) =>
                   `group flex items-center gap-3 rounded-[16px] px-4 py-3 text-sm font-medium transition-all ${
-                    isActive ? 'bg-primary text-white shadow-sm' : 'text-subtext hover:bg-gray-100 hover:text-primary'
+                    isActive ? 'bg-primary text-white shadow-[0_12px_24px_-14px_rgba(15,118,110,0.75)]' : 'text-subtext hover:bg-slate-100 hover:text-primary'
                   }`
                 }
                 onClick={() => setSidebarOpen(false)}
@@ -105,9 +121,9 @@ const AppLayout = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="lg:pl-72 flex flex-col min-h-screen w-full">
-        <header className="sticky top-0 z-20 border-b border-border-color bg-background/95 backdrop-blur-lg w-full">
-          <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4 px-6 py-4">
+      <div className="flex min-h-screen w-full flex-col lg:pl-72">
+        <header className="sticky top-0 z-20 w-full border-b border-slate-200/80 bg-background/95 backdrop-blur-lg">
+          <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-4">
             <div className="flex items-center gap-3">
               <button
                 type="button"
@@ -126,20 +142,20 @@ const AppLayout = () => {
               <button type="button" className="inline-flex h-11 w-11 items-center justify-center rounded-[16px] border border-border-color bg-white text-text-main">
                 <Bell size={18} />
               </button>
-              <div className="hidden sm:flex items-center gap-3 rounded-[20px] border border-border-color bg-white px-4 py-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+              <div className="hidden items-center gap-3 rounded-[20px] border border-border-color bg-white px-4 py-3 shadow-sm sm:flex">
+                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                   {user?.first_name?.[0] || 'U'}
                 </div>
                 <div className="text-left max-w-[120px] md:max-w-[160px]">
-                  <p className="text-sm font-semibold text-text-main truncate">{user?.first_name ? `${user.first_name} ${user.last_name}` : 'Guest User'}</p>
-                  <p className="text-xs text-subtext truncate">{user?.role?.role_name || user?.role || 'Visitor'}</p>
+                  <p className="truncate text-sm font-semibold text-text-main">{user?.first_name ? `${user.first_name} ${user.last_name}` : 'Guest User'}</p>
+                  <p className="truncate text-xs text-subtext">{user?.role?.role_name || user?.role || 'Visitor'}</p>
                 </div>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="flex-1 w-full max-w-[1600px] mx-auto p-6">
+        <main className="mx-auto flex-1 w-full max-w-[1600px] p-6">
           <Outlet />
         </main>
       </div>

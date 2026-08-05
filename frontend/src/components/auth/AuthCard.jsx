@@ -2,7 +2,7 @@ import React from 'react';
 
 const AuthCard = ({ children, title, subtitle }) => {
   return (
-    <div className="bg-white rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] border border-border-color p-8 sm:p-10">
+    <div className="rounded-[24px] border border-slate-200/80 bg-white/90 p-8 shadow-[0_30px_80px_-35px_rgba(15,23,42,0.35)] backdrop-blur-sm sm:p-10">
       <div className="text-center mb-8">
         <h2 className="font-heading text-2xl font-bold text-text-main mb-2">{title}</h2>
         {subtitle && <p className="text-subtext text-sm">{subtitle}</p>}

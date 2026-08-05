@@ -12,6 +12,7 @@ from app.models.department import Department
 from app.models.role import Role
 from app.models.activity import ActivityLog
 from app.models.behavior_profile import BehaviorProfile
+from app.models.risk import RiskAssessment
 
 # Create Database Tables
 Base.metadata.create_all(bind=engine)
@@ -106,6 +107,10 @@ from app.api.v1.health import router as health_router
 from app.api.v1.behavior import router as behavior_router
 from app.api.v1.threat import router as threat_router
 from app.api.v1.reports import router as reports_router
+from app.api.v1.risk import router as risk_router
+from app.api.v1.ueba import router as ueba_router
+from app.api.v1.investigation import router as investigation_router
+from app.api.v1.incident import router as incident_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -116,7 +121,18 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://127.0.0.1:5175",
+        "http://127.0.0.1:5176",
+    ],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -169,6 +185,67 @@ app.include_router(
     reports_router,
     prefix="/api/v1/reports",
     tags=["Reports"],
+)
+
+app.include_router(
+    risk_router,
+    prefix="/api/v1/risk",
+    tags=["Risk Scoring Engine"],
+)
+
+app.include_router(
+    risk_router,
+    prefix="/api/risk",
+    tags=["Risk Scoring Engine (Root Alias)"],
+)
+
+app.include_router(
+    ueba_router,
+    prefix="/api/v1/ueba",
+    tags=["UEBA Engine"],
+)
+
+app.include_router(
+    ueba_router,
+    prefix="/api/ueba",
+    tags=["UEBA Engine (Root Alias)"],
+)
+
+app.include_router(
+    investigation_router,
+    prefix="/api/v1/investigation",
+    tags=["Threat Investigation"],
+)
+
+app.include_router(
+    investigation_router,
+    prefix="/api/v1/investigations",
+    tags=["Threat Investigation (Plural Alias)"],
+)
+
+app.include_router(
+    investigation_router,
+    prefix="/api/investigation",
+    tags=["Threat Investigation (Root Alias)"],
+)
+
+app.include_router(
+    investigation_router,
+    prefix="/api/investigations",
+    tags=["Threat Investigation (Root Plural Alias)"],
+)
+
+
+app.include_router(
+    incident_router,
+    prefix="/api/v1/incidents",
+    tags=["Incidents & SOAR Playbooks"],
+)
+
+app.include_router(
+    incident_router,
+    prefix="/api/incidents",
+    tags=["Incidents & SOAR Playbooks (Root Alias)"],
 )
 
 

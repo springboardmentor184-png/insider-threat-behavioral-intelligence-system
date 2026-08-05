@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Users, Activity, FileText, Search, TrendingUp } from 'lucide-react';
 import {
   LineChart,
@@ -41,6 +42,7 @@ const chartColors = {
 };
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [overview, setOverview] = useState(null);
   const [riskSummary, setRiskSummary] = useState(null);
   const [activitySummary, setActivitySummary] = useState(null);
@@ -126,38 +128,47 @@ const Dashboard = () => {
     if (riskTrend && riskTrend.length > 0) {
       return riskTrend.map((item) => ({
         ...item,
-        date: item.date ? new Date(item.date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Day'
+        date: item.date ? new Date(item.date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Day',
       }));
     }
 
-    // Realistic fallback trend over last 7 days
-    const demoData = [];
+    const previewData = [];
     const today = new Date();
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(today.getDate() - i);
-      demoData.push({
-        date: d.toLocaleDateString([], { month: 'short', day: 'numeric' }),
-        average_risk_score: Math.round(25 + Math.random() * 30 + Math.sin(i) * 10),
+    for (let index = 6; index >= 0; index -= 1) {
+      const valueDate = new Date(today);
+      valueDate.setDate(today.getDate() - index);
+      previewData.push({
+        date: valueDate.toLocaleDateString([], { month: 'short', day: 'numeric' }),
+        average_risk_score: 34 + (index % 3) * 8,
       });
     }
-    return demoData;
+    return previewData;
   }, [riskTrend]);
 
   const formattedRiskDistribution = useMemo(() => {
     const rawDistribution = charts?.risk_distribution;
-    if (rawDistribution && rawDistribution.length > 0 && rawDistribution.some(item => item.value > 0)) {
-      return rawDistribution;
+    if (rawDistribution && rawDistribution.length > 0) {
+      const normalized = ['Low', 'Medium', 'High', 'Critical'].map((name) => {
+        const match = rawDistribution.find((item) => item.name === name);
+        return { name, value: match?.value || 0 };
+      });
+      return normalized;
     }
 
-    // Realistic fallback categories
     return [
-      { name: 'Low', value: 45 },
-      { name: 'Medium', value: 25 },
-      { name: 'High', value: 15 },
-      { name: 'Critical', value: 5 },
+      { name: 'Low', value: 0 },
+      { name: 'Medium', value: 0 },
+      { name: 'High', value: 0 },
+      { name: 'Critical', value: 0 },
     ];
   }, [charts]);
+
+  const highestRiskEmployee = useMemo(() => {
+    if (topRiskEmployees?.length) {
+      return topRiskEmployees[0];
+    }
+    return null;
+  }, [topRiskEmployees]);
 
   if (loading) {
     return (
@@ -181,10 +192,22 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-end items-center gap-3">
-        <button className="flex items-center gap-2 bg-white border border-border-color text-text-main px-4 py-2 rounded-[10px] text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
+        <button
+          onClick={() => navigate('/reports', { state: { fromDashboard: true } })}
+          className="flex items-center gap-2 bg-white border border-border-color text-text-main px-4 py-2 rounded-[10px] text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm"
+        >
           <FileText size={16} /> Report
         </button>
-        <button className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-[10px] text-sm font-medium hover:bg-opacity-90 transition-colors shadow-sm">
+        <button
+          onClick={() => {
+            if (highestRiskEmployee?.employee_id) {
+              navigate('/threats', { state: { highlightedEmployeeId: highestRiskEmployee.employee_id } });
+            } else {
+              navigate('/threats', { state: { noThreatsMessage: 'No threats are currently available to investigate.' } });
+            }
+          }}
+          className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-[10px] text-sm font-medium hover:bg-opacity-90 transition-colors shadow-sm"
+        >
           <Search size={16} /> Investigate
         </button>
       </div>
@@ -231,44 +254,63 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-w-0">
         <div className="xl:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 min-w-0">
           <div className="min-w-0">
-            <ChartCard title="Behavior Risk Trend">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={formattedRiskTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                  <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} />
-                  <Tooltip
-                    contentStyle={{ borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-                    itemStyle={{ color: '#0F172A', fontWeight: 600 }}
-                  />
-                  <Line type="monotone" dataKey="average_risk_score" stroke="#0F766E" strokeWidth={3} dot={{ r: 4, fill: '#0F766E', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
-                </LineChart>
-              </ResponsiveContainer>
+            <ChartCard title="Behavior Risk Trend" className="min-h-[360px]">
+              {formattedRiskTrend.length >= 1 ? (
+                <div className="h-[300px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={formattedRiskTrend} margin={{ top: 6, right: 8, left: -12, bottom: 4 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                      <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} dy={6} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} />
+                      <Tooltip
+                        contentStyle={{ borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
+                        itemStyle={{ color: '#0F172A', fontWeight: 600 }}
+                      />
+                      <Line type="monotone" dataKey="average_risk_score" stroke="#0F766E" strokeWidth={3} dot={{ r: 4, fill: '#0F766E', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="flex h-[300px] items-center justify-center rounded-[12px] border border-dashed border-border-color bg-slate-50 p-6 text-center text-sm text-subtext">
+                  Insufficient historical data to display trend.
+                </div>
+              )}
             </ChartCard>
+
           </div>
 
           <div className="min-w-0">
-            <ChartCard title="Risk Distribution">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={formattedRiskDistribution}
-                    cx="50%"
-                    cy="45%"
-                    innerRadius={70}
-                    outerRadius={95}
-                    paddingAngle={2}
-                    dataKey="value"
-                    stroke="none"
-                  >
-                    {formattedRiskDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={chartColors[entry.name] || '#64748B'} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} itemStyle={{ fontWeight: 600 }} />
-                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }} />
-                </PieChart>
-              </ResponsiveContainer>
+            <ChartCard title="Risk Distribution" className="min-h-[360px]">
+              {formattedRiskDistribution.some((item) => item.value > 0) ? (
+                <div className="flex h-[300px] w-full flex-col items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={formattedRiskDistribution}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={78}
+                        outerRadius={112}
+                        paddingAngle={2}
+                        dataKey="value"
+                        stroke="none"
+                      >
+                        {formattedRiskDistribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={chartColors[entry.name] || '#64748B'} />
+                        ))}
+                      </Pie>
+                      <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }} itemStyle={{ fontWeight: 600 }} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="mt-2 w-full">
+                    <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }} />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex h-[300px] items-center justify-center rounded-[12px] border border-dashed border-border-color bg-slate-50 p-6 text-center text-sm text-subtext">
+                  No risk distribution data is available yet.
+                </div>
+              )}
             </ChartCard>
           </div>
         </div>

@@ -39,7 +39,7 @@ def seed_database():
         for role_cfg in roles_config:
             existing = db.query(Role).filter_by(role_name=role_cfg["name"]).first()
             if existing:
-                print(f"  ✓ Role '{role_cfg['name']}' already exists")
+                print(f"  [OK] Role '{role_cfg['name']}' already exists")
                 roles_map[role_cfg["name"]] = existing
             else:
                 new_role = Role(
@@ -50,7 +50,7 @@ def seed_database():
                 )
                 db.add(new_role)
                 db.commit()
-                print(f"  ✓ Created role '{role_cfg['name']}'")
+                print(f"  [OK] Created role '{role_cfg['name']}'")
                 roles_map[role_cfg["name"]] = new_role
                 roles_created += 1
         
@@ -74,7 +74,7 @@ def seed_database():
         for dept_cfg in departments_config:
             existing = db.query(Department).filter_by(department_code=dept_cfg["code"]).first()
             if existing:
-                print(f"  ✓ Department '{dept_cfg['name']}' already exists")
+                print(f"  [OK] Department '{dept_cfg['name']}' already exists")
                 depts_map[dept_cfg["code"]] = existing
             else:
                 new_dept = Department(
@@ -85,7 +85,7 @@ def seed_database():
                 )
                 db.add(new_dept)
                 db.commit()
-                print(f"  ✓ Created department '{dept_cfg['name']}'")
+                print(f"  [OK] Created department '{dept_cfg['name']}'")
                 depts_map[dept_cfg["code"]] = new_dept
                 depts_created += 1
         
@@ -99,7 +99,7 @@ def seed_database():
         existing_admin = db.query(Employee).filter_by(email=admin_email).first()
         
         if existing_admin:
-            print(f"  ✓ Admin account already exists: {existing_admin.email}")
+            print(f"  [OK] Admin account already exists: {existing_admin.email}")
         else:
             from app.core.security import get_password_hash
             admin_employee = Employee(
@@ -117,7 +117,7 @@ def seed_database():
             )
             db.add(admin_employee)
             db.commit()
-            print(f"  ✓ Created admin account:")
+            print(f"  [OK] Created admin account:")
             print(f"    Email: {admin_email}")
             print(f"    Password: Admin@123")
             print(f"    Role: Administrator")
@@ -145,10 +145,10 @@ def seed_database():
             db.add(user)
             db.commit()
             users_fixed += 1
-            print(f"  ✓ {user.first_name} {user.last_name} ({user.email}): {action}")
+            print(f"  [OK] {user.first_name} {user.last_name} ({user.email}): {action}")
         
         if users_fixed == 0:
-            print(f"  ✓ All users already have roles assigned")
+            print(f"  [OK] All users already have roles assigned")
         else:
             print(f"  Summary: {users_fixed} users migrated")
         
@@ -164,19 +164,22 @@ def seed_database():
         users_with_dept = db.query(Employee).filter(Employee.department_id != None).count()
         admin_count = db.query(Employee).filter(Employee.role_id == admin_role.id).count()
         
-        print(f"  • Total Roles: {total_roles} (expected: 4) ✓" if total_roles == 4 else f"  • Total Roles: {total_roles} (expected: 4) ✗")
-        print(f"  • Total Departments: {total_depts} (expected: 5) ✓" if total_depts == 5 else f"  • Total Departments: {total_depts} (expected: 5) ✗")
-        print(f"  • Total Employees: {total_users}")
-        print(f"  • Users with role_id: {users_with_role}/{total_users} ✓" if users_with_role == total_users else f"  • Users with role_id: {users_with_role}/{total_users} ✗")
-        print(f"  • Users with department_id: {users_with_dept}/{total_users} ✓" if users_with_dept == total_users else f"  • Users with department_id: {users_with_dept}/{total_users} ✗")
-        print(f"  • Administrator accounts: {admin_count}")
+        print(f"  * Total Roles: {total_roles} (expected: 4) OK" if total_roles == 4 else f"  * Total Roles: {total_roles} (expected: 4) ERR")
+        print(f"  * Total Departments: {total_depts} (expected: 5) OK" if total_depts == 5 else f"  * Total Departments: {total_depts} (expected: 5) ERR")
+        print(f"  * Total Employees: {total_users}")
+        print(f"  * Users with role_id: {users_with_role}/{total_users} OK" if users_with_role == total_users else f"  * Users with role_id: {users_with_role}/{total_users} ERR")
+        print(f"  * Users with department_id: {users_with_dept}/{total_users} OK" if users_with_dept == total_users else f"  * Users with department_id: {users_with_dept}/{total_users} ERR")
+        print(f"  * Administrator accounts: {admin_count}")
         
         print("\n" + "=" * 80)
-        print("✓ DATABASE SEEDING COMPLETE")
+        print("[SUCCESS] DATABASE SEEDING COMPLETE")
         print("=" * 80 + "\n")
         
     except Exception as e:
-        print(f"\n✗ Error during seeding: {e}")
+        print(f"\n[ERROR] Error during seeding: {e}")
+        import traceback
+        traceback.print_exc()
+        db.rollback()
         import traceback
         traceback.print_exc()
         db.rollback()

@@ -19,14 +19,35 @@
   --font-heading: 'Poppins', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: var(--color-background);
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 24%),
+    linear-gradient(135deg, #f8fafc 0%, #f3f7fb 100%);
   color: var(--color-text-main);
   margin: 0;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+}
+
+::selection {
+  background-color: rgba(15, 118, 110, 0.18);
+  color: var(--color-text-main);
+}
+
+input, select, textarea, button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
 }

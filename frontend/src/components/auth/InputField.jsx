@@ -13,7 +13,7 @@ const InputField = ({ label, type = 'text', placeholder, value, onChange, id, re
         value={value}
         onChange={onChange}
         required={required}
-        className="w-full px-4 py-3.5 rounded-[12px] bg-background border border-border-color text-text-main text-sm focus:outline-none focus:border-[#0F766E] focus:ring-1 focus:ring-[#0F766E] transition-all"
+        className="w-full rounded-[12px] border border-border-color bg-background px-4 py-3.5 text-sm text-text-main transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
       />
     </div>
   );

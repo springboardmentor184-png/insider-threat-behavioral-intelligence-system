@@ -29,25 +29,6 @@ class EmployeeUpdate(BaseModel):
     manager_name: Optional[str] = None
     status: Optional[str] = None
 
-class EmployeeResponse(EmployeeBase):
-    id: UUID
-    is_active: bool
-    failed_login_attempts: int
-    last_password_change: Optional[datetime] = None
-    deleted_at: Optional[datetime] = None
-    date_joined: Optional[datetime] = None
-    last_login: Optional[datetime] = None
-    created_at: datetime
-    updated_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
-
-class PaginatedEmployeeResponse(BaseModel):
-    total: int
-    page: int
-    limit: int
-    data: List[EmployeeResponse]
-
 class DepartmentBase(BaseModel):
     id: UUID
     department_name: str
@@ -59,7 +40,27 @@ class RoleBase(BaseModel):
     role_name: str
     model_config = ConfigDict(from_attributes=True)
 
-class EmployeeDetailResponse(EmployeeResponse):
+class EmployeeResponse(EmployeeBase):
+    id: UUID
+    is_active: bool
+    failed_login_attempts: int
+    last_password_change: Optional[datetime] = None
+    deleted_at: Optional[datetime] = None
+    date_joined: Optional[datetime] = None
+    last_login: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
     department: Optional[DepartmentBase] = None
     role: Optional[RoleBase] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class PaginatedEmployeeResponse(BaseModel):
+    total: int
+    page: int
+    limit: int
+    data: List[EmployeeResponse]
+
+class EmployeeDetailResponse(EmployeeResponse):
     risk_score: Optional[float] = None
+

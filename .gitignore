@@ -1,57 +1,132 @@
-# ==========================
-# Python
-# ==========================
+# ==============================================================================
+# INSIDERSHIELD - ENTERPRISE .GITIGNORE
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment & Local Configuration Files
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+
+# ------------------------------------------------------------------------------
+# 2. Python & Backend Artifacts
+# ------------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
-*.pyc
+*$py.class
+*.so
 *.pyo
 *.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
 # Virtual Environments
 venv/
 .venv/
+ENV/
+env/
 backend/venv/
 backend/.venv/
 
-# Environment Files
-.env
-.env.*
-
-# Python cache
+# Python Testing & Code Quality
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 .coverage
+.coverage.*
 htmlcov/
+coverage.xml
+*.cover
 
-# ==========================
-# Node.js
-# ==========================
+# ------------------------------------------------------------------------------
+# 3. SQLite Databases & Local Storage
+# ------------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+backend/*.db
+backend/dev.db
+backend/app.db
+backend/test.db
+
+# Large Datasets & Raw Telemetry Scenarios
+backend/dataset/
+*.csv
+*.pcap
+
+# ------------------------------------------------------------------------------
+# 4. Node.js, Vite & Frontend Artifacts
+# ------------------------------------------------------------------------------
 node_modules/
-dist/
-build/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+.vite/
+dist-ssr/
+*.local
+
+# Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# ==========================
-# IDE
-# ==========================
-.vscode/
-.idea/
-
-# ==========================
-# OS
-# ==========================
-.DS_Store
+# ------------------------------------------------------------------------------
+# 5. IDE, Editors & OS Files
+# ------------------------------------------------------------------------------
+# Windows
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# ==========================
-# Logs
-# ==========================
-*.log
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# ==========================
-# Vite
-# ==========================
-.vite/
+# Editors
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# ------------------------------------------------------------------------------
+# 6. Temporary & Agent Files
+# ------------------------------------------------------------------------------
+*.tmp
+*.temp
+.agents/
+.gemini/
+scratch/

@@ -20,7 +20,16 @@ export const getHighRiskReports = async () => {
   return response.data;
 };
 
-export const exportReport = async () => {
+export const exportEmployeePdf = async (employeeId) => {
+  const response = await axiosClient.get(`/reports/employee/${employeeId}/pdf`, { responseType: 'blob' });
+  return response;
+};
+
+export const exportReport = async (employeeId) => {
+  if (employeeId) {
+    return exportEmployeePdf(employeeId);
+  }
   const response = await axiosClient.get('/reports/export', { responseType: 'blob' });
   return response;
 };
+

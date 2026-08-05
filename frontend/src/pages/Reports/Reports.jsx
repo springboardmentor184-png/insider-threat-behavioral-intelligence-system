@@ -14,11 +14,13 @@ import StatCard from '../../components/dashboard/StatCard';
 import { getEmployees } from '../../services/employeeService';
 import {
   exportReport,
+  exportEmployeePdf,
   getDepartmentReport,
   getEmployeeReport,
   getHighRiskReports,
   getRecentAnomalies,
 } from '../../services/reportService';
+
 
 const Reports = () => {
   const [employees, setEmployees] = useState([]);
@@ -95,24 +97,49 @@ const Reports = () => {
   };
 
   const handleExport = async () => {
+    if (!selectedEmployeeId) {
+      setError('Please select an employee from the dropdown to export their security report.');
+      return;
+    }
+
     try {
       setExporting(true);
-      const response = await exportReport();
-      const blob = new Blob([response.data], { type: response.headers['content-type'] || 'application/json' });
+      const response = await exportEmployeePdf(selectedEmployeeId);
+
+      let filename = '';
+      const disposition = response.headers ? response.headers['content-disposition'] : null;
+      if (disposition && disposition.includes('filename=')) {
+        const matches = disposition.match(/filename="?([^";]+)"?/);
+        if (matches && matches[1]) {
+          filename = matches[1];
+        }
+      }
+
+      if (!filename) {
+        const selectedEmp = employees.find((emp) => emp.id === selectedEmployeeId);
+        const nameStr = selectedEmp
+          ? `${selectedEmp.first_name || ''}_${selectedEmp.last_name || ''}`.replace(/\s+/g, '_')
+          : 'Employee';
+        const todayStr = new Date().toISOString().split('T')[0];
+        filename = `${nameStr}_Security_Report_${todayStr}.pdf`;
+      }
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'security-report.json';
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      setError(err?.response?.data?.detail || err.message || 'Export failed.');
+      setError(err?.response?.data?.detail || err.message || 'PDF Export failed.');
     } finally {
       setExporting(false);
     }
   };
+
 
   const summaryCards = useMemo(() => [
     { title: 'Total Reports', value: summary?.totalReports ?? 0, subtitle: 'High risk employee reports', icon: <FileText size={20} />, bgClass: 'bg-primary/10', colorClass: 'text-primary' },
@@ -163,10 +190,10 @@ const Reports = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-3 rounded-[24px] border border-slate-200/80 bg-white/80 px-5 py-4 shadow-[0_18px_45px_-24px_rgba(15,23,42,0.24)] lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 className="text-2xl font-heading font-bold text-text-main">Reports</h1>
-          <p className="text-sm text-subtext mt-1">Review organization-wide security summaries, high-risk employee reports, and recent anomalies.</p>
+          <p className="mt-1 text-sm text-subtext">Review organization-wide security summaries, high-risk employee reports, and recent anomalies.</p>
         </div>
         <Button onClick={handleExport} disabled={exporting}>
           <span className="flex items-center gap-2">

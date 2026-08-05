@@ -53,6 +53,17 @@ class TokenPayload(BaseModel):
     sub: str
     exp: int
 
+class DepartmentInfo(BaseModel):
+    id: UUID
+    department_name: str
+    department_code: Optional[str] = None
+    model_config = ConfigDict(from_attributes=True)
+
+class RoleInfo(BaseModel):
+    id: UUID
+    role_name: str
+    model_config = ConfigDict(from_attributes=True)
+
 class EmployeeDetails(BaseModel):
     id: UUID
     employee_id: str
@@ -61,6 +72,8 @@ class EmployeeDetails(BaseModel):
     email: str
     department_id: Optional[UUID] = None
     role_id: Optional[UUID] = None
+    department: Optional[DepartmentInfo] = None
+    role: Optional[RoleInfo] = None
 
     model_config = ConfigDict(from_attributes=True)
 

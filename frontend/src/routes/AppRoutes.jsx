@@ -13,6 +13,10 @@ import Activities from '../pages/Activities/Activities';
 import ActivityDetail from '../pages/Activities/ActivityDetail';
 import Behavior from '../pages/Behavior/Behavior';
 import Threat from '../pages/Threat/Threat';
+import RiskDashboard from '../pages/Risk/RiskDashboard';
+import UEBADashboard from '../pages/UEBA/UEBADashboard';
+import InvestigationDashboard from '../pages/Investigations/InvestigationDashboard';
+import IncidentDashboard from '../pages/Incidents/IncidentDashboard';
 import Reports from '../pages/Reports/Reports';
 import Settings from '../pages/Settings/Settings';
 import NotFound from '../pages/NotFound/NotFound';
@@ -38,6 +42,10 @@ const AppRoutes = () => {
           <Route path={`${ROUTES.ACTIVITIES}/:id`} element={<ActivityDetail />} />
           <Route path={ROUTES.BEHAVIOR} element={<Behavior />} />
           <Route path={ROUTES.THREATS} element={<Threat />} />
+          <Route path={ROUTES.RISK} element={<RiskDashboard />} />
+          <Route path={ROUTES.UEBA} element={<UEBADashboard />} />
+          <Route path={ROUTES.INVESTIGATIONS} element={<InvestigationDashboard />} />
+          <Route path={ROUTES.INCIDENTS} element={<IncidentDashboard />} />
           <Route path={ROUTES.REPORTS} element={<Reports />} />
           <Route path={ROUTES.SETTINGS} element={<Settings />} />
         </Route>
