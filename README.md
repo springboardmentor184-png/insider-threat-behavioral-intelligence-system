@@ -1,435 +1,381 @@
-# AI Insider Threat Behavioral Intelligence System
+#  Insider Threat Behavioral Intelligence System
 
-## Overview
-
-The AI Insider Threat Behavioral Intelligence System is a web-based cybersecurity application designed to identify potential insider threats by analyzing employee behavioral patterns. The system leverages Machine Learning (Isolation Forest) along with a Hybrid Rule-Based Detection Engine to monitor user activities, generate behavioral baselines, detect anomalies, calculate insider risk scores, and provide actionable security insights.
-
-The application is built using FastAPI, PostgreSQL, React, and Scikit-learn, providing an intelligent platform for insider threat detection, behavioral analytics, and AI-powered risk assessment.
+An AI-powered User and Entity Behavior Analytics (UEBA) platform that detects insider threats using Machine Learning, Hybrid Rule Engine, Risk Scoring, and Threat Investigation workflows.
 
 ---
 
-# Features
+#  Project Overview
 
-## Authentication
+The Insider Threat Behavioral Intelligence System helps security teams detect, analyze, and investigate suspicious employee activities within an organization.
 
-- Secure JWT-based Authentication
-- User Registration
+The system combines:
+
+- User & Entity Behavior Analytics (UEBA)
+- Machine Learning (Isolation Forest)
+- Hybrid Rule-Based Detection
+- Insider Risk Scoring
+- Threat Investigation Dashboard
+- Security Analytics
+- Automated Incident Generation
+
+---
+
+#  Tech Stack
+
+## Backend
+
+- FastAPI
+- SQLAlchemy
+- SQLite
+- Pydantic
+- Scikit-learn
+- Joblib
+
+## Frontend
+
+- React.js
+- Bootstrap 5
+- Axios
+- React Router
+
+## Machine Learning
+
+- Isolation Forest
+- Hybrid Rule Engine
+- Risk Scoring Engine
+
+---
+
+#  Project Structure
+
+```
+backend/
+│
+├── app/
+│   ├── routes/
+│   ├── services/
+│   ├── ml/
+│   ├── models.py
+│   ├── schemas.py
+│   └── database.py
+│
+└── main.py
+
+Frontend/
+│
+├── src/
+│   ├── pages/
+│   ├── components/
+│   ├── services/
+│   └── styles/
+```
+
+---
+
+#  Implemented Features
+
+##  Authentication
+
 - User Login
-- Protected API Endpoints
+- JWT Authentication
+- Protected APIs
 
 ---
 
-## Employee Management
+##  Employee Management
 
 - Add Employee
-- View Employee Details
-- Update Employee Information
+- Update Employee
 - Delete Employee
+- Employee Dashboard
+- Employee Search
 
 ---
 
-## Behaviour Log Management
+##  User Behavior Analytics
 
-Manage employee behavioral activities including:
-
-- Failed Login Attempts
-- Files Downloaded
-- Emails Sent
-- Login Hour
-- USB Usage
-- After-Hours Activity
-
-Features include:
-
-- Add Behaviour Logs
-- View Behaviour Logs
-- Update Behaviour Logs
-- Delete Behaviour Logs
+- Behavior Log Monitoring
+- Behavior Baseline
+- Employee Activity Analysis
 
 ---
 
-## Behaviour Baseline Generation
+## 🤖 AI Threat Detection
 
-Generate employee behavioral baselines from historical activity records.
+Implemented using:
 
-Baseline metrics include:
+- Isolation Forest
+- Hybrid Rule Engine
 
-- Average Failed Logins
-- Average Files Downloaded
-- Average Emails Sent
-- Average Login Hour
-- USB Usage Rate
-- After-Hours Activity Rate
+Prediction Outputs
 
----
+- Normal
+- Anomaly
 
-## Behaviour Analytics
-
-Analyze employee behavior against generated baselines to identify suspicious activities and behavioral deviations.
-
----
-
-## AI Threat Detection
-
-Hybrid AI-based anomaly detection using:
-
-- Isolation Forest Machine Learning Model
-- Business Rule Engine
-
-### Business Rules
-
-- Failed Logins ≥ 8
-- Files Downloaded ≥ 400
-- Emails Sent ≥ 80
-- USB Usage Rate ≥ 80%
-- After-Hours Activity ≥ 80%
-
-If two or more rules are triggered, the employee is classified as an anomaly.
-
-Otherwise, prediction is generated using the Isolation Forest Machine Learning model.
-
----
-
-## AI Prediction
-
-Generate intelligent employee threat assessments including:
-
-- Prediction Status (Normal / Anomaly)
-- Detection Method
-- Triggered Business Rules
-
----
-
-## Risk Scoring Engine
-
-The application includes a weighted insider risk scoring engine based on behavioral intelligence.
-
-### Weighted Risk Model
-
-- Behavioural Anomalies – 35%
-- Privilege Misuse Indicators – 25%
-- Data Access Violations – 20%
-- Access Pattern Deviations – 10%
-- Historical Security Events – 10%
-
-### Risk Categories
+Risk Levels
 
 - Low
 - Medium
 - High
 - Critical
 
-The engine automatically generates:
+Detection Methods
 
-- Risk Score (0–100)
-- Risk Level
-- Threat Severity
-
----
-
-## Risk Analysis
-
-The Risk Analysis module provides investigation-ready insights including:
-
-- Threat Severity Assessment
-- Risk Trend
-- Risk Summary
-- Security Recommendations
-- Behaviour Summary
-- Triggered Rules
-
----
-
-## Threat Alerts
-
-Automatically generate alerts for suspicious employee activities based on AI predictions.
-
----
-
-## Dashboard
-
-The dashboard provides:
-
-- Total Employees
-- Behaviour Logs
-- Behaviour Baselines
-- AI Predictions
-- Risk Scores
-- Behaviour Analytics Summary
-- Risk Distribution Charts
-
----
-
-## PDF Report Generation
-
-Generate professional AI Insider Threat Reports containing:
-
-- Report Information
-- Executive Summary
-- Employee Information
-- Behaviour Analysis
-- AI Prediction
-- Risk Score
-- Risk Level
-- Threat Severity
-- Risk Analysis Summary
-- Risk Factors
-- Security Recommendations
-
----
-
-# Technology Stack
-
-## Backend
-
-- FastAPI
-- SQLAlchemy
-- PostgreSQL
-- JWT Authentication
-- Pydantic
-- Uvicorn
-
-## Frontend
-
-- React
-- Bootstrap
-- Axios
-- React Router
-
-## Machine Learning
-
-- Scikit-learn
 - Isolation Forest
-- Pandas
-- NumPy
-
-## Reporting
-
-- ReportLab
+- Hybrid Rule Engine
 
 ---
 
-# Project Structure
+##  Insider Risk Scoring Engine
 
-```
-insider-threat-behavioral-intelligence-system/
+Implemented
 
-│
-├── Backend/
-│   ├── app/
-│   │   ├── ml/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   ├── main.py
-│   │   ├── models.py
-│   │   ├── schemas.py
-│   │   └── database.py
-│   │
-│   ├── requirements.txt
-│   └── .env
-│
-├── Frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── styles/
-│   │   └── App.jsx
-│   │
-│   └── package.json
-│
-├── README.md
-└── .gitignore
-```
+- Weighted Risk Scoring
+- Threat Severity Classification
+- Risk Trend Generation
+- Risk Recommendation Engine
+- Risk Summary Generation
 
 ---
 
-# Machine Learning Workflow
+#  UEBA Intelligence Dashboard
+
+Implemented
+
+- Employee Selection
+- Behaviour Analytics
+- Entity Behaviour Analytics
+- Behaviour Score
+- Behaviour Trend
+- Department Risk
+- Peer Group Analysis
+- Threat Intelligence
+- Risk Summary
+- Detection Method
+
+---
+
+#  AI Prediction Module
+
+Features
+
+- AI Behaviour Prediction
+- Hybrid Threat Detection
+- Risk Score Calculation
+- Threat Severity
+- Automatic Investigation Creation
+- PDF Risk Report Generation
+
+---
+
+#  Threat Investigation Module
+
+Implemented
+
+### Incident Creation
+
+- Automatic incident creation for High/Critical insider threats
+
+### Investigation Dashboard
+
+- Investigation Queue
+- Active Investigations
+- Threat Severity
+- Investigation Status
+- Assigned Analyst
+- Open Investigation
+
+### Investigation Details
+
+- Investigation Summary
+- Activity Timeline
+- Threat Evidence Collection
+- Device Analysis
+
+### Threat Timeline
+
+Displays
+
+- Employee Login
+- Failed Login Attempts
+- USB Activity
+- File Downloads
+- Email Activity
+- After Hours Login
+- AI Threat Detection
+- Investigation Creation
+
+### Threat Evidence Collection
+
+Displays
+
+- Failed Logins
+- Files Downloaded
+- Emails Sent
+- USB Usage
+- After Hours Login
+- Detection Method
+- Risk Level
+
+### Device Analysis
+
+Displays
+
+- Login Hour
+- USB Device Usage
+- After Hours Login
+- Files Downloaded
+- Emails Sent
+- Device Risk
+
+---
+
+#  Risk Analytics
+
+Implemented
+
+- Risk Score
+- Behaviour Score
+- Threat Severity
+- Risk Summary
+- Department Risk
+- Behaviour Trend
+
+---
+
+#  PDF Report
+
+Generate downloadable PDF reports containing
+
+- Employee Information
+- Behaviour Metrics
+- AI Prediction
+- Threat Severity
+- Risk Level
+- Recommendation
+
+---
+
+# 🔗 REST APIs
+
+Implemented APIs include
+
+Authentication
+
+- Login
+
+Employees
+
+- Employee CRUD
+
+Behavior Logs
+
+- Activity Logs
+- Baseline Analytics
+
+AI
+
+- AI Prediction
+- PDF Report
+
+UEBA
+
+- UEBA Dashboard
+
+Threat Investigation
+
+- Dashboard
+- Investigation Details
+- Activity Timeline
+- Threat Evidence
+- Device Analysis
+- Investigation Status
+
+---
+
+#  Machine Learning Workflow
 
 ```
-Employee Behaviour Logs
-            │
-            ▼
-Behaviour Baseline Generation
-            │
-            ▼
-Behaviour Analytics
-            │
-            ▼
+Employee Behaviour
+        │
+        ▼
 Business Rule Engine
-            │
-            ▼
-Isolation Forest Prediction
-            │
-            ▼
-Hybrid AI Detection
-            │
-            ▼
+        │
+        ▼
+Isolation Forest
+        │
+        ▼
 Risk Scoring Engine
-            │
-            ▼
-Risk Analysis
-            │
-            ▼
-Threat Alerts
-            │
-            ▼
-Professional PDF Report
+        │
+        ▼
+Threat Severity
+        │
+        ▼
+Automatic Investigation
+        │
+        ▼
+Threat Investigation Dashboard
 ```
 
 ---
 
-# API Modules
-
-- Authentication
-- Employee Management
-- Behaviour Logs
-- Behaviour Baseline
-- Behaviour Analytics
-- AI Prediction
-- Rule Engine
-- Risk Scoring
-- Risk Analysis
-- Threat Alerts
-- Dashboard
-- PDF Report Generation
-
----
-
-# Current Project Status
-
-## Completed Modules
-
-### Milestone 1
-
-- Authentication
-- Employee CRUD Operations
-- Behaviour Logs CRUD
-- Dashboard
-- Threat Alerts
-
-### Milestone 2
-
-- Behaviour Baseline Generation
-- Behaviour Analytics
-- Isolation Forest Machine Learning
-- Hybrid AI Prediction
-- Professional PDF Report Generation
-
-### Milestone 3 (Completed So Far)
-
-- Rule Engine
-- Weighted Risk Scoring Engine
-- Risk Level Classification
-- Threat Severity Assessment
-- Risk Analysis Module
-- Risk Recommendations
-- Enhanced Prediction Dashboard
-
----
-
-# Upcoming Modules
-
-- Threat Investigation Module
-- Incident Creation
-- Threat Timeline
-- Evidence Collection
-- Insider Threat Alerts
-- Investigation Notifications
-- Escalation Alerts
-- Risk Analytics Dashboard
-- Executive Dashboard
-- Docker Deployment
-- Cloud Deployment
-- Final Documentation & Presentation
-
----
-
-# Installation
-
-## Prerequisites
-
-- Python 3.10+
-- PostgreSQL
-- Node.js
-- npm
-
----
-
-## Backend Setup
-
-```bash
-cd Backend
-
-python -m venv venv
-
-venv\Scripts\activate
-
-pip install -r requirements.txt
-
-uvicorn app.main:app --reload
-```
-
----
-
-## Frontend Setup
-
-```bash
-cd Frontend
-
-npm install
-
-npm run dev
-```
-
----
-
-# Default URLs
-
-## Backend
-
-```
-http://127.0.0.1:8000
-```
-
-## Swagger API Documentation
-
-```
-http://127.0.0.1:8000/docs
-```
-
-## Frontend
-
-```
-http://localhost:5173
-```
-
----
-
-# Screenshots
-
-You can add screenshots for:
+# 📸 Application Modules
 
 - Dashboard
 - Employee Management
-- Behaviour Logs
+- UEBA Intelligence
+- Activity Logs
+- Threat Alerts
 - AI Prediction
-- Risk Analysis
-- PDF Report Preview
+- Threat Investigation
+- Settings
 
 ---
 
-# License
+#  In Progress
 
-This project is developed for educational and research purposes.
+The following features are currently under development.
+
+- User Risk History
+- Event Correlation
+- Investigation Workflow
+- Alert & Notification Management
+- Security Dashboard Analytics
+- Charts & Visualization
 
 ---
 
-# Author
+# 📅 Project Status
+
+Current Milestone
+
+**Milestone 3 – Risk Scoring & Threat Investigation**
+
+Progress
+
+- ✅ Insider Risk Scoring Engine
+- ✅ UEBA Intelligence Workflows
+- ✅ AI Prediction Engine
+- ✅ Threat Investigation Dashboard
+- ✅ Activity Timeline
+- ✅ Threat Evidence Collection
+- ✅ Device Analysis
+- 🚧 User Risk History
+- 🚧 Event Correlation
+- 🚧 Investigation Workflow
+
+---
+
+#  Developer
 
 **Darshan Lohakare**
 
-Master of Computer Applications (MCA)
+AI Intern
 
-GitHub: https://github.com/springboardmentor184-png
+Pune, India
+
+---
+
+# 📜 License
+
+This project is developed for educational and research purposes.
