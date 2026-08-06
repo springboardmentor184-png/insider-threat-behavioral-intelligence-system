@@ -1,67 +1,67 @@
-# 🛡️ Insider Threat Behavioral Intelligence System (UEBA & Risk Engine)
+# 🛡️ Insider Threat Behavioral Intelligence System (UEBA)
 
-[![Milestone 3](https://img.shields.io/badge/Milestone--3-Completed%20%26%20Verified-brightgreen.svg)]()
-[![Framework](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python%203.11-blue.svg)]()
+[![System Status](https://img.shields.io/badge/Milestones%201%2C%202%2C%203-Completed%20%26%20Verified-brightgreen.svg)]()
+[![Backend](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python%203.11-blue.svg)]()
 [![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite-purple.svg)]()
 [![ML Model](https://img.shields.io/badge/ML-IsolationForest%20UEBA-orange.svg)]()
 
-> A production-grade **User and Entity Behavior Analytics (UEBA)** platform for real-time insider threat detection, weighted risk scoring, automated SOC alerts, case management investigations, and critical risk email notification triggers.
+> A production-grade **User and Entity Behavior Analytics (UEBA)** security platform for real-time insider threat detection, behavioral profiling, machine learning anomaly detection, weighted risk scoring, SOC case management, and automated security alert triggers.
 
 ---
 
-## 🚀 Milestone 3 Feature Highlights & System Modules
+## 📌 Complete Milestone Overview & Architecture
 
-### 1. 📊 Weighted Insider Risk Engine (35-25-20-10-10 Architecture)
-* **Dynamic Recalculation Engine**: Evaluates monitored personnel telemetry across 5 core threat vectors:
-  * 🧠 **Behavioral Anomalies (35%)**: IsolationForest anomaly density & baseline deviations.
-  * 🔑 **Privilege Misuse (25%)**: Shadow file access, command execution keywords (`/etc/shadow`, `sudo su - root`).
-  * 💾 **Data Access Violations (20%)**: Bulk file downloads, PII exports, payroll file access.
-  * ⏰ **Access Pattern Deviations (10%)**: Off-hours logon ratios & night activity bursts.
-  * 📜 **Historical Security Events (10%)**: Prior security policy breaches & USB mounting telemetry.
-* **Risk Categorization**:
-  * `0.0 - 25.0%`: Low Risk 🟢
-  * `25.1 - 50.0%`: Medium Risk 🟡
-  * `50.1 - 74.9%`: High Risk 🟧
-  * `75.0 - 100.0%`: **Critical Risk 🔴** *(Triggers Automated Email Notification)*
-
----
-
-### 2. 📧 Automated Critical Risk Email System (Score ≥ 75.0%)
-* **Automated SMTP Email Alerts**: Automatically dispatches a rich HTML email brief to the Security Administrator (`ADMIN_EMAIL`) whenever an employee's Insider Risk Score reaches **≥ 75.0%**.
-* **Incident Description & Threat Vectors**: Includes detailed incident breakdown, exfiltration probability, predicted threat vector, and direct 1-click SOC case link.
-* **Duplicate Prevention & Logging**: Tracks `last_notified_risk_score` and `last_notified_at` to ensure alerts are dispatched on scan runs and critical escalations.
+### 🔷 Milestone 1: Core Identity, Telemetry Data & RBAC Foundation
+* 👥 **Monitored Personnel Directory**: Synchronized dataset of 708 monitored personnel profiles across organizational departments (Engineering, IT, HR, Finance, Executive).
+* 📋 **Multi-Vector Telemetry Log Ingestion**: 1,250 real activity entries across 5 log vectors:
+  * `Logon Events`: Interactive logons, unlock events, failed authentication attempts.
+  * `Device Telemetry`: Removable USB media mounts, external drive connections.
+  * `File Activity`: Confidential file access, PII downloads, payroll exports.
+  * `Email Logs`: External attachments, mass distribution lists.
+  * `HTTP Web Traffic`: External cloud uploads, S3 buckets, unapproved web apps.
+* 🔐 **Authentication & Access Control (RBAC)**:
+  * Role-Based Access Control (`Admin`, `Analyst`, `Auditor`, `Employee`).
+  * Dual Sign-In capability (Sign in via **Corporate Email** or **Username**).
+  * Password security powered by `bcrypt` hashing and 60-minute JWT bearer tokens.
 
 ---
 
-### 3. 🔐 6-Digit OTP Password Reset Flow
-* **Multi-Factor OTP Verification**: Secure 2-step password reset workflow requiring a 6-digit numeric OTP code (`POST /api/auth/send-otp`).
-* **Email Delivery**: Sends OTP verification codes directly to registered user email addresses via Gmail SMTP TLS connection.
-* **Secure Token Handling**: Verifies 6-digit OTP code before granting 15-minute single-use password update tokens (`POST /api/auth/verify-otp`).
+### 🔷 Milestone 2: UEBA Machine Learning Engine & Behavioral Baselines
+* 🧠 **Unsupervised Machine Learning Model (`IsolationForest`)**:
+  * Trains on multi-dimensional telemetry vectors to compute continuous anomaly scores (`0.0` to `1.0`).
+  * Identifies statistical outliers, off-hours spikes, and anomalous data access patterns.
+* 📊 **Behavioral Baselines**:
+  * Tracks historical metric averages for every employee:
+    * Average Daily Logins
+    * Average Daily Downloads / Uploads (MB)
+    * USB Removable Storage Mount Frequency
+    * Night & Off-Hours Activity Ratio (`0.0` to `1.0`)
+* 🏢 **Department Peer Benchmarking**:
+  * Evaluates individual activity metrics against department peer averages to detect unauthorized privilege abuse.
 
 ---
 
-### 4. 🛡️ Threat Investigations Module (SOC Case Management)
-* **Automated Case Generation**: Auto-creates open threat investigation case files for high-risk personnel.
-* **Interactive Timelines & Evidence Logs**: Render chronologically ordered telemetry events, suspicious IP addresses, and command executions.
-* **Analyst Workflows**: Support case status updates (`Open`, `In Progress`, `Resolved`, `Closed`), severity toggles, and analyst assignment.
-
----
-
-### 5. 🔔 Automated Security Alert Management Queue
-* **Alert Severity Classification**: Categorizes alerts into `Informational`, `Low`, `Medium`, `High`, and `Critical`.
-* **Interactive Filters & Assignments**: Filter alerts by severity/status and assign SOC analysts in 1 click.
-
----
-
-### 6. 📈 Interactive Pure SVG Chart Library
-* **Zero External Chart Dependencies**: Built custom SVG `PieChartComponent`, `DonutChartComponent`, and `BarChartComponent` in [`Charts.jsx`](frontend/src/components/Charts.jsx).
-* **Interactive Tooltips & Legends**: Dynamic hover effects for Department UEBA risk averages and anomaly severity distributions.
-
----
-
-### 7. 📁 CMU CERT Insider Threat Real Dataset Integration
-* **1,250 Real Telemetry Entries**: Extracted across 5 activity log vectors (`logon.csv`, `device.csv`, `file.csv`, `email.csv`, `http.csv`).
-* **708 Monitored Personnel Profiles**: Synchronized CMU CERT user handles into system database with full pagination and risk breakdown cards.
+### 🔷 Milestone 3: Insider Risk Scoring Engine, Threat Case Management & Automated Alerts
+* 📊 **35-25-20-10-10 Weighted Risk Scoring Engine**:
+  * Dynamically computes total risk score (`0.0` to `100.0%`) using weighted criteria:
+    * 🧠 **Behavioral Anomalies (35%)**: IsolationForest anomaly density & baseline deviations.
+    * 🔑 **Privilege Misuse (25%)**: Shadow file access, command execution keywords (`/etc/shadow`, `sudo su - root`).
+    * 💾 **Data Access Violations (20%)**: Bulk file downloads, PII exports, payroll file access.
+    * ⏰ **Access Pattern Deviations (10%)**: Off-hours logon ratios & night activity bursts.
+    * 📜 **Historical Security Events (10%)**: Prior security policy breaches & USB mounting telemetry.
+  * Risk Levels: `Low Risk` (0-25%), `Medium Risk` (25-50%), `High Risk` (50-75%), `Critical Risk` (75-100%).
+* 🛡️ **Threat Investigations Case Management Module**:
+  * Auto-creates open SOC threat investigation cases for high-risk personnel.
+  * Interactive case timelines, evidence payloads, command history, and analyst status workflows (`Open`, `In Progress`, `Resolved`, `Closed`).
+* 🔔 **Automated Security Alert Management Queue**:
+  * Alert severity classification (`Informational`, `Low`, `Medium`, `High`, `Critical`).
+  * Interactive filters and 1-click SOC analyst assignment modal.
+* 📧 **Automated Critical Risk Email Notifications (Score ≥ 75.0%)**:
+  * Automatically dispatches rich HTML email alerts to the Administrator (`ADMIN_EMAIL`) whenever an employee's Risk Score reaches **≥ 75.0%**. Includes detailed incident descriptions and recommended SOC actions.
+* 🔐 **6-Digit OTP Password Reset Flow**:
+  * Secure 2-step password reset workflow requiring a 6-digit numeric OTP code (`POST /api/auth/send-otp` and `POST /api/auth/verify-otp`).
+* 📈 **Interactive Pure SVG Chart Component Library**:
+  * Custom interactive SVG Pie Charts, Donut Graphs, and Bar Charts with hover tooltips and dynamic legends.
 
 ---
 
@@ -79,26 +79,17 @@
 
 ---
 
-## ⚙️ Environment Setup & Installation Guide
+## ⚙️ Environment Setup & Running Locally
 
 ### Prerequisites
 * **Python**: `3.10` or higher
 * **Node.js**: `v18.0.0` or higher
-* **npm**: `v9.0.0` or higher
 
 ---
 
-### Step 1: Clone Repository
-```bash
-git clone https://github.com/your-username/insider-threat-system.git
-cd insider-threat-system
-```
+### Backend Setup
 
----
-
-### Step 2: Backend Setup & Configuration
-
-1. Navigate to `backend` directory:
+1. Open terminal and navigate to `backend`:
    ```bash
    cd backend
    ```
@@ -106,10 +97,8 @@ cd insider-threat-system
 2. Create virtual environment & activate:
    ```bash
    python -m venv venv
-   # On Windows PowerShell:
+   # PowerShell:
    .\venv\Scripts\activate
-   # On Linux/macOS:
-   source venv/bin/activate
    ```
 
 3. Install backend dependencies:
@@ -117,13 +106,7 @@ cd insider-threat-system
    pip install -r requirements.txt
    ```
 
-4. Create `.env` configuration file:
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-
-   Update `.env` with your settings:
+4. Configure `.env` file (copied from `.env.example`):
    ```env
    SECRET_KEY=insider_threat_behavioral_intelligence_system_secret_key_2026
    ALGORITHM=HS256
@@ -138,63 +121,33 @@ cd insider-threat-system
    ADMIN_EMAIL=your-email@gmail.com
    ```
 
-5. Run Backend Server:
+5. Start Backend Server:
    ```bash
    uvicorn app.main:app --port 8000 --reload
    ```
-   FastAPI Swagger API Documentation will be available at: **`http://localhost:8000/docs`**
+   FastAPI Documentation: **`http://localhost:8000/docs`**
 
 ---
 
-### Step 3: Frontend Setup
+### Frontend Setup
 
-1. Open a new terminal and navigate to `frontend` directory:
+1. Open terminal and navigate to `frontend`:
    ```bash
    cd frontend
    ```
 
-2. Install Node.js dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Run Frontend Development Server:
+3. Start Development Server:
    ```bash
    npm run dev -- --port 3000
    ```
-   Application UI will be available at: **`http://localhost:3000`**
-
----
-
-## 🔐 Security & Git Hygiene (`.gitignore`)
-
-The project `.gitignore` is configured to prevent committing secret keys, API credentials, or local environment files:
-
-* ✅ `.env` and `backend/.env` are strictly excluded from git tracking.
-* ✅ Virtual environments (`venv/`, `node_modules/`) are excluded.
-* ✅ SQLite databases (`insider_threat.db`) and large dataset archives (`archive.zip`) are excluded.
-
----
-
-## 📤 How to Push Milestone 3 to Your GitHub Branch
-
-Follow these clean steps to push your completed Milestone 3 work to your GitHub branch:
-
-```bash
-# 1. Check repository status
-git status
-
-# 2. Stage all updated source files
-git add .
-
-# 3. Commit Milestone 3 release
-git commit -m "feat(milestone-3): Complete Weighted Risk Engine, Threat Investigations, Alert Queue, OTP Reset & Critical Risk Email Alerts"
-
-# 4. Push to your GitHub branch
-git push origin your-branch-name
-```
+   Application UI: **`http://localhost:3000`**
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the MIT License.
