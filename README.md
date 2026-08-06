@@ -131,6 +131,46 @@ In addition to vector detection, the system aggregates threat signals into an ov
 
 ---
 
+## Real Google OAuth 2.0 Configuration
+To enable the actual, live Google Sign-In:
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a project and search for **APIs & Services > Credentials**.
+3. Configure the **OAuth Consent Screen** (choose External, enter application information).
+4. Click **Create Credentials > OAuth Client ID** and choose **Web Application**.
+5. Under **Authorized redirect URIs**, enter exactly:
+   - `http://localhost:8000/api/auth/oauth2/google/callback`
+6. Click Save, then copy the **Client ID** and **Client Secret** into your `.env` file.
+7. Restart the FastAPI server.
+
+*Note: If no client credentials are set in `.env`, the platform automatically uses a secure OAuth simulator that maps to a mock user `google.demo@itbis.com` for local developer testing.*
+
+---
+
+## Gmail SMTP Email Notifications Configuration
+
+To enable real-time email alert notifications using Gmail SMTP:
+
+1. Sign in to the Google account that will be used to send security alert emails (e.g., `itbis.alerts@gmail.com`).
+2. Navigate to **Google Account > Security** and enable **2-Step Verification**.
+3. After enabling 2-Step Verification, open **Security > App passwords**.
+4. Under **Select app**, choose **Mail**, then under **Select device**, choose **Other (Custom name)** and enter a name such as `ITBIS SMTP`.
+5. Click **Generate** and copy the generated **16-character App Password**.
+6. Update the SMTP configuration in your `.env` file:
+   ```ini
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=itbis.alerts@gmail.com
+   SMTP_PASSWORD=your-16-character-app-password
+   EMAILS_FROM_EMAIL=itbis.alerts@gmail.com
+   EMAIL_NOTIFICATIONS_ENABLED=True
+   ```
+7. Save the `.env` file and restart the FastAPI server.
+8. Generate a **Medium**, **High**, or **Critical** anomaly to verify that HTML email notifications are successfully delivered.
+
+> **Note:** Gmail does **not** allow the use of your normal account password for SMTP authentication. You must use a Google **App Password** generated after enabling **2-Step Verification**. Never commit your App Password or `.env` file to version control.
+
+---
+
 ## Database Initialization & Dataset Ingestion
 
 1. **Create Database in MySQL**:
@@ -179,15 +219,20 @@ In addition to vector detection, the system aggregates threat signals into an ov
 ---
 
 ### Milestone 2: Behavioral Analytics & Anomaly Detection (Completed)
+- ### Completed Features:
+  1. **Behavioral Profiler Engine**: Aggregates event histories per employee across logons, device connect, file touch, email sizes, and web categories to store statistical averages and ratios in the `EmployeeBaseline` database model.
+  2. **Anomaly Detection Workflows**: Uses standard deviation thresholding ($Z$-score $> 3$) and relative frequency probability rules to evaluate activity logs against established baselines.
+  3. **Threat Detection Models**:
+      - *Unusual Login Time* (logons outside standard schedule for users with low historical after-hours ratios).
+      - *Unauthorized Access Attempts* (accessing workstations outside of common baseline whitelists).
+      - *Suspicious Device Connects* (USB interactions occurring after-hours/weekends).
+      - *Abnormal Data Downloads* (daily file actions exceeding standard deviation boundaries).
+      - *Exfiltration Indicators* (visits to leak sites like WikiLeaks, large external email attachments, and cloud storage spikes).
+  4. **Executive Reporting**: Aggregates anomalies by severity, pinpoints high-risk employees, and highlights target departments in serialized reports, with support for exporting both JSON and styled PDF summaries directly from the dashboard.
+  5. **Interactive UI Tabs**: Integrates dedicated tabs for *Overview KPIs* (filtering out dummy users on start), *Threat Alerts* (allowing status resolution updates), *Behavioral Baselines* (generating comparison charts via Chart.js), and *Executive Reports* (manually triggering threat scans and downloading reports in JSON and PDF formats).
 - **Behavioral Profiler Engine**:
   - Computes 30-day statistical baselines per employee (`EmployeeBaseline` model).
   - Tracks average daily logons, after-hours logon ratios, weekend logons, daily USB connections, daily file touches, daily emails sent, and cloud upload ratios.
-- **Anomaly Detection Models (5 Categories)**:
-  - *Unusual Login Time*: Off-hours/weekend logons for users with low historical after-hours ratios.
-  - *Unauthorized Access Attempts*: Logons to workstations outside common profile whitelists.
-  - *Suspicious Device Usage*: USB storage connections occurring after-hours or by non-USB users.
-  - *Abnormal Data Download*: Daily file action volume exceeding 3x standard deviation ($Z\text{-score} > 3.0$).
-  - *Exfiltration Indicators*: Classified leak site visits (WikiLeaks), large external email attachments ($>50\text{ MB}$), and cloud upload spikes.
 
 ---
 
