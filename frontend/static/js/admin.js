@@ -199,9 +199,17 @@ function renderUsersTable() {
                 </td>
                 <td class="py-3 px-4 font-mono font-medium text-slate-400">${dateStr}</td>
                 <td class="py-3 px-4 text-right">
-                    <button onclick="toggleUserStatus(${user.id})" class="px-2.5 py-1 text-[10px] font-bold rounded-lg border transition-all ${user.is_active ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100'}">
-                        ${user.is_active ? 'Deactivate' : 'Activate'}
-                    </button>
+                    <div class="flex items-center justify-end gap-1.5">
+                        <button onclick="sendTestEmailToUser('${user.email}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-600 hover:text-white transition-all">
+                            📧 Send Email Alert
+                        </button>
+                        <button onclick="openEditUserModal(${user.id}, '${user.email}', '${user.full_name}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-all">
+                            ✏️ Edit Email
+                        </button>
+                        <button onclick="toggleUserStatus(${user.id})" class="px-2 py-1 text-[10px] font-bold rounded-lg border transition-all ${user.is_active ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100'}">
+                            ${user.is_active ? 'Deactivate' : 'Activate'}
+                        </button>
+                    </div>
                 </td>
             </tr>
         `;
@@ -331,6 +339,71 @@ if (addUserForm) {
             showToast('System user created successfully!', 'success');
             closeAddUserModal();
             await loadUsers(); // Refresh table listing
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    };
+}
+
+// --- Send Test Email Handler ---
+async function sendTestEmailToUser(email) {
+    try {
+        showToast(`Sending security alert email to ${email}...`, 'info');
+        const res = await apiFetch(`/api/notifications/test-email?target_email=${encodeURIComponent(email)}`, {
+            method: 'POST'
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || 'Failed to dispatch email');
+        }
+
+        const data = await res.json();
+        showToast(`📧 Email alert successfully delivered to ${email}!`, 'success');
+    } catch (err) {
+        showToast(err.message, 'error');
+    }
+}
+
+// --- Edit User Email Modal Handlers ---
+let editingUserId = null;
+
+function openEditUserModal(userId, currentEmail, fullName) {
+    editingUserId = userId;
+    document.getElementById('edit-user-modal').classList.remove('hidden');
+    document.getElementById('edit-user-fullname').value = fullName;
+    document.getElementById('edit-user-email').value = currentEmail;
+    document.getElementById('edit-user-email').focus();
+}
+
+function closeEditUserModal() {
+    document.getElementById('edit-user-modal').classList.add('hidden');
+    editingUserId = null;
+}
+
+const editUserForm = document.getElementById('edit-user-form');
+if (editUserForm) {
+    editUserForm.onsubmit = async (e) => {
+        e.preventDefault();
+        if (!editingUserId) return;
+
+        const email = document.getElementById('edit-user-email').value.trim();
+        const full_name = document.getElementById('edit-user-fullname').value.trim();
+
+        try {
+            const res = await apiFetch(`/api/users/${editingUserId}`, {
+                method: 'PUT',
+                body: JSON.stringify({ email, full_name })
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.detail || 'Failed to update user email');
+            }
+
+            showToast('User email address updated successfully!', 'success');
+            closeEditUserModal();
+            await loadUsers();
         } catch (err) {
             showToast(err.message, 'error');
         }

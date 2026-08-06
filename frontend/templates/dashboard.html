@@ -75,10 +75,36 @@
                 <p class="text-xs text-slate-400" id="header-subtitle">Real-time threat feeds & behavioral anomalies</p>
             </div>
             <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span class="text-xs font-medium text-slate-500">Live feed active</span>
+                <!-- Role Dashboard Perspective Switcher (Module 10) -->
+                <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">Role View:</span>
+                    <select id="role-dashboard-selector" onchange="switchRoleDashboard(this.value)" class="bg-white text-xs font-bold text-slate-700 px-2 py-1 rounded border border-slate-200 focus:outline-none">
+                        <option value="security_analyst">Security Analyst</option>
+                        <option value="soc_engineer">SOC Engineer</option>
+                        <option value="security_manager">Security Manager</option>
+                        <option value="administrator">Administrator</option>
+                    </select>
                 </div>
+
+                <!-- Notification Bell & Drawer (Module 11) -->
+                <div class="relative">
+                    <button onclick="toggleNotificationDrawer()" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 text-sm relative transition-all">
+                        🔔
+                        <span id="notif-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white font-bold text-[9px] rounded-full flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Notifications Dropdown Drawer -->
+                    <div id="notification-drawer" class="hidden absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-4 animate-fade-in">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+                            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">System Notifications</h4>
+                            <span id="notif-count-text" class="text-[10px] font-semibold text-slate-400">0 unread</span>
+                        </div>
+                        <div id="notifications-list" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+                            <div class="text-center text-xs text-slate-400 py-4">No notifications</div>
+                        </div>
+                    </div>
+                </div>
+
                 <button onclick="logout()" class="px-3.5 py-1.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5">
                     ⏻ Log Out
                 </button>
@@ -355,6 +381,7 @@
                                     <th class="py-3 px-4">Severity</th>
                                     <th class="py-3 px-4">Description</th>
                                     <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="anomalies-table-body" class="divide-y divide-slate-100 text-slate-600">

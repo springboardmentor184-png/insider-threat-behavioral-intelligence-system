@@ -3,6 +3,7 @@ import sys
 from backend.core.database import AsyncSessionLocal, engine
 from backend.services.behavioral_profiler import BehavioralProfilerService
 from backend.services.anomaly_detector import AnomalyDetectorService
+from backend.services.risk_scorer import RiskScorerService
 from backend.services.report_generator import ReportGeneratorService
 
 async def train_and_scan():
@@ -15,14 +16,14 @@ async def train_and_scan():
     print("=" * 60)
     
     async with AsyncSessionLocal() as db:
-        print("[1/3] Training Behavioral Profiler...")
+        print("[1/4] Training Behavioral Profiler...")
         print("      - Aggregating historical logs for logon, devices, files, emails, and web traffic.")
         print("      - Calculating daily means, standard deviations, and activity ratios...")
         
         baselines_computed = await BehavioralProfilerService.compute_all_baselines(db)
         print(f"[*] Completed. Trained baselines for {baselines_computed} employees.")
         
-        print("\n[2/3] Executing Anomaly Detection Models...")
+        print("\n[2/4] Executing Anomaly Detection Models...")
         print("      - Running statistical outlier rules (Z-score > 3)...")
         print("      - Applying relative frequency logon hour probability models...")
         print("      - Checking security pattern signatures and whitelists...")
@@ -30,7 +31,12 @@ async def train_and_scan():
         anomalies_detected = await AnomalyDetectorService.analyze_all_employees(db)
         print(f"[*] Completed. Detected and logged {anomalies_detected} behavioral anomalies.")
         
-        print("\n[3/3] Generating Executive Threat Report...")
+        print("\n[3/4] Computing 5-Factor Weighted Risk Scores...")
+        print("      - Evaluating 35% Anomalies, 25% Privilege Misuse, 20% Data Access, 10% Patterns, 10% History...")
+        scores_updated = await RiskScorerService.compute_all_risk_scores(db)
+        print(f"[*] Completed. Computed weighted risk scores for {scores_updated} employees.")
+
+        print("\n[4/4] Generating Executive Threat Report...")
         report = await ReportGeneratorService.generate_report(db)
         print(f"[*] Completed. Saved Report #{report.id}: '{report.title}'")
         

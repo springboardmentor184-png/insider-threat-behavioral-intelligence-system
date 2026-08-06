@@ -20,6 +20,14 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_SECRET: str = ""
     GOOGLE_REDIRECT_URI: str = "http://localhost:8000/api/auth/oauth2/google/callback"
 
+    # SMTP Email Settings
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = "itbis.alerts@gmail.com"
+    SMTP_PASSWORD: str = "sgnj amoo shti hxnv"
+    EMAILS_FROM_EMAIL: str = "itbis.alerts@gmail.com"
+    EMAIL_NOTIFICATIONS_ENABLED: bool = True
+
     class Config:
         env_file = ".env"
         extra = "allow"

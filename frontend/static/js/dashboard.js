@@ -14,21 +14,33 @@ const ROLE_LABELS = {
 const ROLE_NAV_ITEMS = {
     security_analyst: [
         { icon: '📊', label: 'Dashboard', href: '/dashboard' },
+        { icon: '🔍', label: 'Investigations', href: '/investigation' },
+        { icon: '📈', label: 'UEBA Analytics', href: '/ueba' },
+        { icon: '📑', label: 'Reports & Export', href: '/reports' },
         { icon: '📋', label: 'Activity Logs', href: '/logs' },
         { icon: '👤', label: 'My Profile', href: '/profile' },
     ],
     soc_engineer: [
         { icon: '📊', label: 'Dashboard', href: '/dashboard' },
+        { icon: '🔍', label: 'Investigations', href: '/investigation' },
+        { icon: '📈', label: 'UEBA Analytics', href: '/ueba' },
+        { icon: '📑', label: 'Reports & Export', href: '/reports' },
         { icon: '📋', label: 'Activity Logs', href: '/logs' },
         { icon: '👤', label: 'My Profile', href: '/profile' },
     ],
     security_manager: [
         { icon: '📊', label: 'Dashboard', href: '/dashboard' },
+        { icon: '🔍', label: 'Investigations', href: '/investigation' },
+        { icon: '📈', label: 'UEBA Analytics', href: '/ueba' },
+        { icon: '📑', label: 'Reports & Export', href: '/reports' },
         { icon: '📋', label: 'Activity Logs', href: '/logs' },
         { icon: '👤', label: 'My Profile', href: '/profile' },
     ],
     administrator: [
         { icon: '📊', label: 'Dashboard', href: '/dashboard' },
+        { icon: '🔍', label: 'Investigations', href: '/investigation' },
+        { icon: '📈', label: 'UEBA Analytics', href: '/ueba' },
+        { icon: '📑', label: 'Reports & Export', href: '/reports' },
         { icon: '📋', label: 'Activity Logs', href: '/logs' },
         { icon: '👥', label: 'User Management', href: '/admin/users' },
         { icon: '👤', label: 'My Profile', href: '/profile' },
@@ -59,6 +71,8 @@ async function initDashboard() {
         await loadStats();
         await loadCharts();
         await loadLogs();
+        await loadNotifications();
+        startNotificationPolling();
     } catch (err) {
         showToast('Error initializing dashboard: ' + err.message, 'error');
     }
@@ -504,6 +518,11 @@ async function loadAnomalies() {
                         <option value="Dismissed" ${anom.status === 'Dismissed' ? 'selected' : ''}>Dismissed</option>
                     </select>
                 </td>
+                <td class="py-3 px-4 text-right">
+                    <button onclick="emailFullEmployeeReport('${anom.employee_id}')" class="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-600 hover:text-white transition-all shadow-sm inline-flex items-center gap-1">
+                        📧 Email Full Report
+                    </button>
+                </td>
             </tr>
         `).join('');
 
@@ -511,7 +530,25 @@ async function loadAnomalies() {
         document.getElementById('btn-anom-next').disabled = data.data.length < anomalyLimit;
         paginationStatus.textContent = `Showing page ${anomalyPage}`;
     } catch (err) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-red-500 font-semibold">${err.message}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="8" class="py-4 text-center text-red-500 font-semibold">${err.message}</td></tr>`;
+    }
+}
+
+async function emailFullEmployeeReport(employeeId) {
+    try {
+        const cleanId = employeeId.replace('EMP-', '').trim();
+        showToast(`Sending full individual anomaly report for EMP-${cleanId}...`, 'info');
+        const res = await apiFetch(`/api/reports/export/email-employee-report/${cleanId}`, {
+            method: 'POST'
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || 'Failed to dispatch report email');
+        }
+        const data = await res.json();
+        showToast(`📧 Full anomaly report for EMP-${cleanId} successfully emailed to manager!`, 'success');
+    } catch (err) {
+        showToast(err.message, 'error');
     }
 }
 
@@ -686,10 +723,13 @@ async function loadReports() {
                 <td class="py-3 px-3 text-center text-red-600 font-bold">${r.critical_threat_count}</td>
                 <td class="py-3 px-3 text-right">
                     <div class="flex justify-end gap-1.5">
-                        <button onclick="downloadReport(${r.id})" class="px-2.5 py-1 bg-slate-100 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 rounded text-[11px] font-semibold transition-all">
+                        <button onclick="downloadReport(${r.id})" class="px-2.5 py-1 bg-slate-100 border border-slate-200 hover:bg-slate-200 hover:text-slate-800 rounded text-[11px] font-semibold transition-all">
                             📥 JSON
                         </button>
-                        <button onclick="downloadReportPDF(${r.id})" class="px-2.5 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 rounded text-[11px] font-bold transition-all">
+                        <button onclick="exportExcel('insider_threat')" class="px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded text-[11px] font-bold transition-all">
+                            📊 Excel
+                        </button>
+                        <button onclick="downloadReportPDF(${r.id})" class="px-2.5 py-1 bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-600 hover:text-white rounded text-[11px] font-bold transition-all">
                             📄 PDF
                         </button>
                     </div>
@@ -909,6 +949,151 @@ async function triggerDetectionScan() {
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
+    }
+}
+
+// --- Module 10: Role Dashboard Switcher ---
+function switchRoleDashboard(role) {
+    const titleEl = document.getElementById('header-title');
+    const subtitleEl = document.getElementById('header-subtitle');
+
+    const roleTitles = {
+        security_analyst: { title: 'Security Analyst Dashboard', sub: 'Real-time threat feeds, investigation queue & behavioral risk scores' },
+        soc_engineer: { title: 'SOC Operations Dashboard', sub: 'Real-time security log streaming, anomaly events & SOC threat intelligence' },
+        security_manager: { title: 'Security Manager Dashboard', sub: 'Enterprise risk posture, departmental trends & compliance metrics' },
+        administrator: { title: 'Administrator Dashboard', sub: 'Platform analytics, system monitoring & user access control' }
+    };
+
+    const target = roleTitles[role] || roleTitles.security_analyst;
+    if (titleEl) titleEl.textContent = target.title;
+    if (subtitleEl) subtitleEl.textContent = target.sub;
+
+    showToast(`Switched perspective to ${role.replace('_', ' ').toUpperCase()}`, 'info');
+}
+
+// --- Module 11: Notification Center ---
+async function toggleNotificationDrawer() {
+    const drawer = document.getElementById('notification-drawer');
+    if (!drawer) return;
+
+    if (drawer.classList.contains('hidden')) {
+        drawer.classList.remove('hidden');
+        await loadNotifications();
+    } else {
+        drawer.classList.add('hidden');
+    }
+}
+
+async function loadNotifications() {
+    const list = document.getElementById('notifications-list');
+    const badge = document.getElementById('notif-badge');
+    const countText = document.getElementById('notif-count-text');
+
+    try {
+        const res = await apiFetch('/api/notifications/');
+        if (!res.ok) return;
+        const result = await res.json();
+
+        if (badge) {
+            if (result.unread_count > 0) {
+                badge.textContent = result.unread_count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        if (countText) countText.textContent = `${result.unread_count} unread`;
+
+        if (!list) return;
+
+        if (result.data.length === 0) {
+            list.innerHTML = `<div class="text-center text-xs text-slate-400 py-4">No notifications</div>`;
+            return;
+        }
+
+        const catColors = {
+            'Threat Alert': 'text-red-600 bg-red-50 border-red-100',
+            'Investigation': 'text-indigo-600 bg-indigo-50 border-indigo-100',
+            'Escalation': 'text-orange-600 bg-orange-50 border-orange-100',
+            'System': 'text-slate-600 bg-slate-50 border-slate-100'
+        };
+
+        list.innerHTML = result.data.map(n => `
+            <div onclick="markNotificationRead(${n.id})" class="p-2.5 rounded-lg border hover:bg-slate-50 cursor-pointer transition-all ${n.is_read ? 'bg-white opacity-70 border-slate-100' : 'bg-indigo-50/20 border-indigo-100'}">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${catColors[n.category] || 'bg-slate-100'}">${n.category}</span>
+                    <span class="text-[9px] text-slate-400 font-mono">${new Date(n.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                </div>
+                <div class="text-xs font-bold text-slate-800 line-clamp-1">${n.title}</div>
+                <div class="text-[11px] text-slate-500 line-clamp-2 mt-0.5">${n.message}</div>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error('Failed to load notifications:', err);
+    }
+}
+
+async function markNotificationRead(notifId) {
+    try {
+        await apiFetch(`/api/notifications/${notifId}/read`, { method: 'PATCH' });
+        await loadNotifications();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// --- Real-time Notification Polling ---
+let notificationPollInterval = null;
+let lastUnreadCount = -1;
+
+function startNotificationPolling() {
+    if (notificationPollInterval) clearInterval(notificationPollInterval);
+    notificationPollInterval = setInterval(async () => {
+        try {
+            const res = await apiFetch('/api/notifications/');
+            if (!res.ok) return;
+            const result = await res.json();
+            if (lastUnreadCount !== -1 && result.unread_count > lastUnreadCount) {
+                const latest = result.data[0];
+                if (latest) {
+                    showToast(`🔔 [${latest.category}] ${latest.title}`, 'info');
+                }
+            }
+            lastUnreadCount = result.unread_count;
+            const badge = document.getElementById('notif-badge');
+            if (badge) {
+                if (result.unread_count > 0) {
+                    badge.textContent = result.unread_count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        } catch (err) {
+            // silent catch
+        }
+    }, 10000);
+}
+
+// Global export helper for dashboard tab
+async function exportExcel(category) {
+    try {
+        showToast(`Preparing Excel workbook for ${category.replace('_', ' ')}...`, 'info');
+        const url = `/api/reports/export/excel?category=${category}`;
+        const res = await apiFetch(url);
+        if (!res.ok) throw new Error('Failed to generate Excel report');
+        const blob = await res.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = `itbis_${category}_report.xlsx`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        showToast('Excel report downloaded successfully!', 'success');
+    } catch (err) {
+        showToast(err.message, 'error');
     }
 }
 

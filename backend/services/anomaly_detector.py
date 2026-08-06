@@ -47,6 +47,19 @@ class AnomalyDetectorService:
         existing_anomalies = (await db.execute(existing_stmt)).scalars().all()
         existing_keys = {(a.timestamp, a.category) for a in existing_anomalies}
 
+        # Fetch target employee info for alert context with robust ID matching
+        clean_id = employee_id.replace("EMP-", "").strip()
+        emp_stmt = select(Employee).where((Employee.employee_id == employee_id) | (Employee.employee_id == clean_id))
+        emp_obj = (await db.execute(emp_stmt)).scalar_one_or_none()
+        if emp_obj:
+            emp_name = emp_obj.full_name
+            emp_dept = emp_obj.department or "General"
+            display_emp_id = emp_obj.employee_id
+        else:
+            emp_name = f"Employee {clean_id}"
+            emp_dept = "General"
+            display_emp_id = clean_id
+
         async def add_anomaly(ts: datetime, cat: str, sev: str, desc: str, pc_val: str, details_dict: dict):
             nonlocal anomalies_count
             # Clean timestamp to remove timezone info for comparison with DB
@@ -69,6 +82,63 @@ class AnomalyDetectorService:
             db.add(anomaly)
             existing_keys.add(key)
             anomalies_count += 1
+
+            # Dispatch Realtime Monitoring Notification & Email Alert to Administrators & Security Managers
+            if sev in ("Critical", "High", "Medium"):
+                from backend.services.notification_service import NotificationService
+                from backend.services.email_service import EmailService
+                from backend.models.user import User
+                from backend.models.enums import UserRole
+                from backend.models.dataset import Incident
+                from backend.services.investigation_service import InvestigationService
+
+                # Ensure an Investigation Incident Case exists for this employee
+                inc_stmt = select(Incident).where(
+                    (Incident.employee_id.in_([employee_id, display_emp_id, clean_id])) & 
+                    (Incident.status.in_(["Open", "Under Investigation"]))
+                )
+                existing_inc = (await db.execute(inc_stmt)).scalar_one_or_none()
+                if not existing_inc:
+                    try:
+                        await InvestigationService.create_incident(
+                            db,
+                            employee_id=display_emp_id,
+                            title=f"Behavioral Anomaly Alert: {cat}",
+                            description=f"Auto-generated threat investigation case for {emp_name} (EMP-{display_emp_id}) due to {sev} severity anomaly pattern.",
+                            severity=sev,
+                            created_by="ITBIS Threat Engine",
+                            assigned_analyst="Unassigned"
+                        )
+                    except Exception as inc_err:
+                        print(f"[INVESTIGATION AUTO-CREATE WARNING] {inc_err}")
+
+                # Query admin and security manager emails
+                recip_stmt = select(User.email).where(User.role.in_([UserRole.ADMINISTRATOR, UserRole.SECURITY_MANAGER]))
+                admin_emails = list((await db.execute(recip_stmt)).scalars().all())
+                if not admin_emails:
+                    admin_emails = ["admin@itbis.com", "manager@itbis.com"]
+
+                # In-app notification
+                await NotificationService.create_notification(
+                    db,
+                    user_email="all",
+                    title=f"Anomaly Alert [{sev.upper()}]: EMP-{display_emp_id} ({emp_name})",
+                    message=f"{desc} (Category: {cat}, Workstation: {pc_val})",
+                    category="Threat Alert"
+                )
+
+                # Real-time Email Security Alert with Technical Explanation
+                await EmailService.notify_threat_alert(
+                    recipients=admin_emails,
+                    employee_id=display_emp_id,
+                    anomaly_category=cat,
+                    severity=sev,
+                    details=desc,
+                    employee_name=emp_name,
+                    department=emp_dept,
+                    pc_val=pc_val,
+                    explanation=f"{desc}\n\nTechnical Parameters: {json.dumps(details_dict, indent=2)}"
+                )
 
         # ----------------------------------------------------
         # RULE 1: Logon Hours & Unauthorized PCs
@@ -265,15 +335,52 @@ class AnomalyDetectorService:
     @classmethod
     async def analyze_all_employees(cls, db: AsyncSession) -> int:
         """
-        Scan all active employees for anomalies. Returns total new anomalies.
+        Scan all active employees for anomalies and dispatch full individual anomaly report emails.
         """
+        from backend.services.email_service import EmailService
+        from backend.services.risk_scorer import RiskScorerService
+        from backend.models.user import User
+        from backend.models.enums import UserRole
+        from sqlalchemy import desc
+
         emp_stmt = select(Employee).where(Employee.is_active == True)
         employees = (await db.execute(emp_stmt)).scalars().all()
+
+        recip_stmt = select(User.email).where(User.role.in_([UserRole.ADMINISTRATOR, UserRole.SECURITY_MANAGER]))
+        mgr_emails = list((await db.execute(recip_stmt)).scalars().all())
+        if not mgr_emails:
+            mgr_emails = ["admin@itbis.com", "manager@itbis.com"]
 
         total = 0
         for emp in employees:
             new_anom = await cls.analyze_employee(db, emp.employee_id)
             total += new_anom
+            if new_anom > 0:
+                # Fetch full anomalies list for this specific employee
+                anom_stmt = select(BehavioralAnomaly).where(BehavioralAnomaly.employee_id == emp.employee_id).order_by(desc(BehavioralAnomaly.timestamp))
+                anomalies = (await db.execute(anom_stmt)).scalars().all()
+                anom_list = [
+                    {
+                        "category": a.category,
+                        "severity": a.severity,
+                        "description": a.description,
+                        "pc": a.pc or "N/A",
+                        "timestamp": a.timestamp.strftime("%Y-%m-%d %H:%M UTC")
+                    }
+                    for a in anomalies
+                ]
+                risk_cat = RiskScorerService.categorize_risk(emp.risk_score)
+
+                # Send Full Individual Employee Anomaly Report to Managers/Admins
+                await EmailService.send_employee_anomaly_report_email(
+                    recipients=mgr_emails,
+                    employee_id=emp.employee_id,
+                    employee_name=emp.full_name,
+                    department=emp.department or "General",
+                    risk_score=emp.risk_score,
+                    risk_category=risk_cat,
+                    anomalies=anom_list
+                )
         
         await db.commit()
         return total

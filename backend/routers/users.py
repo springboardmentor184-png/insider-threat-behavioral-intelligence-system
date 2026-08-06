@@ -72,6 +72,17 @@ async def get_user(
     return await get_user_by_id(db, user_id)
 
 
+@router.put("/{user_id}", response_model=UserResponse)
+async def update_user_by_admin(
+    user_id: int,
+    update_data: UserUpdate,
+    current_user: User = Depends(require_role(UserRole.ADMINISTRATOR)),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update any user profile (Administrator only)."""
+    return await update_user_profile(db, user_id, update_data)
+
+
 @router.put("/{user_id}/role", response_model=UserResponse)
 async def change_user_role(
     user_id: int,

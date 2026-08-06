@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITBIS Threat Investigation and Incident Management Portal">
+    <title>Threat Investigation — ITBIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: { 50: '#e0e7ff', 100: '#c7d2fe', 600: '#6366f1', 700: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30">
+        <div class="p-5 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-lg flex items-center justify-center text-lg shadow-sm">
+                    🛡️
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-800">ITBIS Platform</h2>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Threat Center</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1" id="sidebar-nav">
+            <!-- Populated by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs overflow-hidden" id="sidebar-avatar">
+                    U
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-semibold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
+                    <div class="text-[10px] text-slate-400 font-medium capitalize" id="sidebar-user-role">—</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 min-h-screen flex flex-col">
+        <!-- Top Header -->
+        <header class="h-16 border-b border-slate-200 bg-white sticky top-0 flex items-center justify-between px-8 z-20">
+            <div>
+                <h1 class="text-base font-bold text-slate-900">Threat Investigation Portal</h1>
+                <p class="text-xs text-slate-400">Incident case management, timeline correlation, and threat evidence collection</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="openCreateIncidentModal()" class="px-3.5 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1">
+                    ➕ New Investigation Case
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8 space-y-6 flex-1 max-w-[1400px] w-full mx-auto">
+            <!-- Grid Layout: Incidents List & Active Case Inspector -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left: Incident Cases Queue -->
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm lg:col-span-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-bold text-slate-800">Active Investigation Queue</h3>
+                        <span id="incidents-count-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">0 cases</span>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <select id="filter-inc-status" onchange="loadIncidents()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white font-semibold text-slate-600">
+                            <option value="">All Statuses</option>
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Escalated">Escalated</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                        <select id="filter-inc-severity" onchange="loadIncidents()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white font-semibold text-slate-600">
+                            <option value="">All Severities</option>
+                            <option value="Critical">Critical</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+
+                    <div id="incidents-list-container" class="space-y-2 overflow-y-auto max-h-[600px] pr-1">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Right: Selected Case Workspace (Timeline & Evidence) -->
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm lg:col-span-2 flex flex-col">
+                    <div id="no-case-selected" class="py-20 text-center text-slate-400">
+                        <div class="text-3xl mb-2">🔍</div>
+                        <h4 class="text-sm font-bold text-slate-700">No Incident Case Selected</h4>
+                        <p class="text-xs text-slate-400 mt-1">Select an investigation case from the queue or create a new case to correlate events.</p>
+                    </div>
+
+                    <div id="case-details-pane" class="hidden space-y-6">
+                        <!-- Case Header -->
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span id="case-inc-number" class="text-xs font-mono font-bold text-indigo-600">INC-2026-001</span>
+                                    <span id="case-severity-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-600">High</span>
+                                </div>
+                                <h3 id="case-title" class="text-base font-bold text-slate-900">Suspicious Data Transfer Investigation</h3>
+                                <p id="case-meta" class="text-xs text-slate-400 mt-0.5">Assigned to: analyst@itbis.com • Target User: EMP-CEL0561</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <select id="case-status-select" onchange="updateCaseStatus()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold bg-white">
+                                    <option value="Open">Status: Open</option>
+                                    <option value="In Progress">Status: In Progress</option>
+                                    <option value="Escalated">Status: Escalated</option>
+                                    <option value="Resolved">Status: Resolved</option>
+                                    <option value="Closed">Status: Closed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Case Description & Evidence Collector -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="border border-slate-100 rounded-xl p-4 bg-white">
+                                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Incident Description</h4>
+                                <p id="case-description-text" class="text-xs text-slate-600 leading-relaxed"></p>
+                            </div>
+                            <div class="border border-slate-100 rounded-xl p-4 bg-white flex flex-col justify-between">
+                                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Attach Evidence Note</h4>
+                                <textarea id="evidence-note-input" rows="2" class="w-full p-2 text-xs border border-slate-200 rounded-lg mb-2 focus:outline-none" placeholder="Add analyst notes or evidence details..."></textarea>
+                                <button onclick="submitEvidenceNote()" class="py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold self-end transition-all">
+                                    📌 Attach Note to Evidence
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Chronological Activity Timeline Correlation -->
+                        <div class="border border-slate-100 rounded-xl p-5 bg-white">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Correlated Activity Timeline</h4>
+                                <span class="text-[11px] text-slate-400">Streaming logon, device, file, email & web events</span>
+                            </div>
+
+                            <div id="case-activity-timeline" class="space-y-3 max-h-[350px] overflow-y-auto pr-2">
+                                <!-- Timeline items -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Incident Modal Overlay -->
+    <div id="create-incident-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md p-6 mx-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="text-sm font-bold text-slate-800">Create Investigation Incident Case</h3>
+                <button onclick="closeCreateIncidentModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+
+            <form id="create-incident-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Target Employee ID</label>
+                    <input type="text" id="inc-target-emp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs" placeholder="e.g. CEL0561, EHB0824" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Case Title</label>
+                    <input type="text" id="inc-title" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs" placeholder="e.g. Suspicious Cloud Exfiltration" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Severity Level</label>
+                    <select id="inc-severity" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white">
+                        <option value="Critical">Critical</option>
+                        <option value="High" selected>High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Description & Context</label>
+                    <textarea id="inc-description" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs" placeholder="Describe the behavior or anomaly pattern..." required></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+                    🚀 Create Investigation Case
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/investigation.js?v=1.0.2"></script>
+    <script>
+        initInvestigation();
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITBIS UEBA Intelligence & Peer Comparison Analytics">
+    <title>UEBA Intelligence — ITBIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: { 50: '#e0e7ff', 100: '#c7d2fe', 600: '#6366f1', 700: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30">
+        <div class="p-5 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-lg flex items-center justify-center text-lg shadow-sm">
+                    🛡️
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-800">ITBIS Platform</h2>
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Threat Center</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1" id="sidebar-nav">
+            <!-- Populated by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs overflow-hidden" id="sidebar-avatar">
+                    U
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-semibold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
+                    <div class="text-[10px] text-slate-400 font-medium capitalize" id="sidebar-user-role">—</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 min-h-screen flex flex-col">
+        <!-- Top Header -->
+        <header class="h-16 border-b border-slate-200 bg-white sticky top-0 flex items-center justify-between px-8 z-20">
+            <div>
+                <h1 class="text-base font-bold text-slate-900">UEBA Intelligence Engine</h1>
+                <p class="text-xs text-slate-400">User & Entity Behavior Analytics, Departmental Peer Group Comparisons, and Threat Predictions</p>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8 space-y-6 flex-1 max-w-[1400px] w-full mx-auto">
+            <!-- Top Controls: Employee Peer Comparison Lookup -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <h3 class="text-sm font-bold text-slate-800 mb-2">Department & Peer Group Benchmark Analysis</h3>
+                <p class="text-xs text-slate-400 mb-4">Compare individual employee behavioral baselines against department peer averages.</p>
+                
+                <div class="flex gap-3 max-w-md">
+                    <input type="text" id="ueba-emp-search" class="flex-1 px-3 py-1.5 text-xs border border-slate-200 rounded-lg bg-white" placeholder="Enter Employee ID (e.g. CEL0561, EHB0824)...">
+                    <button onclick="loadPeerComparison()" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold transition-all">Compare vs Peers</button>
+                </div>
+            </div>
+
+            <!-- Comparison Results Grid -->
+            <div id="peer-results-container" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Metrics Table -->
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4" id="peer-table-title">Employee vs. Department Average Metrics</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase tracking-wider font-semibold">
+                                        <th class="py-2.5 px-3">Behavior Metric</th>
+                                        <th class="py-2.5 px-3 text-center">Employee Value</th>
+                                        <th class="py-2.5 px-3 text-center">Peer Avg</th>
+                                        <th class="py-2.5 px-3 text-right">Deviation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="peer-metrics-body" class="divide-y divide-slate-100 font-medium">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Chart -->
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+                        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Peer Group Behavioral Comparison</h4>
+                        <div class="flex-1 min-h-[250px] relative">
+                            <canvas id="peerChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Threat Risk Predictions & Trajectory -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <h3 class="text-sm font-bold text-slate-800 mb-4">Predicted Insider Threat Trajectories</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-100 text-slate-400 uppercase tracking-wider font-semibold">
+                                <th class="py-3 px-4">Employee ID</th>
+                                <th class="py-3 px-4">Name</th>
+                                <th class="py-3 px-4">Department</th>
+                                <th class="py-3 px-4 text-center">Risk Score</th>
+                                <th class="py-3 px-4 text-center">Trajectory</th>
+                                <th class="py-3 px-4">Predicted Threat Context</th>
+                            </tr>
+                        </thead>
+                        <tbody id="predictions-table-body" class="divide-y divide-slate-100 text-slate-600 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/ueba.js"></script>
+</body>
+</html>

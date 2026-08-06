@@ -223,3 +223,44 @@ function redirectIfAuth() {
         window.location.href = '/dashboard';
     }
 }
+
+// --- Render Unified Sidebar Navigation ---
+function renderSidebar(user) {
+    const nav = document.getElementById('sidebar-nav');
+    const avatar = document.getElementById('sidebar-avatar');
+    const userName = document.getElementById('sidebar-user-name');
+    const userRole = document.getElementById('sidebar-user-role');
+
+    if (userName) userName.textContent = user.full_name || user.username || user.email;
+    if (userRole) userRole.textContent = (user.role || '').replace('_', ' ');
+    if (avatar) avatar.textContent = (user.full_name || user.email || 'U').charAt(0).toUpperCase();
+
+    if (!nav) return;
+
+    const currentPath = window.location.pathname;
+
+    const navItems = [
+        { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+        { path: '/investigation', label: 'Investigations', icon: '🔍' },
+        { path: '/ueba', label: 'UEBA Analytics', icon: '📈' },
+        { path: '/logs', label: 'Activity Logs', icon: '📄' },
+        { path: '/reports', label: 'Reports & Export', icon: '📑' },
+    ];
+
+    if (user.role === 'administrator') {
+        navItems.push({ path: '/admin/users', label: 'User Management', icon: '⚙️' });
+    }
+
+    nav.innerHTML = navItems.map(item => {
+        const isActive = currentPath === item.path;
+        const activeClass = isActive
+            ? 'bg-indigo-50 text-indigo-600 font-bold border-r-2 border-indigo-600'
+            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold';
+        return `
+            <a href="${item.path}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs transition-all ${activeClass}">
+                <span class="text-sm">${item.icon}</span>
+                <span>${item.label}</span>
+            </a>
+        `;
+    }).join('');
+}

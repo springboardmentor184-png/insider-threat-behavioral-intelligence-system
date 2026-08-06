@@ -50,3 +50,21 @@ async def logs_page(request: Request):
 async def verify_2fa_page(request: Request):
     """Serve the 2FA verification page."""
     return templates.TemplateResponse("verify-2fa.html", {"request": request})
+
+
+@router.get("/investigation", response_class=HTMLResponse)
+async def investigation_page(request: Request):
+    """Serve the threat investigation portal."""
+    return templates.TemplateResponse("investigation.html", {"request": request})
+
+
+@router.get("/ueba", response_class=HTMLResponse)
+async def ueba_page(request: Request):
+    """Serve the UEBA intelligence portal."""
+    return templates.TemplateResponse("ueba.html", {"request": request})
+
+
+@router.get("/reports", response_class=HTMLResponse)
+async def reports_page(request: Request):
+    """Serve the Reports & Export Hub."""
+    return templates.TemplateResponse("reports.html", {"request": request})

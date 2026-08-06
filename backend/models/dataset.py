@@ -36,6 +36,8 @@ class Employee(Base):
     http_logs = relationship("HttpEvent", back_populates="employee", cascade="all, delete-orphan")
     baseline = relationship("EmployeeBaseline", uselist=False, back_populates="employee", cascade="all, delete-orphan")
     anomalies = relationship("BehavioralAnomaly", back_populates="employee", cascade="all, delete-orphan")
+    risk_history = relationship("EmployeeRiskHistory", back_populates="employee", cascade="all, delete-orphan")
+    incidents = relationship("Incident", back_populates="employee", cascade="all, delete-orphan")
 
 
 class LogonEvent(Base):
@@ -157,3 +159,67 @@ class AnomalyReport(Base):
     critical_threat_count = Column(Integer, default=0, nullable=False)
     data = Column(Text, nullable=True)  # JSON serialized details
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+
+class EmployeeRiskHistory(Base):
+    __tablename__ = "employee_risk_history"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    employee_id = Column(String(50), ForeignKey("employees.employee_id", ondelete="CASCADE"), nullable=False, index=True)
+    risk_score = Column(Integer, nullable=False)
+    behavioral_score = Column(Float, default=0.0, nullable=False)
+    privilege_score = Column(Float, default=0.0, nullable=False)
+    data_access_score = Column(Float, default=0.0, nullable=False)
+    access_pattern_score = Column(Float, default=0.0, nullable=False)
+    historical_events_score = Column(Float, default=0.0, nullable=False)
+    risk_category = Column(String(50), nullable=False, index=True)  # Low, Medium, High, Critical
+    timestamp = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False, index=True)
+
+    employee = relationship("Employee", back_populates="risk_history")
+
+
+class Incident(Base):
+    __tablename__ = "incidents"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    incident_number = Column(String(50), unique=True, nullable=False, index=True)  # INC-2026-001
+    employee_id = Column(String(50), ForeignKey("employees.employee_id", ondelete="CASCADE"), nullable=False, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=False)
+    severity = Column(String(50), default="Medium", nullable=False, index=True)  # Informational, Low, Medium, High, Critical
+    status = Column(String(50), default="Open", nullable=False, index=True)  # Open, In Progress, Escalated, Resolved, Closed
+    assigned_analyst = Column(String(255), nullable=True)  # Email or name of analyst
+    created_by = Column(String(255), nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+
+    employee = relationship("Employee", back_populates="incidents")
+    evidence = relationship("IncidentEvidence", back_populates="incident", lazy="selectin", cascade="all, delete-orphan")
+
+
+class IncidentEvidence(Base):
+    __tablename__ = "incident_evidence"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    incident_id = Column(Integer, ForeignKey("incidents.id", ondelete="CASCADE"), nullable=False, index=True)
+    anomaly_id = Column(Integer, ForeignKey("behavioral_anomalies.id", ondelete="SET NULL"), nullable=True)
+    event_type = Column(String(50), nullable=True)  # Logon, Device, File, Email, Http, Note
+    event_id = Column(String(100), nullable=True)
+    note = Column(Text, nullable=False)
+    added_by = Column(String(255), nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    incident = relationship("Incident", back_populates="evidence")
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_email = Column(String(255), nullable=False, index=True)  # Recipient email or "all"
+    title = Column(String(255), nullable=False)
+    message = Column(Text, nullable=False)
+    category = Column(String(100), default="Threat Alert", nullable=False)  # Threat Alert, Investigation, Escalation, Compliance, System
+    is_read = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
