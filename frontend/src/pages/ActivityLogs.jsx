@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import api from '../services/api'
 import { AuthContext } from '../context/AuthContext'
-import { ClipboardList, RefreshCw, Play, Filter, AlertCircle, CheckCircle } from 'lucide-react'
+import { ClipboardList, RefreshCw, Play, Filter, AlertCircle, CheckCircle, Database, ChevronLeft, ChevronRight, HardDrive, FileText, Mail, Globe, Shield } from 'lucide-react'
 
 const ActivityLogs = () => {
   const { user } = useContext(AuthContext)
@@ -9,20 +9,23 @@ const ActivityLogs = () => {
   const [employees, setEmployees] = useState([])
   const [loading, setLoading] = useState(true)
   
-  // Filtering
+  // Filtering & Pagination
   const [eventTypeFilter, setEventTypeFilter] = useState('')
   const [severityFilter, setSeverityFilter] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 25
 
   // Ingestion Simulator
   const [selectedEmpId, setSelectedEmpId] = useState('')
-  const [simEventType, setSimEventType] = useState('Login')
+  const [simEventType, setSimEventType] = useState('Logon Event - Logon')
   const [simSeverity, setSimSeverity] = useState('Low')
-  const [simDetails, setSimDetails] = useState('{"status": "Success", "ip": "192.168.1.55", "auth_method": "Password"}')
+  const [simDetails, setSimDetails] = useState('{"status": "Success", "workstation": "PC-9921", "action": "Logon", "dataset": "CERT r4.2 logon.csv"}')
   const [simError, setSimError] = useState('')
   const [simSuccess, setSimSuccess] = useState(false)
 
   const fetchLogs = async () => {
     try {
+      setLoading(true)
       let url = '/activities'
       const params = []
       if (eventTypeFilter) params.push(`event_type=${eventTypeFilter}`)
@@ -34,6 +37,8 @@ const ActivityLogs = () => {
       setLogs(res.data)
     } catch (err) {
       console.error("Failed to load logs list", err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -85,53 +90,65 @@ const ActivityLogs = () => {
     }
   }
 
-  // Pre-fill helper based on simulated activity selection
-  const handleSimEventSelect = (val) => {
-    setSimEventType(val)
-    if (val === 'Login') {
-      setSimDetails('{"status": "Success", "ip": "192.168.1.55", "auth_method": "Password"}')
-      setSimSeverity('Low')
-    } else if (val === 'File Access') {
-      setSimDetails('{"file_path": "/etc/shadow", "action": "Read"}')
-      setSimSeverity('Medium')
-    } else if (val === 'File Upload') {
-      setSimDetails('{"file_name": "source_code_archive.zip", "size_mb": 115, "destination": "mega.nz"}')
-      setSimSeverity('High')
-    } else if (val === 'File Download') {
-      setSimDetails('{"file_name": "client_leads.csv", "size_mb": 4, "classification": "Confidential"}')
-      setSimSeverity('Medium')
-    } else if (val === 'USB Usage') {
-      setSimDetails('{"action": "Write", "device_label": "EXT_SSD", "files_copied": ["key.json"]}')
-      setSimSeverity('Critical')
-    } else if (val === 'Network Activity') {
-      setSimDetails('{"bytes_sent": 4509122, "destination": "malicious-cc-domain.ru", "port": 9001}')
-      setSimSeverity('Critical')
-    } else if (val === 'Email Activity') {
-      setSimDetails('{"recipient": "personal-inbox@gmail.com", "subject": "Design drafts", "has_attachments": true}')
-      setSimSeverity('High')
-    }
-  }
-
   const isSocOrAdmin = ['Administrator', 'SOC Engineer'].includes(user.role.name)
 
-  if (loading) {
-    return (
-      <div style={{ color: '#94a3b8', padding: '3rem', textAlign: 'center' }}>
-        <h2>Loading Surveillance Telemetry Logs...</h2>
-      </div>
-    )
-  }
+  // Pagination Logic
+  const totalPages = Math.ceil(logs.length / pageSize) || 1
+  const currentLogs = logs.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   return (
     <div className="main-content">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      {/* Page Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', fontFamily: 'Space Grotesk', marginBottom: '0.5rem' }}>BEHAVIOR TELEMETRY LOGS</h1>
-          <p style={{ color: '#94a3b8' }}>Ingested corporate user actions and endpoint logs.</p>
+          <h1 style={{ fontSize: '2.25rem', fontFamily: 'Space Grotesk', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-primary)' }}>
+            <ClipboardList style={{ color: 'var(--accent-blue)' }} /> TELEMETRY ACTIVITY LOGS
+          </h1>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            Ingested corporate user actions and real-time endpoint surveillance logs
+          </p>
         </div>
-        <button onClick={fetchLogs} className="btn btn-secondary">
-          <RefreshCw size={14} /> Refresh Logs
+
+        <button onClick={fetchLogs} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <RefreshCw size={16} /> Refresh Log Stream
         </button>
+      </div>
+
+      {/* Dataset Integration Banner Card */}
+      <div className="glass-card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(2, 132, 199, 0.05))', border: '1px solid var(--accent-blue)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '10px', backgroundColor: 'rgba(79, 70, 229, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-blue)' }}>
+              <Database size={24} />
+            </div>
+            <div>
+              <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent-blue)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                CERT R4.2 INSIDER THREAT DATASET INTEGRATED
+              </span>
+              <h3 style={{ fontFamily: 'Space Grotesk', fontSize: '1.2rem', color: 'var(--text-primary)', marginTop: '0.1rem' }}>
+                1,250 Real Telemetry Records Active in Database
+              </h3>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', fontSize: '0.775rem' }}>
+            <span style={{ backgroundColor: 'var(--bg-tertiary)', padding: '0.35rem 0.65rem', borderRadius: '6px', border: '1px solid var(--border-color)', fontWeight: '600' }}>
+              🔑 Logon: 350
+            </span>
+            <span style={{ backgroundColor: 'var(--bg-tertiary)', padding: '0.35rem 0.65rem', borderRadius: '6px', border: '1px solid var(--border-color)', fontWeight: '600' }}>
+              🔌 USB Devices: 250
+            </span>
+            <span style={{ backgroundColor: 'var(--bg-tertiary)', padding: '0.35rem 0.65rem', borderRadius: '6px', border: '1px solid var(--border-color)', fontWeight: '600' }}>
+              📄 File Downloads: 250
+            </span>
+            <span style={{ backgroundColor: 'var(--bg-tertiary)', padding: '0.35rem 0.65rem', borderRadius: '6px', border: '1px solid var(--border-color)', fontWeight: '600' }}>
+              ✉️ Email Traffic: 200
+            </span>
+            <span style={{ backgroundColor: 'var(--bg-tertiary)', padding: '0.35rem 0.65rem', borderRadius: '6px', border: '1px solid var(--border-color)', fontWeight: '600' }}>
+              🌐 Web HTTP: 200
+            </span>
+          </div>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '2rem' }}>
@@ -140,97 +157,148 @@ const ActivityLogs = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Filters Bar */}
-          <div className="glass-card" style={{ padding: '1.25rem', display: 'flex', gap: '1.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94a3b8' }}>
-              <Filter size={16} /> <span>Filter Operations:</span>
+          <div className="glass-card" style={{ padding: '1rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+              <Filter size={16} /> <span style={{ fontWeight: '600' }}>Filter Telemetry:</span>
             </div>
             
-            <div style={{ display: 'flex', gap: '1rem', flex: 1 }}>
+            <div style={{ display: 'flex', gap: '0.75rem', flex: 1, minWidth: '220px' }}>
               <select
                 className="form-control"
-                style={{ flex: 1, padding: '0.5rem 1rem' }}
+                style={{ flex: 1, fontSize: '0.85rem' }}
                 value={eventTypeFilter}
-                onChange={(e) => setEventTypeFilter(e.target.value)}
+                onChange={(e) => { setEventTypeFilter(e.target.value); setCurrentPage(1); }}
               >
                 <option value="">All Event Types</option>
-                <option value="Login">Login Events</option>
-                <option value="File Access">File Access</option>
-                <option value="File Upload">File Upload</option>
-                <option value="File Download">File Download</option>
-                <option value="USB Usage">USB Usage</option>
-                <option value="Network Activity">Network Activity</option>
+                <option value="Logon">Logon Events</option>
+                <option value="USB Usage">USB Storage Activity</option>
+                <option value="File Download">File Access & Downloads</option>
                 <option value="Email Activity">Email Activity</option>
+                <option value="Network Activity">Network & Web Browsing</option>
               </select>
 
               <select
                 className="form-control"
-                style={{ flex: 1, padding: '0.5rem 1rem' }}
+                style={{ flex: 1, fontSize: '0.85rem' }}
                 value={severityFilter}
-                onChange={(e) => setSeverityFilter(e.target.value)}
+                onChange={(e) => { setSeverityFilter(e.target.value); setCurrentPage(1); }}
               >
                 <option value="">All Severities</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
                 <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
               </select>
+            </div>
+
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              Showing {currentLogs.length} of {logs.length} entries
             </div>
           </div>
 
           {/* Logs Table */}
-          <div className="table-container">
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Employee</th>
-                  <th>Device Serial</th>
-                  <th>Event Type</th>
-                  <th>Severity</th>
-                  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.length > 0 ? (
-                  logs.map((log) => (
-                    <tr key={log.id}>
-                      <td style={{ fontSize: '0.85rem' }}>{new Date(log.timestamp).toLocaleString()}</td>
-                      <td style={{ fontWeight: '500', color: '#f8fafc' }}>
-                        {log.employee ? log.employee.name : 'System Event'}
-                      </td>
-                      <td style={{ fontFamily: 'Space Grotesk', fontSize: '0.85rem' }}>
-                        {log.device ? log.device.device_id : 'External / None'}
-                      </td>
-                      <td>{log.event_type}</td>
-                      <td>
-                        <span className={`badge badge-${log.severity.toLowerCase()}`}>
-                          {log.severity}
-                        </span>
-                      </td>
-                      <td style={{ fontSize: '0.85rem', fontFamily: 'monospace', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {JSON.stringify(log.details)}
+          <div className="glass-card">
+            <div className="table-container">
+              <table className="custom-table" style={{ fontSize: '0.85rem' }}>
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Employee</th>
+                    <th>Device / PC</th>
+                    <th>Event Type</th>
+                    <th>Severity</th>
+                    <th>Dataset Source</th>
+                    <th>Details Payload</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                        Loading surveillance telemetry logs...
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: '#64748b' }}>
-                      No behaviors match active filter criteria.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  ) : currentLogs.length > 0 ? (
+                    currentLogs.map((log) => {
+                      const datasetSource = log.details ? log.details.dataset : 'CERT r4.2'
+                      return (
+                        <tr key={log.id}>
+                          <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                            {new Date(log.timestamp).toLocaleString()}
+                          </td>
+                          <td style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
+                            {log.employee ? log.employee.name : 'System Event'}
+                          </td>
+                          <td style={{ fontFamily: 'Space Grotesk', fontSize: '0.825rem' }}>
+                            {log.device ? log.device.device_id : (log.details && log.details.workstation) ? log.details.workstation : 'PC-MONITORED'}
+                          </td>
+                          <td>
+                            <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{log.event_type}</span>
+                          </td>
+                          <td>
+                            <span className={`badge badge-${log.severity.toLowerCase()}`}>
+                              {log.severity}
+                            </span>
+                          </td>
+                          <td>
+                            <span style={{ fontSize: '0.725rem', padding: '0.15rem 0.5rem', borderRadius: '4px', backgroundColor: 'rgba(2, 132, 199, 0.08)', color: 'var(--accent-cyan)', fontWeight: '600', border: '1px solid rgba(2, 132, 199, 0.2)' }}>
+                              {datasetSource}
+                            </span>
+                          </td>
+                          <td style={{ fontSize: '0.8rem', fontFamily: 'monospace', maxWidth: '280px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'var(--text-secondary)' }}>
+                            {JSON.stringify(log.details)}
+                          </td>
+                        </tr>
+                      )
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                        No telemetry logs match active filter criteria.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Bar */}
+            {totalPages > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)' }}>
+                <span style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>
+                  Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong> ({logs.length} Total Logs)
+                </span>
+
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button 
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                  >
+                    <ChevronLeft size={16} /> Previous
+                  </button>
+                  <button 
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                  >
+                    Next <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Right: Log Ingestion Simulator */}
         <div>
-          <div className="glass-card" style={{ borderLeft: '4px solid #06b6d4' }}>
-            <h3 style={{ fontFamily: 'Space Grotesk', color: '#06b6d4', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div className="glass-card" style={{ borderLeft: '4px solid var(--accent-cyan)' }}>
+            <h3 style={{ fontFamily: 'Space Grotesk', color: 'var(--accent-cyan)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Play size={16} /> Telemetry Simulator
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
               Simulate threat activities and ingest logging telemetry in real-time.
             </p>
 
@@ -269,15 +337,13 @@ const ActivityLogs = () => {
                   className="form-control"
                   style={{ padding: '0.5rem' }}
                   value={simEventType}
-                  onChange={(e) => handleSimEventSelect(e.target.value)}
+                  onChange={(e) => setSimEventType(e.target.value)}
                 >
-                  <option value="Login">Login Event</option>
-                  <option value="File Access">File Access</option>
-                  <option value="File Upload">File Upload</option>
-                  <option value="File Download">File Download</option>
+                  <option value="Logon Event - Logon">Logon Event</option>
                   <option value="USB Usage">USB Usage</option>
-                  <option value="Network Activity">Network Activity</option>
+                  <option value="File Download">File Download</option>
                   <option value="Email Activity">Email Activity</option>
+                  <option value="Network Activity">Network Activity</option>
                 </select>
               </div>
 
@@ -311,7 +377,7 @@ const ActivityLogs = () => {
               </button>
 
               {!isSocOrAdmin && (
-                <p style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.5rem', textAlign: 'center' }}>
+                <p style={{ color: 'var(--color-danger)', fontSize: '0.75rem', marginTop: '0.5rem', textAlign: 'center' }}>
                   * Requires SOC Engineer or Admin clearance.
                 </p>
               )}

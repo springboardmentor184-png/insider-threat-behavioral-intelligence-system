@@ -15,6 +15,9 @@ import AddEmployee from './pages/AddEmployee'
 import EmployeeDetails from './pages/EmployeeDetails'
 import ActivityLogs from './pages/ActivityLogs'
 import AnalyticsCockpit from './pages/AnalyticsCockpit'
+import RiskAnalytics from './pages/RiskAnalytics'
+import InvestigationList from './pages/InvestigationList'
+import InvestigationDetails from './pages/InvestigationDetails'
 
 function App() {
   return (
@@ -35,6 +38,24 @@ function App() {
             <Route path="/" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/risk-analytics" element={
+              <ProtectedRoute>
+                <RiskAnalytics />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/investigations" element={
+              <ProtectedRoute>
+                <InvestigationList />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/investigations/:id" element={
+              <ProtectedRoute>
+                <InvestigationDetails />
               </ProtectedRoute>
             } />
 

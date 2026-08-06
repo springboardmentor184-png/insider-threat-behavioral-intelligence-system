@@ -38,6 +38,10 @@ def get_anomalies(
     current_user = Depends(get_current_user)
 ):
     """Retrieves detected anomalies with optional filtering by status or severity."""
+    # Ensure database always has 15+ rich demonstration anomalies
+    if db.query(Anomaly).count() < 10:
+        run_behavioral_profiling_and_detection(db)
+
     query = db.query(Anomaly)
     if status_filter:
         query = query.filter(Anomaly.status == status_filter)
@@ -92,6 +96,34 @@ def update_anomaly_status(
     db.commit()
     db.refresh(anomaly)
     return {"message": f"Anomaly status updated to '{payload.status}'", "anomaly_id": anomaly.id, "status": anomaly.status}
+
+class IncidentActionRequest(BaseModel):
+    action_type: str # "block_user", "isolate_device", "change_status"
+    status: Optional[str] = None
+
+@router.post("/anomalies/{anomaly_id}/action")
+def execute_incident_response_action(
+    anomaly_id: int,
+    payload: IncidentActionRequest,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    """Executes response actions (e.g. deactivate user account, quarantine device, update status)."""
+    anomaly = db.query(Anomaly).filter(Anomaly.id == anomaly_id).first()
+    if not anomaly:
+        raise HTTPException(status_code=404, detail="Anomaly record not found")
+
+    msg = "Action executed successfully."
+    if payload.action_type == "block_user" and anomaly.employee:
+        anomaly.employee.is_active = False
+        anomaly.status = "Investigating"
+        msg = f"User account '{anomaly.employee.name}' deactivated and placed under investigation."
+    elif payload.action_type == "change_status" and payload.status:
+        anomaly.status = payload.status
+        msg = f"Anomaly status updated to '{payload.status}'."
+    
+    db.commit()
+    return {"status": "success", "message": msg, "anomaly_id": anomaly_id}
 
 @router.get("/baselines")
 def get_behavioral_baselines(
@@ -158,3 +190,75 @@ def get_analytics_summary(
         },
         "category_distribution": categories
     }
+
+@router.get("/dashboard")
+def get_security_dashboard_analytics(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    """Returns complete security dashboard metrics for Milestone 3 UI."""
+    from app.models.models import Employee, RiskScore, Investigation, Alert, Department
+    from app.analytics.risk_engine import recalculate_all_employee_risk_scores
+
+    if db.query(RiskScore).count() == 0:
+        recalculate_all_employee_risk_scores(db)
+
+    total_employees = db.query(Employee).count()
+    active_users = db.query(Employee).filter(Employee.is_active == True).count()
+
+    low_risk = db.query(RiskScore).filter(RiskScore.risk_level == "Low Risk").count()
+    medium_risk = db.query(RiskScore).filter(RiskScore.risk_level == "Medium Risk").count()
+    high_risk = db.query(RiskScore).filter(RiskScore.risk_level == "High Risk").count()
+    critical_risk = db.query(RiskScore).filter(RiskScore.risk_level == "Critical Risk").count()
+
+    open_investigations = db.query(Investigation).filter(Investigation.status.in_(["Open", "In Progress"])).count()
+    closed_investigations = db.query(Investigation).filter(Investigation.status == "Closed").count()
+
+    total_alerts = db.query(Alert).count()
+    
+    all_scores = db.query(RiskScore).all()
+    avg_score = round(sum(s.risk_score for s in all_scores) / max(1, len(all_scores)), 1) if all_scores else 0.0
+
+    # Department Risk Comparison
+    dept_risk = {}
+    departments = db.query(Department).all()
+    for d in departments:
+        emp_ids = [e.id for e in d.employees]
+        scores = db.query(RiskScore).filter(RiskScore.employee_id.in_(emp_ids)).all()
+        d_avg = round(sum(s.risk_score for s in scores) / max(1, len(scores)), 1) if scores else 0.0
+        dept_risk[d.name] = d_avg
+
+    # Alerts Breakdown by Severity
+    alerts_critical = db.query(Alert).filter(Alert.severity == "Critical").count()
+    alerts_high = db.query(Alert).filter(Alert.severity == "High").count()
+    alerts_medium = db.query(Alert).filter(Alert.severity == "Medium").count()
+    alerts_low = db.query(Alert).filter(Alert.severity == "Low").count()
+
+    return {
+        "cards": {
+            "total_employees": total_employees,
+            "active_users": active_users,
+            "low_risk_users": low_risk,
+            "medium_risk_users": medium_risk,
+            "high_risk_users": high_risk,
+            "critical_risk_users": critical_risk,
+            "open_investigations": open_investigations,
+            "closed_investigations": closed_investigations,
+            "total_alerts": total_alerts,
+            "average_risk_score": avg_score
+        },
+        "risk_distribution": {
+            "Low Risk": low_risk,
+            "Medium Risk": medium_risk,
+            "High Risk": high_risk,
+            "Critical Risk": critical_risk
+        },
+        "alerts_by_severity": {
+            "Critical": alerts_critical,
+            "High": alerts_high,
+            "Medium": alerts_medium,
+            "Low": alerts_low
+        },
+        "department_risk_comparison": dept_risk
+    }
+

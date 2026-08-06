@@ -76,12 +76,12 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Corporate Email</label>
+            <label className="form-label">Corporate Email or Username</label>
             <input
-              type="email"
+              type="text"
               required
               className="form-control"
-              placeholder="operator@company.com"
+              placeholder="operator@company.com or username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
@@ -186,10 +186,10 @@ const Login = () => {
       {showGoogleModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalContent}>
-            <h3 style={{ fontFamily: 'Space Grotesk', marginBottom: '0.5rem', color: '#f8fafc' }}>
+            <h3 style={{ fontFamily: 'Space Grotesk', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
               Google Account Selector
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
               Simulating Google OAuth2 authorization payload exchange.
             </p>
 
@@ -218,8 +218,8 @@ const Login = () => {
             </div>
 
             {/* Custom Google login option */}
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1rem' }}>
-              <span style={{ color: '#f8fafc', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>
+            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+              <span style={{ color: 'var(--text-primary)', fontSize: '0.85rem', display: 'block', marginBottom: '0.5rem' }}>
                 Use another Google Account:
               </span>
               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
@@ -275,13 +275,14 @@ const styles = {
     width: '100%',
     padding: '0.75rem',
     borderRadius: '8px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    backgroundColor: '#ffffff',
-    color: '#1f2937',
+    border: '1px solid var(--border-color)',
+    backgroundColor: 'var(--bg-secondary)',
+    color: 'var(--text-primary)',
     fontFamily: 'Space Grotesk, sans-serif',
     fontWeight: '600',
     fontSize: '0.95rem',
     cursor: 'pointer',
+    boxShadow: 'var(--shadow-card)',
     transition: 'all 0.2s'
   },
   modalOverlay: {
@@ -290,7 +291,8 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    backdropFilter: 'blur(4px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -298,25 +300,25 @@ const styles = {
   },
   modalContent: {
     width: '100%',
-    maxSpace: '450px',
     maxWidth: '450px',
-    backgroundColor: '#0f1624',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'var(--bg-secondary)',
+    border: '1px solid var(--border-color)',
     borderRadius: '12px',
     padding: '2rem',
-    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.5)'
+    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)'
   },
   accountOption: {
     width: '100%',
     padding: '0.75rem 1rem',
     textAlign: 'left',
-    background: '#162035',
-    border: '1px solid rgba(255, 255, 255, 0.04)',
-    color: '#94a3b8',
+    background: 'var(--bg-tertiary)',
+    border: '1px solid var(--border-color)',
+    color: 'var(--text-primary)',
     borderRadius: '8px',
     cursor: 'pointer',
     transition: 'all 0.2s'
   }
 }
+
 
 export default Login

@@ -13,16 +13,22 @@ def get_activities(
     event_type: Optional[str] = None,
     severity: Optional[str] = None,
     employee_id: Optional[int] = None,
+    search: Optional[str] = None,
     db: Session = Depends(get_db),
     current_user = Depends(require_roles(["Administrator", "Security Manager", "SOC Engineer", "Security Analyst"]))
 ):
     query = db.query(ActivityLog)
     if event_type:
-        query = query.filter(ActivityLog.event_type == event_type)
+        query = query.filter(ActivityLog.event_type.ilike(f"%{event_type}%"))
     if severity:
         query = query.filter(ActivityLog.severity == severity)
     if employee_id:
         query = query.filter(ActivityLog.employee_id == employee_id)
+    if search:
+        query = query.filter(
+            (ActivityLog.event_type.ilike(f"%{search}%")) |
+            (ActivityLog.severity.ilike(f"%{search}%"))
+        )
     return query.order_by(ActivityLog.timestamp.desc()).all()
 
 @router.post("", response_model=ActivityLogResponse, status_code=status.HTTP_201_CREATED)

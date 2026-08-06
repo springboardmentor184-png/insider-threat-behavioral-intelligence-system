@@ -503,22 +503,22 @@ const Dashboard = () => {
   return (
     <div className="main-content">
       {/* Operator Session Info Card */}
-      <div className="glass-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', padding: '1.25rem 1.5rem', marginBottom: '2.5rem', flexWrap: 'wrap', border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="glass-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', padding: '1.25rem 1.5rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
           <img 
             src={user.profile_picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.username || 'user'}`} 
             alt="Operator Profile" 
-            style={{ width: '56px', height: '56px', borderRadius: '50%', border: '2px solid #06b6d4', backgroundColor: '#0f172a' }}
+            style={{ width: '54px', height: '54px', borderRadius: '50%', border: '2px solid var(--accent-blue)', backgroundColor: 'var(--bg-tertiary)' }}
           />
           <div>
-            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: '1.25rem', marginBottom: '0.25rem', letterSpacing: '0.02em' }}>
+            <h2 style={{ fontFamily: 'Space Grotesk', fontSize: '1.25rem', marginBottom: '0.25rem', color: 'var(--text-primary)' }}>
               {user.full_name || 'System Operator'}
             </h2>
-            <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.85rem', color: '#94a3b8' }}>
-              <span>Email: <strong>{user.email}</strong></span>
-              <span>Provider: <span style={{ textTransform: 'capitalize', color: '#06b6d4' }}><strong>{user.auth_provider}</strong></span></span>
-              <span>Registered: <strong>{new Date(user.created_at).toLocaleDateString()}</strong></span>
-              {user.last_login && <span>Last Login: <strong>{new Date(user.last_login).toLocaleString()}</strong></span>}
+            <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              <span>Email: <strong style={{ color: 'var(--text-primary)' }}>{user.email}</strong></span>
+              <span>Provider: <span style={{ textTransform: 'capitalize', color: 'var(--accent-blue)' }}><strong>{user.auth_provider}</strong></span></span>
+              <span>Registered: <strong style={{ color: 'var(--text-primary)' }}>{new Date(user.created_at).toLocaleDateString()}</strong></span>
+              {user.last_login && <span>Last Login: <strong style={{ color: 'var(--text-primary)' }}>{new Date(user.last_login).toLocaleString()}</strong></span>}
             </div>
           </div>
         </div>

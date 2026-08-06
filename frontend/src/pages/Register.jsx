@@ -323,7 +323,6 @@ const Register = () => {
               value={roleName}
               onChange={(e) => setRoleName(e.target.value)}
               disabled={loading || success}
-              style={{ backgroundColor: '#0f172a', color: '#f8fafc', border: '1px solid rgba(255, 255, 255, 0.08)' }}
             >
               <option value="Administrator">Administrator</option>
               <option value="Security Manager">Security Manager</option>
@@ -467,13 +466,14 @@ const styles = {
     width: '100%',
     padding: '0.75rem',
     borderRadius: '8px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    backgroundColor: '#ffffff',
-    color: '#1f2937',
+    border: '1px solid var(--border-color)',
+    backgroundColor: 'var(--bg-secondary)',
+    color: 'var(--text-primary)',
     fontFamily: 'Space Grotesk, sans-serif',
     fontWeight: '600',
     fontSize: '0.95rem',
     cursor: 'pointer',
+    boxShadow: 'var(--shadow-card)',
     transition: 'all 0.2s'
   },
   modalOverlay: {
@@ -482,7 +482,8 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    backdropFilter: 'blur(4px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -490,25 +491,25 @@ const styles = {
   },
   modalContent: {
     width: '100%',
-    maxSpace: '450px',
     maxWidth: '450px',
-    backgroundColor: '#0f1624',
-    border: '1px solid rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'var(--bg-secondary)',
+    border: '1px solid var(--border-color)',
     borderRadius: '12px',
     padding: '2rem',
-    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.5)'
+    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)'
   },
   accountOption: {
     width: '100%',
     padding: '0.75rem 1rem',
     textAlign: 'left',
-    background: '#162035',
-    border: '1px solid rgba(255, 255, 255, 0.04)',
-    color: '#94a3b8',
+    background: 'var(--bg-tertiary)',
+    border: '1px solid var(--border-color)',
+    color: 'var(--text-primary)',
     borderRadius: '8px',
     cursor: 'pointer',
     transition: 'all 0.2s'
   }
 }
+
 
 export default Register

@@ -10,7 +10,10 @@ def seed_100_users(db: Session):
         # Dataset already loaded
         return
         
-    json_path = "mock_users_dataset.json"
+    json_path = "../cert_real_users_dataset.json"
+    if not os.path.exists(json_path):
+        json_path = "mock_users_dataset.json"
+        
     if not os.path.exists(json_path):
         return
         

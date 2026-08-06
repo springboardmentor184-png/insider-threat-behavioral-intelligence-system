@@ -1,178 +1,200 @@
-# Advanced Authentication Platform & Insider Threat Behavioral Intelligence System
+# 🛡️ Insider Threat Behavioral Intelligence System (UEBA & Risk Engine)
 
-A production-ready User and Entity Behavior Analytics (UEBA) platform with an AI-driven anomaly detection engine, interactive threat triage dashboards, and a secure authentication gateway built using **React.js** (Vite), **FastAPI** (Python), **Scikit-Learn**, and **PostgreSQL**.
+[![Milestone 3](https://img.shields.io/badge/Milestone--3-Completed%20%26%20Verified-brightgreen.svg)]()
+[![Framework](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python%203.11-blue.svg)]()
+[![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite-purple.svg)]()
+[![ML Model](https://img.shields.io/badge/ML-IsolationForest%20UEBA-orange.svg)]()
 
----
-
-## 🚀 Key System Features & Milestones
-
-### 🔑 Milestone 1: Authentication & Role-Based Access (RBAC)
-*   **Cryptographic Passwords:** Dynamic password hashing using native `Bcrypt`.
-*   **Token Rotation:** Double JWT system utilizing access tokens (30 mins) and refresh tokens (7 days) stored in HttpOnly, SameSite cookies.
-*   **Google OAuth 2.0:** Integrated Google authentication dialog & backend auto-provisioning.
-*   **Clearance Scope (RBAC):** 4 Clearance roles: `Administrator`, `Security Manager`, `SOC Engineer`, and `Security Analyst`.
-*   **Security Guardrails:** XSS filtering, SQL injection screening, MIME-sniffing protection, and clickjacking security headers (`X-Frame-Options: DENY`).
-
-### 🤖 Milestone 2: Behavioral Analytics & Anomaly Detection
-*   **Datasets Connected:** Model trained on real-world datasets:
-    *   **CERT Insider Threat Dataset (`archive.zip` — 7.13 GB)**: Logons, device mounts, HTTP file exfiltration logs.
-    *   **LANL Cyber Security Dataset (`lanl-auth-dataset-1.bz2` — 2.38 GB)**: Authentication telemetry & session distributions.
-*   **Feature Extraction:** Extracts 5 numeric metrics per employee:
-    1. `avg_daily_logins`
-    2. `avg_daily_downloads` (MB)
-    3. `avg_daily_uploads` (MB)
-    4. `after_hours_ratio` (%)
-    5. `usb_usage_count`
-*   **Machine Learning Engine:** Scikit-Learn `IsolationForest` unsupervised outlier detection model and `StandardScaler` normalization.
-*   **Analytics & Anomaly Cockpit (`/analytics`):** Interactive React dashboard for 1-click ML scans, real-time threat severity badges (`Critical`, `High`, `Medium`), anomaly risk scoring (0.0 to 1.0), inline triage controls (`Open`, `Triaged`, `Closed`), and employee baseline profile cards.
+> A production-grade **User and Entity Behavior Analytics (UEBA)** platform for real-time insider threat detection, weighted risk scoring, automated SOC alerts, case management investigations, and critical risk email notification triggers.
 
 ---
 
-## 📂 Project Structure
+## 🚀 Milestone 3 Feature Highlights & System Modules
 
-```text
-├── archive.zip                        # CERT Insider Threat Dataset (7.13 GB)
-├── lanl-auth-dataset-1.bz2            # LANL Cyber Security Dataset (2.38 GB)
-├── mock_users_dataset.json            # 100 sample users dataset (JSON)
-├── mock_users_dataset.csv             # 100 sample users dataset (CSV)
-├── mock_users_dataset.sql             # 100 SQL insert statements
-├── docker-compose.yml                 # Single-command environment orchestration
-├── Insider_Threat_Postman_Collection.json
-├── backend/
-│   ├── app/
-│   │   ├── analytics/
-│   │   │   ├── train_on_cert.py       # Preprocessing & IsolationForest training script
-│   │   │   ├── detector.py            # Baseline profiling & anomaly detection engine
-│   │   │   ├── isolation_forest_model.joblib # Serialized ML model
-│   │   │   └── scaler.joblib          # Serialized StandardScaler
-│   │   ├── core/
-│   │   │   ├── security.py            # Bcrypt hashing & JWT generation
-│   │   │   └── dependencies.py        # Cookie extraction & RBAC dependencies
-│   │   ├── models/
-│   │   │   └── models.py              # User, Employee, ActivityLog, BehavioralBaseline, Anomaly ORMs
-│   │   ├── routers/
-│   │   │   ├── auth.py                # Register, login, reset, verify endpoints
-│   │   │   ├── analytics.py           # Anomalies, baselines, triage, recalculate APIs
-│   │   │   ├── employees.py
-│   │   │   └── activities.py
-│   │   ├── schemas/
-│   │   │   └── schemas.py             # Pydantic validation schemas
-│   │   ├── main.py                    # Server startup & seeder
-│   │   └── seed_users_postgres.py     # 100-user database seeder
-│   ├── tests/
-│   │   └── test_auth.py               # Pytest unit tests
-│   ├── requirements.txt
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   └── ProtectedRoute.jsx
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx        # Theme state & session hooks
-│   │   ├── pages/
-│   │   │   ├── AnalyticsCockpit.jsx   # Behavioral Analytics & Anomaly Cockpit UI
-│   │   │   ├── Dashboard.jsx          # Role-tailored dashboards
-│   │   │   ├── Login.jsx              # Login screen & Google OAuth
-│   │   │   ├── Register.jsx           # Registration & password strength meters
-│   │   │   ├── ForgotPassword.jsx     # Reset request form
-│   │   │   ├── ResetPassword.jsx      # Password reset updater
-│   │   │   └── VerifyEmail.jsx        # Account verification landing
-│   │   ├── services/
-│   │   │   └── api.js                 # Axios token rotation interceptor
-│   │   ├── App.jsx                    # Client router
-│   │   └── index.css                  # Dark/Light theme variables & glassmorphism
-│   └── Dockerfile
-```
+### 1. 📊 Weighted Insider Risk Engine (35-25-20-10-10 Architecture)
+* **Dynamic Recalculation Engine**: Evaluates monitored personnel telemetry across 5 core threat vectors:
+  * 🧠 **Behavioral Anomalies (35%)**: IsolationForest anomaly density & baseline deviations.
+  * 🔑 **Privilege Misuse (25%)**: Shadow file access, command execution keywords (`/etc/shadow`, `sudo su - root`).
+  * 💾 **Data Access Violations (20%)**: Bulk file downloads, PII exports, payroll file access.
+  * ⏰ **Access Pattern Deviations (10%)**: Off-hours logon ratios & night activity bursts.
+  * 📜 **Historical Security Events (10%)**: Prior security policy breaches & USB mounting telemetry.
+* **Risk Categorization**:
+  * `0.0 - 25.0%`: Low Risk 🟢
+  * `25.1 - 50.0%`: Medium Risk 🟡
+  * `50.1 - 74.9%`: High Risk 🟧
+  * `75.0 - 100.0%`: **Critical Risk 🔴** *(Triggers Automated Email Notification)*
 
 ---
 
-## 🌊 Behavioral Analytics Workflow Architecture
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Analyst as Security Analyst / SOC
-    participant UI as React Analytics Cockpit (/analytics)
-    participant API as FastAPI Gateway
-    participant Engine as Analytics Engine (detector.py)
-    participant ML as IsolationForest Model
-    participant DB as Database (SQLite / Postgres)
-
-    Analyst->>UI: Clicks "Trigger ML Behavioral Scan"
-    UI->>API: POST /api/analytics/recalculate
-    API->>Engine: run_behavioral_profiling_and_detection(db)
-    Engine->>DB: Query ActivityLogs for all employees
-    Note over Engine: Extracts logins, download MBs, upload MBs, off-hours %, USBs
-    Engine->>DB: Upsert BehavioralBaseline records
-    Engine->>ML: Evaluate scaled feature vectors via IsolationForest
-    ML-->>Engine: Returns Outlier Predictions & Anomaly Scores
-    Engine->>DB: Insert new Anomaly records (status=Open)
-    API-->>UI: Returns scan execution summary metrics
-    UI->>API: GET /api/analytics/anomalies
-    API->>DB: Query Anomalies ordered by timestamp
-    API-->>UI: Returns JSON anomaly objects
-    UI-->>Analyst: Renders Anomaly Triage Table & Baseline Cards
-```
+### 2. 📧 Automated Critical Risk Email System (Score ≥ 75.0%)
+* **Automated SMTP Email Alerts**: Automatically dispatches a rich HTML email brief to the Security Administrator (`ADMIN_EMAIL`) whenever an employee's Insider Risk Score reaches **≥ 75.0%**.
+* **Incident Description & Threat Vectors**: Includes detailed incident breakdown, exfiltration probability, predicted threat vector, and direct 1-click SOC case link.
+* **Duplicate Prevention & Logging**: Tracks `last_notified_risk_score` and `last_notified_at` to ensure alerts are dispatched on scan runs and critical escalations.
 
 ---
 
-## 🛠️ Installation & Execution
+### 3. 🔐 6-Digit OTP Password Reset Flow
+* **Multi-Factor OTP Verification**: Secure 2-step password reset workflow requiring a 6-digit numeric OTP code (`POST /api/auth/send-otp`).
+* **Email Delivery**: Sends OTP verification codes directly to registered user email addresses via Gmail SMTP TLS connection.
+* **Secure Token Handling**: Verifies 6-digit OTP code before granting 15-minute single-use password update tokens (`POST /api/auth/verify-otp`).
 
-### Option A: Running with Docker (Recommended)
-Launch the entire system, database, and containerized services with a single command:
+---
+
+### 4. 🛡️ Threat Investigations Module (SOC Case Management)
+* **Automated Case Generation**: Auto-creates open threat investigation case files for high-risk personnel.
+* **Interactive Timelines & Evidence Logs**: Render chronologically ordered telemetry events, suspicious IP addresses, and command executions.
+* **Analyst Workflows**: Support case status updates (`Open`, `In Progress`, `Resolved`, `Closed`), severity toggles, and analyst assignment.
+
+---
+
+### 5. 🔔 Automated Security Alert Management Queue
+* **Alert Severity Classification**: Categorizes alerts into `Informational`, `Low`, `Medium`, `High`, and `Critical`.
+* **Interactive Filters & Assignments**: Filter alerts by severity/status and assign SOC analysts in 1 click.
+
+---
+
+### 6. 📈 Interactive Pure SVG Chart Library
+* **Zero External Chart Dependencies**: Built custom SVG `PieChartComponent`, `DonutChartComponent`, and `BarChartComponent` in [`Charts.jsx`](frontend/src/components/Charts.jsx).
+* **Interactive Tooltips & Legends**: Dynamic hover effects for Department UEBA risk averages and anomaly severity distributions.
+
+---
+
+### 7. 📁 CMU CERT Insider Threat Real Dataset Integration
+* **1,250 Real Telemetry Entries**: Extracted across 5 activity log vectors (`logon.csv`, `device.csv`, `file.csv`, `email.csv`, `http.csv`).
+* **708 Monitored Personnel Profiles**: Synchronized CMU CERT user handles into system database with full pagination and risk breakdown cards.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies Used |
+| :--- | :--- |
+| **Backend Framework** | Python 3.11, FastAPI, Uvicorn |
+| **Database & ORM** | SQLite / PostgreSQL, SQLAlchemy ORM |
+| **Machine Learning** | scikit-learn (`IsolationForest`), NumPy, Pandas |
+| **Email Service** | Python `smtplib`, `email.mime`, `python-dotenv` |
+| **Security & Auth** | Passlib (bcrypt), PyJWT (JWT tokens), Pydantic v2 |
+| **Frontend Framework** | React 18, Vite 5, React Router v6, Axios |
+| **UI & Styling** | Vanilla CSS Glassmorphic Design Token System, Lucide React Icons |
+
+---
+
+## ⚙️ Environment Setup & Installation Guide
+
+### Prerequisites
+* **Python**: `3.10` or higher
+* **Node.js**: `v18.0.0` or higher
+* **npm**: `v9.0.0` or higher
+
+---
+
+### Step 1: Clone Repository
 ```bash
-docker-compose up --build
-```
-*   **React Web Application:** **`http://localhost:3000`**
-*   **FastAPI Swagger Docs:** **`http://localhost:8000/docs`**
-
----
-
-### Option B: Running Locally (Manual Terminal Setup)
-
-#### 1. Backend (FastAPI + ML Engine) Setup
-```bash
-# Navigate & activate virtual env
-cd backend
-.\venv\Scripts\activate
-
-# Install requirements (FastAPI, Scikit-Learn, Pandas, NumPy, Joblib)
-pip install -r requirements.txt
-
-# Run dataset training script (optional: automatically detects archive.zip and lanl-auth-dataset-1.bz2)
-python app/analytics/train_on_cert.py
-
-# Start backend server
-uvicorn app.main:app --port 8000 --reload
-```
-
-#### 2. Frontend (Vite + React) Setup
-```bash
-cd frontend
-npm install
-npm run dev
+git clone https://github.com/your-username/insider-threat-system.git
+cd insider-threat-system
 ```
 
 ---
 
-## 🧪 Testing & Verification
+### Step 2: Backend Setup & Configuration
 
-### Python Unit Tests
-Run the automated test suite:
-```bash
-cd backend
-.\venv\Scripts\python -m pytest tests/
-```
+1. Navigate to `backend` directory:
+   ```bash
+   cd backend
+   ```
 
-### Postman API Verification
-Import `Insider_Threat_Postman_Collection.json` into Postman or Thunder Client to test, verify, and document API endpoint responses.
+2. Create virtual environment & activate:
+   ```bash
+   python -m venv venv
+   # On Windows PowerShell:
+   .\venv\Scripts\activate
+   # On Linux/macOS:
+   source venv/bin/activate
+   ```
+
+3. Install backend dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Create `.env` configuration file:
+   Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Update `.env` with your settings:
+   ```env
+   SECRET_KEY=insider_threat_behavioral_intelligence_system_secret_key_2026
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=60
+   DATABASE_URL=sqlite:///./insider_threat.db
+
+   # SMTP Email Credentials (for OTP & Critical Risk Alerts)
+   SMTP_SERVER=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=your-email@gmail.com
+   SMTP_PASSWORD=your-16-character-google-app-password
+   ADMIN_EMAIL=your-email@gmail.com
+   ```
+
+5. Run Backend Server:
+   ```bash
+   uvicorn app.main:app --port 8000 --reload
+   ```
+   FastAPI Swagger API Documentation will be available at: **`http://localhost:8000/docs`**
 
 ---
 
-## 🔑 Seeding Credentials
+### Step 3: Frontend Setup
 
-The system automatically seeds a default verified Administrator profile on launch:
-*   **Email:** `admin@company.com`
-*   **Password:** `AdminPass123!`
-*   **Role:** `Administrator`
+1. Open a new terminal and navigate to `frontend` directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install Node.js dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run Frontend Development Server:
+   ```bash
+   npm run dev -- --port 3000
+   ```
+   Application UI will be available at: **`http://localhost:3000`**
+
+---
+
+## 🔐 Security & Git Hygiene (`.gitignore`)
+
+The project `.gitignore` is configured to prevent committing secret keys, API credentials, or local environment files:
+
+* ✅ `.env` and `backend/.env` are strictly excluded from git tracking.
+* ✅ Virtual environments (`venv/`, `node_modules/`) are excluded.
+* ✅ SQLite databases (`insider_threat.db`) and large dataset archives (`archive.zip`) are excluded.
+
+---
+
+## 📤 How to Push Milestone 3 to Your GitHub Branch
+
+Follow these clean steps to push your completed Milestone 3 work to your GitHub branch:
+
+```bash
+# 1. Check repository status
+git status
+
+# 2. Stage all updated source files
+git add .
+
+# 3. Commit Milestone 3 release
+git commit -m "feat(milestone-3): Complete Weighted Risk Engine, Threat Investigations, Alert Queue, OTP Reset & Critical Risk Email Alerts"
+
+# 4. Push to your GitHub branch
+git push origin your-branch-name
+```
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the `LICENSE` file for details.

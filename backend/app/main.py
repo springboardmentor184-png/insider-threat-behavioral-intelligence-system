@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base, SessionLocal
-from app.routers import auth, employees, activities, analytics
-from app.models.models import Role, Department, Employee, Device, ActivityLog
+from app.routers import auth, employees, activities, analytics, risk, investigations, alerts
+from app.models.models import Role, Department, Employee, Device, ActivityLog, Investigation, Alert, RiskScore
+from app.analytics.risk_engine import recalculate_all_employee_risk_scores
+from app.analytics.alert_engine import generate_security_alerts_from_risk
 
 # Initialize database schema tables automatically
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Insider Threat Behavioral Intelligence System API",
-    description="Production-level API for identity monitoring, RBAC, employee profiles, and activity log ingestion.",
-    version="1.0.0"
+    description="Production-level API for identity monitoring, RBAC, employee profiles, activity logs, risk scoring, and threat investigations.",
+    version="2.0.0"
 )
 
 # Enable CORS for frontend local development
@@ -37,6 +39,9 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(employees.router, prefix="/api")
 app.include_router(activities.router, prefix="/api")
 app.include_router(analytics.router, prefix="/api")
+app.include_router(risk.router, prefix="/api")
+app.include_router(investigations.router, prefix="/api")
+app.include_router(alerts.router, prefix="/api")
 
 @app.on_event("startup")
 def seed_system_data():
@@ -226,6 +231,33 @@ def seed_system_data():
             # Seed 100 mock users dataset
             from app.seed_users_postgres import seed_100_users
             seed_100_users(db)
+
+        # 5. Recalculate Risk Scores & Seed Initial Investigation Cases if clean
+        recalculate_all_employee_risk_scores(db)
+        generate_security_alerts_from_risk(db)
+
+        if db.query(Investigation).count() == 0:
+            high_risk_scores = db.query(RiskScore).filter(RiskScore.risk_score >= 50.0).all()
+            for r in high_risk_scores[:5]:
+                emp = r.employee
+                if not emp:
+                    continue
+                inv = Investigation(
+                    title=f"High-Risk Behavioral Anomaly - {emp.name}",
+                    employee_id=emp.id,
+                    severity="Critical" if r.risk_score >= 75.0 else "High",
+                    status="Open" if r.risk_score >= 70.0 else "In Progress",
+                    summary=f"Automated threat case initialized for {emp.name} ({emp.employee_id}) due to Insider Risk Score {r.risk_score}/100. {r.explanation}",
+                    assigned_analyst_name="SOC Lead Analyst",
+                    evidence_payload={
+                        "risk_score": r.risk_score,
+                        "risk_level": r.risk_level,
+                        "threat_prediction": r.threat_prediction,
+                        "explanation": r.explanation
+                    }
+                )
+                db.add(inv)
+            db.commit()
 
     except Exception as e:
         db.rollback()

@@ -103,7 +103,7 @@ class UserResponse(UserBase):
         from_attributes = True
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str = Field(..., min_length=1, description="Email address or Username")
     password: str
     remember_me: bool = False
 

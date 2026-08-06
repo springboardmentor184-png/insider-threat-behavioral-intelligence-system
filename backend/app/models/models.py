@@ -33,6 +33,9 @@ class User(Base):
     reset_token = Column(String(255), nullable=True, index=True)
     reset_token_expiry = Column(DateTime(timezone=True), nullable=True)
     
+    otp_code = Column(String(10), nullable=True, index=True)
+    otp_expiry = Column(DateTime(timezone=True), nullable=True)
+    
     last_login = Column(DateTime(timezone=True), nullable=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -139,4 +142,90 @@ class Anomaly(Base):
     # Relationships
     employee = relationship("Employee", backref="anomalies")
     activity_log = relationship("ActivityLog", back_populates="anomalies")
+
+class RiskScore(Base):
+    __tablename__ = "risk_scores"
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="CASCADE"), nullable=False, unique=True)
+    risk_score = Column(Float, default=0.0, nullable=False, index=True)
+    risk_level = Column(String(20), default="Low Risk", nullable=False, index=True) # Low Risk, Medium Risk, High Risk, Critical Risk
+    
+    # Weighted Score Components (Sum to 100)
+    behavioral_anomaly_score = Column(Float, default=0.0) # 35%
+    privilege_misuse_score = Column(Float, default=0.0)   # 25%
+    data_access_score = Column(Float, default=0.0)       # 20%
+    access_pattern_score = Column(Float, default=0.0)    # 10%
+    historical_event_score = Column(Float, default=0.0)    # 10%
+
+    explanation = Column(Text, nullable=True)
+    threat_prediction = Column(JSON, nullable=True)
+    last_notified_risk_score = Column(Float, default=0.0)
+    last_notified_at = Column(DateTime(timezone=True), nullable=True)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    employee = relationship("Employee", backref="current_risk_score")
+
+class RiskHistory(Base):
+    __tablename__ = "risk_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="CASCADE"), nullable=False, index=True)
+    risk_score = Column(Float, nullable=False)
+    risk_level = Column(String(20), nullable=False)
+    recorded_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+    # Relationships
+    employee = relationship("Employee", backref="risk_history")
+
+class Investigation(Base):
+    __tablename__ = "investigations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="SET NULL"), nullable=True, index=True)
+    assigned_analyst_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    assigned_analyst_name = Column(String(100), default="Unassigned")
+    severity = Column(String(20), default="High", nullable=False, index=True)
+    status = Column(String(50), default="Open", nullable=False, index=True) # Open, In Progress, Closed
+    summary = Column(Text, nullable=False)
+    resolution_notes = Column(Text, nullable=True)
+    evidence_payload = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    # Relationships
+    employee = relationship("Employee", backref="investigations")
+    assigned_analyst = relationship("User", foreign_keys=[assigned_analyst_id])
+    timeline_events = relationship("InvestigationTimeline", back_populates="investigation", cascade="all, delete-orphan")
+
+class InvestigationTimeline(Base):
+    __tablename__ = "investigation_timelines"
+
+    id = Column(Integer, primary_key=True, index=True)
+    investigation_id = Column(Integer, ForeignKey("investigations.id", ondelete="CASCADE"), nullable=False)
+    event_type = Column(String(100), nullable=False)
+    description = Column(Text, nullable=False)
+    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    details = Column(JSON, nullable=True)
+
+    # Relationships
+    investigation = relationship("Investigation", back_populates="timeline_events")
+
+class Alert(Base):
+    __tablename__ = "alerts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="SET NULL"), nullable=True, index=True)
+    severity = Column(String(20), default="Medium", nullable=False, index=True) # Informational, Low, Medium, High, Critical
+    reason = Column(Text, nullable=False)
+    assigned_analyst_name = Column(String(100), default="SOC Lead")
+    status = Column(String(50), default="Active", nullable=False, index=True) # Active, Acknowledged, Resolved
+    details = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+    # Relationships
+    employee = relationship("Employee", backref="alerts")
+
 

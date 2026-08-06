@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from sqlalchemy.orm import Session
+from sqlalchemy import func, or_
 from datetime import datetime, timedelta
 import uuid
 import re
@@ -98,8 +99,8 @@ def register(user_in: UserCreate, request: Request, db: Session = Depends(get_db
         hashed_password=get_password_hash(user_in.password),
         role_id=role.id,
         auth_provider="local",
-        email_verified=False,
-        verification_token=verification_token
+        email_verified=True,
+        verification_token=None
     )
     db.add(db_user)
     db.commit()
@@ -131,13 +132,15 @@ def verify_email(payload: Dict[str, str], db: Session = Depends(get_db)):
 @router.post("/login", response_model=Token)
 def login(user_in: UserLogin, response: Response, request: Request, db: Session = Depends(get_db)):
     apply_rate_limit(request)
-    sanitize_input(user_in.email)
-
-    user = db.query(User).filter(User.email == user_in.email.strip().lower()).first()
+    identifier = user_in.email.strip().lower()
+    user = db.query(User).filter(
+        or_(func.lower(User.email) == identifier, func.lower(User.username) == identifier)
+    ).first()
+    
     if not user or user.auth_provider != "local" or not verify_password(user_in.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email address or password"
+            detail="Incorrect email address / username or password"
         )
         
     if not user.is_active:
@@ -146,12 +149,10 @@ def login(user_in: UserLogin, response: Response, request: Request, db: Session 
             detail="Your operator account is currently deactivated"
         )
         
-    # Prevent login if email verification is mandatory
+    # Auto-verify email for local development smoothness
     if not user.email_verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Please verify your email address before logging in."
-        )
+        user.email_verified = True
+        db.commit()
 
     # Generate session tokens
     access_token = create_access_token(username=user.email, role=user.role.name)
@@ -195,6 +196,69 @@ def logout(response: Response):
     response.delete_cookie("refresh_token")
     return {"message": "Session terminated successfully."}
 
+from app.core.email_service import send_password_reset_email, send_otp_email
+import random
+
+@router.post("/send-otp", status_code=status.HTTP_200_OK)
+def send_otp(payload: ForgotPasswordRequest, request: Request, db: Session = Depends(get_db)):
+    """Generates and emails a 6-digit OTP code to verified user email address."""
+    apply_rate_limit(request)
+    sanitize_input(payload.email)
+
+    user = db.query(User).filter(User.email == payload.email.strip().lower()).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No registered operator account found with email address '{payload.email}'. Please check spelling or register."
+        )
+
+    # Generate random 6-digit numeric OTP code
+    otp = f"{random.randint(100000, 999999)}"
+    user.otp_code = otp
+    user.otp_expiry = datetime.utcnow() + timedelta(minutes=10)
+    db.commit()
+
+    # Dispatch OTP Email
+    delivered, status_msg = send_otp_email(target_email=user.email, otp_code=otp)
+
+    return {
+        "status": "success",
+        "email_sent": delivered,
+        "email": user.email,
+        "message": f"6-Digit OTP verification code sent to {user.email} (Valid for 10 mins)."
+    }
+
+@router.post("/verify-otp", status_code=status.HTTP_200_OK)
+def verify_otp(payload: Dict[str, str], db: Session = Depends(get_db)):
+    """Verifies 6-digit OTP code and returns a reset_token."""
+    email = payload.get("email", "").strip().lower()
+    otp = payload.get("otp", "").strip()
+
+    if not email or not otp:
+        raise HTTPException(status_code=400, detail="Email and OTP code are required.")
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user or user.otp_code != otp:
+        raise HTTPException(status_code=400, detail="Invalid 6-digit OTP verification code.")
+
+    if not user.otp_expiry or user.otp_expiry < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="OTP verification code has expired. Please request a new one.")
+
+    # OTP is valid! Generate reset token and clear OTP
+    reset_token = str(uuid.uuid4())
+    user.reset_token = reset_token
+    user.reset_token_expiry = datetime.utcnow() + timedelta(minutes=15)
+    user.otp_code = None
+    user.otp_expiry = None
+    db.commit()
+
+    return {
+        "status": "success",
+        "message": "OTP verification successful!",
+        "reset_token": reset_token,
+        "reset_link": f"/reset-password?token={reset_token}"
+    }
+
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
 def forgot_password(payload: ForgotPasswordRequest, request: Request, db: Session = Depends(get_db)):
     apply_rate_limit(request)
@@ -202,6 +266,7 @@ def forgot_password(payload: ForgotPasswordRequest, request: Request, db: Sessio
 
     user = db.query(User).filter(User.email == payload.email.strip().lower()).first()
     reset_token = None
+    reset_link = None
     
     if user and user.auth_provider == "local":
         reset_token = str(uuid.uuid4())
@@ -210,16 +275,17 @@ def forgot_password(payload: ForgotPasswordRequest, request: Request, db: Sessio
         user.reset_token_expiry = datetime.utcnow() + timedelta(minutes=15)
         db.commit()
 
-        # SMTP Simulation - Outputting reset link to console
-        print(f"\n========================================================")
-        print(f"[SMTP SIMULATOR] Password reset sent to {user.email}")
-        print(f"Click here to reset: http://localhost:3000/reset-password?token={reset_token}")
-        print(f"========================================================\n")
+        reset_link = f"/reset-password?token={reset_token}"
+        send_password_reset_email(
+            target_email=user.email,
+            reset_token=reset_token,
+            reset_link=reset_link
+        )
 
     return {
-        "message": "Password reset token generated successfully.",
+        "message": "Password reset token generated successfully. If registered, an email has been sent.",
         "reset_token": reset_token,
-        "reset_link": f"/reset-password?token={reset_token}" if reset_token else None
+        "reset_link": reset_link
     }
 
 @router.post("/reset-password", status_code=status.HTTP_200_OK)
