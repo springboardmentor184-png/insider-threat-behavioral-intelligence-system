@@ -5,11 +5,98 @@
 [![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite-purple.svg)]()
 [![ML Model](https://img.shields.io/badge/ML-IsolationForest%20UEBA-orange.svg)]()
 
-> A production-grade **User and Entity Behavior Analytics (UEBA)** security platform for real-time insider threat detection, behavioral profiling, machine learning anomaly detection, weighted risk scoring, SOC case management, and automated security alert triggers.
+---
+
+## 🌟 Executive Project Overview
+
+The **Insider Threat Behavioral Intelligence System** is an enterprise-grade **User and Entity Behavior Analytics (UEBA)** platform designed to proactively detect, quantify, and mitigate malicious or compromised insider activities within an organization before data exfiltration or system compromise occurs.
+
+By ingesting multi-vector activity logs (logons, USB devices, confidential file access, email attachments, and HTTP web traffic), the platform establishes dynamic statistical baselines for every employee using an unsupervised **IsolationForest Machine Learning model**. Deviations from historical baselines and department peer averages feed into a **35-25-20-10-10 Weighted Risk Engine**, computing real-time risk scores (0–100%).
+
+When a monitored individual's risk score reaches **≥ 75.0% (Critical Risk)**, the system automatically triggers an immediate **Administrator Email Security Alert** featuring detailed incident descriptions, threat vectors, and recommended SOC actions, while auto-initializing a **Threat Investigation Case File** for Security Operations Center (SOC) analysts.
 
 ---
 
-## 📌 Complete Milestone Overview & Architecture
+## 📁 Complete Project Directory & File Structure
+
+```text
+insider-threat-system/
+│
+├── backend/                            # FastAPI Python Backend Application
+│   ├── app/
+│   │   ├── analytics/                  # UEBA & Threat Intelligence Analytics Engines
+│   │   │   ├── alert_engine.py         # Automated Security Alert Queue Generator
+│   │   │   ├── detector.py             # IsolationForest Machine Learning Anomaly Detector
+│   │   │   ├── risk_engine.py          # 35-25-20-10-10 Weighted Risk Scoring Engine
+│   │   │   └── ueba_engine.py          # Department Peer Benchmarking & Baseline Profiler
+│   │   │
+│   │   ├── core/                       # Security & Communication Infrastructure
+│   │   │   ├── config.py               # Pydantic Application Settings & Environment Schema
+│   │   │   ├── dependencies.py         # JWT Token & OAuth2 Security Dependencies
+│   │   │   ├── email_service.py        # Gmail SMTP TLS Email Dispatcher & HTML Templates
+│   │   │   └── security.py             # Password Hashing (bcrypt) & JWT Generation
+│   │   │
+│   │   ├── models/                     # SQLAlchemy Database Schema Models
+│   │   │   └── models.py               # User, Employee, ActivityLog, Anomaly, RiskScore, Alert, Case
+│   │   │
+│   │   ├── routers/                    # RESTful API Endpoints
+│   │   │   ├── activities.py           # Activity Logs Ingestion & CMU CERT Stream API
+│   │   │   ├── alerts.py               # Security Alert Queue Management API
+│   │   │   ├── analytics.py            # Behavioral Anomaly Cockpit API
+│   │   │   ├── auth.py                 # Login, Register, 6-Digit OTP & Password Reset API
+│   │   │   ├── employees.py            # Monitored Personnel Profiles & Department API
+│   │   │   ├── investigations.py       # Threat Investigation Case Files API
+│   │   │   └── risk.py                 # Dynamic Recalculation & Leaderboard API
+│   │   │
+│   │   ├── schemas/                    # Pydantic Data Validation Schemas
+│   │   │   └── schemas.py              # Request & Response Payload DTO Schemas
+│   │   │
+│   │   ├── database.py                 # SQLAlchemy Session & Engine Initializer
+│   │   └── main.py                     # FastAPI Application Initialization & Middleware
+│   │
+│   ├── ingest_cert_1250_entries.py     # CERT Dataset Ingestion Pipeline (1,250 Entries)
+│   ├── sync_all_cert_employees.py      # CERT Personnel Synchronization Script (708 Users)
+│   ├── ingest_john_doe_high_risk.py    # High-Risk Threat Case Ingestion Script (Score 87%)
+│   ├── .env.example                    # Environment Configuration Template
+│   ├── requirements.txt                # Python Backend Package Dependencies
+│   └── insider_threat.db               # SQLite Local Relational Database
+│
+├── frontend/                           # React 18 & Vite Frontend Web Application
+│   ├── src/
+│   │   ├── components/                 # Reusable UI Components
+│   │   │   ├── Charts.jsx              # Pure SVG Interactive Pie, Donut & Bar Charts
+│   │   │   └── Navbar.jsx              # Modern Dark Navigation Header
+│   │   │
+│   │   ├── pages/                      # Application Route Views & Dashboards
+│   │   │   ├── ActivityLogs.jsx        # Telemetry Stream & CERT Dataset Control Center
+│   │   │   ├── AnalyticsCockpit.jsx    # Behavioral Anomaly Cockpit & UEBA Charts
+│   │   │   ├── Dashboard.jsx           # Main Executive Overview Dashboard
+│   │   │   ├── ForgotPassword.jsx      # 6-Digit OTP Password Reset Request View
+│   │   │   ├── InvestigationDetails.jsx# SOC Case Investigation View & Timeline
+│   │   │   ├── InvestigationList.jsx   # Threat Investigation Case Directory
+│   │   │   ├── Login.jsx               # Operator Dual Authentication View
+│   │   │   ├── Register.jsx            # Operator Registration View
+│   │   │   ├── ResetPassword.jsx       # Password Update Form View
+│   │   │   └── RiskAnalytics.jsx       # Risk Leaderboard, Alerts Queue & Peer Comparison
+│   │   │
+│   │   ├── services/                   # API Axios Services
+│   │   │   └── api.js                  # Axios HTTP Client with Bearer Token Interceptor
+│   │   │
+│   │   ├── App.jsx                     # React Router Navigation & Protected Routes
+│   │   ├── index.css                   # Glassmorphic CSS Tokens & Theme Variables
+│   │   └── main.jsx                    # React Application Entry Point
+│   │
+│   ├── index.html                      # HTML5 Root Document
+│   ├── package.json                    # Node.js Frontend Dependencies & Scripts
+│   └── vite.config.js                  # Vite Build Configuration & API Proxy Rules
+│
+├── README.md                           # Comprehensive System Documentation
+└── .gitignore                          # Git Version Control Exclusions Rules File
+```
+
+---
+
+## 📌 Milestone Capabilities Breakdown
 
 ### 🔷 Milestone 1: Core Identity, Telemetry Data & RBAC Foundation
 * 👥 **Monitored Personnel Directory**: Synchronized dataset of 708 monitored personnel profiles across organizational departments (Engineering, IT, HR, Finance, Executive).
