@@ -2,17 +2,29 @@
 AI-powered Insider Threat Behavioral Intelligence System developed as part of the Infosys Internship Program.
 
 
-## Week Progress
+# Milestone 3 (Week 5–6)
 
-### Machine Learning
-- Dataset exploration and preprocessing
-- Feature engineering
-- Behaviour baseline generation
-- Anomaly Detection Engine using Isolation Forest
-- Risk score calculation
-- Dashboard JSON generation
-- Risk score CSV generation
-- ML pipeline automation scripts
+## Completed
+
+- Insider Risk Scoring Engine
+- UEBA Dashboard
+- Risk Analytics
+- Dashboard Integration
+- Risk Score API
+- Risk Distribution Visualization
+
+## Partially Implemented
+
+- Threat Investigation workflow
+- Investigation interface
+- High-risk employee listing
+
+## Planned
+
+- Incident timeline
+- Evidence management
+- Activity correlation
+- Investigation reports
 
 ### Frontend
 - React + Vite dashboard
