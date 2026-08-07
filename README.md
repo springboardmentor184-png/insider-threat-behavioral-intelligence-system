@@ -1,10 +1,12 @@
-# 🛡️ Insider Threat Behavioral Intelligence System
+Insider Threat Behavioral Intelligence System
 
 ## Project Overview
 
-The Insider Threat Behavioral Intelligence System is a web-based enterprise security application designed to help organizations monitor employee activities, manage user profiles, and detect potential insider threats.
+The **Insider Threat Behavioral Intelligence System** is a full-stack enterprise cybersecurity platform that combines **User and Entity Behavior Analytics (UEBA)**, **Machine Learning**, **Risk Scoring**, and **Security Operations workflows** to identify potential insider threats within an organization.
 
-The system provides secure role-based access for different organizational users and is being developed as part of the Infosys Springboard Internship Program.
+The application securely manages employees, continuously analyzes behavioral patterns, generates insider risk scores, creates automated investigation workflows, delivers critical email alerts, and provides interactive security dashboards for SOC analysts and administrators.
+
+Developed as part of the **Infosys Springboard Internship Program**.
 
 ---
 
@@ -12,37 +14,49 @@ The system provides secure role-based access for different organizational users 
 
 ## Frontend
 
-- React (Vite)
-- React Router DOM
-- Axios
-- Tailwind CSS
-- JavaScript
+* React (Vite)
+* React Router DOM
+* Axios
+* Tailwind CSS
+* Recharts
+* Lucide React
+* JavaScript
+
+---
 
 ## Backend
 
-- Python
-- Flask
-- Flask-CORS
-- Flask-JWT-Extended
-- SQLAlchemy
+* Python
+* Flask
+* Flask-CORS
+* Flask-JWT-Extended
+* SQLAlchemy
+
+---
 
 ## Database
 
-- PostgreSQL
+* PostgreSQL
+
+---
 
 ## Machine Learning
 
-- Pandas
-- NumPy
-- Scikit-learn
-- Joblib
+* Pandas
+* NumPy
+* Scikit-learn
+* Isolation Forest
+* Joblib
+
+---
 
 ## Development Tools
 
-- Git
-- GitHub
-- VS Code
-- Postman
+* Git
+* GitHub
+* VS Code
+* pgAdmin
+* Postman
 
 ---
 
@@ -50,161 +64,253 @@ The system provides secure role-based access for different organizational users 
 
 ## Authentication
 
-- User Registration
-- User Login
-- JWT Authentication
-- Role-Based Access Control
-- Flask REST APIs
-- Axios Integration between React and Flask
+* User Registration
+* User Login
+* JWT Authentication
+* Role-Based Authentication
+* Secure REST APIs
+* React–Flask Integration
 
 ---
 
 ## Role-Based Dashboards
 
-Separate dashboards have been developed for:
+Implemented dashboards for:
 
-- Administrator
-- Security Manager
-- Security Analyst
-- SOC Engineer
-- Employee
+* Administrator
+* Security Manager
+* Security Analyst
+* SOC Engineer
+* Employee
 
-Each user is redirected to the appropriate dashboard after successful login.
-
----
-
-## Database Design
-
-The PostgreSQL database contains the following tables:
-
-- Users
-- Employee Profiles
-- Departments
-- Devices
-- Access Privileges
-- Activity Logs
-- Alerts
-- Risk Scores
-
-The database schema is implemented using SQLAlchemy ORM with foreign key relationships.
-
----
-
-## Administrator Dashboard
-
-The Administrator Dashboard displays live statistics retrieved from PostgreSQL, including:
-
-- Total Employees
-- Departments
-- Registered Devices
-- Open Alerts
-
-Dashboard statistics are fetched through secured Flask REST APIs.
+Each user is redirected according to their assigned role.
 
 ---
 
 ## Employee Management
 
-The Employee Management module currently includes:
+Implemented:
 
-- Employee List
-- Search Bar
-- Add Employee
-- Edit Employee
-- Delete Employee (UI)
-
-Implemented Backend APIs:
-
-- Add Employee Profile
-- Fetch Employee Profiles
-- Update Employee Profile
-
-Employee records are stored in PostgreSQL and displayed in the React frontend.
+* Employee List
+* Search Employee
+* Add Employee
+* Edit Employee
+* Delete Employee (UI)
+* Department Assignment
+* Dataset User Mapping
 
 ---
 
-## REST APIs Developed
+## Database Design
 
-- User Registration
-- User Login
-- Fetch Users
-- Add Employee
-- Fetch Employees
-- Update Employee
-- Administrator Dashboard Statistics
+Implemented SQLAlchemy models for:
+
+* Users
+* Employee Profiles
+* Departments
+* Devices
+* Alerts
+* Access Privileges
+* Activity Logs
+* Risk Scores
 
 ---
 
-# Milestone 2 – Behavioral Analytics & Anomaly Detection
+# Milestone 2 – Behavioral Analytics & Machine Learning
+
+## CERT Dataset Integration
+
+Completed:
+
+* CERT Insider Threat Dataset imported
+* Employee mapping
+* Behavioral feature extraction
+
+Features extracted include:
+
+* Average Email Size
+* Attachment Count
+* Email Content Length
+* Working Hour
+* Day of Week
+
+---
 
 ## Behavioral Profiling Engine
 
-Completed:
+Implemented:
 
-- Created the Machine Learning module structure.
-- Integrated the CERT Insider Threat Dataset.
-- Loaded and processed enterprise email activity data.
-- Developed the feature engineering pipeline.
-- Extracted behavioral features from employee activities including:
-  - Email Size
-  - Number of Attachments
-  - Hour of Activity
-  - Day of Week
-  - Email Content Length
+* Feature Engineering Pipeline
+* Employee Behaviour Baseline
+* Current Behaviour Analysis
 
 ---
 
-## AI-Based Anomaly Detection
+## AI-Based Insider Threat Detection
 
-Completed:
+Implemented using **Isolation Forest**.
 
-- Implemented an Isolation Forest anomaly detection model using Scikit-learn.
-- Trained the model on engineered behavioral features.
-- Saved the trained model using Joblib.
-- Developed a prediction pipeline for detecting abnormal employee behavior.
-- Successfully classified employee activities into:
-  - Normal
-  - Anomaly
+The model classifies employee behaviour as:
+
+* Normal
+* Anomaly
 
 ---
 
-## Activity Monitoring
+## Prediction Pipeline
 
-Completed:
+Implemented:
 
-- Designed the Activity Logs database model.
-- Configured activity storage for employee behavioral events.
-- Prepared the backend architecture for continuous activity monitoring.
-
----
-
-## Current Progress
-
-The following components have been successfully implemented:
-
-- CERT Dataset Integration
-- Behavioral Feature Engineering
-- Behavioral Profiling Pipeline
-- AI Model Training
-- Isolation Forest Model
-- Prediction Pipeline
-- Activity Log Model
-- Machine Learning Project Structure
+* Model Loading
+* Employee Prediction
+* Behaviour Comparison
+* Feature Analysis
 
 ---
 
-## Remaining Work
+# Milestone 3 – UEBA Intelligence Platform
 
-- Integrate the trained ML model with Flask APIs
-- Perform real-time anomaly detection from activity logs
-- Generate behavioral baselines for every employee
-- Calculate employee risk scores
-- Generate insider threat alerts
-- Build anomaly reports
-- Connect predictions with the Administrator Dashboard
-- Add behavioral analytics visualizations
-- Integrate LANL Cyber Security Dataset
-- Integrate CMU Insider Threat Dataset
+## Insider Risk Scoring Engine
+
+Implemented a behavioural risk scoring engine using:
+
+* Email Size
+* Attachment Usage
+* Email Content Length
+* Working Hours
+* Isolation Forest Prediction
+
+Risk Levels:
+
+* Low
+* Medium
+* High
+* Critical
+
+---
+
+## UEBA Intelligence Workflow
+
+The system automatically performs:
+
+* Behaviour Analysis
+* Machine Learning Prediction
+* Insider Risk Score Generation
+* Behaviour Justification
+* Recommendation Generation
+
+---
+
+## Threat Investigation Module
+
+Automatic investigations are created for:
+
+* High Risk
+* Critical Risk
+
+Each investigation stores:
+
+* Employee
+* Risk Score
+* Priority
+* Status
+* Assigned Analyst
+* Investigation Description
+
+---
+
+## Threat Notifications
+
+Critical threats automatically generate security notifications.
+
+Notification includes:
+
+* Employee Name
+* Risk Score
+* Risk Level
+* Threat Message
+* Timestamp
+
+---
+
+## Automated Email Alert System
+
+Implemented a real-time email alert system using:
+
+* Gmail SMTP
+* Python SMTP Library
+* TLS Encryption
+* Gmail App Password Authentication
+
+Whenever a **Critical** insider threat is detected, the system automatically emails the security team with:
+
+* Employee Details
+* Risk Score
+* Risk Level
+* Behaviour Analysis
+* Investigation Recommendation
+
+---
+
+## Security Dashboards
+
+Implemented dashboards for:
+
+* Administrator
+* Security Analyst
+* Threat Detection
+* Investigations
+* Notifications
+* Reports
+* Risk Analytics
+
+---
+
+## Risk Analytics Dashboard
+
+Interactive analytics include:
+
+* Department-wise Average Risk
+* Risk Distribution
+* Organization Summary
+* Highest Risk Employee
+* Total Reports
+* Total Investigations
+
+Charts are implemented using **Recharts**.
+
+---
+
+# REST APIs
+
+Implemented APIs include:
+
+Authentication
+
+* Register User
+* Login User
+* Fetch Users
+
+Employee Management
+
+* Add Employee
+* Get Employees
+* Update Employee
+
+Threat Detection
+
+* Detect Anomaly
+* Generate Report
+
+Security Operations
+
+* Investigations
+* Notifications
+* Risk Analytics Dashboard
+
+Dashboard
+
+* Administrator Statistics
 
 ---
 
@@ -214,10 +320,16 @@ The following components have been successfully implemented:
 React Frontend
         │
         ▼
-Flask REST API
+Flask REST APIs
         │
         ▼
-Machine Learning Engine
+UEBA Engine
+        │
+        ▼
+Isolation Forest Model
+        │
+        ▼
+Risk Scoring Engine
         │
         ▼
 SQLAlchemy ORM
@@ -228,36 +340,61 @@ PostgreSQL Database
 
 ---
 
-# Current Project Status
+# Current Progress
 
 ## Completed
 
-- Project Setup
-- React Frontend
-- Flask Backend
-- PostgreSQL Configuration
-- Database Schema Design
-- SQLAlchemy Models
-- User Authentication
-- JWT Token Generation
-- Role-Based Navigation
-- Administrator Dashboard
-- Security Manager Dashboard
-- Security Analyst Dashboard
-- SOC Engineer Dashboard
-- Employee Dashboard
-- Employee Management
-- Employee CRUD (Add, View, Update)
-- Activity Log Model
-- CERT Dataset Integration
-- Feature Engineering Pipeline
-- Behavioral Profiling Engine
-- Isolation Forest Model Training
-- AI Prediction Pipeline
-- GitHub Repository Setup
+### Core Platform
+
+* React Frontend
+* Flask Backend
+* PostgreSQL Database
+* SQLAlchemy Models
+* JWT Authentication
+* Role-Based Dashboards
+
+### Employee Management
+
+* Employee CRUD
+* Department Mapping
+* Dataset User Mapping
+
+### Machine Learning
+
+* CERT Dataset Integration
+* Feature Engineering
+* Behaviour Profiling
+* Isolation Forest Training
+* Prediction Pipeline
+
+### UEBA
+
+* Behaviour Analysis
+* Insider Risk Scoring
+* Investigation Workflow
+* Threat Notifications
+* Automated Email Alerts
+* Risk Analytics Dashboard
+
+### UI
+
+* Galaxy-inspired Dashboard Theme
+* Interactive Charts
+* Improved Sidebar
+* Improved Navigation
+
+---
+
+# In Progress
+
+* Professional PDF Threat Analysis Report
+* Enhanced Security Dashboards
+* Advanced Data Visualizations
+* Organization-wide Risk Scan
 
 ---
 
 # Project Goal
 
-The objective of this project is to build an enterprise-level Insider Threat Behavioral Intelligence System capable of securely managing employees, monitoring user activities, analyzing behavioral patterns, and detecting potential insider threats through role-based access control, data analytics, and machine learning techniques.
+The objective of this project is to build an enterprise-grade **Insider Threat Behavioral Intelligence System** capable of monitoring employee behaviour, detecting insider threats using **Machine Learning**, performing **User and Entity Behavior Analytics (UEBA)**, automatically generating investigations, notifying security analysts through **real-time email alerts**, and providing actionable security intelligence through interactive dashboards and analytics.
+
