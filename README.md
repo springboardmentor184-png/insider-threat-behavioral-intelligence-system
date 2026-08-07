@@ -1,130 +1,173 @@
-# insider-threat-behavioral-intelligence-system
-AI-powered Insider Threat Behavioral Intelligence System developed as part of the Infosys Internship Program.
+# Insider Threat Behavioral Intelligence System (ITBIS)
 
-**Status:** Milestone 1 complete 
+An AI-powered Enterprise Insider Threat Behavioral Intelligence & Risk Scoring Platform developed to continuously monitor employee activity, analyze behavioral patterns, detect anomalous events, compute weighted risk scores, and trigger automated security alerts.
+
+**Project Status:** Milestone 3 Operational (Risk Scoring Engine, UEBA Analytics, Threat Investigation Workbench, Executive PDF Reports, & Automated Email Alerts Operational)
 
 ---
 
-## Tech Stack
+## 🛠️ Architecture & Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Backend | Python, FastAPI |
-| Frontend | React (Vite) |
-| Primary Database | PostgreSQL 18 |
-| Auth | JWT (python-jose), bcrypt password hashing |
-| Frontend routing | react-router-dom |
-| HTTP client | axios |
+| **Backend API** | Python 3.13, FastAPI, Uvicorn |
+| **Database & ORM** | PostgreSQL / SQLite, SQLAlchemy, Alembic |
+| **Machine Learning & Analytics** | Scikit-learn (Isolation Forest), Pandas, NumPy |
+| **Frontend UI** | React 19, Vite, Recharts, Vanilla CSS (SOC Cyber Dark Theme) |
+| **Authentication & RBAC** | JWT Tokens (`python-jose`), `bcrypt` password hashing |
+| **Alert & Notification System** | Python `smtplib` + Gmail SMTP TLS (`anu.ananya.beckwoad@gmail.com`) |
+| **Evidence Reporting** | JSON Export & Native Printable Executive PDF Export |
 
 ---
 
-## Project Structure
+## 📊 Modules Implemented
+
+### 1. User Authentication & Role-Based Access Control (RBAC)
+- JWT token-based authentication (`/auth/login`, `/auth/register`, `/auth/me`).
+- Granular Role-Based Access Control with 4 user roles:
+  - **Security Analyst**: Monitored data review, threat investigation workbench access.
+  - **SOC Engineer**: Technical telemetry review & model parameters.
+  - **Security Manager**: Employee management, risk scoring posture oversight, manual security flagging.
+  - **Administrator**: Full administrative control, system logs, & profile deletion privileges.
+
+### 2. Employee Identity & Profile Directory
+- Management of employee metadata: Employee ID, Department, Designation, Manager, Device/Asset SN, and Access Privileges.
+- Instant search by ID/Department/Role and modal interface to onboard new profiles.
+
+### 3. Activity Monitoring & Telemetry Ingestion
+- Ingestion of activity event logs: Logins, File Downloads/Uploads, USB Devices, Database Access, Remote Sessions, and Privilege Changes.
+
+### 4. Behavioral Profiling & UEBA Engine
+- Baselining user historical behavior (login times, file transfer volumes, application usage).
+- Peer group comparison and trend telemetry over time.
+
+### 5. Anomaly Detection Engine
+- Isolation Forest ML model combined with rule-based anomaly heuristics.
+- Categorizes anomalies into Unusual Login Time, Abnormal Data Download, Unauthorized Access Attempt, Privilege Abuse, and Suspicious Device Usage.
+
+### 6. Insider Risk Scoring Engine
+- **Weighted Multi-Factor Scoring Model**:
+  $$\text{Insider Risk Score} = (0.35 \times \text{Behavioral Anomalies}) + (0.25 \times \text{Privilege Misuse}) + (0.20 \times \text{Data Access Violations}) + (0.10 \times \text{Access Pattern Deviations}) + (0.10 \times \text{Historical Events})$$
+- Categorization into 4 Risk Tiers:
+  - 🟢 **Low Risk** (0–25)
+  - 🟡 **Medium Risk** (26–50)
+  - 🟠 **High Risk** (51–75)
+  - 🔴 **Critical Risk** (76–100)
+
+### 7. Threat Investigation Workbench
+- Subject risk overview and real-time status tracker (`Open`, `Under Investigation`, `Escalated to SOC Tier 3`, `Resolved`).
+- Interactive **Activity Telemetry Timeline** detailing timestamps, event types, and risk levels.
+- Correlated Risk Indicators and associated asset/device metadata.
+- Analyst Investigation Log & Evidence Notes.
+
+### 8. Notification & Escalation System
+- Automated Gmail SMTP alert integration sending instant critical warning notifications to **`anu.ananya.beckwoad@gmail.com`** when an employee's risk breaches threshold or when manually flagged by an analyst.
+
+### 9. Evidence Export & Reports System
+- **JSON Export**: Raw structured threat case payload for SIEM / SOAR integration.
+- **PDF Export**: Clean executive printable PDF report formatted with badges, timeline, and analyst notes.
+
+---
+
+## 📂 Project Structure
 
 ```
 Insider-Threat-Behavioral-Intelligence-System/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py              # FastAPI entrypoint, router registration
-│   │   ├── database.py          # SQLAlchemy engine, session, Base
-│   │   ├── models.py            # User, EmployeeProfile, ActivityLog tables
-│   │   ├── schemas.py           # Pydantic request/response schemas
-│   │   ├── auth.py              # JWT creation/validation, password hashing, RBAC
+│   │   ├── main.py                 # FastAPI application & router registration
+│   │   ├── database.py             # SQLAlchemy session & database engine
+│   │   ├── models.py               # SQLAlchemy ORM models (User, EmployeeProfile, ActivityLog)
+│   │   ├── schemas.py              # Pydantic validation schemas (UserCreate, FlagCreate, etc.)
+│   │   ├── auth.py                 # JWT token creation, password hashing, RBAC dependencies
+│   │   ├── services/
+│   │   │   └── email_service.py    # Gmail SMTP alert dispatch system
 │   │   └── routes/
-│   │       ├── auth_routes.py       # /auth/register, /auth/login, /auth/me
-│   │       ├── employee_routes.py   # /employees/ CRUD
-│   │       └── activity_routes.py   # /activity-logs/ ingestion + retrieval
-│   └── requirements.txt
+│   │       ├── auth_routes.py      # Authentication endpoints (/auth/login, /auth/register)
+│   │       ├── employee_routes.py  # Employee CRUD & manual flagging (/employees/{id}/flag)
+│   │       ├── activity_routes.py  # Activity log ingestion (/activity-logs/)
+│   │       └── anomalies.py        # Anomaly telemetry retrieval (/api/anomalies)
+│   └── check_schema.py
 ├── frontend/
-│   └── src/
-│       ├── api/axios.js             # Axios instance + API calls
-│       ├── context/AuthContext.jsx  # Global auth state
-│       ├── components/Layout.jsx    # Sidebar + top bar app shell
-│       ├── routes/ProtectedRoute.jsx
-│       └── pages/
-│           ├── Login.jsx
-│           ├── Dashboard.jsx
-│           └── Employees.jsx
-└── docker-compose.yml
+│   ├── index.html                  # Vite HTML entrypoint with Google Fonts
+│   ├── src/
+│   │   ├── main.jsx                # React 19 mounting script
+│   │   ├── index.css               # SOC Cyber Dark Design System
+│   │   ├── App.jsx                 # Client-side router configuration
+│   │   ├── api/axios.js            # Axios interceptors & backend API calls
+│   │   ├── context/AuthContext.jsx # Global JWT session state
+│   │   ├── routes/ProtectedRoute.jsx # Auth route guard
+│   │   ├── components/
+│   │   │   └── Layout.jsx          # Sidebar, header with system clock, role badges
+│   │   └── pages/
+│   │       ├── Login.jsx           # Cyber SOC authentication page & demo role buttons
+│   │       ├── Dashboard.jsx       # Risk Scoring Engine & UEBA Analytics Dashboard
+│   │       ├── Employees.jsx       # Identity Directory, Onboarding & Flagging
+│   │       ├── Anomalies.jsx       # Anomaly Detection & Classification Center
+│   │       └── AnomalyDetail.jsx   # Threat Investigation Workbench & PDF/JSON Export
+│   └── package.json
+├── data-processing/                # Isolation Forest training scripts & CERT sample datasets
+└── README.md
 ```
 
 ---
 
-## Milestone 1 — 
+## 🔑 Roles & Permissions Matrix
 
-## Roles & Permissions
-
-Four user roles are implemented, matching the Springboard spec:
-
-| Role | Can view employees | Can create employees | Can delete employees |
-|---|---|---|---|
-| Security Analyst | ✅ | ❌ | ❌ |
-| SOC Engineer | ✅ | ❌ | ❌ |
-| Security Manager | ✅ | ✅ | ❌ |
-| Administrator | ✅ | ✅ | ✅ |
-
-All authenticated users can view and submit activity logs.
+| User Role | View Telemetry | Onboard Employees | Flag Entities | Delete Employees | Escalate Incidents |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Security Analyst** | ✅ | ❌ | ✅ | ❌ | ✅ |
+| **SOC Engineer** | ✅ | ❌ | ✅ | ❌ | ✅ |
+| **Security Manager** | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **Administrator** | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
-**Backend**
-```powershell
+## ⚡ Quick Start Guide
+
+### 1. Backend Setup (FastAPI)
+```bash
 cd backend
-py -m pip install -r requirements.txt
-py -m uvicorn app.main:app --reload
-```
-Runs at `http://127.0.0.1:8000`
+python -m venv venv
+# On Windows PowerShell:
+.\venv\Scripts\Activate.ps1
 
-**Frontend**
-```powershell
+pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --port 8000
+```
+- API Documentation (Swagger UI): `http://127.0.0.1:8000/docs`
+
+### 2. Frontend Setup (React 19 + Vite)
+```bash
 cd frontend
 npm install
 npm run dev
 ```
-Runs at `http://localhost:5173`
-
-**Database**
-- PostgreSQL 18 running locally, database name: `itbis_db`
-- Connection string configured in `backend/app/database.py`
+- Web Application Console: `http://localhost:5173`
 
 ---
 
-## Test Accounts
+## 🚀 Quick Demo Login Credentials
 
-| Username | Password | Role |
+You can log in directly using the pre-configured quick demo role buttons on the Sign In page:
+
+| Role | Demo Username | Default Password |
 |---|---|---|
-| analyst1 | Test@123 | security_analyst |
-| soc1 | Test@123 | soc_engineer |
-| manager1 | Test@123 | security_manager |
-| admin1 | Test@123 | administrator |
+| **Security Analyst** | `analyst_demouser` | `password123` |
+| **SOC Engineer** | `soc_engineer_demo` | `password123` |
+| **Security Manager** | `sec_manager_demo` | `password123` |
+| **Administrator** | `admin_demo` | `password123` |
 
 ---
 
-## Datasets
+## 📧 Email Alert Configuration
 
-The CERT Insider Threat Dataset (Kaggle) has been identified as the data source for activity log ingestion. A sample of real `logon.csv` records has been prepared for loading through the ingestion pipeline via `ingest_cert_data.py` to validate the pipeline against realistic data shapes ahead of Milestone 2's model training work.
+Alert notifications are configured to send warning emails via Gmail SMTP (`smtp.gmail.com:587`). Environment variables can be defined in a `.env` file or system environment:
 
-**Status:** Milestone 2 in progress (Week 3 & 4 — CERT Dataset Ingestion & Behavioral Analysis)
-
-## Milestone 2 Progress
-
-✅ Dataset acquisition — CERT r4.2 (Kaggle: andrihjonior/cert-insider-threat-dataset-r4-2)
-
-✅ Files: logon.csv, device.csv, file.csv, email.csv, http.csv (5% sampled), psychometric.csv, LDAP snapshots (3 months)
-
-✅ Ingestion pipeline (`ingest_cert_data.py`) — loads all files into PostgreSQL (`itbis_db`)
-
-✅ EDA — structural checks (nulls, dtypes, row counts) and pattern analysis (login times, after-hours activity, top users by device/file/email activity)
-
-✅ Feature engineering (`feature_engineering.py`) — per-user behavioral features: total logons, after-hours logons, after-hours ratio, device activity, file access count, emails sent, http activity, combined activity score. Saved to `user_features` table.
-
-🔄 Next: Isolation Forest anomaly/risk scoring model on `user_features`
-⬜ Expose risk scores via FastAPI endpoint
-⬜ Display risk scores on frontend dashboard
-
-## Scripts (data-processing/)
-- `download_r42.py` — downloads CERT r4.2 via kagglehub
-- `copy_r42.py` — copies/samples relevant files into `data/raw_r42`
-- `check_files.py` — verifies row counts and columns
-- `ingest_cert_data.py` — loads CSVs into PostgreSQL
-- `eda.py` / `eda_patterns.py` — exploratory data analysis
-- `feature_engineering.py` — builds per-user risk features
+```env
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SENDER_EMAIL=anu.ananya.beckwoad@gmail.com
+SENDER_PASSWORD=your-16-char-gmail-app-password
+DEFAULT_RECIPIENT_EMAIL=anu.ananya.beckwoad@gmail.com
+```

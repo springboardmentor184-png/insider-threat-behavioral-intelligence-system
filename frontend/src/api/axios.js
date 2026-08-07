@@ -16,7 +16,7 @@ export const getEmployees = () => api.get("/employees/");
 export const createEmployee = (data) => api.post("/employees/", data);
 export const getAnomalies = () => api.get("/api/anomalies");
 export const getAnomalyDetail = (user) => api.get(`/api/anomalies/${user}`);
-
-export default api;
 export const flagEmployee = (employeeId, reason) =>
   api.post(`/employees/${employeeId}/flag`, { employee_id: employeeId, reason });
+
+export default api;

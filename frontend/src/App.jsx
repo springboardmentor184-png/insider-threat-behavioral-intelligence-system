@@ -13,8 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/anomalies" element={<Anomalies />} />
-          <Route path="/anomalies/:user" element={<AnomalyDetail />} />
+
           <Route
             path="/dashboard"
             element={
@@ -31,7 +30,24 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route
+            path="/anomalies"
+            element={
+              <ProtectedRoute>
+                <Anomalies />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/anomalies/:user"
+            element={
+              <ProtectedRoute>
+                <AnomalyDetail />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
