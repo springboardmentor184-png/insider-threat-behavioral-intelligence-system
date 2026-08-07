@@ -1,1 +1,158 @@
 @import "tailwindcss";
+
+/* ===================================
+   Insider Threat BI Theme
+=================================== */
+
+:root {
+
+  --bg-primary: #020617;
+  --bg-secondary: #0F172A;
+  --bg-card: #1E293B;
+
+  --primary: #6366F1;
+  --primary-hover: #7C3AED;
+
+  --accent: #3B82F6;
+
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+
+  --border: #334155;
+
+}
+
+/* ===================================
+   Body
+=================================== */
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Inter,
+        system-ui,
+        sans-serif;
+
+    
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(99,102,241,.12),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(59,130,246,.10),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            var(--bg-primary),
+            var(--bg-secondary)
+        );
+
+    min-height: 100vh;
+
+    background-attachment: fixed;
+
+}
+
+/* ===================================
+   Scrollbar
+=================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#0F172A;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#475569;
+
+    border-radius:10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#6366F1;
+
+}
+
+/* ===================================
+   Cards
+=================================== */
+
+.glass-card{
+
+    background:rgba(30,41,59,.92);
+
+    border:1px solid #334155;
+
+    border-radius:18px;
+
+    box-shadow:
+
+        0 8px 24px rgba(0,0,0,.35);
+
+}
+
+/* ===================================
+   Hover
+=================================== */
+
+.glass-card:hover{
+
+    border-color:#6366F1;
+
+    transition:.25s ease;
+
+}
+
+/* ===================================
+   Small Glow
+=================================== */
+
+.glow-purple{
+
+    box-shadow:
+
+        0 0 16px rgba(99,102,241,.18);
+
+}
+
+.glow-blue{
+
+    box-shadow:
+
+        0 0 16px rgba(59,130,246,.18);
+
+}
+
+/* ===================================
+   Selection
+=================================== */
+
+::selection{
+
+    background:#6366F1;
+
+    color:white;
+
+}

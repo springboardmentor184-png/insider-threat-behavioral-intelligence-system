@@ -25,3 +25,5 @@ class EmployeeProfile(Base):
     phone = Column(String(20))
 
     status = Column(String(30), default="Active")
+
+    dataset_user = Column(String(20))

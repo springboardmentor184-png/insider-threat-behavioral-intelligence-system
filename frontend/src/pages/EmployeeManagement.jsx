@@ -6,21 +6,24 @@ import axios from "axios";
 function EmployeeManagement() {
 
     const [employees, setEmployees] = useState([]);
+    const [users, setUsers] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [editingEmployeeId, setEditingEmployeeId] = useState(null);
 
     const [employee, setEmployee] = useState({
-        user_id: "",
-        department: "",
-        designation: "",
-        manager: "",
-        joining_date: "",
-        phone: "",
-        status: "Active"
-    });
+    user_id: "",
+    department: "",
+    designation: "",
+    manager: "",
+    joining_date: "",
+    phone: "",
+    dataset_user: "",
+    status: "Active"
+});
 
     useEffect(() => {
         fetchEmployees();
+        fetchUsers();
     }, []);
 
     const fetchEmployees = () => {
@@ -35,6 +38,22 @@ function EmployeeManagement() {
             });
 
     };
+    const fetchUsers = () => {
+
+    axios
+        .get("http://127.0.0.1:5000/users")
+        .then((response) => {
+
+            setUsers(response.data);
+
+        })
+        .catch((error) => {
+
+            console.error(error);
+
+        });
+
+};
 
     const saveEmployee = () => {
 
@@ -61,14 +80,15 @@ function EmployeeManagement() {
                 setEditingEmployeeId(null);
 
                 setEmployee({
-                    user_id: "",
-                    department: "",
-                    designation: "",
-                    manager: "",
-                    joining_date: "",
-                    phone: "",
-                    status: "Active"
-                });
+    user_id: "",
+    department: "",
+    designation: "",
+    manager: "",
+    joining_date: "",
+    phone: "",
+    dataset_user: "",
+    status: "Active"
+});
 
                 fetchEmployees();
 
@@ -87,14 +107,15 @@ function EmployeeManagement() {
         setEditingEmployeeId(emp.employee_id);
 
         setEmployee({
-            user_id: emp.user_id,
-            department: emp.department,
-            designation: emp.designation,
-            manager: emp.manager,
-            joining_date: emp.joining_date,
-            phone: emp.phone,
-            status: emp.status
-        });
+    user_id: emp.user_id,
+    department: emp.department,
+    designation: emp.designation,
+    manager: emp.manager,
+    joining_date: emp.joining_date,
+    phone: emp.phone,
+    dataset_user: emp.dataset_user,
+    status: emp.status
+});
 
         setShowForm(true);
 
@@ -178,18 +199,33 @@ function EmployeeManagement() {
 
                             <div className="grid grid-cols-2 gap-4">
 
-                                <input
-                                    type="number"
-                                    placeholder="User ID"
-                                    className="border p-3 rounded"
-                                    value={employee.user_id}
-                                    onChange={(e) =>
-                                        setEmployee({
-                                            ...employee,
-                                            user_id: e.target.value
-                                        })
-                                    }
-                                />
+                                <select
+    className="border p-3 rounded"
+    value={employee.user_id}
+    onChange={(e) =>
+        setEmployee({
+            ...employee,
+            user_id: e.target.value
+        })
+    }
+>
+
+    <option value="">
+        Select User
+    </option>
+
+    {users.map((user) => (
+
+        <option
+            key={user.user_id}
+            value={user.user_id}
+        >
+            {user.name} ({user.role})
+        </option>
+
+    ))}
+
+</select>
 
                                 <input
                                     type="text"
@@ -254,6 +290,18 @@ function EmployeeManagement() {
                                         })
                                     }
                                 />
+                                <input
+    type="text"
+    placeholder="Dataset User ID (Example: LAP0338)"
+    className="border p-3 rounded"
+    value={employee.dataset_user}
+    onChange={(e) =>
+        setEmployee({
+            ...employee,
+            dataset_user: e.target.value
+        })
+    }
+/>
 
                                 <select
                                     className="border p-3 rounded"

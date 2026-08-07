@@ -3,66 +3,107 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
-import EmployeeManagement from "./pages/EmployeeManagement";
 import AdminDashboard from "./pages/AdminDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import AnalystDashboard from "./pages/AnalystDashboard";
 import SocDashboard from "./pages/SocDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 
+import EmployeeManagement from "./pages/EmployeeManagement";
+import ThreatDetection from "./pages/ThreatDetection";
+import Reports from "./pages/Reports";
+import Investigations from "./pages/Investigations";
+import ThreatNotifications from "./pages/ThreatNotifications";
+import RiskAnalytics from "./pages/RiskAnalytics";
+
 function App() {
 
-  return (
+    return (
 
-    <BrowserRouter>
+        <BrowserRouter>
 
-      <Routes>
+            <Routes>
 
-        <Route
-          path="/"
-          element={<Register />}
-        />
+                {/* Authentication */}
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+                <Route
+                    path="/"
+                    element={<Register />}
+                />
 
-        <Route
-          path="/admin"
-          element={<AdminDashboard />}
-        />
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
 
-        <Route
-          path="/manager"
-          element={<ManagerDashboard />}
-        />
+                {/* Dashboards */}
 
-        <Route
-          path="/analyst"
-          element={<AnalystDashboard />}
-        />
+                <Route
+                    path="/admin"
+                    element={<AdminDashboard />}
+                />
 
-        <Route
-          path="/soc"
-          element={<SocDashboard />}
-        />
+                <Route
+                    path="/manager"
+                    element={<ManagerDashboard />}
+                />
 
-        <Route
-          path="/employee"
-          element={<EmployeeDashboard />}
-        />
+                <Route
+                    path="/analyst"
+                    element={<AnalystDashboard />}
+                />
 
-        <Route
-    path="/employees"
-    element={<EmployeeManagement />}
+                <Route
+                    path="/soc"
+                    element={<SocDashboard />}
+                />
+
+                <Route
+                    path="/employee"
+                    element={<EmployeeDashboard />}
+                />
+
+                {/* Management */}
+
+                <Route
+                    path="/employees"
+                    element={<EmployeeManagement />}
+                />
+
+                {/* Threat Detection */}
+
+                <Route
+                    path="/threat-detection"
+                    element={<ThreatDetection />}
+                />
+                <Route
+    path="/notifications"
+    element={<ThreatNotifications />}
+/>
+<Route
+    path="/analytics"
+    element={<RiskAnalytics />}
 />
 
-      </Routes>
+                {/* Investigation Workflow */}
 
-    </BrowserRouter>
+                <Route
+                    path="/investigations"
+                    element={<Investigations />}
+                />
 
-  );
+                {/* Reports */}
+
+                <Route
+                    path="/reports"
+                    element={<Reports />}
+                />
+
+            </Routes>
+
+        </BrowserRouter>
+
+    );
 
 }
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import StatCard from "../components/StatCard";
+import ThreatDetection from "./ThreatDetection";
 
 function AdminDashboard() {
 
@@ -20,8 +21,19 @@ function AdminDashboard() {
 
             try {
 
+                const token = localStorage.getItem("access_token");
+                console.log("Token:", token);
+console.log("Headers:", {
+    Authorization: `Bearer ${token}`
+});
+
                 const response = await axios.get(
-                    "http://127.0.0.1:5000/dashboard/admin"
+                    "http://127.0.0.1:5000/dashboard/admin",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
                 );
 
                 setStats(response.data);
@@ -42,11 +54,7 @@ function AdminDashboard() {
 
         <div className="flex min-h-screen bg-slate-100">
 
-            {/* Sidebar */}
-
             <Sidebar role="Admin" />
-
-            {/* Main Content */}
 
             <div className="flex-1">
 
@@ -88,9 +96,7 @@ function AdminDashboard() {
                     <div className="bg-white rounded-xl shadow-lg mt-8 p-6">
 
                         <h2 className="text-2xl font-bold mb-4">
-
                             Recent Activity
-
                         </h2>
 
                         <table className="w-full">
@@ -169,6 +175,12 @@ function AdminDashboard() {
 
                         </table>
 
+                    </div>
+
+                    {/* AI Threat Detection */}
+
+                    <div className="mt-8">
+                        <ThreatDetection />
                     </div>
 
                 </div>

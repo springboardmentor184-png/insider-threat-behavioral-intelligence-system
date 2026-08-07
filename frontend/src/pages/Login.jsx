@@ -46,7 +46,7 @@ function Login() {
     }
 );
 localStorage.setItem(
-    "token",
+    "access_token",
     response.data.access_token
 );
 

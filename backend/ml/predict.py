@@ -1,34 +1,32 @@
 import pandas as pd
 import joblib
 
-# Load trained model
-model = joblib.load(
-    "ml/trained_models/isolation_forest.pkl"
-)
+# Load the trained model only once when Flask starts
+model = joblib.load("ml/trained_models/isolation_forest.pkl")
 
-# Load sample behavioral data
-df = pd.read_csv("ml/datasets/features.csv")
 
-# Take first 10 records
-sample = df.head(10)
+def predict_activity(
+    email_size,
+    attachments,
+    hour,
+    day_of_week,
+    content_length
+):
+    """
+    Predict whether an employee activity is Normal or Anomaly.
+    """
 
-# Predict anomalies
-predictions = model.predict(sample)
+    data = pd.DataFrame([{
+        "email_size": email_size,
+        "attachments": attachments,
+        "hour": hour,
+        "day_of_week": day_of_week,
+        "content_length": content_length
+    }])
 
-# Convert prediction labels
-# 1 = Normal, -1 = Anomaly
-results = []
+    prediction = model.predict(data)[0]
 
-for pred in predictions:
+    if prediction == 1:
+        return "Normal"
 
-    if pred == 1:
-        results.append("Normal")
-    else:
-        results.append("Anomaly")
-
-# Display results
-sample["Prediction"] = results
-
-print("\nAnomaly Detection Results\n")
-
-print(sample)
+    return "Anomaly"
