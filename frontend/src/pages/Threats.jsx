@@ -5,10 +5,14 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+import InvestigationModal from "../components/InvestigationModal";
+
+
 export default function Threats() {
   const navigate = useNavigate();
 
   const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
@@ -68,6 +72,16 @@ export default function Threats() {
 
     return data;
   }, [employees, search, riskFilter, sortOrder]);
+
+  const criticalCount = employees.filter(
+  (e) => e.risk_level === "Critical"
+).length;
+
+const highCount = employees.filter(
+  (e) => e.risk_level === "High"
+).length;
+
+const totalThreats = criticalCount + highCount;
 
   const totalPages = Math.ceil(filtered.length / rowsPerPage);
 
@@ -147,7 +161,30 @@ export default function Threats() {
             </button>
 
           </div>
+<div className="grid grid-cols-3 gap-5 mb-6">
 
+  <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
+    <p className="text-gray-500 text-sm">Critical Threats</p>
+    <h2 className="text-3xl font-bold text-red-600">
+      {criticalCount}
+    </h2>
+  </div>
+
+  <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5">
+    <p className="text-gray-500 text-sm">High Risk Users</p>
+    <h2 className="text-3xl font-bold text-orange-600">
+      {highCount}
+    </h2>
+  </div>
+
+  <div className="bg-cyan-50 border border-cyan-200 rounded-2xl p-5">
+    <p className="text-gray-500 text-sm">Open Investigations</p>
+    <h2 className="text-3xl font-bold text-cyan-600">
+      {totalThreats}
+    </h2>
+  </div>
+
+</div>
           <div className="bg-white rounded-2xl shadow p-6 overflow-x-auto">
 
             {loading ? (
@@ -215,11 +252,18 @@ export default function Threats() {
                         >
                           Investigate
                         </button> */}
-                        <button
+                        {/* <button
   onClick={() =>
     alert("Detailed Threat Investigation module will be available in the next version.")
   }
   className="text-cyan-600 hover:underline"
+>
+  Investigate
+</button> */}
+
+<button
+  onClick={() => setSelectedEmployee(emp)}
+  className="text-cyan-600 hover:underline font-semibold"
 >
   Investigate
 </button>
@@ -263,6 +307,10 @@ export default function Threats() {
           </div>
 
           <Footer />
+          <InvestigationModal
+  employee={selectedEmployee}
+  onClose={() => setSelectedEmployee(null)}
+/>
 
         </div>
       </div>

@@ -141,7 +141,45 @@ export default function Dashboard() {
             />
 
           </div>
+<div className="bg-white rounded-2xl shadow p-6 mb-6">
 
+  <h2 className="text-2xl font-bold mb-4">
+    Security Overview
+  </h2>
+
+  <div className="grid grid-cols-4 gap-4">
+
+    <div className="bg-red-50 rounded-xl p-4 border border-red-200">
+      <p className="text-sm text-gray-500">Critical Threats</p>
+      <h3 className="text-3xl font-bold text-red-600">
+        {summary.critical_users}
+      </h3>
+    </div>
+
+    <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
+      <p className="text-sm text-gray-500">Detected Anomalies</p>
+      <h3 className="text-3xl font-bold text-yellow-600">
+        {summary.detected_anomalies}
+      </h3>
+    </div>
+
+    <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+      <p className="text-sm text-gray-500">Average Risk Score</p>
+      <h3 className="text-3xl font-bold text-green-600">
+        {summary.average_risk_score}
+      </h3>
+    </div>
+
+    <div className="bg-cyan-50 rounded-xl p-4 border border-cyan-200">
+      <p className="text-sm text-gray-500">Security Status</p>
+      <h3 className="text-lg font-bold text-cyan-700">
+        Monitoring Active
+      </h3>
+    </div>
+
+  </div>
+
+</div>
           <div className="grid grid-cols-2 gap-6">
 
             {/* <EmployeeTable users={dashboardData.top_risky_users} /> */}
@@ -150,6 +188,29 @@ export default function Dashboard() {
             <RiskChart data={dashboardData.risk_distribution} />
 
           </div>
+          <div className="bg-white rounded-2xl shadow p-6 mt-6">
+
+  <h2 className="text-xl font-bold mb-4">
+    Recent Security Alerts
+  </h2>
+
+  <div className="space-y-3">
+
+    <div className="border-l-4 border-red-500 bg-red-50 p-3 rounded">
+      High-risk employee detected with abnormal login behavior.
+    </div>
+
+    <div className="border-l-4 border-yellow-500 bg-yellow-50 p-3 rounded">
+      Large file download activity identified.
+    </div>
+
+    <div className="border-l-4 border-cyan-500 bg-cyan-50 p-3 rounded">
+      USB device connection recorded for monitoring.
+    </div>
+
+  </div>
+
+</div>
 
           <Footer />
 
