@@ -278,26 +278,31 @@ async def generate_anomaly_report(
     normal_sources = [s[0] for s in top_sources]
     normal_ips = [i[0] for i in top_ips]
     
-    # --- Detect anomalies: activities NOT in the top 5 ---
+    # --- Detect anomalies using threat indicator criteria ---
     anomalies = []
     for act in activities:
         anomaly_reasons = []
+        event = str(act.get("event_type", "")).upper()
+        source = str(act.get("source_system", "")).upper()
+        severity = str(act.get("severity", "")).upper()
+        ip = str(act.get("ip_address", ""))
         
-        event = act.get("event_type", "UNKNOWN")
-        source = act.get("source_system", "UNKNOWN")
-        ip = act.get("ip_address", "UNKNOWN")
+        if any(k in event for k in ["UNUSUAL", "PRIVILEGE", "USB", "EXCESSIVE", "FAIL", "EXFILTRATION", "UNAUTHORIZED"]):
+            anomaly_reasons.append(f"Threat indicator detected: {event}")
+        if severity in ["WARNING", "CRITICAL"]:
+            anomaly_reasons.append(f"Elevated severity level: {severity}")
+        if "VPN" in source or ip.startswith("10.8"):
+            anomaly_reasons.append(f"Remote access deviation: {ip}")
         
-        # Check if event type is NOT in top 5
-        if event not in normal_events:
-            anomaly_reasons.append(f"Unusual event: {event}")
-        
-        # Check if source system is NOT in top 5
-        if source not in normal_sources:
-            anomaly_reasons.append(f"Unusual source: {source}")
-        
-        # Check if IP address is NOT in top 5
-        if ip not in normal_ips:
-            anomaly_reasons.append(f"Unusual IP: {ip}")
+        if anomaly_reasons:
+            anomalies.append({
+                "timestamp": str(act.get("timestamp")),
+                "event_type": event,
+                "source_system": source,
+                "ip_address": ip,
+                "reasons": anomaly_reasons,
+                "metadata": act.get("metadata", {})
+            })
         
         if anomaly_reasons:
             anomalies.append({

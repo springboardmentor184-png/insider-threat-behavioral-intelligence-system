@@ -1,0 +1,2402 @@
+[
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4973831,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3ba9a323-1a54-4fec-8214-091f5018053a"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2103437,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "58711b31-182e-41a4-83a8-dcc9abf71efb"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 32407,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-06T05:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "107e6b7e-51bb-4770-909b-f3f953fe38a1"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4483710,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T18:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "d3043ffa-8889-4d80-b977-4757eaa76dd4"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3082197,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "994697f4-4479-464a-bf2d-f3fce9a0ec3b"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4539899,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "0eb10863-93b2-49fe-bc05-a8c8e8553640"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3049153,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5094fba2-5104-4e4d-8315-1b9b95d76596"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3501213,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "995b7873-d411-47ed-80f9-3ec7e5f1b0e3"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2591052,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T01:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "d6b34dae-8cde-4a10-91a1-dbd65528404a"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1151232,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T10:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7c123d5f-3469-491e-9c6e-c092e575ef07"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1511061,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T03:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "d8cbfbc8-05f1-4638-8595-a2b0009536e7"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1097178,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "133c1eca-1c84-46fd-b179-b90f7d1d42a3"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4895220,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "744bb288-b1eb-4f4e-9d7a-6487799dbd08"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3925374,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7aa34f76-b750-44f4-ad96-11889b7a6ecf"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2706431,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T18:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f2031036-9e72-4180-9fd2-16d5e16d1ac9"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 875753,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T05:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "36f8bd7e-93a6-43e3-9906-8bbdc91b8c24"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3179925,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "cffcf385-b98e-40b8-9619-3362a98082bb"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 131229,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "628c278f-95f1-418d-989c-1fcd53895472"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4335647,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "eb867389-c343-46ef-8769-e90150dac344"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2832052,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7a9897e5-52ab-420c-8060-cdd09b702c6c"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2349888,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T12:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "357eef7e-b30e-4ceb-8fe2-9d4a237a95cd"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1839214,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-26T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2764d76d-7e25-4575-9499-3ac667d90dbd"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4673370,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ad818955-c940-431a-8ee8-b191aed19dd2"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2172924,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T11:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "a1f399ca-bb32-47e4-9eac-0174fa6770c5"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3247219,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "bfd5eec5-2386-486f-80e1-70444357dae8"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1321686,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "522ce3d6-bb42-4f4c-93a2-7189daaa7469"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2616554,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f52ef4e9-1a07-4e40-8804-c643c77f7aa4"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1644740,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T17:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "49f72dac-3cb5-4f7e-99b3-abd7fd8fd887"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2688762,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2558c47c-2873-42b1-96d2-12c7ba5b45ac"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4799859,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7b72c933-9cbb-4f40-b3ff-12de02f8d955"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4344884,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T20:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5a820428-d2f5-4bc9-8d3d-b2e6c63f2d87"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4363817,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "6cd2432b-dc37-4516-b075-958333e821d6"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3030931,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "bb2b134b-9e50-4409-9863-bbb73bbbe85b"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4193534,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-22T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "6c1d1b8b-0986-4e7c-8c5a-50e20b370659"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3187454,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3b42c92d-9dcb-4dd3-af56-7cc834258837"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 623951,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7ea77cf7-c45d-4eee-a14e-609f98884882"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 4438501,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9cce1a77-b044-4c1d-bf67-d692d59b22b8"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 1749338,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-31T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "82dead06-6bb1-4e0b-bdf4-ddd544c908a1"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "UNUSUAL_LOGIN_TIME",
+    "source_system": "VPN_GATEWAY",
+    "severity": "CRITICAL",
+    "ip_address": "10.8.0.12",
+    "metadata": {
+      "bytes_transferred": 4136,
+      "file_name": null,
+      "location": "Remote / VPN"
+    },
+    "timestamp": "2026-07-22T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "81db6eaa-7092-4e26-9838-7fa51b6ec7d4"
+  },
+  {
+    "employee_id": "33901353-84ca-11f1-9e39-e4fd457b80cb",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 835246,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T12:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "6134f66a-1225-4ec3-be8c-ab4ed95ca6c7"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3020923,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T03:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "fc379fb8-ae5f-4c8c-8923-8b53269fc4aa"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1720570,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-31T05:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7cf7d4ba-602f-48e4-a14c-bcb2da3213c2"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2323083,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T20:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3c18cee9-0936-4e77-967e-2f342076f21d"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 128344,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "b409c056-3c1f-411f-a181-63ea5d8fe37c"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3553174,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T10:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "4f9ec311-fe7e-44ca-8f7a-220fcdeb10a6"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4751155,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f31af415-36c2-4810-813d-d9cbbb029ded"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2699226,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-31T17:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "d1e0da2e-fcd3-4d7a-9cb5-248c5dfece9b"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3901605,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T07:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ab8200f7-e394-4469-9677-eeaca58a8a1c"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2467629,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T18:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "03a1ae40-3cb2-4a70-a404-74f66eb875ec"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2182236,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-26T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "db003d41-4290-4c3c-b1f9-26a24ab2c3b0"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2031547,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-06T05:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "008700a5-682e-481c-a7ce-d715a8375cbc"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1154006,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "e950e7a0-b9af-434d-8649-44d101c70d4e"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 599000,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T13:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "40b414d8-5c24-47c8-8699-80846a8be594"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1192461,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9e11d023-fab4-421e-b316-39e3aab6d833"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1741948,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "4b3c40c0-4ed5-439b-b4c0-ce47d2061111"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4305774,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9acbc1f9-cf71-43fc-bd33-53a2b52501c7"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 530397,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9bf73660-ee71-4b36-ad4e-c33a38cde2f9"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1238292,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T01:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "32cb7322-0f46-4dec-afaa-479f4b7975b9"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 412952,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9db1de33-8f7c-4ab0-871e-a86493113a7c"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3037040,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T10:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "72ba93aa-6b5e-4e35-8bb6-a75ad5bc6bc3"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1197809,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f1c6f186-6982-42b7-9022-55f920cab462"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 957438,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "73c93f3a-ad99-4a81-8fdb-e37ddd44d24d"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4614670,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ff157595-815d-456c-83fd-8d78623b1341"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2134663,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "830ed5ab-0ba0-40a6-b443-9791a8d667d1"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2821037,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T07:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "dbe88db2-f8af-422c-92ac-56459fafb7d0"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 976301,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2efb1f67-805a-447b-9fd7-8f68a9668ca1"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2466132,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ddbc6506-e953-4a68-96b4-254108474a00"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1565212,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "95413598-45a4-4df8-98cc-b78ea03965ab"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3297745,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7a7c7f3a-90cc-4c40-914a-bdfaa358bdb3"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 959350,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T17:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5308333f-ef8d-4c6b-a332-ab70e585e878"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2136586,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3e26a6f1-7c02-417e-812a-9f29f11dfe11"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4002424,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T12:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5673f3b2-f769-4e8b-becf-7d624270d24c"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3768641,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T17:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "95548895-3467-46a9-b4b2-e4d1a8b3e042"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1941657,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "70e82c24-a99b-4597-bc84-496e899d2804"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3930460,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "334c0a6d-9779-4c49-9e0d-0bad150d1686"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 423609,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T03:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "1a9b4a58-5102-4125-b920-b991e7d609f7"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 4517220,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-31T07:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "fe57f399-163e-47b7-aa72-fc20b5574b1f"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 321608,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "db8deccb-4838-4154-af17-8c7aed272976"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "UNUSUAL_LOGIN_TIME",
+    "source_system": "VPN_GATEWAY",
+    "severity": "CRITICAL",
+    "ip_address": "10.8.0.12",
+    "metadata": {
+      "bytes_transferred": 2827620,
+      "file_name": null,
+      "location": "Remote / VPN"
+    },
+    "timestamp": "2026-07-24T20:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3c1f3ee1-62cb-4c92-b924-5d2712588092"
+  },
+  {
+    "employee_id": "44801353-84ca-11f1-9e39-e4fd457b80cc",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 2046940,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "dcaaf9f7-1d1c-4cb8-9c64-0dbd367e033c"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1788371,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-26T18:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9bac7f9f-5532-4f8b-ba53-fb3394b198fe"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4846169,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "b42610d9-8fc3-4cc5-a95b-a2c4f601d662"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 356758,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T05:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "461cc10a-bcb7-453f-9eea-9dd5c4b2c4f4"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1269169,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ec09fed7-82ff-46d3-aa31-24869e03d7c5"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1820677,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T13:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "0050fb4e-ba22-4581-9a45-f6abd1bf171a"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2712538,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T11:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5cdff585-e6ee-4e13-b097-fe3c1e02bb2a"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2912845,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T18:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "42c41eb6-4e7f-4eee-bb72-b16b33eda658"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3106544,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T10:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "de2fef53-ec75-47ab-9c17-91c020e07457"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1892592,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T20:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3b07fb88-a779-4339-a3e6-bd6bdb9af6d4"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 302032,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T07:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "e1bfd7fe-63b3-4d63-b4b4-c6ea9e81746b"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4876910,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-31T10:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "75f9b12a-0c13-43f0-a21d-435af3889052"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2545782,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T12:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "301d0f0f-1773-4ec5-9fb8-2fa44d6ed6ae"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2085454,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7827a9d7-d29a-4569-8ddd-f76a83850cfd"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3165926,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "7d9ce845-2c47-4387-bb32-f4e3251611d2"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4532070,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-22T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "054def82-efbb-4c3e-aa95-9a4a46ed2412"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4780134,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "294dba9e-4b89-46db-b529-e83626c3c377"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 800211,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T03:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2dd8dcc7-7540-41b9-82a5-f3f2f207e4d4"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 911225,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "1b73d19f-3946-41b6-a520-9c47ab347cfa"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1898990,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T12:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5aaf20e2-f121-428e-b040-d597b552ee79"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3167754,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "85f0ff2c-1d4a-4edc-a910-6bb423af403e"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 102981,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9dd69bb6-017b-43f6-885b-98ddee00f975"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2067678,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "a037ccac-e20e-41d9-853b-0f0fd8d377df"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2822545,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9e8351ff-5d49-4e7a-b61b-a584ae5bc9ba"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 392926,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T12:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "e245abe2-d0ed-41ac-9b7e-4e7108694c79"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1168084,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T20:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "51f31296-f81a-42e1-8c1d-d1c9a5c430db"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3597953,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "06d03df1-2ab2-4292-99b5-dc7b30edc396"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1205683,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T10:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "91613f10-482a-4f3a-9bb8-ddb2ff69947f"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3825477,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T13:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "b992fa8a-7d9e-43fd-bd51-fbc3d4370cbc"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 885525,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-26T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "1a78f7d4-9e21-468a-83af-ca596eee5b0b"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3133334,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "93fad410-deed-4872-a2b4-083162be468a"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 737557,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "053e45b4-b681-43f6-8b10-75a5bb0cb764"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 685865,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "d92ac389-04af-4181-a3a4-1a4a764a2b27"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2072533,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "1511f913-7b5a-4393-85af-bc3b70162bb3"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2113219,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-06T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "aa77c913-9af7-4737-b616-8e40ef303338"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 65151,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T14:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "4680ff7b-b232-47be-81b5-8c8ba944f225"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "UNUSUAL_LOGIN_TIME",
+    "source_system": "VPN_GATEWAY",
+    "severity": "CRITICAL",
+    "ip_address": "10.8.0.12",
+    "metadata": {
+      "bytes_transferred": 2071273,
+      "file_name": null,
+      "location": "Remote / VPN"
+    },
+    "timestamp": "2026-08-05T20:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f5710809-e3ba-407d-854c-062776f0c25c"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 577724,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9b3ea1b6-7d94-45c4-8ee4-63463cd9323e"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 4042594,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "acbc5284-54fe-48f8-9014-c7b4705f734b"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 4653268,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-06T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ed4d3d48-51fb-434e-9e06-842a31d4ab9c"
+  },
+  {
+    "employee_id": "55701353-84ca-11f1-9e39-e4fd457b80cd",
+    "event_type": "UNUSUAL_LOGIN_TIME",
+    "source_system": "VPN_GATEWAY",
+    "severity": "CRITICAL",
+    "ip_address": "10.8.0.12",
+    "metadata": {
+      "bytes_transferred": 4168507,
+      "file_name": null,
+      "location": "Remote / VPN"
+    },
+    "timestamp": "2026-07-23T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9b51ca07-fa5b-40eb-8202-61cc3c144466"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 634961,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "546a273a-1aa3-48a7-b94e-0540906500e8"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3054135,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-22T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "02694156-1842-4e6d-b8ce-48098b4b7c13"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 23314,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T13:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "03f13924-6940-4c35-ae2c-9fdc61e3b8ae"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2016123,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T11:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3645fbeb-9cfe-4be5-8a33-b947a8b14476"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2158081,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T03:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "44b19702-e813-4684-9896-6385284af48b"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1216986,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "10568e47-1b06-4aad-9867-7d0c4ee3c4a0"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 547970,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-06T02:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ae4cabd2-8e68-4fbd-89ec-04a9fef51797"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2477408,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-22T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2c12f876-63cb-4d9c-809b-ba4ab45d9650"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 156896,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f2079202-b913-4b36-a9a9-22e49ff1a70e"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4007118,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T00:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2604b2eb-d9fa-43d3-8e9a-377f7f72d489"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4924130,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "81e494da-f837-48b0-b6d6-b27d19833100"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2324113,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "eef9ac9e-c65c-47f8-8a2a-c2045b6b80b5"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1792388,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T04:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "30cfae3c-a582-49ac-a91c-1027fadd86fc"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2541521,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-01T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "edeafd4c-2d71-4264-b1e4-749ec2fe7703"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "EMAIL_SENT",
+    "source_system": "EXCHANGE_MAIL",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 569907,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T14:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "cad297fb-bd09-4c58-854d-eb4e9f0a8ff0"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 747788,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "d6e1a988-d3fb-4d18-bc59-45ef4b0d1ead"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 792154,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "abf32571-eb90-40de-8d36-4188ef0b7d23"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 374185,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "f6b7d994-640f-481a-b475-367bfd717213"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "NETWORK_TRAFFIC",
+    "source_system": "INTERNAL_GATEWAY",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2328705,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T07:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2f422782-d682-4e9a-8183-b2d78a724569"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4275622,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T16:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "cd802f99-ac1f-4e70-a7ad-7ce4b7e3f02b"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1964729,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "0589b5a6-77f8-4e28-9685-980b2cb590f0"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1183405,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T07:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "22b1cbf4-06ed-4af3-8e39-58ed6e98632c"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4023396,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-27T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "e8307f31-dab7-4acd-9bd4-ff3926fe22a8"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1842527,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5f0bf30b-411e-414d-b9c4-f7e34c2fc301"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4734513,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T18:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "247b9c08-6d65-4f5b-b036-66978918b229"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_DOWNLOAD",
+    "source_system": "SHAREPOINT",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1028576,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-22T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "63d262df-0bfc-4c67-ae21-59972514dbcb"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "LOGIN_SUCCESS",
+    "source_system": "AUTH_SERVER",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4934043,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-24T21:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "3b51de07-72be-4105-9940-9c846e36769a"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "APPLICATION_USAGE",
+    "source_system": "VISUAL_STUDIO",
+    "severity": "INFO",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 1558118,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-05T17:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "260e0fda-ec1a-4f59-83d8-e6b87eb69923"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 516809,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-28T08:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "01eb0e80-0254-43be-95cd-547313b101d0"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 3965054,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "24fbc212-d548-4107-a9a2-0901e255e1a0"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2705858,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-25T01:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "866149f6-57f1-48e6-b67f-5b1915f22bbb"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "USB_INSERTION",
+    "source_system": "ENDPOINT_AGENT",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 65258,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-23T05:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "ca0a1872-e5a1-4b8e-9a97-0939e4eebef3"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 894063,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-31T15:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "70a4b7c5-0da2-4f34-a47f-73280482114c"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 2140741,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-04T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "2297edd0-e77f-44f8-a474-0bbc2cae9ad7"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "FILE_UPLOAD",
+    "source_system": "CLOUD_STORAGE",
+    "severity": "WARNING",
+    "ip_address": "192.168.1.45",
+    "metadata": {
+      "bytes_transferred": 4045594,
+      "file_name": "confidential_project_spec.pdf",
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T19:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "5f7bbfa7-6b2b-48d4-8add-0a0a86f34c0f"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 3837509,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T22:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "173ff586-a886-42c5-b2e7-e99a31b1f953"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 2593487,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-29T09:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "4ca5ff6b-d9d4-423a-864b-9a742e983566"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 2165247,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-07-30T23:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "07543457-2f84-4cef-952f-5003cd48739e"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "EXCESSIVE_DATA_TRANSFER",
+    "source_system": "INTERNAL_FTP",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.180",
+    "metadata": {
+      "bytes_transferred": 1042383,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-02T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "9fcafc79-a24b-4e76-842a-3fb832432113"
+  },
+  {
+    "employee_id": "66601353-84ca-11f1-9e39-e4fd457b80ce",
+    "event_type": "PRIVILEGE_CHANGE",
+    "source_system": "ACTIVE_DIRECTORY",
+    "severity": "CRITICAL",
+    "ip_address": "192.168.1.99",
+    "metadata": {
+      "bytes_transferred": 4167428,
+      "file_name": null,
+      "location": "HQ Office"
+    },
+    "timestamp": "2026-08-03T06:30:59.033047",
+    "created_by": "system_ingest",
+    "_id": "858a6479-2a90-496b-9a39-8da8ad4bc74e"
+  }
+]

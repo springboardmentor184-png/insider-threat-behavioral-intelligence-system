@@ -1,206 +1,171 @@
 # backend/app/core/risk_engine.py
-
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Dict, Any
-from .risk_factors import RISK_FACTORS, get_risk_level
 
 class RiskEngine:
     """
-    Insider Threat Risk Scoring Engine
-    Calculates risk scores based on user activities and anomalies
+    Insider Threat Risk Scoring Engine following PDF Specification (Page 5)
+    Weighted Scoring Model:
+    - Behavioral Anomalies (35%)
+    - Privilege Misuse Indicators (25%)
+    - Data Access Violations (20%)
+    - Access Pattern Deviations (10%)
+    - Historical Security Events (10%)
     """
-    
-    def __init__(self):
-        self.risk_factors = RISK_FACTORS
-    
+
     def calculate_risk_score(self, anomalies: List[Dict], activities: List[Dict]) -> Dict:
-        """
-        Calculate risk score for a user based on their anomalies
-        
-        Args:
-            anomalies: List of anomaly objects
-            activities: List of all activities
-        
-        Returns:
-            Dict with risk score, level, factors, and recommendations
-        """
-        if not anomalies:
+        if not activities and not anomalies:
             return self._get_zero_risk_response()
+
+        total_activities = len(activities) or 1
         
-        # Calculate base score from anomalies
-        total_weight = 0
-        anomaly_details = []
-        risk_factors_detected = []
-        
-        for anomaly in anomalies:
-            anomaly_score = self._score_anomaly(anomaly)
-            total_weight += anomaly_score["weight"]
-            anomaly_details.append(anomaly_score)
-            
-            # Track risk factors
-            if anomaly_score["weight"] > 10:
-                risk_factors_detected.append({
-                    "factor": anomaly_score["factor"],
-                    "weight": anomaly_score["weight"],
-                    "description": anomaly_score["description"],
-                    "reason": anomaly.get("reasons", ["Unknown reason"])[0]
-                })
-        
-        # Normalize score to 0-100
-        max_possible_score = 100
-        raw_score = min(total_weight, max_possible_score)
-        
-        # Apply activity frequency multiplier
-        activity_count = len(activities)
-        if activity_count > 100:
-            multiplier = min(1.2, 1 + (activity_count / 1000))
+        # 1. Behavioral Anomalies Score (35%)
+        # Ratio of anomalous activities or specific behavioral triggers
+        behavioral_anomalies_count = len(anomalies)
+        behavioral_raw = min(100.0, (behavioral_anomalies_count / max(1, total_activities / 2)) * 100)
+        score_behavioral = round(behavioral_raw * 0.35, 2)
+
+        # 2. Privilege Misuse Indicators (25%)
+        privilege_events = [
+            act for act in activities 
+            if "PRIVILEGE" in act.get("event_type", "").upper() 
+            or "ADMIN" in act.get("event_type", "").upper()
+            or act.get("severity") == "CRITICAL"
+        ]
+        privilege_raw = min(100.0, len(privilege_events) * 25.0)
+        score_privilege = round(privilege_raw * 0.25, 2)
+
+        # 3. Data Access Violations (20%)
+        data_events = [
+            act for act in activities
+            if any(k in act.get("event_type", "").upper() for k in ["DOWNLOAD", "UPLOAD", "TRANSFER", "EXFILTRATION", "USB"])
+            or (act.get("metadata") and act.get("metadata").get("bytes_transferred", 0) > 1000000)
+        ]
+        data_raw = min(100.0, len(data_events) * 20.0)
+        score_data_access = round(data_raw * 0.20, 2)
+
+        # 4. Access Pattern Deviations (10%)
+        access_events = [
+            act for act in activities
+            if "UNUSUAL" in act.get("event_type", "").upper()
+            or "VPN" in act.get("source_system", "").upper()
+            or (act.get("timestamp") and hasattr(act.get("timestamp"), "hour") and (act["timestamp"].hour < 7 or act["timestamp"].hour > 20))
+        ]
+        access_raw = min(100.0, len(access_events) * 25.0)
+        score_access_pattern = round(access_raw * 0.10, 2)
+
+        # 5. Historical Security Events (10%)
+        historical_warning_critical = [
+            act for act in activities
+            if act.get("severity") in ["WARNING", "CRITICAL"]
+        ]
+        historical_raw = min(100.0, len(historical_warning_critical) * 15.0)
+        score_historical = round(historical_raw * 0.10, 2)
+
+        # Total Insider Risk Score
+        total_risk_score = round(score_behavioral + score_privilege + score_data_access + score_access_pattern + score_historical, 2)
+        final_score = min(100.0, max(0.0, total_risk_score))
+
+        # Risk Category Assignment (PDF Page 5)
+        if final_score < 30:
+            risk_level = "Low Risk"
+            risk_icon = "🟢"
+            risk_color = "#22c55e"
+        elif final_score < 60:
+            risk_level = "Medium Risk"
+            risk_icon = "🟡"
+            risk_color = "#eab308"
+        elif final_score < 80:
+            risk_level = "High Risk"
+            risk_icon = "🟠"
+            risk_color = "#f97316"
         else:
-            multiplier = 1.0
-        
-        final_score = min(raw_score * multiplier, 100)
-        
-        # Determine risk level
-        risk_level = get_risk_level(final_score)
-        
-        # Generate recommendations
-        recommendations = self._generate_recommendations(final_score, risk_factors_detected)
-        
+            risk_level = "Critical Risk"
+            risk_icon = "🔴"
+            risk_color = "#ef4444"
+
+        # Risk Factors Breakdown for Dashboard
+        risk_factors_detected = []
+        if score_behavioral > 5:
+            risk_factors_detected.append({
+                "factor": "Behavioral Anomalies",
+                "weight": score_behavioral,
+                "description": "Deviations from standard behavioral baseline",
+                "reason": f"{behavioral_anomalies_count} anomalies identified"
+            })
+        if score_privilege > 5:
+            risk_factors_detected.append({
+                "factor": "Privilege Misuse Indicators",
+                "weight": score_privilege,
+                "description": "Active Directory & administrative privilege changes",
+                "reason": f"{len(privilege_events)} elevated privilege events"
+            })
+        if score_data_access > 5:
+            risk_factors_detected.append({
+                "factor": "Data Access Violations",
+                "weight": score_data_access,
+                "description": "High volume transfers & unapproved USB device usage",
+                "reason": f"{len(data_events)} data access violations detected"
+            })
+        if score_access_pattern > 2:
+            risk_factors_detected.append({
+                "factor": "Access Pattern Deviations",
+                "weight": score_access_pattern,
+                "description": "Off-hours VPN logins and non-standard IP endpoints",
+                "reason": f"{len(access_events)} access pattern deviations"
+            })
+        if score_historical > 2:
+            risk_factors_detected.append({
+                "factor": "Historical Security Events",
+                "weight": score_historical,
+                "description": "Prior warning and critical security incidents",
+                "reason": f"{len(historical_warning_critical)} past warning/critical events"
+            })
+
+        # Recommendations
+        recommendations = []
+        if final_score >= 80:
+            recommendations.append("🔴 CRITICAL RISK: Escalate immediately to SOC Commander")
+            recommendations.append("🛑 Restrict user privileges and isolate host workstation")
+        elif final_score >= 60:
+            recommendations.append("🟠 HIGH RISK: Assign Security Analyst for active investigation")
+            recommendations.append("📋 Audit cloud exfiltration logs and active VPN sessions")
+        elif final_score >= 30:
+            recommendations.append("🟡 MEDIUM RISK: Monitor employee off-hours activity")
+            recommendations.append("🔍 Review USB device whitelist policies")
+        else:
+            recommendations.append("🟢 LOW RISK: User activity within standard parameters")
+
         return {
-            "risk_score": round(final_score, 2),
-            "risk_level": risk_level["label"],
-            "risk_level_icon": risk_level["icon"],
-            "risk_level_color": risk_level["color"],
-            "raw_weight": round(total_weight, 2),
+            "risk_score": final_score,
+            "risk_level": risk_level,
+            "risk_level_icon": risk_icon,
+            "risk_level_color": risk_color,
+            "weighted_breakdown": {
+                "behavioral_anomalies": score_behavioral,
+                "privilege_misuse": score_privilege,
+                "data_access_violations": score_data_access,
+                "access_pattern_deviations": score_access_pattern,
+                "historical_events": score_historical
+            },
+            "raw_weight": final_score,
             "anomaly_count": len(anomalies),
-            "risk_factors": risk_factors_detected[:5],  # Top 5 risk factors
+            "total_activities": total_activities,
+            "risk_factors": risk_factors_detected,
             "recommendations": recommendations,
             "last_updated": datetime.utcnow().isoformat()
         }
-    
-    def _score_anomaly(self, anomaly: Dict) -> Dict:
-        """Score a single anomaly based on its type"""
-        anomaly_type = anomaly.get("event_type", "UNKNOWN")
-        anomaly_source = anomaly.get("source_system", "UNKNOWN")
-        anomaly_ip = anomaly.get("ip_address", "UNKNOWN")
-        reasons = anomaly.get("reasons", [])
-        
-        # Determine which risk factor applies
-        factor = "unknown"
-        weight = 5
-        description = "Unusual activity detected"
-        
-        # Check for specific risk factors
-        if "login" in anomaly_type.lower() or "authentication" in anomaly_type.lower():
-            factor = "unusual_login_time"
-            weight = RISK_FACTORS.get("unusual_login_time", {}).get("weight", 15)
-            description = RISK_FACTORS.get("unusual_login_time", {}).get("description", "Unusual login detected")
-        
-        elif "file_access" in anomaly_type.lower() or "file" in anomaly_type.lower():
-            factor = "unusual_file_access"
-            weight = RISK_FACTORS.get("unusual_file_access", {}).get("weight", 20)
-            description = RISK_FACTORS.get("unusual_file_access", {}).get("description", "Unusual file access detected")
-        
-        elif "download" in anomaly_type.lower() or "transfer" in anomaly_type.lower():
-            factor = "large_data_download"
-            weight = RISK_FACTORS.get("large_data_download", {}).get("weight", 30)
-            description = RISK_FACTORS.get("large_data_download", {}).get("description", "Large data transfer detected")
-        
-        elif "usb" in anomaly_type.lower() or "device" in anomaly_type.lower():
-            factor = "usb_device_insertion"
-            weight = RISK_FACTORS.get("usb_device_insertion", {}).get("weight", 20)
-            description = RISK_FACTORS.get("usb_device_insertion", {}).get("description", "USB device detected")
-        
-        elif "email" in anomaly_type.lower():
-            factor = "unusual_email_activity"
-            weight = RISK_FACTORS.get("unusual_email_activity", {}).get("weight", 15)
-            description = RISK_FACTORS.get("unusual_email_activity", {}).get("description", "Unusual email activity")
-        
-        elif "network" in anomaly_type.lower():
-            factor = "unusual_network_destination"
-            weight = RISK_FACTORS.get("unusual_network_destination", {}).get("weight", 25)
-            description = RISK_FACTORS.get("unusual_network_destination", {}).get("description", "Unusual network activity")
-        
-        elif "privilege" in anomaly_type.lower() or "permission" in anomaly_type.lower():
-            factor = "privilege_escalation"
-            weight = RISK_FACTORS.get("privilege_escalation", {}).get("weight", 30)
-            description = RISK_FACTORS.get("privilege_escalation", {}).get("description", "Privilege change detected")
-        
-        # Check for unusual IP
-        if any("unusual IP" in r for r in reasons):
-            weight += RISK_FACTORS.get("unusual_ip", {}).get("weight", 10)
-        
-        # Check for unusual source
-        if any("unusual source" in r for r in reasons):
-            weight += RISK_FACTORS.get("unusual_source_system", {}).get("weight", 10)
-        
-        # Check for unusual event
-        if any("unusual event" in r for r in reasons):
-            weight += RISK_FACTORS.get("unusual_event_type", {}).get("weight", 10)
-        
-        # Cap weight at 100
-        weight = min(weight, 100)
-        
-        return {
-            "factor": factor,
-            "weight": weight,
-            "description": description,
-            "anomaly_type": anomaly_type,
-            "source": anomaly_source,
-            "ip": anomaly_ip,
-            "reasons": reasons
-        }
-    
+
     def _get_zero_risk_response(self) -> Dict:
-        """Return response when no anomalies are detected"""
         return {
             "risk_score": 0,
-            "risk_level": "No Risk",
-            "risk_level_icon": "⚪",
-            "risk_level_color": "#6c757d",
+            "risk_level": "Low Risk",
+            "risk_level_icon": "🟢",
+            "risk_level_color": "#22c55e",
             "raw_weight": 0,
             "anomaly_count": 0,
+            "total_activities": 0,
             "risk_factors": [],
-            "recommendations": [
-                "✅ No anomalies detected - Normal behavior",
-                "📊 Continue monitoring activity patterns"
-            ],
+            "recommendations": ["🟢 LOW RISK: No activity recorded for employee"],
             "last_updated": datetime.utcnow().isoformat()
         }
-    
-    def _generate_recommendations(self, score: float, risk_factors: List) -> List[str]:
-        """Generate actionable recommendations based on risk score"""
-        recommendations = []
-        
-        if score == 0:
-            recommendations.append("✅ No anomalies detected - Normal behavior")
-            recommendations.append("📊 Continue monitoring activity patterns")
-        
-        elif score < 30:
-            recommendations.append("🟢 Low risk - Continue monitoring")
-            recommendations.append("📊 Review activities if they persist")
-        
-        elif score < 60:
-            recommendations.append("🟡 Medium risk - Review anomalies")
-            recommendations.append("🔍 Check for patterns of unusual behavior")
-            recommendations.append("📋 Document findings for future reference")
-        
-        elif score < 80:
-            recommendations.append("🟠 High risk - Investigate immediately")
-            recommendations.append("🚨 Escalate to Security Operations Center")
-            recommendations.append("📋 Collect all relevant logs and evidence")
-        
-        else:
-            recommendations.append("🔴 CRITICAL RISK - Immediate action required")
-            recommendations.append("🚨 Escalate to SOC immediately")
-            recommendations.append("🛑 Consider restricting user access")
-            recommendations.append("📋 Preserve all evidence for investigation")
-        
-        # Add specific recommendations based on risk factors
-        if risk_factors:
-            unique_factors = set()
-            for rf in risk_factors[:3]:
-                if rf["factor"] not in unique_factors:
-                    unique_factors.add(rf["factor"])
-                    recommendations.append(f"🔍 Investigate: {rf['description']}")
-        
-        return recommendations[:5]  # Return top 5 recommendations

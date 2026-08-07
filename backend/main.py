@@ -11,16 +11,19 @@ from app.core.mongodb import database
 from app.api import risk
 from app.api import ueba
 from app.api import investigations
-
-app = FastAPI()  
+from app.api import ml_training
+from app.api import notifications
+app = FastAPI() 
 app.include_router(investigations.router)
 app.include_router(ueba.router)
+app.include_router(notifications.router)
 Base.metadata.create_all(bind=engine)
-app.include_router(risk.router)
-# CORS Middleware
+app.include_router(risk.router) 
+app.include_router(ml_training.router)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

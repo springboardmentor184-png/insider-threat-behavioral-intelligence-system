@@ -50,11 +50,18 @@ def create_access_token(data: dict):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 def require_roles(allowed_roles: List[str]):
+    expanded_roles = set(allowed_roles)
+    if "Admin" in expanded_roles or "Administrator" in expanded_roles:
+        expanded_roles.update(["Admin", "Administrator"])
+    if "Analyst" in expanded_roles or "Security Analyst" in expanded_roles:
+        expanded_roles.update(["Analyst", "Security Analyst"])
+
     def role_checker(current_user: models.User = Depends(get_current_user)):
-        if current_user.role.role_name not in allowed_roles:
+        user_role = current_user.role.role_name if current_user.role else "Analyst"
+        if user_role not in expanded_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Access forbidden. Required roles: {', '.join(allowed_roles)}"
             )
         return current_user
-    return role_checker
+    return role_checker

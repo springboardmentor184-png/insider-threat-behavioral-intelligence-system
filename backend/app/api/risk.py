@@ -26,8 +26,7 @@ async def get_risk_score(
     """
     # Check if employee exists
     employee = db.query(models.Employee).filter(models.Employee.employee_id == employee_id).first()
-    if not employee:
-        raise HTTPException(status_code=404, detail="Employee not found")
+    emp_name = f"{employee.first_name} {employee.last_name}" if employee else f"Employee {employee_id[:8]}"
     
     # Get all activities for this employee
     activities = await activity_collection.find({"employee_id": employee_id}).to_list(length=1000)
@@ -35,7 +34,7 @@ async def get_risk_score(
     if not activities:
         return {
             "employee_id": employee_id,
-            "employee_name": f"{employee.first_name} {employee.last_name}",
+            "employee_name": emp_name,
             "risk_score": 0,
             "risk_level": "No Risk",
             "risk_level_icon": "⚪",
@@ -46,50 +45,25 @@ async def get_risk_score(
             "message": "No activities found for this employee"
         }
     
-    # --- Detect anomalies (using TOP 5 approach) ---
-    event_types = {}
-    source_systems = {}
-    ip_addresses = {}
-    
-    for act in activities:
-        event = act.get("event_type", "UNKNOWN")
-        event_types[event] = event_types.get(event, 0) + 1
-        
-        source = act.get("source_system", "UNKNOWN")
-        source_systems[source] = source_systems.get(source, 0) + 1
-        
-        ip = act.get("ip_address", "UNKNOWN")
-        ip_addresses[ip] = ip_addresses.get(ip, 0) + 1
-    
-    top_events = sorted(event_types.items(), key=lambda x: x[1], reverse=True)[:5]
-    top_sources = sorted(source_systems.items(), key=lambda x: x[1], reverse=True)[:5]
-    top_ips = sorted(ip_addresses.items(), key=lambda x: x[1], reverse=True)[:5]
-    
-    normal_events = [e[0] for e in top_events]
-    normal_sources = [s[0] for s in top_sources]
-    normal_ips = [i[0] for i in top_ips]
-    
-    # Build anomalies list
+    # --- Detect anomalies using threat indicator criteria ---
     anomalies = []
     for act in activities:
         anomaly_reasons = []
+        event = str(act.get("event_type", "")).upper()
+        source = str(act.get("source_system", "")).upper()
+        severity = str(act.get("severity", "")).upper()
+        ip = str(act.get("ip_address", ""))
         
-        event = act.get("event_type", "UNKNOWN")
-        source = act.get("source_system", "UNKNOWN")
-        ip = act.get("ip_address", "UNKNOWN")
-        
-        if event not in normal_events:
-            anomaly_reasons.append(f"Unusual event: {event}")
-        
-        if source not in normal_sources:
-            anomaly_reasons.append(f"Unusual source: {source}")
-        
-        if ip not in normal_ips:
-            anomaly_reasons.append(f"Unusual IP: {ip}")
+        if any(k in event for k in ["UNUSUAL", "PRIVILEGE", "USB", "EXCESSIVE", "FAIL", "EXFILTRATION", "UNAUTHORIZED"]):
+            anomaly_reasons.append(f"Threat indicator detected: {event}")
+        if severity in ["WARNING", "CRITICAL"]:
+            anomaly_reasons.append(f"Elevated severity level: {severity}")
+        if "VPN" in source or ip.startswith("10.8"):
+            anomaly_reasons.append(f"Remote access deviation: {ip}")
         
         if anomaly_reasons:
             anomalies.append({
-                "timestamp": act.get("timestamp"),
+                "timestamp": str(act.get("timestamp")),
                 "event_type": event,
                 "source_system": source,
                 "ip_address": ip,
@@ -102,7 +76,7 @@ async def get_risk_score(
     
     # Add employee info to response
     risk_result["employee_id"] = employee_id
-    risk_result["employee_name"] = f"{employee.first_name} {employee.last_name}"
+    risk_result["employee_name"] = emp_name
     risk_result["total_activities"] = len(activities)
     
     return risk_result
