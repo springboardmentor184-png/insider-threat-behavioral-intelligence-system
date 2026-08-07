@@ -11,6 +11,8 @@ class Alert(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     status = db.Column(db.String(20), default='OPEN') # OPEN, INVESTIGATING, RESOLVED, DISMISSED
     description = db.Column(db.Text, nullable=True)
+    risk_score = db.Column(db.Float, default=0.0)
+    investigation_id = db.Column(db.Integer, nullable=True)
 
     def to_dict(self):
         return {
@@ -20,5 +22,7 @@ class Alert(db.Model):
             'threat_type': self.threat_type,
             'timestamp': (self.timestamp.isoformat() + 'Z') if self.timestamp else None,
             'status': self.status,
-            'description': self.description
+            'description': self.description,
+            'risk_score': self.risk_score,
+            'investigation_id': self.investigation_id
         }

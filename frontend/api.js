@@ -199,6 +199,96 @@ const API = {
     getSystemSummary: async () => {
       return API.request('/admin/system-summary', { method: 'GET' });
     }
+  },
+
+  // ==========================================
+  // RISK ENDPOINTS
+  // ==========================================
+  risk: {
+    getAll: async (params = {}) => {
+      const qs = new URLSearchParams(params).toString();
+      return API.request(`/risk?${qs}`, { method: 'GET' });
+    },
+    getByEmployee: async (employeeCode) => {
+      return API.request(`/risk/${employeeCode}`, { method: 'GET' });
+    },
+    calculate: async (employeeCode = null) => {
+      return API.request('/risk/calculate', {
+        method: 'POST',
+        body: JSON.stringify(employeeCode ? { employee_code: employeeCode } : {})
+      });
+    }
+  },
+
+  // ==========================================
+  // ALERTS ENDPOINTS
+  // ==========================================
+  alerts: {
+    getAll: async (params = {}) => {
+      const qs = new URLSearchParams(params).toString();
+      return API.request(`/alerts?${qs}`, { method: 'GET' });
+    },
+    create: async (data) => {
+      return API.request('/alerts', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+    },
+    update: async (alertId, data) => {
+      return API.request(`/alerts/${alertId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    }
+  },
+
+  // ==========================================
+  // INVESTIGATION ENDPOINTS
+  // ==========================================
+  investigations: {
+    getAll: async (params = {}) => {
+      const qs = new URLSearchParams(params).toString();
+      return API.request(`/investigations?${qs}`, { method: 'GET' });
+    },
+    getById: async (caseId) => {
+      return API.request(`/investigations/${caseId}`, { method: 'GET' });
+    },
+    create: async (data) => {
+      return API.request('/investigations', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+    },
+    update: async (caseId, data) => {
+      return API.request(`/investigations/${caseId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      });
+    },
+    addNote: async (caseId, note) => {
+      return API.request(`/investigations/${caseId}/notes`, {
+        method: 'POST',
+        body: JSON.stringify({ note })
+      });
+    },
+    addEvidence: async (caseId, filename, filepath = 'ManualReference', fileSize = 0) => {
+      return API.request(`/investigations/${caseId}/evidence`, {
+        method: 'POST',
+        body: JSON.stringify({ filename, filepath, file_size: fileSize })
+      });
+    }
+  },
+
+  // ==========================================
+  // NOTIFICATIONS ENDPOINTS
+  // ==========================================
+  notifications: {
+    getAll: async () => {
+      return API.request('/analytics/notifications', { method: 'GET' });
+    },
+    read: async (notificationId) => {
+      return API.request(`/analytics/notifications/${notificationId}`, { method: 'PUT' });
+    }
   }
 };
 

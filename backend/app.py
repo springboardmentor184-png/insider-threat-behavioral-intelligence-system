@@ -90,11 +90,20 @@ def create_app(config_class=config_instance):
 
     # Register Blueprints
     from routes.analytics import analytics_bp
+    from routes.risk import risk_bp
+    from routes.alerts import alerts_bp
+    from routes.investigations import investigations_bp
+    from routes.reports import reports_bp
+    
     app.register_blueprint(auth_bp)
     app.register_blueprint(employee_bp)
     app.register_blueprint(activity_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(analytics_bp)
+    app.register_blueprint(risk_bp)
+    app.register_blueprint(alerts_bp)
+    app.register_blueprint(investigations_bp)
+    app.register_blueprint(reports_bp)
 
     # ==========================================
     # CENTRALIZED ERROR HANDLING
@@ -136,7 +145,13 @@ def create_app(config_class=config_instance):
     with app.app_context():
         try:
             # Import all models to ensure they are registered for create_all()
-            from models import Role, Employee, User, ActivityLog, Permission, RolePermission, BehaviorProfile, BehaviorBaseline, BehaviorFeature, RiskScore, Anomaly, Alert, ThreatReport
+            from models import (
+                Role, Employee, User, ActivityLog, Permission, RolePermission, 
+                BehaviorProfile, BehaviorBaseline, BehaviorFeature, RiskScore, 
+                Anomaly, Alert, ThreatReport, RiskHistory, Investigation, 
+                InvestigationNote, Evidence, InvestigationEvent, AnalyticsCache, 
+                AuditLog, Notification
+            )
             
             # Create tables if they do not exist (useful for SQLite out-of-the-box run)
             db.create_all()
@@ -155,6 +170,15 @@ def create_app(config_class=config_instance):
                     if 'assigned_analyst_id' not in columns:
                         conn.execute(db.text("ALTER TABLE employees ADD COLUMN assigned_analyst_id INTEGER"))
                         logger.info("Migration: Added 'assigned_analyst_id' column to employees table.")
+                    
+                    # alerts table columns migration
+                    alert_columns = [c['name'] for c in inspector.get_columns('alerts')]
+                    if 'risk_score' not in alert_columns:
+                        conn.execute(db.text("ALTER TABLE alerts ADD COLUMN risk_score FLOAT DEFAULT 0.0"))
+                        logger.info("Migration: Added 'risk_score' column to alerts table.")
+                    if 'investigation_id' not in alert_columns:
+                        conn.execute(db.text("ALTER TABLE alerts ADD COLUMN investigation_id INTEGER"))
+                        logger.info("Migration: Added 'investigation_id' column to alerts table.")
                     conn.commit()
             except Exception as migrate_err:
                 logger.warning(f"Lightweight migration notice: {str(migrate_err)}")
@@ -209,6 +233,46 @@ def create_app(config_class=config_instance):
                 db.session.add(admin_user)
                 db.session.commit()
                 logger.info("Default administrator account successfully seeded. Username: 'admin', Password: 'password123'")
+
+            # Seed a small, assignable security response team for the department
+            # operations board. The seed is idempotent and never overwrites users.
+            officer_seeds = [
+                ('SOC001', 'Asha', 'Reddy', 'asha.reddy@enterprise-security.com', 'SECURITY_ANALYST', 'Security Operations', 'Senior Security Analyst'),
+                ('SOC002', 'Vikram', 'Nair', 'vikram.nair@enterprise-security.com', 'SECURITY_ANALYST', 'Threat Hunting', 'Threat Response Analyst'),
+                ('SOC003', 'Meera', 'Iyer', 'meera.iyer@enterprise-security.com', 'SECURITY_MANAGER', 'CyberSecurity Operations', 'Incident Response Manager')
+            ]
+            from datetime import date
+            for code, first_name, last_name, email, role_name, department, designation in officer_seeds:
+                if User.query.filter_by(username=code.lower()).first():
+                    continue
+                officer = Employee.query.filter_by(employee_code=code).first()
+                if not officer:
+                    officer = Employee(
+                        employee_code=code,
+                        first_name=first_name,
+                        last_name=last_name,
+                        email=email,
+                        department=department,
+                        designation=designation,
+                        joining_date=date.today(),
+                        status='ACTIVE',
+                        authorized_workstations='SOC-01, SOC-02'
+                    )
+                    db.session.add(officer)
+                    db.session.flush()
+                role = Role.query.filter_by(role_name=role_name).first()
+                db.session.add(User(
+                    username=code.lower(),
+                    password_hash=bcrypt.generate_password_hash('password123').decode('utf-8'),
+                    role_id=role.id,
+                    employee_id=officer.id
+                ))
+            db.session.commit()
+            
+            # Start Background Scheduler for automatic daily risk recalculations
+            from services.risk_service import start_risk_scheduler
+            start_risk_scheduler(app)
+            
         except Exception as e:
             logger.error(f"Error seeding database: {str(e)}")
 

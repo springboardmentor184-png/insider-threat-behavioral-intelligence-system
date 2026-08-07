@@ -19,7 +19,7 @@ class ActivityLog(db.Model):
         return f"<ActivityLog {self.activity_type} - Employee {self.employee_id} at {self.timestamp}>"
 
     def to_dict(self):
-        return {
+        data = {
             'id': self.id,
             'employee_id': self.employee_id,
             'activity_type': self.activity_type,
@@ -28,3 +28,7 @@ class ActivityLog(db.Model):
             'device_name': self.device_name,
             'timestamp': (self.timestamp.isoformat() + 'Z') if self.timestamp else None
         }
+        data['employee_code'] = self.employee.employee_code if self.employee else None
+        data['employee_name'] = (f"{self.employee.first_name} {self.employee.last_name}"
+                                 if self.employee else 'System / unknown user')
+        return data

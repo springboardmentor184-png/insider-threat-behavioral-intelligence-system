@@ -11,9 +11,16 @@ from models.risk_score import RiskScore
 from models.anomaly import Anomaly
 from models.alert import Alert
 from models.threat_report import ThreatReport
+from models.risk_history import RiskHistory
+from models.investigation import Investigation, InvestigationNote, Evidence, InvestigationEvent
+from models.analytics_cache import AnalyticsCache
+from models.audit_log import AuditLog
+from models.notification import Notification
 
 __all__ = [
     'Role', 'Employee', 'User', 'ActivityLog', 'Permission', 'RolePermission',
     'BehaviorProfile', 'BehaviorBaseline', 'BehaviorFeature', 'RiskScore',
-    'Anomaly', 'Alert', 'ThreatReport'
+    'Anomaly', 'Alert', 'ThreatReport', 'RiskHistory', 'Investigation',
+    'InvestigationNote', 'Evidence', 'InvestigationEvent', 'AnalyticsCache',
+    'AuditLog', 'Notification'
 ]

@@ -1,6 +1,7 @@
 from flask import request
 from database.db import db
 from models.activity_log import ActivityLog
+from sqlalchemy.orm import joinedload
 from utils.logger import get_logger
 
 logger = get_logger()
@@ -50,8 +51,10 @@ class ActivityService:
             
     @staticmethod
     def get_all_logs(limit=100, offset=0):
-        return ActivityLog.query.order_by(ActivityLog.timestamp.desc()).limit(limit).offset(offset).all()
+        return (ActivityLog.query.options(joinedload(ActivityLog.employee))
+                .order_by(ActivityLog.timestamp.desc()).limit(limit).offset(offset).all())
         
     @staticmethod
     def get_logs_by_employee(employee_id, limit=100, offset=0):
-        return ActivityLog.query.filter_by(employee_id=employee_id).order_by(ActivityLog.timestamp.desc()).limit(limit).offset(offset).all()
+        return (ActivityLog.query.options(joinedload(ActivityLog.employee)).filter_by(employee_id=employee_id)
+                .order_by(ActivityLog.timestamp.desc()).limit(limit).offset(offset).all())

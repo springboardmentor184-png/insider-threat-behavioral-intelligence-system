@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from services.activity_service import ActivityService
 from middleware.auth import roles_required
@@ -14,7 +14,9 @@ def get_activities():
     Retrieve all activity logs.
     Restricted to Admin and Security staff.
     """
-    logs = ActivityService.get_all_logs()
+    limit = min(max(request.args.get('limit', 100, type=int), 1), 500)
+    offset = max(request.args.get('offset', 0, type=int), 0)
+    logs = ActivityService.get_all_logs(limit=limit, offset=offset)
     serialized = [log.to_dict() for log in logs]
     return api_response(success=True, message="Activity logs retrieved successfully.", data=serialized)
 
@@ -37,6 +39,8 @@ def get_employee_activities(employee_id):
     if not is_privileged and not is_self:
         return api_error(message="Access denied. You can only view your own activity logs.", status_code=403)
         
-    logs = ActivityService.get_logs_by_employee(employee_id)
+    limit = min(max(request.args.get('limit', 100, type=int), 1), 500)
+    offset = max(request.args.get('offset', 0, type=int), 0)
+    logs = ActivityService.get_logs_by_employee(employee_id, limit=limit, offset=offset)
     serialized = [log.to_dict() for log in logs]
     return api_response(success=True, message="Employee activity logs retrieved successfully.", data=serialized)

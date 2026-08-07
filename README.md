@@ -31,40 +31,58 @@ Insider-Threat-Behavioral-Intelligence-System/
 │   │   ├── db.py                       # Instantiates SQLAlchemy, migrate, and encryption
 │   │   └── schema.sql                  # Raw SQL DDL schema script
 │   ├── models/
+│   │   ├── __init__.py                 # Database models export interface
 │   │   ├── role.py                     # User Roles (ADMINISTRATOR, SECURITY_ANALYST, etc.)
+│   │   ├── permission.py               # Security action permissions definitions for RBAC
+│   │   ├── role_permission.py          # Association table mapping roles to permissions
 │   │   ├── employee.py                 # Employee attributes, workstations, USB assets, status
 │   │   ├── user.py                     # Auth profiles mapping roles and credentials
-│   │   ├── activity_log.py             # Event audit logs (activity types, IP addresses, computer names)
-│   │   ├── behavior_profile.py         # UEBA behavior profiles (login time, file/web frequencies)
+│   │   ├── activity_log.py             # Raw employee event activity logs (system interactions)
+│   │   ├── audit_log.py                # Dedicated system admin/investigation audit logs
+│   │   ├── notification.py             # Targeted security notifications (by user ID or role)
 │   │   ├── behavior_baseline.py        # Normal user baseline hour limits and volume counts
-│   │   ├── behavior_feature.py         # Computed feature shifts (late logins, mass file access)
+│   │   ├── behavior_profile.py         # UEBA behavior profiles (login time, file/web frequencies)
+│   │   ├── behavioral_feature.py       # Computed feature shifts (late logins, mass file access)
 │   │   ├── risk_score.py               # Calculated employee risk index percentages
+│   │   ├── risk_history.py             # Historical risk scores timeline per employee
 │   │   ├── anomaly.py                  # Detected UEBA model anomalies
-│   │   ├── alert.py                    # Generated alerts for security operations
-│   │   └── threat_report.py            # Security analyst reports and recommendation dossiers
+│   │   ├── alert.py                    # Generated alerts with risk scores & case associations
+│   │   ├── investigation.py            # Case files, notes timeline, and digital evidence models
+│   │   ├── threat_report.py            # Security analyst reports and recommendation dossiers
+│   │   └── analytics_cache.py          # Cached aggregated telemetry dashboard data
 │   ├── routes/
+│   │   ├── __init__.py                 # Blueprints loader
 │   │   ├── auth.py                     # API logins, registers, token refreshes, page routing
 │   │   ├── employee.py                 # CRUD endpoints for employee management
 │   │   ├── activity.py                 # Employee log timeline retrievals
-│   │   └── analytics.py                # UEBA and dashboard metric telemetry APIs
+│   │   ├── admin.py                    # Administrator dashboard system summary
+│   │   ├── alerts.py                   # Custom alert generation, acknowledgements, escalations
+│   │   ├── investigations.py           # Investigation case updates, notes, evidence attachments
+│   │   ├── risk.py                     # Risk registry metrics & on-demand recalculation
+│   │   ├── analytics.py                # Cached aggregated SOC metrics and notification retrievals
+│   │   └── reports.py                  # Filterable threat reports list and exports compilation
 │   ├── services/
-│   │   ├── auth_service.py             # Auth flow & credential hashes
+│   │   ├── auth_service.py             # Auth flow & credential bcrypt hashes
 │   │   ├── employee_service.py         # Employee records maintenance and conflicts validation
-│   │   ├── activity_service.py         # captures client browser user-agent & IP footprint
-│   │   └── analytics_service.py        # Compiles risk indexes and telemetry aggregations
+│   │   ├── activity_service.py         # Captures client browser user-agent & IP footprint
+│   │   ├── risk_service.py             # UEBA baseline deviation calculations and scheduler
+│   │   ├── investigation_service.py    # Case operations, timeline audit logger, and alert dispatchers
+│   │   ├── permission_service.py       # Dynamic RBAC roles/permissions seeder
+│   │   └── email_service.py            # SMTP simulation module for alert email transmissions
 │   ├── middleware/
 │   │   ├── auth.py                     # JWT token extraction & validations
 │   │   └── permissions.py              # Role-Based Access Control decorator
 │   ├── utils/
 │   │   ├── logger.py                   # Rotating file logs writing to logs/app.log
-│   │   ├── validators.py               # Marshmallow regex validators
+│   │   ├── validators.py               # Marshmallow validation schemas
 │   │   └── response.py                 # Consistent JSON response wrapper helpers
 │   ├── verify_backend.py               # Backend unit test suite
-│   └── verify_analytics.py             # UEBA & Analytics integration test suite
+│   ├── verify_analytics.py             # UEBA & Analytics integration test suite
+│   └── verify_milestone3.py            # Case lifecycle, auditing & notifications test suite
 └── frontend/                           # Client static files
     ├── api.js                          # Centralized JavaScript API client (JWT tokens management, auto-refresh)
     └── admin/
-        └── dashboard.html              # Sleek, glassmorphic dark-theme SecOps Console
+        └── dashboard.html              # Sleek, glassmorphic dark-theme SecOps Console (SPA Tab Layout)
 ```
 
 ---
@@ -102,26 +120,37 @@ On database instantiation, the schema is automatically built and populated with:
 
 ## 🛡️ Key Features Built & Configured
 
-### 1. **Modern SOC Admin Portal**
-A high-tech, glassmorphic dark-theme console housing:
-* **Tri-Chart SecOps Telemetry**: Chart.js visualizations showing Risk Distribution (pie), Activity Volumes (bar), and Classification Summary (pie).
-* **Summary Metrics**: Real-time status cards showing Total Employees (845), Active Threats, Online Logs count, and System Health.
-* **Top Risk Users Ledger**: Dynamically loaded table highlighting high-risk profiles along with threat details (risk score, login count, after-hours activity %, and weekend activity %).
-* **Recent File Access Table**: Parsed system file logs showing the latest document interactions (User, Computer, Date, Filename).
+### 1. **Modern SOC Admin Portal (SPA Tabbed Layout)**
+A high-tech, glassmorphic dark-theme console housing modular dashboards:
+* **SecOps Telemetry & KPIs**: Real-time status cards showing Total Employees, MTTD (Mean Time to Detect), MTTR (Mean Time to Resolve), Open Cases, and Average Risk Score.
+* **Risk Registry Tab**: Ledger of all tracked employee risk scores, featuring on-demand calculations, baseline comparison grids, and historical line-graph trend telemetry.
+* **Alert Inbox Tab**: Lists generated security violations. Supports manually creating custom alerts and executing action controls (*Acknowledge, Resolve, Escalate*).
+* **Investigations Ledger Tab**: Direct access to case folders, enabling notes logging, assigning security analysts, status updates, and digital evidence attachments.
+* **Reports Exports Tab**: Dedicated threat reports library with support for instant CSV file exports and downloads.
+* **Notifications Hub**: Visual popup notifications to alert security staff of critical risk score threshold breaches.
 
 ### 2. **Access Control Boundaries (Admin-only Controls)**
 When viewing an employee security dossier:
 * **Administrators** (`ADMIN` or `ADMINISTRATOR` roles) have full edit permissions, including designating departments, changing titles, altering workstation access, promoting user system roles, and toggling suspension status (Active/Suspended).
-* **Other Security Staff** (e.g. `SECURITY_MANAGER` / `SECURITY_ANALYST`) are restricted to a **read-only view**. All form inputs are disabled, and update buttons are hidden to enforce strict separation of duties.
+* **Other Security Staff** (e.g. `SECURITY_MANAGER` / `SECURITY_ANALYST` / `SOC_ENGINEER`) are restricted to a **read-only view**. All form inputs are disabled, and update buttons are hidden to enforce strict separation of duties.
 
-### 3. **UEBA Behavioral Analytics & ML Anomaly Engine**
-* Continuous comparison of raw employee events against statistical baselines.
-* Calculation of deviation metrics for early detection of anomalous behavior (late logins, massive downloads, or unauthorized USB access).
-* Chronological display of threat reports.
+### 3. **Behavioral Risk Score Engine**
+* Continuous comparison of raw employee activities against statistical baselines.
+* Configurable risk weights (in `backend/config.py`) to customize penalty scoring.
+* Integrated **APScheduler** background task manager for daily automatic risk calculations.
 
-### 4. **Diagnostic Reports & PDF Print Export**
-* Detailed security assessment popups displaying behavioral shifts and analyst recommendations.
-* Embedded `@media print` style wrappers to cleanly format dossiers and reports for physical or PDF print layouts, automatically hiding navigation sidebars and headers.
+### 4. **Timeline-based Case Management**
+* Automated opening of cases when employee risk scores exceed the threshold of `70`.
+* Structured chronological events stored in an `InvestigationEvent` database model.
+* Analyst comments logging and digital evidence attachments (*evidence size, location, and metadata*).
+
+### 5. **Security Auditing & Notifications**
+* A dedicated `AuditLog` table capturing action keywords, target components, descriptions, operator IDs, IP addresses, and timestamps.
+* Targeted notifications dispatched by role or recipient user ID when security events occur.
+
+### 6. **Performance Caching**
+* Aggregated telemetry endpoints cached inside `AnalyticsCache` to optimize dashboard response times.
+* Automatic cache invalidation triggers on database write states to guarantee fresh telemetry.
 
 ---
 
@@ -134,5 +163,9 @@ Run the comprehensive integration test suites:
 * **UEBA & Analytics Tests**:
   ```bash
   python -m unittest verify_analytics.py
+  ```
+* **Case Lifecycle & Auditing Tests (Milestone 3)**:
+  ```bash
+  python -m unittest verify_milestone3.py
   ```
 All tests run warning-free and execute successfully.

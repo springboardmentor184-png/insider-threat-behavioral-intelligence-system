@@ -72,6 +72,22 @@
                 <span class="material-symbols-outlined">analytics</span>
                 <span>Analytics</span>
             </button>
+            <button id="navRisk" onclick="switchTab('risk')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">shield</span>
+                <span>Risk Profiles</span>
+            </button>
+            <button id="navAlerts" onclick="switchTab('alerts')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">notification_important</span>
+                <span>Alert Center</span>
+            </button>
+            <button id="navInvestigations" onclick="switchTab('investigations')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">troubleshoot</span>
+                <span>Investigations</span>
+            </button>
+            <button id="navReports" onclick="switchTab('reports')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
+                <span class="material-symbols-outlined">file_download</span>
+                <span>Reports Panel</span>
+            </button>
             <button id="navSettings" onclick="switchTab('settings')" class="w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm">
                 <span class="material-symbols-outlined">settings</span>
                 <span>Settings</span>
@@ -147,6 +163,38 @@
                             </div>
                             <span class="material-symbols-outlined text-green-400/50 text-2xl">verified</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- SOC KPIs Banner -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="socKpisRow">
+                    <div class="bg-surface-container-high/20 rounded p-4 border border-white/5 flex items-center justify-between">
+                        <div>
+                            <p class="text-on-surface-variant text-[10px] uppercase font-mono tracking-wider">Mean Time To Detect (MTTD)</p>
+                            <p class="text-xl font-bold text-primary-container" id="kpiMttd">14.5 mins</p>
+                        </div>
+                        <span class="material-symbols-outlined text-primary-container/30 text-xl">speed</span>
+                    </div>
+                    <div class="bg-surface-container-high/20 rounded p-4 border border-white/5 flex items-center justify-between">
+                        <div>
+                            <p class="text-on-surface-variant text-[10px] uppercase font-mono tracking-wider">Mean Time To Resolve (MTTR)</p>
+                            <p class="text-xl font-bold text-green-400" id="kpiMttr">4.5 hours</p>
+                        </div>
+                        <span class="material-symbols-outlined text-green-400/30 text-xl">check_circle</span>
+                    </div>
+                    <div class="bg-surface-container-high/20 rounded p-4 border border-white/5 flex items-center justify-between">
+                        <div>
+                            <p class="text-on-surface-variant text-[10px] uppercase font-mono tracking-wider">Open Investigations</p>
+                            <p class="text-xl font-bold text-yellow-400" id="kpiOpenCases">0</p>
+                        </div>
+                        <span class="material-symbols-outlined text-yellow-400/30 text-xl">folder_open</span>
+                    </div>
+                    <div class="bg-surface-container-high/20 rounded p-4 border border-white/5 flex items-center justify-between">
+                        <div>
+                            <p class="text-on-surface-variant text-[10px] uppercase font-mono tracking-wider">Avg Threat Index</p>
+                            <p class="text-xl font-bold text-red-400" id="kpiAvgRisk">0%</p>
+                        </div>
+                        <span class="material-symbols-outlined text-red-400/30 text-xl">shield_alert</span>
                     </div>
                 </div>
 
@@ -300,10 +348,30 @@
             </div>
 
             <!-- PAGE 3: DEPARTMENTS -->
-            <div id="pageDepts" class="hidden glass-panel p-12 rounded-xl text-center flex flex-col items-center justify-center space-y-4">
-                <span class="material-symbols-outlined text-[48px] text-primary-container">group_work</span>
-                <h3 class="text-lg font-semibold">Security Departments</h3>
-                <p class="text-xs text-on-surface-variant max-w-sm">Security Operations, Data Science, Threat Hunting, Forensics, and Engineering organizational structures are synchronized.</p>
+            <div id="pageDepts" class="hidden space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 bg-surface-container-high/10 border border-white/5 rounded-lg p-5">
+                    <div>
+                        <h3 class="text-md font-semibold text-on-surface">Department Threat Operations</h3>
+                        <p class="text-xs text-on-surface-variant mt-1">Escalated threats are grouped by the affected department and can be assigned to active security officers.</p>
+                    </div>
+                    <button onclick="loadDepartmentsDashboard()" class="px-3 py-2 bg-surface-container border border-white/10 rounded text-xs text-primary-container hover:bg-white/5 transition flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px]">refresh</span> Refresh operations
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-surface-container-high/30 rounded-lg border border-white/5 p-5"><p class="text-[10px] font-mono uppercase text-on-surface-variant">Departments monitored</p><p id="departmentCount" class="mt-2 text-2xl font-bold text-primary-container">0</p></div>
+                    <div class="bg-surface-container-high/30 rounded-lg border border-white/5 p-5"><p class="text-[10px] font-mono uppercase text-on-surface-variant">Active case queue</p><p id="departmentActiveCases" class="mt-2 text-2xl font-bold text-yellow-400">0</p></div>
+                    <div class="bg-surface-container-high/30 rounded-lg border border-white/5 p-5"><p class="text-[10px] font-mono uppercase text-on-surface-variant">Cases awaiting officer</p><p id="departmentUnassignedCases" class="mt-2 text-2xl font-bold text-red-400">0</p></div>
+                </div>
+
+                <div id="departmentStatus" class="hidden rounded border px-4 py-3 text-xs" role="status"></div>
+                <div id="departmentOperationsGrid" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
+
+                <div class="bg-surface-container-high/20 border border-white/5 rounded-lg overflow-hidden">
+                    <div class="p-5 border-b border-white/5"><h4 class="text-sm font-semibold">Available Security Officers</h4><p class="text-xs text-on-surface-variant mt-1">Assignments notify the selected officer and add an auditable case-timeline event.</p></div>
+                    <div id="securityOfficersList" class="grid grid-cols-1 md:grid-cols-3 gap-4 p-5"></div>
+                </div>
             </div>
 
             <!-- PAGE 4: ACTIVITY LOGS FEED -->
@@ -445,6 +513,7 @@
                         </table>
                     </div>
                 </div>
+            </div>
             </div>
 
             <!-- PAGE 6: SETTINGS -->
@@ -643,9 +712,6 @@
                 </div>
             </div>
 
-        </div>
-    </main>
-</div>
 
 <!-- Threat Report Details Modal -->
 <div id="threatReportModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -860,6 +926,522 @@
     </div>
 </div>
 
+            <!-- PAGE 8: RISK DASHBOARD -->
+            <div id="pageRisk" class="space-y-6 hidden">
+                <!-- Controls and Search -->
+                <div class="flex flex-wrap gap-4 items-center justify-between bg-surface-container-high/10 border border-white/5 rounded-lg p-4">
+                    <div class="flex gap-3 items-center">
+                        <span class="material-symbols-outlined text-primary-container">shield</span>
+                        <h3 class="font-bold text-md text-on-surface">Employee Risk Scoring Directory</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <input type="text" id="riskSearchInput" oninput="loadRiskDashboard(1)" placeholder="Search employee, department..." class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container" />
+                        <select id="riskLevelSelect" onchange="loadRiskDashboard(1)" class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container">
+                            <option value="">All Risk Levels</option>
+                            <option value="low">Low (0-30)</option>
+                            <option value="medium">Medium (31-60)</option>
+                            <option value="high">High (61-80)</option>
+                            <option value="critical">Critical (81-100)</option>
+                        </select>
+                        <button onclick="triggerRiskRecalculation()" id="btnRecalcRisk" class="px-4 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[16px]">autorenew</span>
+                            <span>Recalculate Scores</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="riskStatus" class="hidden rounded border px-4 py-3 text-xs" role="status"></div>
+
+                <!-- Risk scores table -->
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Employee</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Department</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Designation</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Threat Score</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Risk Level</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Last Calculation</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="riskTableBody" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="7" class="px-6 py-8 text-center text-on-surface-variant">Loading risk registry...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="p-4 border-t border-white/5 flex justify-between items-center bg-surface-container/20" id="riskPagination">
+                        <!-- Pagination controls -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 9: ALERT CENTER -->
+            <div id="pageAlerts" class="space-y-6 hidden">
+                <div class="flex flex-wrap gap-4 items-center justify-between bg-surface-container-high/10 border border-white/5 rounded-lg p-4">
+                    <div class="flex gap-3 items-center">
+                        <span class="material-symbols-outlined text-red-400">notification_important</span>
+                        <h3 class="font-bold text-md text-on-surface">Security Alert Inbox</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <input type="text" id="alertSearchInput" oninput="loadAlertsCenter(1)" placeholder="Search alert type, code..." class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container" />
+                        <select id="alertSeveritySelect" onchange="loadAlertsCenter(1)" class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container">
+                            <option value="">All Severities</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                        <select id="alertStatusSelect" onchange="loadAlertsCenter(1)" class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container">
+                            <option value="">All Statuses</option>
+                            <option value="open">Open</option>
+                            <option value="investigating">Investigating</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="dismissed">Dismissed</option>
+                        </select>
+                        <button onclick="openCreateAlertModal()" class="px-4 py-2 bg-red-500/20 text-red-300 border border-red-500/30 font-semibold rounded hover:bg-red-500/30 transition text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[16px]">add_alert</span>
+                            <span>Manual Alert</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="alertsGrid">
+                    <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Alert Pagination -->
+                <div class="p-4 bg-surface-container-high/10 rounded-lg border border-white/5 flex justify-between items-center" id="alertPagination">
+                    <!-- Pagination controls -->
+                </div>
+            </div>
+
+            <!-- PAGE 10: INVESTIGATION CENTER -->
+            <div id="pageInvestigations" class="space-y-6 hidden">
+                <div class="flex flex-wrap gap-4 items-center justify-between bg-surface-container-high/10 border border-white/5 rounded-lg p-4">
+                    <div class="flex gap-3 items-center">
+                        <span class="material-symbols-outlined text-green-400">troubleshoot</span>
+                        <h3 class="font-bold text-md text-on-surface">Case Investigation Directory</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <input type="text" id="caseSearchInput" oninput="loadInvestigationCenter(1)" placeholder="Search case name, code..." class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container" />
+                        <select id="casePrioritySelect" onchange="loadInvestigationCenter(1)" class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container">
+                            <option value="">All Priorities</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                        <select id="caseStatusSelect" onchange="loadInvestigationCenter(1)" class="bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container">
+                            <option value="">All Statuses</option>
+                            <option value="open">Open</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="escalated">Escalated</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                        <button onclick="openCreateCaseModal()" class="px-4 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[16px]">create_new_folder</span>
+                            <span>Open Case Manual</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface-container-high/20 rounded-lg border border-white/5 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-surface-container border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Case ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Employee</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Risk Score</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Priority</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Assigned Analyst</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Created Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="caseTableBody" class="divide-y divide-white/5">
+                                <tr>
+                                    <td colspan="8" class="px-6 py-8 text-center text-on-surface-variant">Loading investigations...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="p-4 border-t border-white/5 flex justify-between items-center bg-surface-container/20" id="casePagination">
+                        <!-- Pagination controls -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 11: REPORTS PANEL -->
+            <div id="pageReports" class="space-y-6 hidden">
+                <div class="bg-surface-container-high/20 border border-white/5 rounded-lg p-6 space-y-4">
+                    <h3 class="text-md font-bold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary-container">file_download</span>
+                        <span>Security Reports Export Panel</span>
+                    </h3>
+                    <p class="text-xs text-on-surface-variant">Select filters and generate downloadable CSV sheets containing risk matrices, alert logs, and case statistics.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-2">
+                        <div class="space-y-1">
+                            <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Department</label>
+                            <select id="reportFilterDept" class="w-full bg-surface-container border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none">
+                                <option value="">All Departments</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Legal">Legal</option>
+                                <option value="Executive">Executive</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Threat Severity / Priority</label>
+                            <select id="reportFilterLevel" class="w-full bg-surface-container border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none">
+                                <option value="">All Levels</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-[10px] font-mono text-on-surface-variant uppercase">Start Date</label>
+                            <input type="date" id="reportFilterStart" class="w-full bg-surface-container border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-[10px] font-mono text-on-surface-variant uppercase">End Date</label>
+                            <input type="date" id="reportFilterEnd" class="w-full bg-surface-container border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Report type cards -->
+                    <div class="bg-surface-container border border-white/5 rounded-lg p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-primary-container text-[28px]">shield_alert</span>
+                            <h4 class="font-bold text-sm">Employee Threat Risk Report</h4>
+                            <p class="text-xs text-on-surface-variant">Full database download of employee risk rankings, baselines, and features shifts.</p>
+                        </div>
+                        <button onclick="downloadReport('employee_risk')" class="w-full py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Download CSV</button>
+                    </div>
+
+                    <div class="bg-surface-container border border-white/5 rounded-lg p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-red-400 text-[28px]">notification_important</span>
+                            <h4 class="font-bold text-sm">Security Alerts Log Registry</h4>
+                            <p class="text-xs text-on-surface-variant">Exports generated anomalies, alert details, severity levels, and links to cases.</p>
+                        </div>
+                        <button onclick="downloadReport('alert')" class="w-full py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Download CSV</button>
+                    </div>
+
+                    <div class="bg-surface-container border border-white/5 rounded-lg p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-green-400 text-[28px]">folder_shared</span>
+                            <h4 class="font-bold text-sm">Case Investigations Ledger</h4>
+                            <p class="text-xs text-on-surface-variant">Yields list of opened investigations, analyst assignments, status logs, and decisions.</p>
+                        </div>
+                        <button onclick="downloadReport('investigation')" class="w-full py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Download CSV</button>
+                    </div>
+
+                    <div class="bg-surface-container border border-white/5 rounded-lg p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-blue-400 text-[28px]">corporate_fare</span>
+                            <h4 class="font-bold text-sm">Department Risk Summary</h4>
+                            <p class="text-xs text-on-surface-variant">Summarizes metrics, averages risk indices, and alert counts aggregated by dept nodes.</p>
+                        </div>
+                        <button onclick="downloadReport('department')" class="w-full py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Download CSV</button>
+                    </div>
+
+                    <div class="bg-surface-container border border-white/5 rounded-lg p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <span class="material-symbols-outlined text-yellow-400 text-[28px]">summarize</span>
+                            <h4 class="font-bold text-sm">Executive System Summary</h4>
+                            <p class="text-xs text-on-surface-variant">Overview report outlining baseline stats, MTTD/MTTR KPIs, and organizational safety checks.</p>
+                        </div>
+                        <button onclick="downloadReport('security_summary')" class="w-full py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Download CSV</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 12: INVESTIGATION DETAILS -->
+            <div id="pageInvestigationDetails" class="space-y-6 hidden">
+                <button onclick="switchTab('investigations')" class="flex items-center gap-1.5 text-xs text-primary-container hover:text-primary transition font-semibold font-mono uppercase">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    <span>Back to Case Directory</span>
+                </button>
+
+                <div class="grid grid-cols-12 gap-6">
+                    <!-- Left: Metadata and Evidence Upload -->
+                    <div class="col-span-12 lg:col-span-6 space-y-6">
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <div class="flex justify-between items-start border-b border-white/5 pb-4">
+                                <div class="space-y-1">
+                                    <h4 class="text-md font-bold text-on-surface" id="caseDetailTitle">Case Folder</h4>
+                                    <p class="text-xs text-on-surface-variant" id="caseDetailEmployee">Employee: EMP0000</p>
+                                </div>
+                                <span class="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold" id="caseDetailPriority">PRIORITY</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 text-xs">
+                                <div>
+                                    <span class="text-on-surface-variant block font-mono text-[10px]">CASE STATUS</span>
+                                    <select id="caseDetailStatusDropdown" onchange="updateCaseStatusFromDropdown()" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2 rounded focus:outline-none mt-1">
+                                        <option value="OPEN">Open</option>
+                                        <option value="ASSIGNED">Assigned</option>
+                                        <option value="IN_PROGRESS">In Progress</option>
+                                        <option value="ESCALATED">Escalated</option>
+                                        <option value="RESOLVED">Resolved</option>
+                                        <option value="CLOSED">Closed</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="text-on-surface-variant block font-mono text-[10px]">ASSIGNED ANALYST</span>
+                                    <select id="caseDetailAnalystDropdown" onchange="updateCaseAnalystFromDropdown()" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2 rounded focus:outline-none mt-1">
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 text-xs">
+                                <span class="text-on-surface-variant block font-mono text-[10px]">THREAT LEVEL RISK SCORE</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="flex-1 bg-white/5 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-primary-container h-full" id="caseDetailRiskBar" style="width: 0%"></div>
+                                    </div>
+                                    <span class="font-bold font-mono" id="caseDetailRiskText">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations and resolution -->
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface">Analyst Case Decision</h4>
+                            <div class="space-y-3 text-xs">
+                                <div class="space-y-1">
+                                    <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Security Recommendations</label>
+                                    <textarea id="caseRecInput" rows="2" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="Input recommendations (e.g. Audit login parameters...)"></textarea>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Resolution Notes</label>
+                                    <textarea id="caseResInput" rows="2" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none focus:border-primary-container" placeholder="Input case resolution logs..."></textarea>
+                                </div>
+                                <div class="flex justify-end pt-1">
+                                    <button onclick="saveCaseResolution()" class="px-4 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Save Decision</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evidence panel -->
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface">Digital Evidence Logs</h4>
+                            <div class="space-y-3">
+                                <div class="space-y-2" id="caseEvidenceList">
+                                    <!-- Dynamic evidence logs -->
+                                </div>
+                                <div class="border-t border-white/5 pt-3">
+                                    <form id="evidenceForm" onsubmit="uploadEvidence(event)" class="flex gap-2">
+                                        <input type="text" id="evidenceFilename" placeholder="Evidence file description..." class="flex-1 bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none" required />
+                                        <button type="submit" class="px-4 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Attach</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Relational Timeline and notes -->
+                    <div class="col-span-12 lg:col-span-6 space-y-6">
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4 flex flex-col h-[400px]">
+                            <h4 class="text-sm font-bold text-on-surface">Audit Case Timeline</h4>
+                            <div class="flex-1 overflow-y-auto space-y-4 pr-1" id="caseTimelineList">
+                                <!-- Chronological events timeline -->
+                            </div>
+                        </div>
+
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface">Discussion logs / Notes</h4>
+                            <div class="space-y-3 h-[250px] overflow-y-auto pr-1" id="caseNotesList">
+                                <!-- Notes list -->
+                            </div>
+                            <div class="flex gap-2 pt-2 border-t border-white/5">
+                                <textarea id="caseNewNoteInput" rows="1" placeholder="Write comment/note..." class="flex-1 bg-surface-container-lowest border border-white/10 text-on-surface text-xs p-2 rounded focus:outline-none focus:border-primary-container resize-none"></textarea>
+                                <button onclick="postCaseNote()" class="px-4 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Post</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 13: EMPLOYEE RISK PROFILE -->
+            <div id="pageEmployeeRiskProfile" class="space-y-6 hidden">
+                <button onclick="switchTab('risk')" class="flex items-center gap-1.5 text-xs text-primary-container hover:text-primary transition font-semibold font-mono uppercase">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    <span>Back to Risk Directory</span>
+                </button>
+
+                <div class="grid grid-cols-12 gap-6">
+                    <!-- Top Summary Card -->
+                    <div class="col-span-12 bg-surface-container border border-white/5 rounded-lg p-6 flex flex-wrap justify-between items-center gap-6">
+                        <div class="space-y-1">
+                            <h3 class="text-lg font-bold text-on-surface" id="riskProfileName">Employee Name</h3>
+                            <p class="text-xs text-on-surface-variant font-mono" id="riskProfileMeta">Code: EMP000 | Department: Security</p>
+                        </div>
+                        <div class="flex items-center gap-4 bg-surface-container-lowest px-6 py-3 rounded border border-white/5">
+                            <div class="space-y-0.5">
+                                <span class="text-[9px] font-mono text-on-surface-variant uppercase tracking-wider block">Threat Level</span>
+                                <span class="text-xs font-bold text-on-surface" id="riskProfileLevelText">LOW RISK</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-md font-mono" id="riskProfileScoreBadge">0%</div>
+                        </div>
+                    </div>
+
+                    <!-- Behavior Baseline vs Profile Deviations Chart Grid -->
+                    <div class="col-span-12 lg:col-span-8 space-y-6">
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface">Behavior Baseline Deviations</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="riskProfileDeviationsGrid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Anomaly log and generated alerts -->
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary-container">timeline</span>
+                                <span>Recent Model Anomalies & Alerts Log</span>
+                            </h4>
+                            <div class="space-y-3 max-h-[300px] overflow-y-auto pr-1" id="riskProfileAnomaliesList">
+                                <!-- Anomalies list -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Trends Graph and feature list -->
+                    <div class="col-span-12 lg:col-span-4 space-y-6">
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface">Risk History Trend</h4>
+                            <div class="w-full h-[200px] relative">
+                                <canvas id="riskProfileTrendChartCanvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="bg-surface-container border border-white/5 rounded-lg p-6 space-y-4">
+                            <h4 class="text-sm font-bold text-on-surface">Behavior Features Grid</h4>
+                            <div class="grid grid-cols-2 gap-4 text-xs" id="riskProfileFeaturesGrid">
+                                <!-- Features list -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Create Manual Alert Modal -->
+<div id="createAlertModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-surface-container border border-white/10 rounded max-w-md w-full flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high/40">
+            <h3 class="text-md font-semibold text-primary-container flex items-center gap-2">
+                <span class="material-symbols-outlined">add_alert</span>
+                <span>Generate Custom Security Alert</span>
+            </h3>
+            <button onclick="closeCreateAlertModal()" class="text-on-surface-variant hover:text-white transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form onsubmit="submitManualAlert(event)" class="p-6 space-y-4 text-xs">
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Employee Target Code</label>
+                <input type="text" id="manualAlertEmpCode" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none" placeholder="EMP0001" required />
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Threat Type Classification</label>
+                <select id="manualAlertThreatType" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none">
+                    <option value="Suspicious Login">Suspicious Login</option>
+                    <option value="Data Theft">Data Theft</option>
+                    <option value="USB Activity">USB Activity</option>
+                    <option value="Email Abuse">Email Abuse</option>
+                    <option value="Privilege Escalation">Privilege Escalation</option>
+                    <option value="Sensitive File Access">Sensitive File Access</option>
+                    <option value="Behavioral Deviation">Behavioral Deviation</option>
+                    <option value="Large Downloads">Large Downloads</option>
+                </select>
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Alert Severity</label>
+                <select id="manualAlertSeverity" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none">
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                    <option value="CRITICAL">Critical</option>
+                </select>
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Risk Indicator Score (0-100)</label>
+                <input type="number" id="manualAlertRiskScore" min="0" max="100" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none" placeholder="65" required />
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Incident Narrative / Description</label>
+                <textarea id="manualAlertDesc" rows="3" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none" placeholder="Provide incident narrative and details..."></textarea>
+            </div>
+            <div class="pt-4 flex justify-end gap-3 border-t border-white/5">
+                <button type="button" onclick="closeCreateAlertModal()" class="px-4 py-2 border border-white/10 text-on-surface font-semibold rounded hover:bg-white/5 transition text-xs uppercase tracking-wider">Cancel</button>
+                <button type="submit" class="px-5 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Generate Alert</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Create Manual Investigation Case Modal -->
+<div id="createCaseModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-surface-container border border-white/10 rounded max-w-md w-full flex flex-col shadow-2xl">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high/40">
+            <h3 class="text-md font-semibold text-primary-container flex items-center gap-2">
+                <span class="material-symbols-outlined">create_new_folder</span>
+                <span>Open New Security Investigation</span>
+            </h3>
+            <button onclick="closeCreateCaseModal()" class="text-on-surface-variant hover:text-white transition">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form onsubmit="submitManualCase(event)" class="p-6 space-y-4 text-xs">
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Employee Target Code</label>
+                <input type="text" id="manualCaseEmpCode" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none" placeholder="EMP0001" required />
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Link Security Alert ID (Optional)</label>
+                <input type="number" id="manualCaseAlertId" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none" placeholder="Leave empty if none" />
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Case Priority Level</label>
+                <select id="manualCasePriority" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none">
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                    <option value="CRITICAL">Critical</option>
+                </select>
+            </div>
+            <div class="space-y-1">
+                <label class="block text-on-surface-variant font-mono text-[10px] uppercase">Initial Risk Score Indicator (0-100)</label>
+                <input type="number" id="manualCaseRiskScore" min="0" max="100" class="w-full bg-surface-container-lowest border border-white/10 text-on-surface p-2.5 rounded focus:outline-none" placeholder="50" required />
+            </div>
+            <div class="pt-4 flex justify-end gap-3 border-t border-white/5">
+                <button type="button" onclick="closeCreateCaseModal()" class="px-4 py-2 border border-white/10 text-on-surface font-semibold rounded hover:bg-white/5 transition text-xs uppercase tracking-wider">Cancel</button>
+                <button type="submit" class="px-5 py-2 bg-primary-container text-background font-semibold rounded hover:bg-primary-fixed-dim transition text-xs uppercase tracking-wider">Open Case</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Activity History Modal -->
 <div id="historyModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
     <div class="bg-surface-container border border-white/10 rounded max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl">
@@ -881,6 +1463,10 @@
     </div>
 </div>
 
+        </div>
+    </main>
+</div>
+
 <script src="/api.js"></script>
 <script>
     // Check authentication
@@ -896,10 +1482,11 @@
     // SPA Tab Switching Logic
     function switchTab(tabName) {
         // Toggle Sidebar button highlights
-        const tabs = ['navDashboard', 'navUsers', 'navDepts', 'navLogs', 'navAnalytics', 'navSettings'];
+        const tabs = ['navDashboard', 'navUsers', 'navDepts', 'navLogs', 'navAnalytics', 'navRisk', 'navAlerts', 'navInvestigations', 'navReports', 'navSettings'];
         tabs.forEach(t => {
             const btn = document.getElementById(t);
-            if (tabName !== 'profileView' && t === 'nav' + tabName.charAt(0).toUpperCase() + tabName.slice(1)) {
+            if (!btn) return;
+            if (tabName !== 'profileView' && tabName !== 'investigationDetails' && tabName !== 'employeeRiskProfile' && t === 'nav' + tabName.charAt(0).toUpperCase() + tabName.slice(1)) {
                 btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded bg-primary-container/10 text-primary-container font-semibold border-r-2 border-primary-container text-left text-sm animate-pulse-once";
             } else {
                 btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-white/5 transition text-left text-sm";
@@ -907,9 +1494,10 @@
         });
 
         // Toggle Content pages visibility
-        const pages = ['pageDashboard', 'pageUsers', 'pageDepts', 'pageLogs', 'pageAnalytics', 'pageSettings', 'pageProfileView'];
+        const pages = ['pageDashboard', 'pageUsers', 'pageDepts', 'pageLogs', 'pageAnalytics', 'pageSettings', 'pageProfileView', 'pageRisk', 'pageAlerts', 'pageInvestigations', 'pageReports', 'pageInvestigationDetails', 'pageEmployeeRiskProfile'];
         pages.forEach(p => {
             const pg = document.getElementById(p);
+            if (!pg) return;
             if (p === 'page' + tabName.charAt(0).toUpperCase() + tabName.slice(1)) {
                 pg.classList.remove('hidden');
             } else {
@@ -930,11 +1518,13 @@
             headerTitle.textContent = "Employee Security Dossier";
             headerSubtitle.textContent = "Comprehensive behavioral profile and asset control";
         } else if (tabName === 'depts') {
-            headerTitle.textContent = "Corporate Departments";
-            headerSubtitle.textContent = "View organizational node divisions";
+            headerTitle.textContent = "Department Threat Operations";
+            headerSubtitle.textContent = "Route escalated cases to active security officers";
+            loadDepartmentsDashboard();
         } else if (tabName === 'logs') {
             headerTitle.textContent = "Global Activity Log Stream";
             headerSubtitle.textContent = "Real-time threat activity monitor";
+            loadGlobalLogsFeed();
         } else if (tabName === 'analytics') {
             headerTitle.textContent = "UEBA Behavior Telemetry";
             headerSubtitle.textContent = "Machine learning behavior index trends";
@@ -942,6 +1532,28 @@
         } else if (tabName === 'settings') {
             headerTitle.textContent = "Security Configuration Settings";
             headerSubtitle.textContent = "Adjust auditing parameters and credentials settings";
+        } else if (tabName === 'risk') {
+            headerTitle.textContent = "Behavior Risk Scores Directory";
+            headerSubtitle.textContent = "Dynamic threat indicators & baseline comparisons";
+            loadRiskDashboard(1);
+        } else if (tabName === 'alerts') {
+            headerTitle.textContent = "Alert Management Inbox";
+            headerSubtitle.textContent = "Review, acknowledge, resolve, and escalate anomalies";
+            loadAlertsCenter(1);
+        } else if (tabName === 'investigations') {
+            headerTitle.textContent = "Case Investigation Panel";
+            headerSubtitle.textContent = "Analyze evidence logs, manage notes, and trace timelines";
+            loadInvestigationCenter(1);
+        } else if (tabName === 'reports') {
+            headerTitle.textContent = "Security Reports Export Console";
+            headerSubtitle.textContent = "Compile downloadable CSV and structured security sheets";
+            loadReportsConsole();
+        } else if (tabName === 'investigationDetails') {
+            headerTitle.textContent = "Threat Case Details File";
+            headerSubtitle.textContent = "Timeline, notes and evidence logs for case folder";
+        } else if (tabName === 'employeeRiskProfile') {
+            headerTitle.textContent = "Employee Threat Risk Blueprint";
+            headerSubtitle.textContent = "Dynamic features deviations, anomaly indexes, and score trends";
         }
     }
 
@@ -1317,9 +1929,13 @@
                     });
                     globalBody.innerHTML = html;
                 }
+            } else {
+                const error = await logsRes.json().catch(() => ({}));
+                document.getElementById('global-logs-table').innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-red-300">${error.message || 'Unable to load activity logs.'}</td></tr>`;
             }
         } catch (e) {
             console.error('Error loading global logs feed:', e);
+            document.getElementById('global-logs-table').innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-red-300">Unable to load activity logs. Please try again.</td></tr>';
         }
     }
 
@@ -1851,6 +2467,90 @@ return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0
     let riskDistChart = null;
     let anomalyTrendChartObj = null;
 
+    function riskColor(score) {
+        if (score > 80) return 'text-red-400';
+        if (score > 60) return 'text-orange-400';
+        if (score > 30) return 'text-yellow-400';
+        return 'text-green-400';
+    }
+
+    async function loadDepartmentsDashboard() {
+        const grid = document.getElementById('departmentOperationsGrid');
+        const officersList = document.getElementById('securityOfficersList');
+        const status = document.getElementById('departmentStatus');
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-xs text-on-surface-variant">Loading department cases and officer availability...</div>';
+        officersList.innerHTML = '';
+        status.className = 'hidden rounded border px-4 py-3 text-xs';
+
+        try {
+            const response = await API.request('/analytics/departments', { method: 'GET' });
+            if (!response.success) throw new Error(response.message || 'Department data was not available.');
+            const data = response.data;
+            const departments = data.departments || [];
+            const officers = data.officers || [];
+            document.getElementById('departmentCount').textContent = departments.length;
+            document.getElementById('departmentActiveCases').textContent = data.active_case_count || 0;
+            document.getElementById('departmentUnassignedCases').textContent = data.unassigned_case_count || 0;
+
+            const officerOptions = officers.map(officer => `<option value="${officer.id}">${officer.name} · ${officer.role.replace('_', ' ')}</option>`).join('');
+            grid.innerHTML = '';
+            departments.forEach(department => {
+                const caseRows = department.cases.length ? department.cases.map(caseItem => `
+                    <div class="border border-white/5 bg-surface-container-lowest/30 rounded p-4 space-y-3">
+                        <div class="flex flex-wrap justify-between gap-2 text-xs">
+                            <div><span class="font-semibold text-on-surface">#CASE-${caseItem.id} · ${caseItem.employee_name}</span><span class="block mt-0.5 font-mono text-[10px] text-on-surface-variant">${caseItem.employee_code} · ${caseItem.status}</span></div>
+                            <span class="font-mono font-bold ${riskColor(caseItem.risk_score)}">${caseItem.risk_score}% · ${caseItem.priority}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <select id="departmentCaseOfficer-${caseItem.id}" class="flex-1 min-w-[190px] bg-surface-container border border-white/10 text-on-surface text-xs rounded p-2">
+                                <option value="">${caseItem.assigned_analyst_id ? `Assigned: ${caseItem.assigned_analyst_name}` : 'Select security officer'}</option>${officerOptions}
+                            </select>
+                            <button onclick="assignDepartmentCase(${caseItem.id})" class="px-3 py-2 rounded bg-primary-container text-background text-xs font-semibold hover:bg-primary-fixed-dim transition">Assign</button>
+                            <button onclick="switchTab('investigationDetails'); loadInvestigationDetails(${caseItem.id});" class="px-2 py-2 text-primary-container text-xs hover:text-primary">Open</button>
+                        </div>
+                    </div>`).join('') : '<div class="py-7 text-center text-xs text-on-surface-variant">No active or escalated cases in this department.</div>';
+                grid.innerHTML += `
+                    <section class="bg-surface-container-high/20 border border-white/5 rounded-lg overflow-hidden">
+                        <div class="p-5 border-b border-white/5 flex justify-between gap-4">
+                            <div><h4 class="font-semibold text-sm text-on-surface">${department.department}</h4><p class="mt-1 text-[10px] font-mono text-on-surface-variant">${department.employee_count} employees · Avg risk <span class="${riskColor(department.average_risk)}">${department.average_risk}%</span></p></div>
+                            <div class="text-right text-[10px] font-mono"><span class="block text-red-400">${department.escalated_case_count} escalated</span><span class="text-yellow-400">${department.unassigned_case_count} unassigned</span></div>
+                        </div>
+                        <div class="p-4 space-y-3">${caseRows}</div>
+                    </section>`;
+            });
+            if (!departments.length) grid.innerHTML = '<div class="col-span-full py-12 text-center text-xs text-on-surface-variant">No departments are available.</div>';
+            officersList.innerHTML = officers.length ? officers.map(officer => `
+                <div class="border border-white/5 rounded bg-surface-container-lowest/30 p-4">
+                    <p class="font-semibold text-sm text-on-surface">${officer.name}</p>
+                    <p class="mt-1 text-[10px] font-mono text-primary-container">${officer.role.replace('_', ' ')}</p>
+                    <p class="mt-2 text-xs text-on-surface-variant">${officer.department}</p>
+                    <p class="mt-3 text-xs ${officer.active_case_count ? 'text-yellow-400' : 'text-green-400'}">${officer.active_case_count} active assignment${officer.active_case_count === 1 ? '' : 's'}</p>
+                </div>`).join('') : '<div class="text-xs text-yellow-300">No active security officers are available for assignment.</div>';
+        } catch (error) {
+            console.error('Department operations retrieval failure:', error);
+            grid.innerHTML = '<div class="col-span-full py-12 text-center text-xs text-red-300">Department operations could not be loaded.</div>';
+            status.textContent = `Unable to load department operations: ${error.message || 'Unknown error'}`;
+            status.className = 'rounded border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-300';
+        }
+    }
+
+    async function assignDepartmentCase(caseId) {
+        const select = document.getElementById(`departmentCaseOfficer-${caseId}`);
+        if (!select.value) {
+            alert('Choose an active security officer before assigning this case.');
+            return;
+        }
+        try {
+            const result = await API.investigations.update(caseId, { assigned_analyst_id: Number(select.value) });
+            if (result.success) {
+                loadDepartmentsDashboard();
+                loadDashboard();
+            }
+        } catch (error) {
+            alert(`Case assignment failed: ${error.message}`);
+        }
+    }
+
     async function loadAnalyticsDashboard() {
         try {
             // 1. Fetch overview statistics
@@ -1889,10 +2589,10 @@ return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0
                 riskDistChart = new Chart(distCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Low Risk (0-40)', 'Medium Risk (41-75)', 'High Risk (76-100)'],
+                        labels: ['Low (0-30)', 'Medium (31-60)', 'High (61-80)', 'Critical (81-100)'],
                         datasets: [{
-                            data: [dist.low, dist.medium, dist.high],
-                            backgroundColor: ['#00e5ff', '#ffb4a2', '#ffb4ab'],
+                            data: [dist.levels.low, dist.levels.medium, dist.levels.high, dist.levels.critical],
+                            backgroundColor: ['#22c55e', '#facc15', '#fb923c', '#f87171'],
                             borderWidth: 1,
                             borderColor: '#1e2024'
                         }]
@@ -1917,8 +2617,8 @@ return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0
             if (trendRes.ok) {
                 const trendResult = await trendRes.json();
                 const trend = trendResult.data || [];
-                const labels = trend.map(t => t.date);
-                const counts = trend.map(t => t.count || t.anomaly_count);
+                const labels = trend.map(t => new Date(`${t.date}T00:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+                const counts = trend.map(t => t.count ?? t.anomaly_count ?? 0);
                 
                 const trendCtx = document.getElementById('anomalyTrendChart').getContext('2d');
                 if (anomalyTrendChartObj) anomalyTrendChartObj.destroy();
@@ -1941,7 +2641,7 @@ return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0
                         maintainAspectRatio: false,
                         scales: {
                             x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 8 } } },
-                            y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9ca3af', font: { size: 8 }, stepSize: 1 } }
+                            y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9ca3af', font: { size: 8 }, precision: 0 } }
                         },
                         plugins: {
                             legend: { display: false }
@@ -2101,6 +2801,913 @@ return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0
         if (emp) {
             openEmployeeDossier(emp.id);
         }
+    }
+
+    // ==========================================================
+    // MILESTONE 3: FRONTEND LIFE-CYCLE HANDLERS
+    // ==========================================================
+
+    let activeCaseId = null;
+    let activeRiskProfileCode = null;
+    let riskTrendChartObj = null;
+
+    // 1. RISK DASHBOARD LOGIC
+    async function loadRiskDashboard(page = 1) {
+        const search = document.getElementById('riskSearchInput').value;
+        const level = document.getElementById('riskLevelSelect').value;
+        const tbody = document.getElementById('riskTableBody');
+        const pagination = document.getElementById('riskPagination');
+        const status = document.getElementById('riskStatus');
+        tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-on-surface-variant">Loading risk registry...</td></tr>';
+        pagination.innerHTML = '';
+        status.className = 'hidden rounded border px-4 py-3 text-xs';
+        
+        try {
+            const res = await API.risk.getAll({ page, per_page: 10, search, level });
+            if (res.success) {
+                tbody.innerHTML = '';
+                
+                if (res.data.items.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-on-surface-variant">No risk records match the selected filters.</td></tr>';
+                    status.textContent = 'No employee risk profiles match the current search or risk-level filter.';
+                    status.className = 'rounded border border-yellow-500/20 bg-yellow-500/5 px-4 py-3 text-xs text-yellow-300';
+                    return;
+                }
+                
+                res.data.items.forEach(item => {
+                    let scoreColor = 'text-green-400';
+                    let levelBadge = 'bg-green-500/10 text-green-400 border-green-500/20';
+                    let levelLabel = 'LOW';
+                    
+                    if (item.risk_score > 80.0) {
+                        scoreColor = 'text-red-500 font-extrabold animate-pulse';
+                        levelBadge = 'bg-red-500/25 text-red-400 border-red-500/30 font-bold';
+                        levelLabel = 'CRITICAL';
+                    } else if (item.risk_score > 60.0) {
+                        scoreColor = 'text-orange-400 font-bold';
+                        levelBadge = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                        levelLabel = 'HIGH';
+                    } else if (item.risk_score > 30.0) {
+                        scoreColor = 'text-yellow-400';
+                        levelBadge = 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20';
+                        levelLabel = 'MEDIUM';
+                    }
+
+                    const dateStr = item.last_updated ? new Date(item.last_updated).toLocaleString() : 'N/A';
+                    
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-white/2 transition">
+                            <td class="px-6 py-4 text-xs font-semibold text-on-surface flex flex-col">
+                                <span>${item.employee_name}</span>
+                                <span class="text-[10px] text-on-surface-variant font-mono">${item.employee_code}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs text-on-surface-variant">${item.department}</td>
+                            <td class="px-6 py-4 text-xs text-on-surface-variant">${item.designation}</td>
+                            <td class="px-6 py-4 text-xs font-mono font-bold ${scoreColor}">${item.risk_score}%</td>
+                            <td class="px-6 py-4 text-xs">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono border ${levelBadge}">${levelLabel}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs text-on-surface-variant font-mono">${dateStr}</td>
+                            <td class="px-6 py-4 text-xs flex gap-2">
+                                <button onclick="switchTab('employeeRiskProfile'); loadEmployeeRiskProfile('${item.employee_code}');" class="text-primary-container hover:text-primary transition font-semibold">Risk Blueprint</button>
+                                <button onclick="recalculateSingleRisk('${item.employee_code}')" class="text-on-surface-variant hover:text-white transition font-mono">[Recalc]</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                renderPagination('riskPagination', res.data, loadRiskDashboard);
+            }
+        } catch (e) {
+            console.error('Risk retrieval failure:', e);
+            tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-red-300">Risk profiles could not be loaded.</td></tr>';
+            status.textContent = `Unable to load risk profiles: ${e.message || 'Unknown error'}. Check that you are signed in and the API is running.`;
+            status.className = 'rounded border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs text-red-300';
+        }
+    }
+
+    async function triggerRiskRecalculation() {
+        const btn = document.getElementById('btnRecalcRisk');
+        const origText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">autorenew</span> Calculating...';
+        
+        try {
+            const res = await API.risk.calculate();
+            if (res.success) {
+                alert(`Successfully recalculated risk scores for ${res.data.calculated_count} employees.`);
+                loadRiskDashboard(1);
+                loadDashboard(); // Refresh overall KPI cache
+            }
+        } catch (e) {
+            alert('Recalculation failed: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = origText;
+        }
+    }
+
+    async function recalculateSingleRisk(empCode) {
+        try {
+            const res = await API.risk.calculate(empCode);
+            if (res.success) {
+                alert(`Recalculated score for ${empCode}: ${res.data.risk_score}%`);
+                loadRiskDashboard(1);
+                loadDashboard();
+            }
+        } catch (e) {
+            alert('Recalculation failed: ' + e.message);
+        }
+    }
+
+    // 2. ALERT CENTER LOGIC
+    async function loadAlertsCenter(page = 1) {
+        const search = document.getElementById('alertSearchInput').value;
+        const severity = document.getElementById('alertSeveritySelect').value;
+        const status = document.getElementById('alertStatusSelect').value;
+        
+        try {
+            const res = await API.alerts.getAll({ page, per_page: 9, search, severity, status });
+            if (res.success) {
+                const grid = document.getElementById('alertsGrid');
+                grid.innerHTML = '';
+                
+                if (res.data.items.length === 0) {
+                    grid.innerHTML = '<div class="col-span-3 py-12 text-center text-on-surface-variant text-xs">No security alerts logged.</div>';
+                    return;
+                }
+                
+                res.data.items.forEach(alert => {
+                    let borderCol = 'border-white/5 bg-surface-container/30';
+                    let badgeCol = 'bg-white/5 text-on-surface-variant';
+                    
+                    if (alert.severity === 'CRITICAL') {
+                        borderCol = 'border-red-500/20 bg-red-500/5 hover:border-red-500/40';
+                        badgeCol = 'bg-red-500/20 text-red-400 border-red-500/30 font-bold';
+                    } else if (alert.severity === 'HIGH') {
+                        borderCol = 'border-orange-500/20 bg-orange-500/5 hover:border-orange-500/40';
+                        badgeCol = 'bg-orange-500/25 text-orange-400 border-orange-500/30';
+                    } else if (alert.severity === 'MEDIUM') {
+                        borderCol = 'border-yellow-500/10 bg-yellow-500/5 hover:border-yellow-500/30';
+                        badgeCol = 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20';
+                    } else if (alert.severity === 'LOW') {
+                        borderCol = 'border-green-500/10 bg-green-500/5 hover:border-green-500/30';
+                        badgeCol = 'bg-green-500/15 text-green-400 border-green-500/20';
+                    }
+
+                    const dateStr = new Date(alert.timestamp).toLocaleString();
+                    
+                    let actionsHtml = '';
+                    if (alert.status === 'OPEN') {
+                        actionsHtml = `
+                            <button onclick="updateAlertStatus(${alert.id}, 'INVESTIGATING')" class="px-2 py-1 bg-primary-container/20 text-primary-container rounded hover:bg-primary-container/35 transition text-[10px] uppercase font-semibold">Acknowledge</button>
+                            <button onclick="updateAlertStatus(${alert.id}, 'DISMISSED')" class="px-2 py-1 bg-white/5 text-on-surface-variant rounded hover:bg-white/10 transition text-[10px] uppercase font-semibold">Archive</button>
+                        `;
+                    } else if (alert.status === 'INVESTIGATING') {
+                        actionsHtml = `
+                            <button onclick="updateAlertStatus(${alert.id}, 'RESOLVED')" class="px-2 py-1 bg-green-500/25 text-green-400 rounded hover:bg-green-500/35 transition text-[10px] uppercase font-semibold">Resolve</button>
+                            <button onclick="escalateAlert(${alert.id})" class="px-2 py-1 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition text-[10px] uppercase font-semibold">Escalate</button>
+                        `;
+                    }
+
+                    let caseLinkHtml = '';
+                    if (alert.investigation_id) {
+                        caseLinkHtml = `
+                            <button onclick="switchTab('investigationDetails'); loadInvestigationDetails(${alert.investigation_id});" class="text-[10px] text-primary-container hover:text-primary transition font-bold font-mono uppercase flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">folder_open</span>
+                                <span>Case File #${alert.investigation_id}</span>
+                            </button>
+                        `;
+                    }
+
+                    grid.innerHTML += `
+                        <div class="border rounded-lg p-5 flex flex-col justify-between space-y-4 hover:shadow-xl transition duration-200 ${borderCol}">
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-start">
+                                    <span class="px-2 py-0.5 rounded text-[9px] font-mono border uppercase ${badgeCol}">${alert.severity}</span>
+                                    <span class="text-[10px] text-on-surface-variant font-mono font-semibold">${dateStr}</span>
+                                </div>
+                                <div class="space-y-1">
+                                    <h4 class="font-bold text-sm text-on-surface">${alert.threat_type}</h4>
+                                    <p class="text-[11px] text-on-surface-variant font-mono">Target: ${alert.employee_name} (${alert.employee_code})</p>
+                                </div>
+                                <p class="text-[11px] text-on-surface-variant line-clamp-3">${alert.description || 'No descriptive details provided.'}</p>
+                            </div>
+                            <div class="border-t border-white/5 pt-3 flex flex-wrap justify-between items-center gap-2">
+                                <div class="flex gap-1.5">${actionsHtml}</div>
+                                <div>${caseLinkHtml}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                renderPagination('alertPagination', res.data, loadAlertsCenter);
+            }
+        } catch (e) {
+            console.error('Alerts retrieval failure:', e);
+        }
+    }
+
+    async function updateAlertStatus(alertId, status) {
+        try {
+            const res = await API.alerts.update(alertId, { status });
+            if (res.success) {
+                loadAlertsCenter(1);
+                loadDashboard();
+            }
+        } catch (e) {
+            alert('Update failed: ' + e.message);
+        }
+    }
+
+    async function escalateAlert(alertId) {
+        try {
+            const res = await API.alerts.update(alertId, { severity: 'CRITICAL', status: 'INVESTIGATING' });
+            if (res.success) {
+                alert('Alert escalated. Critical case folder opened automatically.');
+                loadAlertsCenter(1);
+                loadDashboard();
+            }
+        } catch (e) {
+            alert('Escalation failed: ' + e.message);
+        }
+    }
+
+    // Manual Alert Modal
+    function openCreateAlertModal() {
+        document.getElementById('createAlertModal').classList.remove('hidden');
+    }
+    function closeCreateAlertModal() {
+        document.getElementById('createAlertModal').classList.add('hidden');
+    }
+    async function submitManualAlert(event) {
+        event.preventDefault();
+        const employee_code = document.getElementById('manualAlertEmpCode').value;
+        const threat_type = document.getElementById('manualAlertThreatType').value;
+        const severity = document.getElementById('manualAlertSeverity').value;
+        const risk_score = parseFloat(document.getElementById('manualAlertRiskScore').value) || 0.0;
+        const description = document.getElementById('manualAlertDesc').value;
+
+        try {
+            const res = await API.alerts.create({ employee_code, threat_type, severity, risk_score, description });
+            if (res.success) {
+                alert('Manual security alert registered successfully.');
+                closeCreateAlertModal();
+                loadAlertsCenter(1);
+                loadDashboard();
+            }
+        } catch (e) {
+            alert('Failed: ' + e.message);
+        }
+    }
+
+    // 3. INVESTIGATION CENTER LOGIC
+    async function loadInvestigationCenter(page = 1) {
+        const search = document.getElementById('caseSearchInput').value;
+        const status = document.getElementById('caseStatusSelect').value;
+        const priority = document.getElementById('casePrioritySelect').value;
+        
+        try {
+            const res = await API.investigations.getAll({ page, per_page: 10, search, status, priority });
+            if (res.success) {
+                const tbody = document.getElementById('caseTableBody');
+                tbody.innerHTML = '';
+                
+                if (res.data.items.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-8 text-center text-on-surface-variant">No case records matching criteria found.</td></tr>';
+                    return;
+                }
+                
+                res.data.items.forEach(item => {
+                    let priorityBadge = 'bg-white/5 text-on-surface-variant';
+                    if (item.priority === 'CRITICAL') priorityBadge = 'bg-red-500/25 text-red-400 border-red-500/30';
+                    else if (item.priority === 'HIGH') priorityBadge = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                    else if (item.priority === 'MEDIUM') priorityBadge = 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20';
+                    else if (item.priority === 'LOW') priorityBadge = 'bg-green-500/15 text-green-400 border-green-500/20';
+
+                    let statusBadge = 'bg-white/5 text-on-surface-variant';
+                    if (item.status === 'RESOLVED') statusBadge = 'bg-green-500/20 text-green-400 border-green-500/30';
+                    else if (item.status === 'CLOSED') statusBadge = 'bg-white/10 text-on-surface/50 border-white/15';
+                    else if (item.status === 'ESCALATED') statusBadge = 'bg-red-500/10 text-red-400 border-red-500/20 animate-pulse';
+                    else if (item.status === 'IN_PROGRESS') statusBadge = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+
+                    const dateStr = item.created_at ? new Date(item.created_at).toLocaleDateString() : 'N/A';
+                    
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-white/2 transition">
+                            <td class="px-6 py-4 text-xs font-mono font-semibold text-on-surface">#CASE-${item.id}</td>
+                            <td class="px-6 py-4 text-xs font-semibold text-on-surface flex flex-col">
+                                <span>${item.employee_name}</span>
+                                <span class="text-[10px] text-on-surface-variant font-mono">${item.employee_code}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs font-mono font-bold">${item.risk_score}%</td>
+                            <td class="px-6 py-4 text-xs">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono border uppercase ${priorityBadge}">${item.priority}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs text-on-surface-variant">${item.assigned_analyst_name}</td>
+                            <td class="px-6 py-4 text-xs">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono border uppercase ${statusBadge}">${item.status}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs text-on-surface-variant font-mono">${dateStr}</td>
+                            <td class="px-6 py-4 text-xs">
+                                <button onclick="switchTab('investigationDetails'); loadInvestigationDetails(${item.id});" class="text-primary-container hover:text-primary transition font-semibold">Open Folder</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                renderPagination('casePagination', res.data, loadInvestigationCenter);
+            }
+        } catch (e) {
+            console.error('Case retrieval failure:', e);
+        }
+    }
+
+    // Create Manual Case Modal
+    function openCreateCaseModal() {
+        document.getElementById('createCaseModal').classList.remove('hidden');
+    }
+    function closeCreateCaseModal() {
+        document.getElementById('createCaseModal').classList.add('hidden');
+    }
+    async function submitManualCase(event) {
+        event.preventDefault();
+        const employee_code = document.getElementById('manualCaseEmpCode').value;
+        const alert_id_raw = document.getElementById('manualCaseAlertId').value;
+        const alert_id = alert_id_raw ? parseInt(alert_id_raw) : null;
+        const priority = document.getElementById('manualCasePriority').value;
+        const risk_score = parseFloat(document.getElementById('manualCaseRiskScore').value) || 50.0;
+
+        try {
+            const res = await API.investigations.create({ employee_code, alert_id, priority, risk_score });
+            if (res.success) {
+                alert('Investigation Case opened.');
+                closeCreateCaseModal();
+                loadInvestigationCenter(1);
+                loadDashboard();
+            }
+        } catch (e) {
+            alert('Failed: ' + e.message);
+        }
+    }
+
+    // 4. DETAILED CASE FILE VIEWS
+    async function loadInvestigationDetails(caseId) {
+        activeCaseId = caseId;
+        
+        try {
+            const res = await API.investigations.getById(caseId);
+            if (res.success) {
+                const caseData = res.data;
+                
+                document.getElementById('caseDetailTitle').textContent = `Investigation Case Folder: #CASE-${caseData.id}`;
+                document.getElementById('caseDetailEmployee').textContent = `Subject: ${caseData.employee_name} (${caseData.employee_code}) | Dept: ${caseData.department}`;
+                
+                const priorityBadge = document.getElementById('caseDetailPriority');
+                priorityBadge.textContent = caseData.priority + ' PRIORITY';
+                
+                let pCol = 'bg-white/5 text-on-surface-variant border-white/10';
+                if (caseData.priority === 'CRITICAL') pCol = 'bg-red-500/25 text-red-400 border-red-500/30';
+                else if (caseData.priority === 'HIGH') pCol = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                priorityBadge.className = `px-2.5 py-0.5 rounded text-[10px] font-mono font-bold border uppercase ${pCol}`;
+                
+                document.getElementById('caseDetailStatusDropdown').value = caseData.status;
+                
+                // Populate Analyst select box dynamically
+                const analystSelect = document.getElementById('caseDetailAnalystDropdown');
+                analystSelect.innerHTML = '<option value="">Unassigned</option>';
+                
+                if (window.cachedEmployees) {
+                    const analysts = window.cachedEmployees.filter(e => 
+                        e.department && e.department.toLowerCase().includes('security')
+                    );
+                    analysts.forEach(a => {
+                        analystSelect.innerHTML += `<option value="${a.id}">${a.first_name} ${a.last_name}</option>`;
+                    });
+                }
+                analystSelect.value = caseData.assigned_analyst_id || "";
+                
+                // Risk bar
+                document.getElementById('caseDetailRiskText').textContent = caseData.risk_score + '%';
+                document.getElementById('caseDetailRiskBar').style.width = caseData.risk_score + '%';
+                
+                // Text Inputs
+                document.getElementById('caseRecInput').value = caseData.recommendation || '';
+                document.getElementById('caseResInput').value = caseData.resolution || '';
+
+                // RENDER RELATIONAL TIMELINE
+                const timelineContainer = document.getElementById('caseTimelineList');
+                timelineContainer.innerHTML = '';
+                if (caseData.events.length === 0) {
+                    timelineContainer.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-8">No historical actions logged in case folder.</div>';
+                } else {
+                    caseData.events.forEach(evt => {
+                        let color = 'text-primary-container';
+                        if (evt.event_type === 'CASE_CREATED') color = 'text-green-400';
+                        else if (evt.event_type === 'STATUS_UPDATE') color = 'text-blue-400';
+                        else if (evt.event_type === 'PRIORITY_UPDATE') color = 'text-red-400';
+                        
+                        const timeStr = new Date(evt.timestamp).toLocaleString();
+                        timelineContainer.innerHTML += `
+                            <div class="flex gap-3 text-xs items-start border-l border-white/5 pl-4 ml-2 relative">
+                                <span class="w-2 h-2 rounded-full bg-primary-container absolute -left-[4px] mt-1.5"></span>
+                                <div class="space-y-0.5 flex-1">
+                                    <div class="flex justify-between items-center gap-6">
+                                        <span class="font-bold ${color}">${evt.event_type}</span>
+                                        <span class="text-[9px] text-on-surface-variant font-mono">${timeStr}</span>
+                                    </div>
+                                    <p class="text-on-surface/85">${evt.description}</p>
+                                    <span class="text-[9px] text-on-surface-variant font-mono block">By: ${evt.username}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // RENDER DISCUSSIONS NOTES
+                const notesContainer = document.getElementById('caseNotesList');
+                notesContainer.innerHTML = '';
+                if (caseData.notes.length === 0) {
+                    notesContainer.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-8">No conversation comments registered.</div>';
+                } else {
+                    caseData.notes.forEach(nt => {
+                        const timeStr = new Date(nt.created_at).toLocaleTimeString();
+                        notesContainer.innerHTML += `
+                            <div class="bg-surface-container-high/30 border border-white/5 rounded p-3 text-xs space-y-1">
+                                <div class="flex justify-between font-bold text-on-surface-variant">
+                                    <span>${nt.author_name}</span>
+                                    <span class="font-mono text-[9px]">${timeStr}</span>
+                                </div>
+                                <p class="text-on-surface/90 font-sans">${nt.note}</p>
+                            </div>
+                        `;
+                    });
+                }
+
+                // RENDER EVIDENCE LOGS
+                const evidenceContainer = document.getElementById('caseEvidenceList');
+                evidenceContainer.innerHTML = '';
+                if (caseData.evidence_files.length === 0) {
+                    evidenceContainer.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-4">No evidence files linked to case.</div>';
+                } else {
+                    caseData.evidence_files.forEach(file => {
+                        evidenceContainer.innerHTML += `
+                            <div class="flex items-center justify-between bg-surface-container-lowest/50 border border-white/10 rounded px-4 py-2 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[16px] text-primary-container">file_present</span>
+                                    <span class="font-mono truncate max-w-[180px]" title="${file.filename}">${file.filename}</span>
+                                </div>
+                                <div class="text-[10px] text-on-surface-variant font-mono flex gap-3">
+                                    <span>${file.file_size || 0} B</span>
+                                    <span>Uploader: ${file.uploader_name}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Case details compilation failed:', e);
+        }
+    }
+
+    async function updateCaseStatusFromDropdown() {
+        if (!activeCaseId) return;
+        const val = document.getElementById('caseDetailStatusDropdown').value;
+        try {
+            await API.investigations.update(activeCaseId, { status: val });
+            loadInvestigationDetails(activeCaseId);
+        } catch (e) {
+            alert('Failed: ' + e.message);
+        }
+    }
+
+    async function updateCaseAnalystFromDropdown() {
+        if (!activeCaseId) return;
+        const val = document.getElementById('caseDetailAnalystDropdown').value;
+        if (!val) return;
+        try {
+            await API.investigations.update(activeCaseId, { assigned_analyst_id: parseInt(val) });
+            loadInvestigationDetails(activeCaseId);
+        } catch (e) {
+            alert('Failed: ' + e.message);
+        }
+    }
+
+    async function saveCaseResolution() {
+        if (!activeCaseId) return;
+        const rec = document.getElementById('caseRecInput').value;
+        const res = document.getElementById('caseResInput').value;
+        try {
+            const response = await API.investigations.update(activeCaseId, { recommendation: rec, resolution: res });
+            if (response.success) {
+                alert('Analyst case resolution saved successfully.');
+                loadInvestigationDetails(activeCaseId);
+            }
+        } catch (e) {
+            alert('Save failed: ' + e.message);
+        }
+    }
+
+    async function postCaseNote() {
+        if (!activeCaseId) return;
+        const input = document.getElementById('caseNewNoteInput');
+        const txt = input.value;
+        if (!txt.trim()) return;
+        
+        try {
+            const res = await API.investigations.addNote(activeCaseId, txt);
+            if (res.success) {
+                input.value = '';
+                loadInvestigationDetails(activeCaseId);
+            }
+        } catch (e) {
+            alert('Post failed: ' + e.message);
+        }
+    }
+
+    async function uploadEvidence(event) {
+        event.preventDefault();
+        if (!activeCaseId) return;
+        const input = document.getElementById('evidenceFilename');
+        const txt = input.value;
+        if (!txt.trim()) return;
+
+        try {
+            const res = await API.investigations.addEvidence(activeCaseId, txt, 'Upload/' + txt, Math.floor(Math.random()*50000)+1000);
+            if (res.success) {
+                input.value = '';
+                loadInvestigationDetails(activeCaseId);
+            }
+        } catch (e) {
+            alert('Evidence attachment failed: ' + e.message);
+        }
+    }
+
+    // 5. EMPLOYEE BEHAVIOR RISK BLUEPRINT PROFILE VIEW
+    async function loadEmployeeRiskProfile(employeeCode) {
+        activeRiskProfileCode = employeeCode;
+        
+        try {
+            const detailRes = await API.risk.getByEmployee(employeeCode);
+            const behaviorRes = await API.request(`/analytics/employee/${employeeCode}`, { method: 'GET' });
+            
+            if (detailRes.success && behaviorRes.success) {
+                const details = detailRes.data;
+                const beh = behaviorRes.data;
+                
+                document.getElementById('riskProfileName').textContent = beh.employee.first_name + ' ' + beh.employee.last_name;
+                document.getElementById('riskProfileMeta').textContent = `Employee Code: ${beh.employee.employee_code} | Department: ${beh.employee.department} | Title: ${beh.employee.designation}`;
+                
+                const scoreBadge = document.getElementById('riskProfileScoreBadge');
+                scoreBadge.textContent = details.risk_score + '%';
+                
+                const levelSpan = document.getElementById('riskProfileLevelText');
+                levelSpan.textContent = details.risk_score > 80 ? 'CRITICAL RISK' : details.risk_score > 60 ? 'HIGH RISK' : details.risk_score > 30 ? 'MEDIUM RISK' : 'LOW RISK';
+
+                let badgeColor = 'bg-green-500/10 text-green-400 border-green-500/20';
+                if (details.risk_score > 80) badgeColor = 'bg-red-500/20 text-red-400 border-red-500/30 font-bold';
+                else if (details.risk_score > 60) badgeColor = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                else if (details.risk_score > 30) badgeColor = 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20';
+                
+                scoreBadge.className = `w-12 h-12 rounded-full border flex items-center justify-center font-bold text-sm font-mono ${badgeColor}`;
+
+                // RENDER BEHAVIOR BASELINE COMPARISONS
+                const devGrid = document.getElementById('riskProfileDeviationsGrid');
+                devGrid.innerHTML = '';
+                
+                const base = beh.baseline || {};
+                const prof = beh.profile || {};
+                
+                const devItems = [
+                    { label: 'Login Hours Deviation', actual: prof.avg_login_time ? prof.avg_login_time.toFixed(1) + 'h' : 'N/A', normal: base.normal_login_hour ? base.normal_login_hour.toFixed(1) + 'h' : 'N/A' },
+                    { label: 'Logout Hours Deviation', actual: prof.avg_logout_time ? prof.avg_logout_time.toFixed(1) + 'h' : 'N/A', normal: base.normal_logout_hour ? base.normal_logout_hour.toFixed(1) + 'h' : 'N/A' },
+                    { label: 'USB Key Connects', actual: prof.usb_usage_frequency ? prof.usb_usage_frequency.toFixed(2) + '/day' : 'N/A', normal: base.avg_usb_per_day ? base.avg_usb_per_day.toFixed(2) + '/day' : 'N/A' },
+                    { label: 'File Reads/Copies', actual: prof.file_access_frequency ? prof.file_access_frequency.toFixed(1) + '/day' : 'N/A', normal: base.avg_files_per_day ? base.avg_files_per_day.toFixed(1) + '/day' : 'N/A' },
+                    { label: 'Internal/External Emails', actual: (prof.internal_email_count + prof.external_email_count) || 0, normal: base.avg_emails_per_day ? base.avg_emails_per_day.toFixed(1) : 'N/A' },
+                    { label: 'Web Browsing Count', actual: prof.web_browsing_frequency ? prof.web_browsing_frequency.toFixed(1) + '/day' : 'N/A', normal: base.avg_websites_per_day ? base.avg_websites_per_day.toFixed(1) : 'N/A' }
+                ];
+                
+                devItems.forEach(item => {
+                    devGrid.innerHTML += `
+                        <div class="bg-surface-container-high/40 p-4 rounded border border-white/5 flex flex-col justify-between text-xs space-y-2">
+                            <span class="font-bold text-on-surface-variant font-mono uppercase tracking-wider text-[10px]">${item.label}</span>
+                            <div class="flex justify-between items-center text-xs">
+                                <div>
+                                    <span class="block text-[10px] text-on-surface-variant">CURRENT BEHAVIOR</span>
+                                    <span class="font-bold text-primary-container font-mono text-sm">${item.actual}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block text-[10px] text-on-surface-variant">BASELINE STANDARD</span>
+                                    <span class="font-mono text-on-surface/70 font-bold">${item.normal}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // RENDER BEHAVIOR FEATURES GRID
+                const featGrid = document.getElementById('riskProfileFeaturesGrid');
+                featGrid.innerHTML = '';
+                
+                const f = beh.features || {};
+                const featureFields = [
+                    { label: 'Late Logins %', val: f.late_login ? (f.late_login*100).toFixed(0)+'%' : '0%' },
+                    { label: 'Weekend Logins', val: f.weekend_login || '0' },
+                    { label: 'Multiple Devices', val: f.multiple_devices || '0' },
+                    { label: 'USB Usage Ratio', val: f.usb_usage ? f.usb_usage.toFixed(2) : '0' },
+                    { label: 'Failed Logins Count', val: f.failed_logins || '0' },
+                    { label: 'Websites Job Searches', val: f.job_search_websites || '0' },
+                    { label: 'Daily Session Time', val: f.average_session_duration ? f.average_session_duration.toFixed(1)+'h' : 'N/A' },
+                    { label: 'After-hours Activity', val: f.activity_after_hours ? f.activity_after_hours.toFixed(1)+'h' : '0h' }
+                ];
+                featureFields.forEach(item => {
+                    featGrid.innerHTML += `
+                        <div class="bg-surface-container-lowest/50 border border-white/10 rounded p-3 flex justify-between items-center">
+                            <span class="text-on-surface-variant text-[10px] font-mono uppercase">${item.label}</span>
+                            <span class="font-mono font-bold text-on-surface">${item.val}</span>
+                        </div>
+                    `;
+                });
+
+                // RENDER ANOMALIES & ALERTS LIST
+                const anomaliesContainer = document.getElementById('riskProfileAnomaliesList');
+                anomaliesContainer.innerHTML = '';
+                
+                const alerts = beh.alerts || [];
+                const anomalies = beh.anomalies || [];
+                
+                if (alerts.length === 0 && anomalies.length === 0) {
+                    anomaliesContainer.innerHTML = '<div class="text-center text-xs text-on-surface-variant py-8">No security anomalies or alerts logged in history.</div>';
+                } else {
+                    alerts.forEach(al => {
+                        const dateStr = new Date(al.timestamp).toLocaleString();
+                        anomaliesContainer.innerHTML += `
+                            <div class="p-3 bg-red-500/5 border border-red-500/20 rounded text-xs space-y-1">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-mono text-red-400 font-bold">ALERT: ${al.threat_type}</span>
+                                    <span class="text-[9px] text-on-surface-variant font-mono">${dateStr}</span>
+                                </div>
+                                <p class="text-on-surface-variant font-sans">${al.description}</p>
+                            </div>
+                        `;
+                    });
+                    
+                    anomalies.forEach(an => {
+                        const dateStr = new Date(an.detected_at).toLocaleString();
+                        anomaliesContainer.innerHTML += `
+                            <div class="p-3 bg-surface-container-high/40 border border-white/5 rounded text-xs space-y-1">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-mono text-yellow-400 font-semibold">ANOMALY: score ${an.score}</span>
+                                    <span class="text-[9px] text-on-surface-variant font-mono">${dateStr}</span>
+                                </div>
+                                <p class="text-on-surface-variant font-sans">${an.details}</p>
+                            </div>
+                        `;
+                    });
+                }
+
+                // DRAW HISTORY CHART
+                drawRiskTrendChart(details.history || []);
+            }
+        } catch (e) {
+            console.error('Error compiling employee risk profile blueprint:', e);
+        }
+    }
+
+    function drawRiskTrendChart(history) {
+        const ctx = document.getElementById('riskProfileTrendChartCanvas').getContext('2d');
+        
+        if (riskTrendChartObj) {
+            riskTrendChartObj.destroy();
+        }
+        
+        const sortedHistory = [...history].sort((a, b) => new Date(a.recorded_at) - new Date(b.recorded_at));
+        const labels = sortedHistory.map(h => new Date(h.recorded_at).toLocaleDateString());
+        const data = sortedHistory.map(h => h.risk_score);
+        
+        riskTrendChartObj = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Risk Index History',
+                    data: data,
+                    borderColor: '#00e5ff',
+                    backgroundColor: 'rgba(0, 229, 255, 0.05)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } } },
+                    y: { min: 0, max: 100, ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+    }
+
+    // 6. REPORTS PANEL LOGIC
+    function loadReportsConsole() {
+        // Set dates defaults
+        const today = new Date().toISOString().split('T')[0];
+        const monthAgo = new Date(Date.now() - 30*24*3600*1000).toISOString().split('T')[0];
+        document.getElementById('reportFilterStart').value = monthAgo;
+        document.getElementById('reportFilterEnd').value = today;
+    }
+
+    function downloadReport(reportType) {
+        const dept = document.getElementById('reportFilterDept').value;
+        const lvl = document.getElementById('reportFilterLevel').value;
+        const start = document.getElementById('reportFilterStart').value;
+        const end = document.getElementById('reportFilterEnd').value;
+        
+        let url = `/api/reports?type=${reportType}&format=csv`;
+        if (dept) url += `&department=${dept}`;
+        if (lvl) url += `&level=${lvl}`;
+        if (start) url += `&start_date=${start}`;
+        if (end) url += `&end_date=${end}`;
+        
+        // Open download link
+        const token = localStorage.getItem('access_token');
+        url += `&token=${token}`; 
+        
+        window.open(url, '_blank');
+    }
+
+    // 7. UTILITIES
+    function renderPagination(containerId, paginatedData, loadFn) {
+        const p = document.getElementById(containerId);
+        p.innerHTML = '';
+        
+        if (paginatedData.pages <= 1) return;
+
+        const current = paginatedData.page;
+        const max = paginatedData.pages;
+
+        let html = `<span class="text-xs text-on-surface-variant font-mono">Page ${current} of ${max}</span>`;
+        html += `<div class="flex gap-1">`;
+        
+        if (current > 1) {
+            html += `<button onclick="${loadFn.name}(${current - 1})" class="px-2 py-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-xs font-semibold text-on-surface transition font-mono"><</button>`;
+        }
+        if (current < max) {
+            html += `<button onclick="${loadFn.name}(${current + 1})" class="px-2 py-1 bg-white/5 border border-white/10 rounded hover:bg-white/10 text-xs font-semibold text-on-surface transition font-mono">></button>`;
+        }
+        html += `</div>`;
+        p.innerHTML = html;
+    }
+
+    // 8. NOTIFICATION HEARTBEAT TRIGGER
+    async function checkSystemNotifications() {
+        try {
+            const res = await API.notifications.getAll();
+            if (res.success && res.data.length > 0) {
+                console.log('CRITICAL SYSTEM NOTIFICATION: ', res.data[0].message);
+            }
+        } catch (e) {
+            console.error('Notification fetch failed:', e);
+        }
+    }
+    
+    // Check notifications every 30 seconds
+    setInterval(checkSystemNotifications, 30000);
+
+    // ==========================================================
+    // EXTENDED SYSTEM SUMMARY LOAD
+    // ==========================================================
+    async function loadDashboard() {
+        try {
+            const profile = await API.auth.getProfile();
+            if (profile.success) {
+                document.getElementById('username').textContent = profile.data.username;
+            }
+
+            // Fetch richer KPIs including MTTR/MTTD
+            const summaryRes = await API.request('/analytics/dashboard', { method: 'GET' });
+            if (summaryRes.success) {
+                const kpis = summaryRes.data.kpis;
+                
+                document.getElementById('total-employees').textContent = kpis.total_employees;
+                document.getElementById('active-threats').textContent = kpis.critical_alerts;
+                document.getElementById('online-logs').textContent = kpis.total_alerts;
+                document.getElementById('system-health').textContent = kpis.critical_alerts === 0 ? "SECURE" : "WARNING";
+                
+                const sysHealthBadge = document.getElementById('system-health');
+                if (kpis.critical_alerts > 0) {
+                    sysHealthBadge.className = "text-2xl font-bold text-red-400";
+                } else {
+                    sysHealthBadge.className = "text-2xl font-bold text-green-400";
+                }
+
+                // Render MTTD/MTTR KPIs cards
+                document.getElementById('kpiMttd').textContent = kpis.mttd_minutes + ' mins';
+                document.getElementById('kpiMttr').textContent = kpis.mttr_hours + ' hours';
+                document.getElementById('kpiOpenCases').textContent = kpis.open_investigations;
+                document.getElementById('kpiAvgRisk').textContent = kpis.average_risk_score + '%';
+
+                // Redraw telemetry charts on Dashboard home
+                const chartsData = {
+                    risk_distribution: summaryRes.data.risk_distribution,
+                    severity_breakdown: summaryRes.data.severity_breakdown,
+                    weekly_threats: summaryRes.data.weekly_threats
+                };
+                drawExtendedAdminCharts(chartsData);
+            }
+
+            const employees = await API.employees.getAll();
+            if (employees.success) {
+                window.cachedEmployees = employees.data; // Cache globally
+                populateEmployeesTable(employees.data);
+            }
+
+        } catch (e) {
+            console.error('Error loading primary dashboard cards:', e);
+        }
+    }
+
+    function drawExtendedAdminCharts(data) {
+        const riskCtx = document.getElementById('dashboardRiskChart').getContext('2d');
+        if (dashboardRiskChartObj) dashboardRiskChartObj.destroy();
+        dashboardRiskChartObj = new Chart(riskCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Low', 'Medium', 'High', 'Critical'],
+                datasets: [{
+                    data: [data.risk_distribution.low, data.risk_distribution.medium, data.risk_distribution.high, data.risk_distribution.critical],
+                    backgroundColor: ['rgba(74, 222, 128, 0.7)', 'rgba(250, 204, 21, 0.7)', 'rgba(251, 146, 60, 0.7)', 'rgba(248, 113, 113, 0.7)'],
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.05)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#e2e2e8', font: { size: 9 } } }
+                }
+            }
+        });
+
+        const actsCtx = document.getElementById('dashboardActionsChart').getContext('2d');
+        if (dashboardActionsChartObj) dashboardActionsChartObj.destroy();
+        
+        const labels = data.weekly_threats.map(t => t.day);
+        const counts = data.weekly_threats.map(t => t.count);
+
+        dashboardActionsChartObj = new Chart(actsCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Anomaly Triggers',
+                    data: counts,
+                    backgroundColor: 'rgba(0, 229, 255, 0.6)',
+                    borderColor: '#00e5ff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { ticks: { color: 'rgba(255,255,255,0.6)', font: { size: 9 } }, grid: { display: false } },
+                    y: { ticks: { color: 'rgba(255,255,255,0.6)', font: { size: 9 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        const anomCtx = document.getElementById('dashboardAnomalyChart').getContext('2d');
+        if (dashboardAnomalyChartObj) dashboardAnomalyChartObj.destroy();
+        dashboardAnomalyChartObj = new Chart(anomCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Low', 'Medium', 'High', 'Critical'],
+                datasets: [{
+                    data: [data.severity_breakdown.LOW, data.severity_breakdown.MEDIUM, data.severity_breakdown.HIGH, data.severity_breakdown.CRITICAL],
+                    backgroundColor: ['rgba(74, 222, 128, 0.7)', 'rgba(250, 204, 21, 0.7)', 'rgba(251, 146, 60, 0.7)', 'rgba(248, 113, 113, 0.7)'],
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.05)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#e2e2e8', font: { size: 9 } } }
+                }
+            }
+        });
     }
 
     function logout() {
