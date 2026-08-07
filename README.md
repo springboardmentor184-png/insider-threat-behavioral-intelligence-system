@@ -2,29 +2,98 @@
 AI-powered Insider Threat Behavioral Intelligence System developed as part of the Infosys Internship Program.
 
 
-# Milestone 3 (Week 5–6)
+---
 
-## Completed
+# ✅ Milestone 3 Completed
 
-- Insider Risk Scoring Engine
-- UEBA Dashboard
-- Risk Analytics
-- Dashboard Integration
-- Risk Score API
-- Risk Distribution Visualization
+## 🎯 Risk Scoring Engine
 
-## Partially Implemented
+Implemented an AI-based insider risk scoring system that evaluates employee activities and classifies users into different risk levels.
 
-- Threat Investigation workflow
-- Investigation interface
+### Features
+
+- Weighted risk score calculation
+- Risk level classification (Low, Medium, High, Critical)
+- Recommended security actions
+- Risk score generation using behavioral indicators
+
+---
+
+## 🧠 UEBA (User & Entity Behavior Analytics)
+
+Implemented behavioral analytics to identify suspicious employee activities.
+
+### Behavioral Indicators
+
+- Off-hour login analysis
+- Night login monitoring
+- Device switching analysis
+- Login variance detection
+- Session duration analysis
+- Isolation Forest anomaly detection
+
+---
+
+## 🚨 Threat Monitoring Dashboard
+
+Enhanced the Threat Monitoring interface with:
+
 - High-risk employee listing
+- Search functionality
+- Risk filtering
+- Risk score sorting
+- Pagination
+- Investigation popup with employee details
+- Activity timeline
+- Evidence summary
+- Recommended analyst actions
 
-## Planned
+---
 
-- Incident timeline
-- Evidence management
-- Activity correlation
+## 📊 Dashboard Improvements
+
+Enhanced the Security Operations Dashboard with:
+
+- Security overview cards
+- Critical threat statistics
+- Detected anomaly summary
+- Average risk score
+- Open investigation overview
+- Recent security alerts
+- Risk distribution visualization
+
+---
+
+## 🤖 Machine Learning Outputs
+
+The ML pipeline now generates:
+
+- `baseline.csv`
+- `anomaly_report.csv`
+- `risk_scores.csv`
+- `dashboard_data.json`
+
+Risk scoring now includes:
+
+- Risk Score
+- Risk Level
+- Recommended Action
+- Top Risk Reasons
+
+---
+
+## 🚧 Future Enhancements
+
+The following features are planned for future milestones:
+
+- Incident management workflow
+- Threat evidence collection
+- Event correlation engine
 - Investigation reports
+- Real-time activity monitoring
+- Email and SMS alerts
+- Docker deployment
+- Cloud deployment (AWS/Azure)
 
 ### Frontend
 - React + Vite dashboard
