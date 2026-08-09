@@ -55,8 +55,19 @@ function Sidebar() {
           }
         >
           <i className="bi bi-bar-chart-fill"></i>
-          <span>Analytics</span>
+          <span>UEBA Intelligence</span>
         </NavLink>
+
+          {/* Threat Investigation */}
+          <NavLink
+            to="/investigation"
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <i className="bi bi-binoculars-fill"></i>
+            <span>Threat Investigation</span>
+          </NavLink>
 
         {/* Activity Logs */}
         <NavLink

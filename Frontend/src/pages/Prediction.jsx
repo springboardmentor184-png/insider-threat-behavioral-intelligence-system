@@ -117,7 +117,11 @@ function Prediction() {
 
       setLoading(true);
 
-      const response = await predictRisk(formData);
+      //const response = await predictRisk(formData);
+      const response = await predictRisk({
+    employee_id: selectedEmployee,
+    ...formData,
+});
 
       setResult(response);
 

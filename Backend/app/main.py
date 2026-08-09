@@ -9,6 +9,11 @@ from app.database import engine
 from app.routes import baseline
 from app.routes import ai
 from app import models
+from app.routes import ueba
+from app.routes import investigation
+from app.routes import alert_management
+from app.routes import notification
+from app.routes import notifications
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
@@ -45,6 +50,11 @@ app.include_router(alerts.router)
 app.include_router(import_data.router)
 app.include_router(baseline.router)
 app.include_router(ai.router)
+app.include_router(ueba.router)
+app.include_router(investigation.router)
+app.include_router(alert_management.router)
+app.include_router(notification.router)
+app.include_router(notifications.router)
 # -----------------------------
 # Root Endpoint
 # -----------------------------

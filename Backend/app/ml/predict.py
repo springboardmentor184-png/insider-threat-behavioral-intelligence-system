@@ -37,7 +37,12 @@ def predict_behavior(data: dict):
 
         print("🤖 Isolation Forest Prediction")
 
-        df = pd.DataFrame([data])
+       # Remove employee_id before ML prediction
+        ml_data = data.copy()
+        ml_data.pop("employee_id", None)
+
+        df = pd.DataFrame([ml_data])
+
         prediction = model.predict(df)
 
         if prediction[0] == -1:

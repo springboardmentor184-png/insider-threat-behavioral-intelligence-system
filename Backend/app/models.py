@@ -116,3 +116,149 @@ class BehaviorBaseline(Base):
         DateTime,
         default=datetime.utcnow
     )
+
+    # ==========================
+# THREAT INVESTIGATION MODEL
+# ==========================
+class Investigation(Base):
+    __tablename__ = "investigations"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    employee_id = Column(
+        Integer,
+        ForeignKey("employees.id"),
+        nullable=False
+    )
+
+    incident_title = Column(String, nullable=False)
+
+    threat_severity = Column(String, nullable=False)
+
+    status = Column(
+        String,
+        default="Open"
+    )
+
+    assigned_analyst = Column(
+        String,
+        default="Unassigned"
+    )
+
+    investigation_notes = Column(
+        String,
+        default=""
+    )
+
+    recommendation = Column(
+        String,
+        default=""
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+# ==========================
+# THREAT ALERT MODEL
+# ==========================
+class ThreatAlert(Base):
+    __tablename__ = "threat_alerts"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    employee_id = Column(
+        Integer,
+        ForeignKey("employees.id"),
+        nullable=False
+    )
+
+    alert_title = Column(String, nullable=False)
+
+    severity = Column(String, nullable=False)
+
+    status = Column(
+        String,
+        default="Open"
+    )
+
+    escalation_level = Column(
+        Integer,
+        default=1
+    )
+
+    assigned_analyst = Column(
+        String,
+        default="Unassigned"
+    )
+
+    resolution_notes = Column(
+        String,
+        default=""
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    resolved_at = Column(
+        DateTime,
+        nullable=True
+    )
+
+# ==========================================
+# NOTIFICATION MODEL
+# ==========================================
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    employee_id = Column(
+        Integer,
+        ForeignKey("employees.id"),
+        nullable=True
+    )
+
+    notification_type = Column(
+        String,
+        nullable=False
+    )
+
+    title = Column(
+        String,
+        nullable=False
+    )
+
+    message = Column(
+        String,
+        nullable=False
+    )
+
+    severity = Column(
+        String,
+        default="Informational"
+    )
+
+    is_read = Column(
+        Boolean,
+        default=False
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )

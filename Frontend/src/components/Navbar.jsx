@@ -1,73 +1,93 @@
 import { useState } from "react";
+import NotificationBell from "./NotificationBell";
 
 function Navbar() {
 
-  const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("");
 
-  return (
-    <nav className="navbar">
+    return (
 
-      {/* Left Section */}
+        <nav className="navbar">
 
-      <div className="navbar-left">
+            {/* ==========================================
+                Left Section
+            ========================================== */}
 
-        <h3>Dashboard</h3>
+            <div className="navbar-left">
 
-        <p>Welcome back, Darshan 👋</p>
+                <h3>Dashboard</h3>
 
-      </div>
+                <p>
+                    Welcome back, Darshan 👋
+                </p>
 
-      {/* Right Section */}
+            </div>
 
-      <div className="navbar-right">
 
-        {/* Search */}
+            {/* ==========================================
+                Right Section
+            ========================================== */}
 
-        <div className="search-box">
+            <div className="navbar-right">
 
-          <i className="bi bi-search"></i>
+                {/* Search */}
 
-          <input
-            type="text"
-            placeholder="Search employees..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+                <div className="search-box">
 
-        </div>
+                    <i className="bi bi-search"></i>
 
-        {/* Notification */}
+                    <input
+                        type="text"
+                        placeholder="Search employees..."
+                        value={search}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
+                    />
 
-        <div className="icon-box">
+                </div>
 
-          <i className="bi bi-bell-fill"></i>
 
-        </div>
+                {/* ==========================================
+                    Notification
+                ========================================== */}
 
-        {/* User */}
+                <div className="icon-box">
 
-        <div className="profile-box">
+                    <NotificationBell />
 
-          <div className="profile-image">
+                </div>
 
-            <i className="bi bi-person-fill"></i>
 
-          </div>
+                {/* ==========================================
+                    User Profile
+                ========================================== */}
 
-          <div>
+                <div className="profile-box">
 
-            <h6>Darshan</h6>
+                    <div className="profile-image">
 
-            <small>Administrator</small>
+                        <i className="bi bi-person-fill"></i>
 
-          </div>
+                    </div>
 
-        </div>
+                    <div>
 
-      </div>
+                        <h6>Darshan</h6>
 
-    </nav>
-  );
+                        <small>
+                            Administrator
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    );
 }
 
 export default Navbar;

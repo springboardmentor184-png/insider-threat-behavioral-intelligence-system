@@ -13,10 +13,10 @@ import Analytics from "./pages/Analytics";
 import ThreatAlerts from "./pages/ThreatAlerts";
 import Settings from "./pages/Settings";
 import Prediction from "./pages/Prediction";
-
+import ThreatInvestigation from "./pages/ThreatInvestigation";
 // Protected Route
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import InvestigationDetails from "./pages/InvestigationDetails";
 // Error Page
 import NotFound from "./pages/NotFound";
 
@@ -98,6 +98,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+    path="/investigation"
+    element={<ThreatInvestigation />}
+    />
+    <Route
+    path="/investigation/:id"
+    element={<InvestigationDetails />}
+    />
 
         {/* Settings */}
         <Route

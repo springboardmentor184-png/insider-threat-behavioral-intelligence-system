@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from datetime import datetime
 
 
 # ==========================
@@ -116,6 +117,8 @@ class EmployeeRiskResponse(BaseModel):
 # ==========================
 
 class AIPredictRequest(BaseModel):
+    employee_id: int
+
     avg_failed_logins: int
     avg_files_downloaded: int
     avg_emails_sent: int
@@ -196,3 +199,328 @@ class BaselineResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+# ==========================
+# UEBA INTELLIGENCE SCHEMA
+# ==========================
+
+class UEBAResponse(BaseModel):
+    employee_id: str
+    full_name: str
+    department: str
+    role: str
+
+    behaviour_status: str
+    behaviour_score: int
+    behaviour_trend: str
+
+    department_risk: str
+    peer_group_status: str
+
+    prediction: str
+    risk_level: str
+    threat_severity: str
+    detection_method: str
+
+    # ==========================
+# THREAT INVESTIGATION SCHEMAS
+# ==========================
+
+class InvestigationCreate(BaseModel):
+    employee_id: int
+    incident_title: str
+    threat_severity: str
+
+
+class InvestigationUpdate(BaseModel):
+    status: str
+    assigned_analyst: str
+    investigation_notes: str
+    recommendation: str
+
+
+class InvestigationResponse(BaseModel):
+    id: int
+    employee_id: int
+    incident_title: str
+    threat_severity: str
+    status: str
+    assigned_analyst: str
+    investigation_notes: str
+    recommendation: str
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# ==========================
+# INVESTIGATION DASHBOARD
+# ==========================
+
+class InvestigationDashboardResponse(BaseModel):
+    id: int
+
+    employee_id: int
+
+    employee_code: str
+
+    full_name: str
+
+    department: str
+
+    role: str
+
+    incident_title: str
+
+    threat_severity: str
+
+    status: str
+
+    assigned_analyst: str
+
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ==========================
+# Investigation Details
+# ==========================
+
+class InvestigationDetailsResponse(BaseModel):
+
+    id: int
+
+    employee_id: int
+
+    employee_code: str
+
+    full_name: str
+
+    department: str
+
+    role: str
+
+    incident_title: str
+
+    threat_severity: str
+
+    status: str
+
+    assigned_analyst: str
+
+    investigation_notes: str
+
+    recommendation: str
+
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# ==========================
+# Activity Timeline
+# ==========================
+
+class TimelineEvent(BaseModel):
+
+    time: str
+
+    title: str
+
+    description: str
+
+    severity: str
+
+    icon: str
+
+
+class InvestigationTimelineResponse(BaseModel):
+
+    events: list[TimelineEvent]
+
+# =====================================================
+# Threat Evidence Collection
+# =====================================================
+
+class InvestigationEvidenceResponse(BaseModel):
+
+    failed_logins: int
+
+    files_downloaded: int
+
+    emails_sent: int
+
+    usb_used: bool
+
+    after_hours_login: bool
+
+    risk_level: str
+
+    detection_method: str
+
+# =====================================================
+# Device Analysis
+# =====================================================
+
+class DeviceAnalysisResponse(BaseModel):
+
+    login_hour: int
+
+    usb_used: bool
+
+    after_hours_login: bool
+
+    files_downloaded: int
+
+    emails_sent: int
+
+    device_risk: str
+
+# =====================================================
+# User Risk History
+# =====================================================
+
+class RiskHistoryResponse(BaseModel):
+
+    employee_name: str
+
+    current_risk: str
+
+    previous_risk: str
+
+    total_incidents: int
+
+    average_risk_score: int
+
+    behaviour_trend: str
+
+# =====================================================
+# Event Correlation
+# =====================================================
+
+class CorrelationEvent(BaseModel):
+
+    event: str
+
+    severity: str
+
+    correlated: bool
+
+
+class EventCorrelationResponse(BaseModel):
+
+    employee_name: str
+
+    total_events: int
+
+    risk_level: str
+
+    correlation_score: int
+
+    events: list[CorrelationEvent]
+
+# =====================================================
+# Investigation Workflow
+# =====================================================
+
+class InvestigationWorkflowUpdate(BaseModel):
+
+    assigned_analyst: str
+
+    status: str
+
+    investigation_notes: str
+
+    recommendation: str
+
+
+class InvestigationWorkflowResponse(BaseModel):
+
+    message: str
+
+    investigation_id: int
+
+    assigned_analyst: str
+
+    status: str
+
+# =====================================================
+# ALERT MANAGEMENT
+# =====================================================
+
+class AlertDashboardResponse(BaseModel):
+
+    id: int
+
+    employee_id: int
+
+    employee_code: str
+
+    full_name: str
+
+    department: str
+
+    alert_title: str
+
+    severity: str
+
+    status: str
+
+    escalation_level: int
+
+    assigned_analyst: str
+
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class AssignAnalystRequest(BaseModel):
+
+    assigned_analyst: str
+
+
+class EscalateAlertResponse(BaseModel):
+
+    message: str
+
+    escalation_level: int
+
+
+class ResolveAlertRequest(BaseModel):
+
+    resolution_notes: str
+
+
+class ResolveAlertResponse(BaseModel):
+
+    message: str
+
+    status: str
+
+# ==========================================
+# NOTIFICATION SCHEMAS
+# ==========================================
+
+class NotificationResponse(BaseModel):
+    id: int
+    employee_id: int | None
+    notification_type: str
+    title: str
+    message: str
+    severity: str
+    is_read: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class NotificationReadResponse(BaseModel):
+    message: str
+    notification_id: int
+    is_read: bool
