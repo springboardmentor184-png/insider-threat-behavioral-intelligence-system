@@ -10,14 +10,13 @@ from .routers import profile
 from .routers import alerts
 from .routers import users
 from .routers import reports
-
 from .routers import oauth2
+from .routers import risk
 from app.routers import activity
-
-
-
+from .routers import risk, ueba, investigations, notifications
+from .routers import employees
+from .routers import psychometric
 Base.metadata.create_all(bind=engine)
-
 app = FastAPI(
     title="Insider Threat Behavioral Intelligence System",
     version="1.0.0"
@@ -40,6 +39,12 @@ app.include_router(users.router)
 app.include_router(reports.router)
 app.include_router(activity.router)
 app.include_router(behavior.router)
+app.include_router(risk.router)
+app.include_router(ueba.router)
+app.include_router(investigations.router)
+app.include_router(notifications.router)
+app.include_router(employees.router)
+app.include_router(psychometric.router)
 
 
 @app.get("/")

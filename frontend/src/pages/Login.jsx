@@ -1,10 +1,13 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/auth";
+import useAuth from "../hooks/useAuth";
 import "../styles/Login.css";
 
 function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -18,13 +21,8 @@ function Login() {
             });
 
             if (response.access_token) {
-
-                localStorage.setItem("token", response.access_token);
-                localStorage.setItem("role", response.role);
-                localStorage.setItem("name", response.user);
-
+                login(response);
                 navigate("/dashboard");
-
             } else {
                 alert(response.detail || "Invalid Email or Password");
             }
@@ -36,13 +34,7 @@ function Login() {
     };
 
     const googleLogin = () => {
-        window.location.href =
-            "http://127.0.0.1:8000/auth/google/login";
-    };
-
-    const microsoftLogin = () => {
-        window.location.href =
-            "http://127.0.0.1:8000/auth/microsoft/login";
+        window.location.href = "http://127.0.0.1:8000/auth/google/login";
     };
 
     return (
@@ -95,13 +87,6 @@ function Login() {
                     onClick={googleLogin}
                 >
                     Continue with Google
-                </button>
-
-                <button
-                    className="microsoft-btn"
-                    onClick={microsoftLogin}
-                >
-                    Continue with Microsoft
                 </button>
 
                 <p className="register-link">

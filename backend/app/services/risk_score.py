@@ -1,13 +1,21 @@
 class RiskScore:
 
-    def calculate(self, anomaly_score, unusual_login_ratio, usb_ratio, email_ratio, web_ratio):
-        
+    def calculate(
+        self,
+        anomaly_score,
+        unusual_login_ratio,
+        usb_ratio,
+        email_ratio,
+        web_ratio,
+        file_access_ratio=0.0,
+    ):
         normalized_anomaly = anomaly_score / 100
 
         weighted_score = (
-            (normalized_anomaly * 35)
-            + (usb_ratio * 25)
-            + (email_ratio * 20)
+            (normalized_anomaly * 30)
+            + (usb_ratio * 20)
+            + (file_access_ratio * 15)
+            + (email_ratio * 15)
             + (unusual_login_ratio * 10)
             + (web_ratio * 10)
         )
@@ -15,9 +23,10 @@ class RiskScore:
         max_single_signal = max(
             normalized_anomaly * 100,
             usb_ratio * 100,
+            file_access_ratio * 100,
             email_ratio * 100,
             unusual_login_ratio * 100,
-            web_ratio * 100
+            web_ratio * 100,
         )
 
         final_score = max(weighted_score, max_single_signal * 0.7)
@@ -40,10 +49,20 @@ class RiskScore:
         return results
 
     def get_risk_distribution(self, results):
-        distribution = {"Low": 0, "Medium": 0, "High": 0, "Critical": 0}
+        distribution = {
+            "Low": 0,
+            "Medium": 0,
+            "High": 0,
+            "Critical": 0
+        }
+
         for r in results:
             distribution[r["risk_category"]] += 1
-        return [{"category": k, "count": v} for k, v in distribution.items()]
+
+        return [
+            {"category": k, "count": v}
+            for k, v in distribution.items()
+        ]
 
 
 risk_score_calculator = RiskScore()

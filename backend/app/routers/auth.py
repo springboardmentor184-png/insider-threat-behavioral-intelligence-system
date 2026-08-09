@@ -1,22 +1,38 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi import Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 from ..database import get_db
 from ..schemas import UserRegister
-from ..schemas import UserLogin
 from ..models import User
-from ..utils.security import hash_password, verify_password, create_access_token
+from ..utils.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+)
 
-router = APIRouter(tags=["Authentication"])
+router = APIRouter(
+    tags=["Authentication"]
+)
+
+
 
 @router.post("/register")
-def register(user: UserRegister, db: Session = Depends(get_db)):
-
-    existing = db.query(User).filter(User.email == user.email).first()
+def register(
+    user: UserRegister,
+    db: Session = Depends(get_db)
+):
+    existing = (
+        db.query(User)
+        .filter(User.email == user.email)
+        .first()
+    )
 
     if existing:
-        return {"message": "Email already exists"}
+        raise HTTPException(
+            status_code=400,
+            detail="Email already exists"
+        )
 
     hashed_pw = hash_password(user.password)
 
@@ -25,7 +41,8 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
         email=user.email,
         password=hashed_pw,
         role=user.role,
-        department=user.department
+        department=user.department,
+        is_active=True
     )
 
     db.add(new_user)
@@ -38,16 +55,38 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
     }
 
 
-@router.post("/login")
-def login(user: UserLogin, db: Session = Depends(get_db)):
 
-    existing = db.query(User).filter(User.email == user.email).first()
+@router.post("/login")
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+    existing = (
+        db.query(User)
+        .filter(User.email == form_data.username)
+        .first()
+    )
 
     if existing is None:
-        return {"message": "Invalid Email"}
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email"
+        )
 
-    if not verify_password(user.password, existing.password):
-        return {"message": "Invalid Password"}
+    if not existing.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="User account is inactive"
+        )
+
+    if not verify_password(
+        form_data.password,
+        existing.password
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid password"
+        )
 
     token = create_access_token({
         "sub": existing.email,
@@ -55,9 +94,9 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     })
 
     return {
-        "message": "Login Successful",
         "access_token": token,
         "token_type": "bearer",
         "user": existing.full_name,
-        "role": existing.role
+        "role": existing.role,
+        "department": existing.department
     }

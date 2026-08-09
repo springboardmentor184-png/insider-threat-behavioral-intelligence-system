@@ -413,3 +413,128 @@ STATUS: COMPLETE (5/5 tasks)
 All Milestone 2 deliverables have been implemented and verified, including behavioral baselines, the profiling engine, a trained Isolation Forest anomaly model, the full anomaly detection workflow with risk scoring and severity, and a summary anomaly report endpoint.
 
 NEXT MILLESTONE 3 STARTED
+ 🛡️ Insider Threat Behavioral Intelligence System
+
+An AI-ready platform for monitoring employee activity, detecting behavioral anomalies, and managing insider risk — built with React, FastAPI, and MySQL.
+
+🎯 Milestone 3 — Risk Scoring & Threat Investigation (Week 5-6)
+
+📋 Milestone 3 — Task Checklist
+
+| # | Task | Status |
+|---|------|--------|
+| 1 | Implement insider risk scoring engine | ✅ Done |
+| 2 | Build UEBA intelligence workflows | ✅ Done |
+| 3 | Develop threat investigation modules | ✅ Done |
+| 4 | Generate risk analytics | ✅ Done |
+| 5 | Create security dashboards | ✅ Done |
+
+*ALL MILESTONE 3 TASKS COMPLETED (5/5)*
+
+ 🏗️ What Was Built
+
+ 1. Insider Risk Scoring Engine
+- risk_score.py — weighted scoring model combining behavioral anomaly score, USB activity, email activity, unusual login timing, and web access ratios into a single 0–100 risk score
+- categorize() maps scores into Low / Medium / High / Critical bands
+- get_risk_distribution() aggregates category counts for dashboard/report consumption
+- Weighted model rebalanced to include file access ratio once file.csv was ingested, keeping total weight at 100%
+
+ 2. UEBA Intelligence Engine
+- GET /ueba/summary — org-wide totals: average risk score, high-risk/critical counts, total activity logs
+- GET /ueba/risk-distribution — Low/Medium/High/Critical counts
+- GET /ueba/high-risk-users — sorted list of employees at or above the high-risk threshold
+- GET /ueba/recent-anomalies — most recent 20 risk-score-history entries
+- GET /ueba/peer-comparison/{employee_id} — compares an employee's risk score against their department's average
+- GET /ueba/trend/{employee_id} — historical risk score trend with direction (Increasing / Decreasing / Stable)
+
+ 3. Threat Investigation Module
+- POST /investigations/generate-for-high-risk — auto-creates incidents for employees at/above the risk threshold who don't already have an open one
+- GET /investigations/ — full incident list
+- GET /investigations/{id}/timeline — pulls up to 200 recent activity log events for the incident's employee, building an investigation timeline
+- PUT /investigations/{id}/status — status transitions, now validated against a fixed set (Open, Investigating, Resolved, Closed) instead of accepting arbitrary free text
+- PUT /investigations/{id}/assign — analyst assignment (endpoint existed on the backend from the start; wired into the frontend during this milestone)
+
+ 4. Alert & Incident Management
+- alert_system.py — generates alerts with severity derived from risk score, using the spec's 5-tier scale (Informational/Low/Medium/High/Critical), distinct from the 4-tier risk category scale
+- POST /alerts/generate — auto-generates alerts for at-risk employees without duplicating existing open alerts
+- PUT /alerts/{id}/assign, /escalate, /resolve — full alert lifecycle
+- POST /alerts/{id}/create-incident — links an alert to a new or existing open incident for the same employee
+- *Email notification system* — High/Critical alerts trigger an email to all active users with an analyst-level role, including a plain-language breakdown of which specific behaviors (USB activity, file access volume, unusual login times, etc.) drove the score up, not just the number
+
+ 5. Security Dashboards (role-specific)
+- GET /dashboard/analyst-summary, /soc-summary, /manager-summary, /admin-summary — four distinct views tailored to each role, covering risk distribution, investigation queues, department risk breakdowns, and platform-wide analytics respectively
+
+ 🐛 Useful Problems Solved
+
+Real bugs with a non-obvious cause and a lasting fix.
+
+ Problem  Cause  Fix 
+
+  1.Route-based access control existed in name only.
+
+  Every "protected" endpoint checked get_current_user (is logged in) but never checked .role — any authenticated user could assign analysts, escalate alerts, or update incident status regardless of privilege level.
+
+  Added a require_role(*roles) dependency and applied it per-endpoint to match the actual intended permission level for each action.
+
+  2.Incident status could be set to any arbitrary string 
+  Update_incident_status accepted raw free-text with no validation. 
+  Added a fixed VALID_STATUSES tuple and reject anything outside it with a 400.
+
+  3.Analyst assignment endpoint existed but was invisible.
+  Backend route was built but never called from any frontend page.
+  Added the missing "Assign" UI action wired to the existing endpoint.
+
+  4.Alert emails sent to Gmail failing with 535 authentication failed.
+  SMTP host had a typo (smtp.gamil.com instead of smtp.gmail.com) in .env, plus mismatched env var casing (From_EMAIL vs FROM_EMAIL) silently falling back instead of erroring.
+  Corrected the hostname and casing; verified with an isolated single-recipient test script before relying on the full alert flow.
+
+  5.Alert emails to real recipients started timing out during repeated testing.
+  Rapid, repeated calls to /behavior/anomalies sent many SMTP connections back-to-back, tripping Gmail's rate limiting.
+  Added a 1.5s delay between recipient sends and moved email delivery to FastAPI BackgroundTasks, so the API responds immediately and doesn't block on SMTP round-trips.
+
+  6. /behavior/anomalies response time directly tied to email delivery speed 
+  Alert emails were sent synchronously inside the request/response cycle.
+  Same background-task fix as above — email sending now happens after the HTTP response is already sent.
+
+ 🏛️ Architecture Overview
+
+
+  React (Vite)                          FastAPI (Uvicorn)
+  localhost:5173     <---------------->  127.0.0.1:8000
+                     fetch / OAuth
+                     JSON + JWT
+                                                |
+                                                | SQLAlchemy ORM
+                                                v
+                                        MySQL Database
+                                        insider_threat_db
+                                        -----------------
+                                        users, user_profiles
+                                        activity_logs
+                                        alerts, incidents
+                                        risk_score_history
+                                        notifications
+
+
+*Risk flow:* activity_logs → anomaly score (Isolation Forest) → weighted risk score → severity → alert created → background email dispatched to analyst roles → optional incident created from alert
+
+ 🧰 Tech Stack
+
+- *Frontend:* React, Vite, React Router, Recharts
+- *Backend:* FastAPI, Uvicorn, BackgroundTasks
+- *Database:* MySQL, SQLAlchemy, PyMySQL
+- *AI/ML:* scikit-learn (Isolation Forest), pandas
+- *Notifications:* smtplib (Gmail SMTP, App Password auth)
+- *Auth:* JWT (python-jose), bcrypt (passlib), Google OAuth 2.0 (Authlib)
+
+⚠️ Known Limitation (Not Blocking)
+
+Email alerts are sent one-by-one with a fixed delay to stay under SMTP rate limits. This scales fine for the current test data volume (a handful of analyst accounts) but would need a proper mail queue (e.g., a task queue with retry/backoff) for a production deployment with a larger analyst roster — planned consideration for Milestone 4 (performance & deployment).
+
+✅ Milestone 3 Summary
+
+*STATUS: COMPLETE (5/5 tasks)*
+
+All Milestone 3 deliverables have been implemented and verified, including the weighted insider risk scoring engine, the full UEBA analytics suite (summary, distribution, peer comparison, trend), the threat investigation workflow with validated status transitions and analyst assignment, the complete alert lifecycle with role-based email notifications, and four role-specific security dashboards.
+
+NEXT: Milestone 4 — Dashboards, Reports, Notification & Escalation, Deployment

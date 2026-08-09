@@ -4,7 +4,6 @@ import { registerUser } from "../services/auth";
 import "../styles/Register.css";
 
 function Register() {
-
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -12,10 +11,8 @@ function Register() {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "",
         department: ""
     });
-    
 
     const handleChange = (e) => {
         setFormData({
@@ -25,7 +22,6 @@ function Register() {
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
         if (formData.password !== formData.confirmPassword) {
@@ -34,17 +30,18 @@ function Register() {
         }
 
         try {
-
             const response = await registerUser({
                 full_name: formData.full_name,
                 email: formData.email,
                 password: formData.password,
-                role: formData.role,
+                role: "Security Analyst",
                 department: formData.department
             });
 
             if (response.message || response.success) {
-                alert("Registration Successful");
+                alert(
+                    "Registration Successful. An administrator can adjust your role and permissions if needed."
+                );
                 navigate("/login");
             } else {
                 alert(response.detail || "Registration Failed");
@@ -57,13 +54,14 @@ function Register() {
     };
 
     return (
-
         <div className="register-container">
 
             <div className="register-card">
 
                 <div className="register-header">
-                    <h1>Insider Threat Behavioral Intelligence System</h1>
+                    <h1>
+                        Insider Threat Behavioral Intelligence System
+                    </h1>
                     <p>Create Your Account</p>
                 </div>
 
@@ -113,21 +111,6 @@ function Register() {
                         required
                     />
 
-                    <label>Role</label>
-
-                    <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select Role</option>
-                        <option value="Administrator">Administrator</option>
-                        <option value="Security Manager">Security Manager</option>
-                        <option value="SOC Engineer">SOC Engineer</option>
-                        <option value="Security Analyst">Security Analyst</option>
-                    </select>
-
                     <label>Department</label>
 
                     <select
@@ -137,17 +120,39 @@ function Register() {
                         required
                     >
                         <option value="">Select Department</option>
-                        <option value="Information Technology">Information Technology (IT)</option>
-                        <option value="Human Resources">Human Resources (HR)</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Security Operations Center">Security Operations Center (SOC)</option>
-                        <option value="Cyber Security">Cyber Security</option>
-                        <option value="Network Operations">Network Operations</option>
-                        <option value="Cloud Operations">Cloud Operations</option>
-                        <option value="Software Development">Software Development</option>
-                        <option value="System Administration">System Administration</option>
-                        <option value="Legal">Legal</option>
-                        <option value="Administration">Administration</option>
+                        <option value="Information Technology">
+                            Information Technology (IT)
+                        </option>
+                        <option value="Human Resources">
+                            Human Resources (HR)
+                        </option>
+                        <option value="Finance">
+                            Finance
+                        </option>
+                        <option value="Security Operations Center">
+                            Security Operations Center (SOC)
+                        </option>
+                        <option value="Cyber Security">
+                            Cyber Security
+                        </option>
+                        <option value="Network Operations">
+                            Network Operations
+                        </option>
+                        <option value="Cloud Operations">
+                            Cloud Operations
+                        </option>
+                        <option value="Software Development">
+                            Software Development
+                        </option>
+                        <option value="System Administration">
+                            System Administration
+                        </option>
+                        <option value="Legal">
+                            Legal
+                        </option>
+                        <option value="Administration">
+                            Administration
+                        </option>
                     </select>
 
                     <button
@@ -167,7 +172,6 @@ function Register() {
             </div>
 
         </div>
-
     );
 }
 
