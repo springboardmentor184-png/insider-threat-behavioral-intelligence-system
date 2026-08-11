@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database.db import get_db
+from database.models.activity_log import ActivityLog
 from services import log_service
 from utils.security import get_current_user, require_role
 import os
@@ -9,6 +10,17 @@ import os
 router = APIRouter(prefix="/logs", tags=["Activity Monitoring"])
 
 SAMPLE_CSV_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "sample", "activity_logs.csv")
+
+EMAIL_SAMPLE_CSV_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "sample", "email_sample.csv")
+
+@router.post("/ingest-cert-email")
+def ingest_cert_email(
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_role("administrator")),
+):
+    if not os.path.exists(EMAIL_SAMPLE_CSV_PATH):
+        raise HTTPException(status_code=404, detail="email_sample.csv not found on server")
+    return log_service.ingest_cert_email_csv(db, EMAIL_SAMPLE_CSV_PATH)
 
 
 class LogCreate(BaseModel):
@@ -66,3 +78,28 @@ def list_logs(
     user: dict = Depends(get_current_user),
 ):
     return log_service.get_logs(db, employee_id=employee_id, activity_type=activity_type)
+
+@router.get("/anomalies")
+def get_flagged_anomalies(
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user),
+):
+    flagged = (
+        db.query(ActivityLog)
+        .filter(ActivityLog.is_flagged == 1)
+        .order_by(ActivityLog.timestamp.desc())
+        .limit(200)
+        .all()
+    )
+    return [
+        {
+            "id": l.id,
+            "employee_id": l.employee_id,
+            "activity_type": l.activity_type,
+            "resource": l.resource,
+            "device": l.device,
+            "data_volume_mb": l.data_volume_mb,
+            "timestamp": l.timestamp,
+        }
+        for l in flagged
+    ]

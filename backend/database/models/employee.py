@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.sql import func
 from database.db import Base
 
@@ -12,6 +12,14 @@ class Employee(Base):
     designation = Column(String, nullable=False)
     manager_name = Column(String, nullable=True)
     device_id = Column(String, nullable=True)
-    access_level = Column(String, default="standard")   # standard, elevated, privileged
-    risk_score = Column(Integer, default=0)              # 0-100, updated by risk engine later
+    access_level = Column(String, default="standard")
+    risk_score = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Big Five personality scores — from CERT psychometric dataset,
+    # used by the Behavioral Profiling Engine (Milestone 2)
+    openness = Column(Float, nullable=True)
+    conscientiousness = Column(Float, nullable=True)
+    extraversion = Column(Float, nullable=True)
+    agreeableness = Column(Float, nullable=True)
+    neuroticism = Column(Float, nullable=True)
