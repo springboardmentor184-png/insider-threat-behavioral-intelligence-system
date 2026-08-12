@@ -34,8 +34,14 @@ app.add_middleware(
 
 from app.routers.logs import router as logs_router
 from app.routers.anomalies import router as anomalies_router
+from app.routers.investigations import router as investigations_router
+from app.routers.incidents import router as incidents_router
+from app.routers.notifications import router as notifications_router
 app.include_router(logs_router)
 app.include_router(anomalies_router)
+app.include_router(investigations_router)
+app.include_router(incidents_router)
+app.include_router(notifications_router)
 
 # Helper to log actions in AuditLog table
 def create_audit_log(db: Session, email: str, action: str, status: str, ip: str = None):
@@ -249,6 +255,10 @@ def get_me(current_user: User = Depends(get_current_user)):
 require_write = RoleChecker(["Administrator", "Security Manager"])
 require_read = RoleChecker(["Administrator", "Security Analyst", "SOC Engineer", "Security Manager"])
 require_admin = RoleChecker(["Administrator"])
+
+@app.get("/api/auth/users", response_model=List[UserResponse])
+def get_all_users(db: Session = Depends(get_db), current_user: User = Depends(require_read)):
+    return db.query(User).all()
 
 @app.post("/api/employees/onboard", response_model=EmployeeResponse)
 def onboard_employee(

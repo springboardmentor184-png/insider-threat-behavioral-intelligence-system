@@ -9,7 +9,6 @@ def prepare_user_day_features(df: pd.DataFrame) -> pd.DataFrame:
     and tracking average hours for logon and USB connections.
     """
     # Ensure necessary columns are filled
-    
     df["bytes_transferred"] = pd.to_numeric(df["bytes_transferred"]).fillna(0)
     df["target_asset"] = df["target_asset"].fillna("")
     
@@ -68,6 +67,12 @@ def compute_user_deviation_zscores(features_df: pd.DataFrame) -> pd.DataFrame:
     
     # Flatten columns index (e.g. logon_count_mean, logon_count_std)
     user_stats.columns = ["_".join(x) for x in user_stats.columns]
+    
+    # Fill NaN values in standard deviation columns with 0.0 (important for users with only 1 day of logs)
+    for col in user_stats.columns:
+        if "_std" in col:
+            user_stats[col] = user_stats[col].fillna(0.0)
+            
     user_stats = user_stats.reset_index()
 
     # Merge baselines back

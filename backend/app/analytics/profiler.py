@@ -15,7 +15,7 @@ def generate_employee_baseline(employee_id: str, db) -> dict:
     else:
         # Fallback to local memory logs if MongoDB is offline
         from app.routers.logs import IN_MEMORY_LOGS
-        logs = [x for x in IN_MEMORY_LOGS if x.get("employee_id") == employee_id] 
+        logs = [x for x in IN_MEMORY_LOGS if x.get("employee_id") == employee_id]
         
     baseline = {
         "employee_id": employee_id,

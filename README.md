@@ -17,6 +17,11 @@ An **Insider Threat Behavioral Intelligence System** is an AI-powered security m
 * [x] **Unsupervised Anomaly Model (Milestone 2)**: Build a Scikit-Learn `IsolationForest` machine learning model trained on User-Relative Deviation Z-scores, achieving **100% Threat Recall** on the Release 4.2 evaluation.
 * [x] **High-Speed Ingestion Pipeline (Milestone 2)**: Implement a browser-based local folder dataset parser that loads CSVs via FastAPI Background Tasks, syncing the PostgreSQL directory and MongoDB logs in real-time.
 * [x] **Live Security Alerts & Export (Milestone 2)**: Create a dashboard console featuring a radar scanner, baseline inspector cards, suspicious log filters, and a CSV report exporter.
+* [x] **Insider Risk Scoring Engine (Milestone 3)**: Establish a weighted mathematical formula (Behavioral, Privilege, Data, Access, Historical) to dynamically grade account threats (0-100 index).
+* [x] **Threat Timeline forensic Module (Milestone 3)**: Develop chronological event trail builders and peer group comparisons to enable visual forensic investigation.
+* [x] **Incident Case Management System (Milestone 3)**: Build formal incident workflows (`INC-XXXX`) allowing analyst assignments, status logs, and comment journal entries.
+* [x] **Real Email Notification System (Milestone 3)**: Integrate in-app MongoDB notifications with real-time Gmail SMTP secure TLS dispatches on incident assignments, status escalations, and critical risk score thresholds.
+* [x] **Executive Dashboards & Reports (Milestone 4)**: Implement beautiful executive visualization dashboards with circular dials, line charts, data grids, and client-side PDF/CSV downloads.
 
 ---
 ## 3. Dataset Details & Reference Links
@@ -37,45 +42,59 @@ This system is configured to ingest and analyze the official **CMU CERT Insider 
 
 ## 4. Folder Structure
 
+4. Folder Structure
+
 The project has been organized into modular components:
 ```text
 insider-threat-system/
 ├── README.md                    # Project documentation
 ├── backend/                     # FastAPI python backend
-│   ├── .env                     # Local configuration parameters
-│   ├── requirements.txt         # Core dependencies (fastapi, scikit-learn, pandas)
-│   ├── ingest_cert_dataset.py   # CLI-based dataset ingestion script
-│   └── app/                     # Main source code package
-│       ├── config.py            # Settings manager (Pydantic Settings)
-│       ├── database.py          # PostgreSQL SQLAlchemy connection session pooling
-│       ├── mongodb.py           # MongoDB connection helper (PyMongo)
-│       ├── models.py            # Database tables schema (SQLAlchemy ORM)
-│       ├── auth.py              # Cryptography, JWT, Google SSO helper
-│       ├── main.py              # Application entrypoint
-│       │
-│       ├── analytics/           # Machine Learning & Profiling Engine
-│       │   ├── model.py         # ML pipeline (Z-scores & Isolation Forest)
-│       │   ├── detector.py      # Threat rules matching & ML alerts coordinator
-│       │   └── profiler.py      # Baseline averages calculations
-│       │
-│       └── routers/             # REST API Endpoint Routers
-│           ├── auth.py          # Login & registration routes
-│           ├── employees.py     # Employee profile management
+│   ├── .env                     # Local configuration parameters (credentials & ports)
+│   ├── requirements.txt         # Core dependencies (fastapi, scikit-learn, pandas, requests)
+│   ├── ingest_cert_dataset.py   # Local dataset CLI ingestion script
+│   ├── patch_departments.py     # Database migration script randomizing departments
+│   ├── app/                     # Main source code package
+│   │   ├── config.py            # Settings manager
+│   │   ├── database.py          # PostgreSQL SQLAlchemy session pooler
+│   │   ├── mongodb.py           # MongoDB connection helper
+│   │   ├── models.py            # Database tables schema (SQLAlchemy)
+│   │   ├── auth.py              # Cryptography, JWT, Google SSO helper
+│   │   ├── email_sender.py      # Real SMTP email dispatch module
+│   │   ├── main.py              # Application entrypoint & REST endpoints
+│   │   │
+│   │   ├── analytics/           # Machine Learning & Analytics Engine
+│   │   │   ├── model.py         # ML pipeline (Z-scores & Isolation Forest)
+│   │   │   ├── detector.py      # Threat rules matching & ML alerts coordinator
+│   │   │   ├── profiler.py      # Baseline averages calculations
+│   │   │   └── risk_scorer.py   # Weighted risk scoring engine & critical thresholds
+│   │   │
+│   │   └── routers/             # REST API Endpoint Routers
+│   │       ├── auth.py          # Login, registration & user listings
+│   │       ├── employees.py     # Employee profile management
 │           ├── logs.py          # Logs queries, summaries, & background ingester
-│           └── anomalies.py     # ML trigger scans & behavioral alerts console
+│           ├── anomalies.py     # ML trigger scans & alerts
+│           ├── investigations.py# Timeline, trends, & peer comparisons APIs
+│           └── incidents.py     # Incident creation & case management APIs
+│   
+│   
 │
 └── frontend/                    # Vite React frontend
     ├── index.html               # Main entry HTML
     ├── package.json             # Frontend package configurations
     └── src/                     # React source files
-        ├── App.jsx              # State routing & navigation
-        ├── index.css            # Dark mode cybersecurity styling system
+        ├── App.jsx              # Routing & sidebar navigation
+        ├── index.css            # Dark mode styling system
         └── components/          # Reusable UI components
-            ├── Login.jsx        # Login, registration, and Google SSO button
-            ├── EmployeeManager.jsx # Onboarding forms & employee lists
-            ├── AssetAssociator.jsx # Device/Asset mapping & permission editors
-            ├── ActivityMonitor.jsx # Local folder ingester, progress bar, & log streams
-            └── AnomalyConsole.jsx  # Alerts feed, baseline cards, & CSV exporter
+            ├── Login.jsx        # Login and Google SSO
+            ├── EmployeeManager.jsx # Onboarding directory
+            ├── AssetAssociator.jsx # Device/Asset mapping
+            ├── ActivityMonitor.jsx # Log ingestion progress bar
+            ├── AnomalyConsole.jsx  # Alert feeds & CSV exporter
+            ├── RiskDashboard.jsx   # Threat score postures list
+            ├── ThreatTimeline.jsx  # Forensic timeline & UEBA comparison
+            ├── IncidentManager.jsx # Cases workflow diary
+            ├── RoleDashboards.jsx  # Visual card widgets for Admin/Analyst/SOC
+            └── ExecutiveReports.jsx# Dynamic reports, charts, & PDF/CSV export
 ```
 
 ---
@@ -91,6 +110,11 @@ insider-threat-system/
 | **SSO** | Google OAuth2 Integration | Configured Google OAuth client flow, added backend verification of Google JWTs, and added role-based signup dropdown options. |
 | **Core Identity** | Employee Profile Manager | Implemented APIs and views to onboard employees, map departments, bind corporate devices, and associate enterprise assets. |
 | **QA** | Swagger & Client Testing | Verified all registration, login, and RBAC routes using FastAPI's Swagger UI. |
+ **Risk Scoring Engine** |  Built [risk_scorer.py] calculating employee threat levels on a `0-100` scale based on the weighted blend of behavioral anomalies (35%), privilege misuse (25%), data access violations (20%), access pattern deviations (10%), and historical security events (10%). |
+| **Investigation timeline** |  Developed APIs to compile user chronological activities and department baseline comparisons for forensic analytics. |
+| **Case management** | Implemented case registries tracking workflow statuses (`OPEN`, `INVESTIGATING`, `RESOLVED`, `ESCALATED`) alongside notes diaries and analyst assignments. |
+| **Executive Dashboards** | Built 5 dynamic reports (Insider Threat, Anomalies, Investigations, Compliance, Risk Trends) with interactive visual widgets, SVG line graphs, gauges, and inline CSV and window print PDF exporters. |
+| **Real Email Alerts**  | Built `email_sender.py` module using `smtplib` over TLS. Integrated with database triggers to send real-time Gmail messages to Security Managers & Admins. |
 
 ---
 
@@ -111,7 +135,11 @@ insider-threat-system/
 * **Local Dataset Web Ingestion**: Supports pasting an absolute directory path on your laptop. The backend handles folder parsing asynchronously for `logon.csv`, `device.csv`, `file.csv`, `email.csv`, and `http.csv` in a separate background thread.
 * **Auto-Synchronization**: Automatically queries PostgreSQL during log ingestion, creating placeholder employee directory profiles for any newly detected user IDs (insert only, no duplicates, never deletes).
 * **Report Exporter (CSV)**: A filter-aware report generator that lets analysts download a spreadsheet of the flagged alerts directly from the browser window.
-
+* **Real Email Dispatch System**: Integrates with `.env` settings to send actual emails via `smtp.gmail.com` using TLS on:
+  * *Case Assignment*: E.g., `New Incident Assigned - INC-XXXX` sent to the analyst's registered email address.
+  * *Case Escalation*: E.g., `Incident Escalated - INC-XXXX` sent to all Security Manager(s).
+  * *Critical Risk Threshold (Score >= 75)*: E.g., `CRITICAL Insider Risk Alert - EMP-XXXX` sent to all Security Managers and Administrators.
+* **Unified User Management**: Updated the Admin Console's User card to query `/api/auth/users` and dynamically display all active users with color-coded roles.
 ---
 
 ## 7. Issues Faced & Resolutions
@@ -154,33 +182,7 @@ During Week 1 development, several technical challenges were encountered and suc
 * **Git Workflows**: Mastered branch naming conventions, branch switching, merging, rebasing, and collaborating using GitHub Pull Requests.
 * **Unsupervised Anomaly Detection**: Learned to construct, scale, and fit Scikit-Learn `IsolationForest` models without relying on prior threat labels.
 * **User and Entity Behavior Analytics (UEBA)**: Understood how mathematical deviation metrics ($\mu$, $\sigma$, Z-Scores) are utilized in cybersecurity to identify insider risks.
- 9. Verification & Local Launch
-
-### Backend Setup
-1. Navigate to the backend folder:
-   ```bash
-   cd backend
-   ```
-2. Activate virtual environment:
-   ```bash
-   venv\Scripts\activate
-   ```
-3. Start the FastAPI server:
-   ```bash
-   uvicorn app.main:app --reload --port 8000
-   ```
-
-### Frontend Setup
-1. Navigate to the frontend folder:
-   ```bash
-   cd frontend
-   ```
-2. Start the Vite server:
-   ```bash
-   npm run dev
-   ```
-3. Open **[http://localhost:5173](http://localhost:5173)** in your browser.
-
+* *Institutional SMTP Mail Protections*: When dispatching automated emails from scripts via Gmail to academic/corporate email servers (e.g., `.ac.in` domains), inbound mail firewalls frequently flag external SMTP traffic. Using standard authentication parameters (such as a 16-character Google App Password) and monitoring Spam/Junk/Promotions directories is essential.
 ---
 ## 9. Verification & Local Launch
 
@@ -193,8 +195,14 @@ During Week 1 development, several technical challenges were encountered and suc
    ```bash
    venv\Scripts\activate
    ```
-
-3. Start the FastAPI server:
+3. Configure your Gmail credentials in `.env`:
+   ```ini
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=yourname@gmail.com
+   SMTP_PASSWORD=your_app_password
+   ```
+4. Start the FastAPI server:
    ```bash
    uvicorn app.main:app --reload --port 8000
    ```
@@ -208,9 +216,7 @@ During Week 1 development, several technical challenges were encountered and suc
    ```bash
    npm run dev
    ```
-3. Open **[http://localhost:5173](http://localhost:5173)** in your browser.
-
----
+3. Open **[http://localhost:5173](http://localhost:5173)** in your browser
 ## 10. Conclusion
 
-Milestone 2 has successfully transitioned the **Insider Threat Behavioral Intelligence System** from a basic employee identity mapping CRUD application into an operational, intelligent User Behavior Analytics (UEBA) platform. 
+Milestone 4 has finalized the **Executive Reporting & Real Email Alert Systems** in the **Insider Threat Behavioral Intelligence System**. paired with dynamic user administration registries and robust database integrations, this platform provides cyber operations teams with premium monitoring capability and real-time email-to-phone security alerting.

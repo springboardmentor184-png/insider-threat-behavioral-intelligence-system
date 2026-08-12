@@ -201,10 +201,11 @@ def bg_ingest_dataset_task(folder_path: str):
                 new_profiles = []
                 for user_id in unique_users:
                     if user_id not in existing_employees:
+                        depts = ["Engineering", "Finance", "Operations", "Research & Development", "Human Resources", "Sales & Marketing"]
                         profile = EmployeeProfile(
                             employee_id=user_id,
                             full_name=f"Employee {user_id}",
-                            department="Unassigned",
+                            department=random.choice(depts),
                             designation="Staff Associate",
                             manager="Security Manager One",
                             access_privileges="SSH_ACCESS,DB_READ",
@@ -368,10 +369,13 @@ def get_logs_summary(current_user: User = Depends(require_read)):
 
 @router.post("/seed-cert")
 def seed_cert_dataset(current_user: User = Depends(require_read), sql_db: Session = Depends(get_db)):
-    """Mock demo seeder (Deterministic, 75 records base_time 2026-07-14)"""
-    random.seed(42)
+    """Mock demo seeder (Randomized log generation with dynamic threat actors)"""
+    # Remove random.seed(42) to make each run unique
+    import time
+    random.seed(time.time())
+    
     activities = []
-    base_time = datetime.datetime(2026, 7, 14, 0, 0)
+    base_time = datetime.datetime.now() - datetime.timedelta(days=7) # Past week of events
     
     employees = ["EMP-7082", "EMP-1002", "EMP-1003", "EMP-1004"]
     devices = {
@@ -384,79 +388,166 @@ def seed_cert_dataset(current_user: User = Depends(require_read), sql_db: Sessio
     file_names = ["project_specs.pdf", "client_ledger.xlsx", "database_backup.sql", "salary_structure.csv", "src_code.zip"]
     network_sites = ["github.com/org", "slack.com/api", "personal-google-drive.com/upload", "malicious-domain.xyz/download", "company-intranet.local"]
     
-    print("Generating CERT simulated logs...")
-    for i in range(75):
-        timestamp = (base_time + datetime.timedelta(minutes=15 * i)).isoformat()
-        emp = random.choice(employees)
+    # Dynamically select one threat actor to escalate to CRITICAL risk, 
+    # one to HIGH risk, one to MEDIUM, and one to remain LOW.
+    shuffled_employees = list(employees)
+    random.shuffle(shuffled_employees)
+    rogue_critical = shuffled_employees[0]
+    rogue_high = shuffled_employees[1]
+    rogue_medium = shuffled_employees[2]
+    quiet_low = shuffled_employees[3]
+
+    # Fetch all employee profiles from PostgreSQL
+    from app.models import EmployeeProfile
+    all_sql_emps = sql_db.query(EmployeeProfile).all()
+    all_emp_ids = [e.employee_id for e in all_sql_emps]
+    
+    # Pick 60 random employees to represent active normal workers in the system
+    active_pool_ids = list(employees)
+    if all_emp_ids:
+        sampled_size = min(len(all_emp_ids), 60)
+        sampled_ids = random.sample(all_emp_ids, sampled_size)
+        for e_id in sampled_ids:
+            if e_id not in active_pool_ids:
+                active_pool_ids.append(e_id)
+
+    # 1. Generate normal baseline logs for all active pool employees (non-zero scores)
+    for emp_id in active_pool_ids:
+        if emp_id in devices:
+            device, ip = devices[emp_id]
+        else:
+            device = "Workstation-Desktop"
+            ip = f"10.0.1.{random.randint(10, 250)}"
+            
+        worker_logs = random.randint(2, 6)
+        for k in range(worker_logs):
+            timestamp = (base_time + datetime.timedelta(days=random.randint(0, 6), hours=random.randint(8, 18))).isoformat()
+            
+            act_type = random.choice(["LOGIN", "NETWORK", "EMAIL"])
+            bytes_transferred = 0
+            if act_type == "LOGIN":
+                action = random.choice(["LOGON", "LOGOFF"])
+                target = "Domain Controller"
+            elif act_type == "NETWORK":
+                action = "GET"
+                target = random.choice(["slack.com/api", "github.com/org", "company-intranet.local"])
+                bytes_transferred = random.randint(2000, 80000)
+            else:
+                action = "SEND"
+                target = "manager@company.com"
+                
+            activities.append({
+                "timestamp": timestamp,
+                "employee_id": emp_id,
+                "activity_type": act_type,
+                "action": action,
+                "device_name": device,
+                "ip_address": ip,
+                "target_asset": target,
+                "bytes_transferred": bytes_transferred,
+                "additional_metadata": {"details": "Standard corporate workforce routine activity"} if act_type != "EMAIL" else {"email_recipient": target, "has_attachments": False},
+                "is_suspicious": False
+            })
+
+    # 2. Inject threat/anomaly activity logs for our rogue employees
+    num_rogue_records = random.randint(120, 180)
+    print(f"Generating {num_rogue_records} rogue threat logs and baseline records...")
+    
+    for i in range(num_rogue_records):
+        timestamp = (base_time + datetime.timedelta(minutes=45 * i)).isoformat()
+        
+        # Pick employee based on distribution weight
+        emp = random.choices(
+            [rogue_critical, rogue_high, rogue_medium, quiet_low],
+            weights=[35, 30, 25, 10]
+        )[0]
+        
         device, ip = devices[emp]
-        act_type = random.choice(["LOGIN", "FILE_ACCESS", "USB_DEVICE", "EMAIL", "NETWORK", "APP_USAGE", "PRIVILEGE_CHANGE", "REMOTE_ACCESS"])
         is_suspicious = False
         bytes_transferred = 0
         action = ""
         target = ""
         meta = {}
         
-        if act_type == "LOGIN":
-            action = random.choice(["LOGON", "LOGOFF"])
-            target = "Domain Controller"
-            hour = (base_time + datetime.timedelta(minutes=15 * i)).hour
-            if hour in [1, 2, 3] and random.random() > 0.4:
-                is_suspicious = True
-                meta["details"] = "Off-hours system authentication"
-        elif act_type == "FILE_ACCESS":
-            action = random.choice(["READ", "WRITE", "DELETE"])
-            target = random.choice(file_names)
-            meta["file_extension"] = target.split(".")[-1]
-            if target == "database_backup.sql" and action == "READ" and random.random() > 0.5:
-                is_suspicious = True
-                meta["details"] = "Access to system backups"
-        elif act_type == "USB_DEVICE":
-            action = random.choice(["CONNECT", "DISCONNECT"])
-            target = random.choice(["Kingston DataTraveler", "SanDisk Cruzer", "Unknown USB Mass Storage"])
-            meta["usb_serial"] = f"USB-{random.randint(100000, 999999)}"
-            if action == "CONNECT" and random.random() > 0.6:
-                is_suspicious = True
-                meta["details"] = "External mass storage mounting"
-        elif act_type == "EMAIL":
-            action = "SEND"
-            target = random.choice(["manager@company.com", "partner-firm.com", "competitor-sec@protonmail.com", "my_personal_account@gmail.com"])
-            meta["email_recipient"] = target
-            meta["has_attachments"] = random.random() > 0.6
-            if "protonmail" in target or "gmail" in target:
-                if meta["has_attachments"]:
-                    is_suspicious = True
-                    meta["details"] = "Sensitive file attachments sent to webmail"
-        elif act_type == "NETWORK":
-            action = random.choice(["GET", "POST"])
-            target = random.choice(network_sites)
-            bytes_transferred = random.randint(500, 500000)
-            if "google-drive" in target and bytes_transferred > 400000:
-                is_suspicious = True
-                meta["details"] = "Large volume network data upload"
-            elif "malicious" in target:
-                is_suspicious = True
-                meta["details"] = "Connection to blacklisted domain"
-        elif act_type == "APP_USAGE":
-            action = random.choice(["START", "STOP"])
-            target = random.choice(["Tor Browser", "Wireshark Network Scanner", "Visual Studio Code", "Windows CMD", "uTorrent Client"])
-            meta["app_process_id"] = random.randint(1000, 9999)
-            if target in ["Tor Browser", "Wireshark Network Scanner", "uTorrent Client"] and action == "START":
-                is_suspicious = True
-                meta["details"] = "Unauthorized application launched"
-        elif act_type == "PRIVILEGE_CHANGE":
-            action = random.choice(["ELEVATE", "REVOKE"])
-            target = random.choice(["Domain Admins Group", "Sudoers Policy", "Local Administrators Group"])
-            meta["requested_by"] = "SYSTEM" if random.random() > 0.5 else "UserInit"
-            if action == "ELEVATE" and target == "Domain Admins Group":
+        # Determine activity types available
+        possible_types = ["LOGIN", "FILE_ACCESS", "USB_DEVICE", "EMAIL", "NETWORK", "APP_USAGE", "PRIVILEGE_CHANGE", "REMOTE_ACCESS"]
+        act_type = random.choice(possible_types)
+        
+        # Inject behavior characteristics based on target employee threat level
+        if emp == rogue_critical:
+            # Critical threat actor: High frequency of severe static violations
+            if act_type == "PRIVILEGE_CHANGE":
+                action = "ELEVATE"
+                target = "Domain Admins Group"
                 is_suspicious = True
                 meta["details"] = "Unauthorized administrative privilege elevation"
-        elif act_type == "REMOTE_ACCESS":
-            action = random.choice(["ESTABLISH", "TERMINATE"])
-            target = random.choice(["Inbound RDP Session", "Outbound SSH Tunnel", "AnyDesk Connection", "TeamViewer Session"])
-            meta["remote_port"] = random.choice([3389, 22, 443])
-            if action == "ESTABLISH" and target in ["Outbound SSH Tunnel", "AnyDesk Connection"]:
+            elif act_type == "APP_USAGE" and random.random() > 0.4:
+                action = "START"
+                target = random.choice(["Tor Browser", "Wireshark Network Scanner"])
+                is_suspicious = True
+                meta["details"] = "Unauthorized blacklisted diagnostic tool execution"
+            elif act_type == "EMAIL" and random.random() > 0.4:
+                action = "SEND"
+                target = "competitor-sec@protonmail.com"
+                meta["email_recipient"] = target
+                meta["has_attachments"] = True
+                is_suspicious = True
+                meta["details"] = "Outbound emails to untrusted domains containing file attachments"
+            else:
+                act_type = "LOGIN"
+                action = "LOGON"
+                target = "Domain Controller"
+                timestamp = (base_time + datetime.timedelta(minutes=45 * i)).replace(hour=2, minute=15).isoformat() # Off-hours login
+                is_suspicious = True
+                meta["details"] = "Off-hours logon anomaly"
+                
+        elif emp == rogue_high:
+            # High threat actor: Moderate anomalies and ML deviations
+            if act_type == "REMOTE_ACCESS" and random.random() > 0.5:
+                action = "ESTABLISH"
+                target = "AnyDesk Connection"
                 is_suspicious = True
                 meta["details"] = "Unauthorized remote access gateway established"
+            elif act_type == "NETWORK" and random.random() > 0.5:
+                action = "POST"
+                target = "personal-google-drive.com/upload"
+                bytes_transferred = random.randint(3000000, 8000000) # Large upload
+                is_suspicious = True
+                meta["details"] = "Unusual volume network data exfiltration"
+            else:
+                act_type = "FILE_ACCESS"
+                action = "READ"
+                target = "database_backup.sql"
+                is_suspicious = True
+                meta["details"] = "Auditing restricted database backup profiles"
+                
+        elif emp == rogue_medium:
+            # Medium threat actor: Normal behavior with minor anomalies
+            if act_type == "USB_DEVICE" and random.random() > 0.6:
+                action = "CONNECT"
+                target = "SanDisk Cruzer"
+                is_suspicious = True
+                meta["details"] = "External mass storage mounting"
+            else:
+                action = "LOGON" if act_type == "LOGIN" else "READ" if act_type == "FILE_ACCESS" else "GET"
+                target = "Domain Controller" if act_type == "LOGIN" else "client_ledger.xlsx" if act_type == "FILE_ACCESS" else "slack.com/api"
+                act_type = "LOGIN" if action == "LOGON" else "FILE_ACCESS" if action == "READ" else "NETWORK"
+                
+        else:
+            # Low threat employee: Completely benign standard workplace traffic
+            act_type = random.choice(["LOGIN", "NETWORK", "EMAIL"])
+            if act_type == "LOGIN":
+                action = random.choice(["LOGON", "LOGOFF"])
+                target = "Domain Controller"
+            elif act_type == "NETWORK":
+                action = "GET"
+                target = "slack.com/api"
+                bytes_transferred = random.randint(1000, 50000)
+            else:
+                action = "SEND"
+                target = "manager@company.com"
+                meta["email_recipient"] = target
+                meta["has_attachments"] = False
                 
         activities.append({
             "timestamp": timestamp,
@@ -470,6 +561,7 @@ def seed_cert_dataset(current_user: User = Depends(require_read), sql_db: Sessio
             "additional_metadata": meta,
             "is_suspicious": is_suspicious
         })
+
         
     # Sync employee profiles in PostgreSQL
     seeded_emp_ids = ["EMP-7082", "EMP-1002", "EMP-1003", "EMP-1004"]
@@ -488,10 +580,11 @@ def seed_cert_dataset(current_user: User = Depends(require_read), sql_db: Sessio
     for emp_id in seeded_emp_ids:
         exists = sql_db.query(EmployeeProfile).filter(EmployeeProfile.employee_id == emp_id).first()
         if not exists:
+            depts = ["Engineering", "Finance", "Operations", "Research & Development", "Human Resources", "Sales & Marketing"]
             new_profile = EmployeeProfile(
                 employee_id=emp_id,
                 full_name=names_map.get(emp_id, "Unknown Employee"),
-                department=depts_map.get(emp_id, "Unassigned"),
+                department=depts_map.get(emp_id, random.choice(depts)),
                 designation="Staff Associate",
                 manager="Security Manager One",
                 access_privileges="SSH_ACCESS,DB_READ",
@@ -508,6 +601,9 @@ def seed_cert_dataset(current_user: User = Depends(require_read), sql_db: Sessio
     if db is not None:
         try:
             db.activity_logs.delete_many({})
+            db.alerts.delete_many({})
+            db.incidents.delete_many({})
+            db.notifications.delete_many({})
             db.activity_logs.insert_many(activities)
             return {
                 "status": "success",

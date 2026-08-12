@@ -56,6 +56,41 @@ def trigger_anomaly_detection(current_user: User = Depends(require_read)):
                         alert["timestamp"] = datetime.datetime.utcnow().isoformat()
                 db.alerts.insert_many(new_alerts)
                 
+                # Generate system notifications for each alert
+                from app.analytics.notifier import create_system_notification
+                for alert in new_alerts:
+                    notif_type = "THREAT_ALERT"
+                    if alert.get("alert_type") in ["PRIVILEGE_ABUSE", "PRIVILEGE_CHANGE"]:
+                        notif_type = "COMPLIANCE_VIOLATION"
+                    msg = f"New security alert registered for {alert['employee_id']}: {alert['description']}"
+                    create_system_notification(
+                        db,
+                        recipient="Administrator",
+                        title=f"{alert['alert_type'].replace('_', ' ')} Detected",
+                        message=msg,
+                        notif_type=notif_type,
+                        severity=alert["severity"],
+                        employee_id=alert["employee_id"]
+                    )
+                    create_system_notification(
+                        db,
+                        recipient="Security Analyst",
+                        title=f"{alert['alert_type'].replace('_', ' ')} Detected",
+                        message=msg,
+                        notif_type=notif_type,
+                        severity=alert["severity"],
+                        employee_id=alert["employee_id"]
+                    )
+                    create_system_notification(
+                        db,
+                        recipient="Security Manager",
+                        title=f"{alert['alert_type'].replace('_', ' ')} Detected",
+                        message=msg,
+                        notif_type=notif_type,
+                        severity=alert["severity"],
+                        employee_id=alert["employee_id"]
+                    )
+                
                 # Extract all raw log ObjectIds to flag as suspicious
                 suspicious_log_ids = []
                 for alert in new_alerts:

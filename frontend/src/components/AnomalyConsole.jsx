@@ -216,7 +216,7 @@ export default function AnomalyConsole({ token, currentUser }) {
             <div style={styles.statSubText}>Require immediate containment</div>
           </div>
           <div className="glass-panel" style={{...styles.statCard, borderColor: 'rgba(251, 146, 60, 0.4)'}}>
-            <span style={styles.statLabel} style={{color: '#fb923c'}}>High Risk</span>
+            <span style={{ ...styles.statLabel, color: '#fb923c' }}>High Risk</span>
             <span style={{...styles.statVal, color: '#fb923c'}}>{report.high_count}</span>
             <div style={styles.statSubText}>Unusual multi-dimensional shifts</div>
           </div>

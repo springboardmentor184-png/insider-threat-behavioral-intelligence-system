@@ -282,10 +282,11 @@ def sync_employees_to_postgres(unique_users):
         new_profiles = []
         for user_id in unique_users:
             if user_id not in existing_employees:
+                depts = ["Engineering", "Finance", "Operations", "Research & Development", "Human Resources", "Sales & Marketing"]
                 profile = EmployeeProfile(
                     employee_id=user_id,
                     full_name=f"Employee {user_id}",
-                    department="Unassigned",
+                    department=random.choice(depts),
                     designation="Staff Associate",
                     manager="Security Manager One",
                     access_privileges="SSH_ACCESS,DB_READ",
