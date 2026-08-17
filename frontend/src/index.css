@@ -453,3 +453,184 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   cursor: pointer;
 }
 .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ================= ENERGY UPGRADE LAYER ================= */
+
+/* Animated ambient grid background across the whole app */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,163,61,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,209,197,0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  animation: grid-drift 40s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes grid-drift {
+  from { background-position: 0 0; }
+  to { background-position: 420px 420px; }
+}
+header.topbar, .pulse-strip, main { position: relative; z-index: 1; }
+
+/* Gradient brand text with subtle glow */
+header.topbar .brand {
+  background: linear-gradient(90deg, var(--amber), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 24px rgba(232,163,61,0.25);
+}
+
+/* Glassmorphism upgrade for panels and stat cards */
+.panel, .stat-card, .risk-gauge-card, .login-box {
+  backdrop-filter: blur(6px);
+  background: linear-gradient(160deg, rgba(19,26,34,0.92), rgba(16,21,31,0.92));
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.stat-card:hover, .risk-gauge-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--amber);
+  box-shadow: 0 10px 30px -12px rgba(232,163,61,0.35);
+}
+.panel:hover {
+  border-color: var(--border-strong);
+}
+
+/* Glowing gradient buttons for primary actions */
+.panel .panel-head button, button.primary {
+  background: linear-gradient(90deg, var(--amber), #f2b455);
+  color: #1a1305;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+.panel .panel-head button:hover, button.primary:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+.panel .panel-head button:active, button.primary:active {
+  transform: translateY(0);
+}
+
+/* Outline buttons get a hover sweep */
+.btn-outline {
+  position: relative;
+  overflow: hidden;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.btn-outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(79,209,197,0.15), rgba(232,163,61,0.15));
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+.btn-outline:hover::before { transform: translateX(0); }
+
+/* Tab underline slide-in energy */
+.tab-btn.active {
+  position: relative;
+}
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber), var(--cyan));
+  box-shadow: 0 0 8px rgba(232,163,61,0.6);
+}
+
+/* Risk ring glow intensifies with severity */
+.risk-ring.high { box-shadow: 0 0 14px rgba(255,138,92,0.35); }
+.risk-ring.critical { box-shadow: 0 0 18px rgba(232,91,78,0.55); }
+
+/* Table row entrance + hover lift */
+tbody tr {
+  transition: background 0.12s ease;
+}
+tbody tr:hover td {
+  background: linear-gradient(90deg, rgba(232,163,61,0.05), transparent);
+}
+
+/* Stat value count-up shimmer on load */
+.stat-card .value, .risk-gauge-info .value {
+  animation: value-in 0.5s ease-out;
+}
+@keyframes value-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Login box glow border animation */
+.login-box.bracket {
+  box-shadow: 0 0 40px -10px rgba(232,163,61,0.15);
+}
+.login-box.bracket:focus-within {
+  box-shadow: 0 0 50px -8px rgba(232,163,61,0.3);
+}
+
+/* Scrollbar styling for that finished-product feel */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--amber); }
+/* ================= LOGIN BACKGROUND FX ================= */
+.login-screen { position: relative; overflow: hidden; }
+.login-bg-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Rotating radar-style scan ring behind the login card */
+.scan-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 900px; height: 900px;
+  margin-top: -450px; margin-left: -450px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(232,163,61,0.12) 25deg,
+    transparent 60deg,
+    transparent 360deg
+  );
+  animation: scan-rotate 6s linear infinite;
+}
+@keyframes scan-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Floating glowing signal orbs */
+.orb {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px 3px rgba(79,209,197,0.6);
+  animation: orb-float ease-in-out infinite;
+  opacity: 0.7;
+}
+.orb:nth-child(odd) {
+  background: var(--amber);
+  box-shadow: 0 0 12px 3px rgba(232,163,61,0.6);
+}
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  50% { transform: translateY(-30px) translateX(15px); opacity: 0.9; }
+}
+
+.login-box { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-ring, .orb { animation: none; }
+}

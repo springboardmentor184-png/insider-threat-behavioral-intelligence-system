@@ -7,6 +7,7 @@ from api.logs import router as logs_router
 from database.models import behavior_baseline
 from database.models import investigation
 from api.investigations import router as investigations_router
+from api.reports import router as reports_router
 
 app = FastAPI(
     title="Insider Threat Behavioral Intelligence System",
@@ -17,6 +18,7 @@ app.include_router(auth_router)
 app.include_router(employees_router)
 app.include_router(logs_router)
 app.include_router(investigations_router)
+app.include_router(reports_router)
 
 app.add_middleware(
     CORSMiddleware,

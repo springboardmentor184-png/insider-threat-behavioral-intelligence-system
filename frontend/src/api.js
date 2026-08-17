@@ -73,3 +73,9 @@ export function getInvestigations() {
 export function getInvestigationDetail(id) {
   return apiRequest(`/investigations/${id}`);
 }
+export function registerUser(data) {
+  return apiRequest("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

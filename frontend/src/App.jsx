@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Login from "./Login";
+import Register from "./Register";
 import Dashboard from "./Dashboard";
 import "./index.css";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [showRegister, setShowRegister] = useState(false);
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -13,9 +15,23 @@ export default function App() {
     setLoggedIn(false);
   }
 
-  return loggedIn ? (
-    <Dashboard onLogout={handleLogout} />
-  ) : (
-    <Login onLoginSuccess={() => setLoggedIn(true)} />
+  if (loggedIn) {
+    return <Dashboard onLogout={handleLogout} />;
+  }
+
+  if (showRegister) {
+    return (
+      <Register
+        onRegistered={() => setShowRegister(false)}
+        onBackToLogin={() => setShowRegister(false)}
+      />
+    );
+  }
+
+  return (
+    <Login
+      onLoginSuccess={() => setLoggedIn(true)}
+      onShowRegister={() => setShowRegister(true)}
+    />
   );
 }
