@@ -3,6 +3,7 @@ Threat Investigation Module (Module 7 & 9)
 Manages incident creation, unified activity timelines, evidence attachment, and analyst assignments.
 """
 
+import logging
 from datetime import datetime, timezone
 from sqlalchemy import select, func, desc, or_
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,6 +13,8 @@ from backend.models.dataset import (
     Employee, BehavioralAnomaly, Incident, IncidentEvidence,
     LogonEvent, DeviceEvent, FileEvent, EmailEvent, HttpEvent
 )
+
+logger = logging.getLogger(__name__)
 
 
 class InvestigationService:
@@ -59,34 +62,36 @@ class InvestigationService:
         search: Optional[str] = None
     ) -> List[Incident]:
         """
-        Fetch filtered investigation cases. Auto-seeds initial cases for high-risk employees if empty.
+        Fetch filtered investigation cases. Auto-creates investigation cases for ALL employees with detected anomalies.
         """
-        count_stmt = select(func.count(Incident.id))
-        total_inc = (await db.execute(count_stmt)).scalar() or 0
-        if total_inc == 0:
-            try:
-                anom_stmt = select(BehavioralAnomaly.employee_id).group_by(BehavioralAnomaly.employee_id).order_by(func.count(BehavioralAnomaly.id).desc()).limit(5)
-                anom_emp_ids = list((await db.execute(anom_stmt)).scalars().all())
-                if not anom_emp_ids:
-                    emp_stmt = select(Employee.employee_id).limit(5)
-                    anom_emp_ids = list((await db.execute(emp_stmt)).scalars().all())
+        try:
+            # Query all distinct employees who have anomalies
+            anom_stmt = select(BehavioralAnomaly.employee_id).group_by(BehavioralAnomaly.employee_id)
+            anom_emp_ids = list((await db.execute(anom_stmt)).scalars().all())
 
-                for emp_id in anom_emp_ids:
-                    clean_id = emp_id.replace("EMP-", "").strip()
-                    emp = (await db.execute(select(Employee).where((Employee.employee_id == emp_id) | (Employee.employee_id == clean_id)))).scalar_one_or_none()
+            # Query existing incident employee IDs
+            inc_stmt = select(Incident.employee_id)
+            existing_inc_emps = set((await db.execute(inc_stmt)).scalars().all())
+
+            for emp_id in anom_emp_ids:
+                clean_id = emp_id.replace("EMP-", "").strip()
+                if clean_id not in existing_inc_emps and f"EMP-{clean_id}" not in existing_inc_emps:
+                    emp = (await db.execute(select(Employee).where((Employee.employee_id == emp_id) | (Employee.employee_id == clean_id)))).scalars().first()
                     emp_name = emp.full_name if emp else f"Employee {clean_id}"
+                    emp_sev = "Critical" if (emp and emp.risk_score >= 80) else "High" if (emp and emp.risk_score >= 50) else "Medium"
                     
                     await cls.create_incident(
                         db,
                         employee_id=clean_id,
                         title=f"Behavioral Threat Investigation: {emp_name}",
-                        description=f"Auto-generated threat investigation case for {emp_name} (EMP-{clean_id}) monitoring off-hours data transfers and unusual logon patterns.",
-                        severity="High",
-                        created_by="ITBIS Threat Engine",
+                        description=f"Automated threat investigation case launched for {emp_name} (EMP-{clean_id}) following flagged behavioral anomalies and baseline deviations.",
+                        severity=emp_sev,
+                        created_by="ITBIS Anomaly Intelligence Engine",
                         assigned_analyst="analyst@itbis.com"
                     )
-            except Exception as seed_err:
-                print(f"[INCIDENTS SEED WARNING] {seed_err}")
+                    existing_inc_emps.add(clean_id)
+        except Exception as sync_err:
+            logger.warning(f"[INCIDENTS SYNC WARNING] {sync_err}")
 
         from sqlalchemy.orm import selectinload
         stmt = select(Incident).options(selectinload(Incident.evidence)).order_by(desc(Incident.created_at))

@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.routers import auth, users, activity_logs, pages, dashboard, risk, ueba, investigations, notifications, reports_export
+from backend.routers import auth, users, activity_logs, pages, dashboard, risk, ueba, investigations, notifications, reports_export, system_health
 
 app = FastAPI(
     title="ITBIS — Insider Threat Behavioral Intelligence System",
@@ -37,6 +37,7 @@ app.include_router(ueba.router)
 app.include_router(investigations.router)
 app.include_router(notifications.router)
 app.include_router(reports_export.router)
+app.include_router(system_health.router)
 app.include_router(pages.router)
 
 

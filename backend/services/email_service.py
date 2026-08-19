@@ -6,11 +6,14 @@ upon Critical/High security anomalies, incident escalations, or policy violation
 
 import asyncio
 import smtplib
-from email.mime.multipart import MIMEMultipart
+import logging
 from email.mime.text import MIMEText
-from typing import List, Optional
+from email.mime.multipart import MIMEMultipart
+from typing import List, Optional, Dict, Any
 
 from backend.core.config import get_settings
+
+logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
@@ -93,8 +96,8 @@ class EmailService:
         def _send():
             if not settings.SMTP_USER or not settings.SMTP_PASSWORD:
                 # Log mock dispatch in development mode when SMTP credentials are not set
-                print(f"[MOCK EMAIL DISPATCH] To: {', '.join(recipients_clean)} | Subject: '{subject}'")
-                print(f"[MOCK EMAIL BODY]\n{body_text}\n" + "=" * 50)
+                logger.info(f"[MOCK EMAIL DISPATCH] To: {', '.join(recipients_clean)} | Subject: '{subject}'")
+                logger.info(f"[MOCK EMAIL BODY]\n{body_text}\n" + "=" * 50)
                 return True
 
             msg = MIMEMultipart("alternative")
@@ -116,7 +119,7 @@ class EmailService:
             loop = asyncio.get_event_loop()
             return await loop.run_in_executor(None, _send)
         except Exception as err:
-            print(f"[EMAIL SERVICE WARNING] Failed to send email alert: {err}")
+            logger.warning(f"[EMAIL SERVICE WARNING] Failed to send email alert: {err}")
             return False
 
     @classmethod

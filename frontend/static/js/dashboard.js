@@ -154,22 +154,29 @@ async function loadCharts() {
             suspectsBody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-slate-400">No risk suspects found</td></tr>`;
         } else {
             suspectsBody.innerHTML = metrics.risk_users.map(u => {
-                let badgeClass = 'bg-amber-50 text-amber-600 border border-amber-200';
-                let statusText = 'Suspicious';
+                let badgeClass = 'bg-amber-50 text-amber-700 border border-amber-200';
+                let statusText = 'Medium Risk';
                 if (u.risk_score >= 85) {
-                    badgeClass = 'bg-red-50 text-red-600 border border-red-200';
-                    statusText = 'Critical';
+                    badgeClass = 'bg-red-50 text-red-700 border border-red-200';
+                    statusText = 'Critical Risk';
+                } else if (u.risk_score >= 60) {
+                    badgeClass = 'bg-orange-50 text-orange-700 border border-orange-200';
+                    statusText = 'High Risk';
                 }
+                const empIdClean = String(u.employee_id).replace('EMP-', '');
                 return `
-                    <tr class="hover:bg-slate-50 border-b border-slate-100">
-                        <td class="py-2.5 px-3 font-semibold text-slate-800">EMP-${String(u.employee_id).padStart(4, '0')}</td>
-                        <td class="py-2.5 px-3 font-medium">${u.name}</td>
-                        <td class="py-2.5 px-3 text-slate-400">${u.department || 'Research'}</td>
-                        <td class="py-2.5 px-3 text-right font-bold text-slate-800">${u.risk_score}</td>
-                        <td class="py-2.5 px-3 text-center">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${badgeClass}">
+                    <tr class="hover:bg-slate-50/80 border-b border-slate-100 transition-all">
+                        <td class="py-2.5 px-3 font-mono font-bold text-indigo-600">EMP-${empIdClean}</td>
+                        <td class="py-2.5 px-3 font-semibold text-slate-800">${u.name}</td>
+                        <td class="py-2.5 px-3 text-slate-500 font-medium">${u.department || 'Research'}</td>
+                        <td class="py-2.5 px-3 text-right font-extrabold text-slate-900">${u.risk_score}</td>
+                        <td class="py-2.5 px-3 text-center flex items-center justify-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${badgeClass}">
                                 ${statusText}
                             </span>
+                            <a href="/investigation?employee_id=${empIdClean}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-extrabold bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all border border-indigo-200/80 shadow-2xs">
+                                🔍 Case
+                            </a>
                         </td>
                     </tr>
                 `;
@@ -436,10 +443,10 @@ function switchTab(tabName) {
         const btn = document.getElementById(`tab-${t}`);
         const pane = document.getElementById(`pane-${t}`);
         if (t === tabName) {
-            btn.className = "px-5 py-3 text-xs font-bold border-b-2 border-indigo-600 text-indigo-600 transition-all flex items-center gap-2";
+            btn.className = "px-5 py-2.5 text-xs font-extrabold rounded-xl bg-white text-indigo-600 shadow-xs border border-slate-200 transition-all flex items-center gap-2";
             pane.classList.remove('hidden');
         } else {
-            btn.className = "px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-all flex items-center gap-2";
+            btn.className = "px-5 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2";
             pane.classList.add('hidden');
         }
     });
@@ -1094,6 +1101,34 @@ async function exportExcel(category) {
         showToast('Excel report downloaded successfully!', 'success');
     } catch (err) {
         showToast(err.message, 'error');
+    }
+}
+
+// --- Quick Threat Detection Scan Trigger ---
+async function triggerDetectionScan() {
+    try {
+        showToast('⚡ Executing real-time behavioral anomaly scan & profiling...', 'info');
+        const res = await apiFetch('/api/dashboard/run-detection', { method: 'POST' });
+        if (!res.ok) throw new Error('Failed to run threat detection scan');
+        const data = await res.json();
+        showToast(`Scan complete! ${data.anomalies_detected} anomalies detected across monitored roster.`, 'success');
+        
+        // Refresh dashboard feeds & stats
+        if (typeof loadStats === 'function') await loadStats();
+        if (typeof loadCharts === 'function') await loadCharts();
+        if (typeof loadLogs === 'function') await loadLogs();
+        if (typeof loadNotifications === 'function') await loadNotifications();
+    } catch (err) {
+        showToast(err.message, 'error');
+    }
+}
+
+function toggleNotificationDrawer() {
+    const drawer = document.getElementById('notification-drawer');
+    if (!drawer) return;
+    drawer.classList.toggle('hidden');
+    if (!drawer.classList.contains('hidden')) {
+        loadNotifications();
     }
 }
 

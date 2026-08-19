@@ -200,13 +200,10 @@ function renderUsersTable() {
                 <td class="py-3 px-4 font-mono font-medium text-slate-400">${dateStr}</td>
                 <td class="py-3 px-4 text-right">
                     <div class="flex items-center justify-end gap-1.5">
-                        <button onclick="sendTestEmailToUser('${user.email}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-600 hover:text-white transition-all">
-                            📧 Send Email Alert
-                        </button>
-                        <button onclick="openEditUserModal(${user.id}, '${user.email}', '${user.full_name}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-all">
+                        <button onclick="openEditUserModal(${user.id}, '${user.email}', '${user.full_name}')" class="px-2.5 py-1 text-[10px] font-bold rounded-xl bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-all shadow-2xs">
                             ✏️ Edit Email
                         </button>
-                        <button onclick="toggleUserStatus(${user.id})" class="px-2 py-1 text-[10px] font-bold rounded-lg border transition-all ${user.is_active ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100'}">
+                        <button onclick="toggleUserStatus(${user.id})" class="px-2.5 py-1 text-[10px] font-bold rounded-xl border transition-all shadow-2xs ${user.is_active ? 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'}">
                             ${user.is_active ? 'Deactivate' : 'Activate'}
                         </button>
                     </div>

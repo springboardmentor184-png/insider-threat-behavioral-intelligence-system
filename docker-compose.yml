@@ -1,0 +1,60 @@
+services:
+  # MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: itbis-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: itbis
+      MYSQL_ROOT_PASSWORD: sunaikumar2005
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -psunaikumar2005 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - itbis-network
+
+  # Insider Threat Behavioral Intelligence System (FastAPI Web App)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: itbis-web
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+aiomysql://root:sunaikumar2005@db:3306/itbis
+      - SECRET_KEY=itbis-prod-secret-key-change-in-production-2026
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - GOOGLE_REDIRECT_URI=http://localhost:8000/api/auth/oauth2/google/callback
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=itbis.alerts@gmail.com
+      - SMTP_PASSWORD=sgnj amoo shti hxnv
+      - EMAILS_FROM_EMAIL=itbis.alerts@gmail.com
+      - EMAIL_NOTIFICATIONS_ENABLED=True
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./dataset:/app/dataset
+    networks:
+      - itbis-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  itbis-network:
+    driver: bridge

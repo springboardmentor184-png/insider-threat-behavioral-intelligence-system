@@ -18,6 +18,29 @@ The platform is designed around the **CERT Insider Threat Dataset v6.2** and **L
 
 ---
 
+### System Architecture Diagram Reconciliation & Mapping
+
+The **System Architecture Diagram** illustrates the high-level conceptual enterprise target architecture (comprising distributed microservices, messaging queues like Kafka/RabbitMQ, streaming engines like Spark/Flink, and multi-tier databases like Postgres, Mongo, Elasticsearch, and Redis).
+
+In the current working implementation, this target architecture is instantiated as a **modular, async FastAPI application** backed by **MySQL 8.0 (`aiomysql`)**, establishing a clean 1-to-1 operational mapping:
+
+| Target Architecture Component | Implemented Module / Service | File Location & Implementation Details |
+| :--- | :--- | :--- |
+| **API Gateway (FastAPI)** | FastAPI Core Application & Router Pipeline | `backend/main.py` — CORS, routing, request validation, static mounts. |
+| **Identity & Access Service** | Auth Router & User Service | `backend/routers/auth.py`, `backend/services/auth_service.py` — JWT cookie rotation, Google OAuth2, TOTP 2FA. |
+| **User & Asset Management** | Users Router & User Service | `backend/routers/users.py` — LDAP employee directory, role assignment, registration approvals. |
+| **Activity Collection Service** | Activity Logs Router & Importer | `backend/routers/activity_logs.py`, `backend/utils/import_dataset.py` — Ingests logon, device, file, email, and web logs. |
+| **Behavioral Profiling Service** | Behavioral Profiler Service | `backend/services/behavioral_profiler.py` — 30-day baseline generation, normal distributions, moving averages. |
+| **Anomaly Detection Service** | Anomaly Detector Service | `backend/services/anomaly_detector.py` — Z-score thresholding, logon frequency rules, signature checks. |
+| **Risk Scoring Service** | Risk Scorer Service | `backend/services/risk_scorer.py` — 5-factor weighted risk scoring algorithm ($0-100$). |
+| **UEBA Intelligence Service** | UEBA Engine Service | `backend/services/ueba_engine.py` — Department peer group benchmarking & 30-day trajectory forecasting. |
+| **Threat Investigation Service** | Investigation Service | `backend/services/investigation_service.py` — Incident cases (`INC-2026-XXX`), activity timeline correlation, evidence notes. |
+| **Alert Management Service** | Notification Service & Drawer | `backend/services/notification_service.py` — Notification drawer polling, severity classification, unread tracking. |
+| **Reporting & Analytics Service** | Report Generator & Export Service | `backend/services/export_service.py`, `backend/routers/reports_export.py` — Excel (`.xlsx`), PDF, JSON exporters. |
+| **Notification Service** | Email Service (SMTP Engine) | `backend/services/email_service.py` — Asynchronous Gmail SMTP transport (`smtp.gmail.com:587`). |
+
+---
+
 ## Hybrid Threat-Detection Models Architecture
 
 The platform uses a hybrid threat-detection architecture combining **Statistical Anomaly Detection Models** and **Signature-based Pattern-Matching Heuristic Models**.
@@ -312,18 +335,21 @@ $env:PYTHONPATH="."; .\venv\Scripts\python.exe -m pytest tests/ -v
 
 ---
 
-## Running the Application
+## 🐳 Docker Container Deployment
 
-1. **Start the FastAPI Server**:
-   ```bash
-   $env:PYTHONPATH="."
-   .\venv\Scripts\uvicorn.exe backend.main:app --reload --port 8000
-   ```
+The platform includes production-ready Docker configuration for containerized deployment with MySQL 8.0 and FastAPI:
 
-2. **Access the Platform**:
-   - **Login Portal**: [http://localhost:8000/login](http://localhost:8000/login)
-   - **Main Dashboard**: [http://localhost:8000/dashboard](http://localhost:8000/dashboard)
-   - **Threat Investigation Portal**: [http://localhost:8000/investigation](http://localhost:8000/investigation)
-   - **UEBA Analytics Hub**: [http://localhost:8000/ueba](http://localhost:8000/ueba)
-   - **Executive Reports & Export**: [http://localhost:8000/reports](http://localhost:8000/reports)
-   - **Admin User Management**: [http://localhost:8000/admin/users](http://localhost:8000/admin/users)
+### 1. Launch with Docker Compose
+```bash
+docker compose up --build -d
+```
+
+### 2. View Service Logs
+```bash
+docker compose logs -f web
+```
+
+### 3. Stop Docker Containers
+```bash
+docker compose down
+```

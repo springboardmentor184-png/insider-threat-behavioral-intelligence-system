@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -23,18 +25,18 @@
         }
     </script>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex">
+<body class="bg-slate-50 text-slate-900 min-h-screen flex font-['Inter',sans-serif]">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30">
+    <aside class="w-64 bg-white border-r border-slate-200 fixed top-0 bottom-0 left-0 flex flex-col z-30 shadow-sm">
         <div class="p-5 border-b border-slate-100">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-lg flex items-center justify-center text-lg shadow-sm">
+                <div class="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-violet-600 text-white rounded-xl flex items-center justify-center text-lg shadow-sm">
                     🛡️
                 </div>
                 <div>
-                    <h2 class="text-sm font-bold text-slate-800">ITBIS Platform</h2>
-                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Threat Center</p>
+                    <h2 class="text-sm font-extrabold text-slate-800 tracking-tight">ITBIS Platform</h2>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Threat Center</p>
                 </div>
             </div>
         </div>
@@ -44,13 +46,13 @@
         </nav>
 
         <div class="p-4 border-t border-slate-100">
-            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
+            <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer" onclick="window.location.href='/profile'">
                 <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs overflow-hidden" id="sidebar-avatar">
                     U
                 </div>
                 <div class="min-w-0 flex-1">
-                    <div class="text-xs font-semibold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
-                    <div class="text-[10px] text-slate-400 font-medium capitalize" id="sidebar-user-role">—</div>
+                    <div class="text-xs font-bold text-slate-800 truncate" id="sidebar-user-name">Loading...</div>
+                    <div class="text-[10px] text-slate-400 font-semibold capitalize" id="sidebar-user-role">—</div>
                 </div>
             </div>
         </div>
@@ -59,14 +61,39 @@
     <!-- Main Content -->
     <main class="flex-1 ml-64 min-h-screen flex flex-col">
         <!-- Top Header -->
-        <header class="h-16 border-b border-slate-200 bg-white sticky top-0 flex items-center justify-between px-8 z-20">
+        <header class="h-16 border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 flex items-center justify-between px-8 z-20">
             <div>
-                <h1 class="text-base font-bold text-slate-900">Threat Investigation Portal</h1>
+                <h1 class="text-base font-extrabold text-slate-900 tracking-tight">Threat Investigation Portal</h1>
                 <p class="text-xs text-slate-400">Incident case management, timeline correlation, and threat evidence collection</p>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="openCreateIncidentModal()" class="px-3.5 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1">
-                    ➕ New Investigation Case
+                <button onclick="openCreateIncidentModal()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer">
+                    ➕ New Case
+                </button>
+
+                <!-- Notification Bell & Dropdown Drawer -->
+                <div class="relative">
+                    <button onclick="toggleNotificationDrawer()" class="p-2 bg-slate-100 hover:bg-slate-200/80 rounded-xl text-slate-700 text-sm relative transition-all border border-slate-200/60 shadow-2xs cursor-pointer" title="System Notifications">
+                        🔔
+                        <span id="notif-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white font-extrabold text-[9px] rounded-full flex items-center justify-center shadow-xs">0</span>
+                    </button>
+
+                    <!-- Notifications Dropdown Drawer -->
+                    <div id="notification-drawer" class="hidden absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
+                            <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                                🔔 System Notifications
+                            </h4>
+                            <span id="notif-count-text" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">0 unread</span>
+                        </div>
+                        <div id="notifications-list" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+                            <div class="text-center text-xs text-slate-400 py-4">No notifications</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="logout()" class="px-3.5 py-1.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 rounded-xl text-xs font-bold shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer">
+                    ⏻ Log Out
                 </button>
             </div>
         </header>
@@ -76,22 +103,22 @@
             <!-- Grid Layout: Incidents List & Active Case Inspector -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left: Incident Cases Queue -->
-                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm lg:col-span-1 flex flex-col">
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs lg:col-span-1 flex flex-col">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-bold text-slate-800">Active Investigation Queue</h3>
-                        <span id="incidents-count-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">0 cases</span>
+                        <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Active Case Queue</h3>
+                        <span id="incidents-count-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-100">0 cases</span>
                     </div>
 
                     <!-- Filters -->
                     <div class="grid grid-cols-2 gap-2 mb-4">
-                        <select id="filter-inc-status" onchange="loadIncidents()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white font-semibold text-slate-600">
+                        <select id="filter-inc-status" onchange="loadIncidents()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-xl bg-white font-bold text-slate-700 shadow-2xs">
                             <option value="">All Statuses</option>
                             <option value="Open">Open</option>
                             <option value="In Progress">In Progress</option>
                             <option value="Escalated">Escalated</option>
                             <option value="Resolved">Resolved</option>
                         </select>
-                        <select id="filter-inc-severity" onchange="loadIncidents()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white font-semibold text-slate-600">
+                        <select id="filter-inc-severity" onchange="loadIncidents()" class="px-2.5 py-1.5 text-xs border border-slate-200 rounded-xl bg-white font-bold text-slate-700 shadow-2xs">
                             <option value="">All Severities</option>
                             <option value="Critical">Critical</option>
                             <option value="High">High</option>
@@ -100,32 +127,33 @@
                         </select>
                     </div>
 
-                    <div id="incidents-list-container" class="space-y-2 overflow-y-auto max-h-[600px] pr-1">
+                    <div id="incidents-list-container" class="space-y-2.5 overflow-y-auto max-h-[600px] pr-1">
                         <!-- Rendered by JS -->
                     </div>
                 </div>
 
-                <!-- Right: Selected Case Workspace (Timeline & Evidence) -->
-                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm lg:col-span-2 flex flex-col">
-                    <div id="no-case-selected" class="py-20 text-center text-slate-400">
-                        <div class="text-3xl mb-2">🔍</div>
-                        <h4 class="text-sm font-bold text-slate-700">No Incident Case Selected</h4>
-                        <p class="text-xs text-slate-400 mt-1">Select an investigation case from the queue or create a new case to correlate events.</p>
+                <!-- Right: Selected Case Workspace (Timeline, Anomalies & Evidence) -->
+                <div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs lg:col-span-2 flex flex-col">
+                    <div id="no-case-selected" class="py-24 text-center text-slate-400">
+                        <div class="text-4xl mb-3">🔍</div>
+                        <h4 class="text-sm font-extrabold text-slate-700">No Incident Case Selected</h4>
+                        <p class="text-xs text-slate-400 mt-1">Select an investigation case from the queue or create a new case to inspect correlated threat anomalies.</p>
                     </div>
 
                     <div id="case-details-pane" class="hidden space-y-6">
-                        <!-- Case Header -->
-                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <!-- Case Header & Action Export Toolbar -->
+                        <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div>
                                 <div class="flex items-center gap-2 mb-1">
                                     <span id="case-inc-number" class="text-xs font-mono font-bold text-indigo-600">INC-2026-001</span>
-                                    <span id="case-severity-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-600">High</span>
+                                    <span id="case-severity-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-red-100 text-red-700">High</span>
                                 </div>
-                                <h3 id="case-title" class="text-base font-bold text-slate-900">Suspicious Data Transfer Investigation</h3>
-                                <p id="case-meta" class="text-xs text-slate-400 mt-0.5">Assigned to: analyst@itbis.com • Target User: EMP-CEL0561</p>
+                                <h3 id="case-title" class="text-base font-extrabold text-slate-900 tracking-tight">Suspicious Data Transfer Investigation</h3>
+                                <p id="case-meta" class="text-xs text-slate-400 font-medium mt-0.5">Assigned to: analyst@itbis.com • Target User: EMP-CEL0561</p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <select id="case-status-select" onchange="updateCaseStatus()" class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold bg-white">
+                            
+                            <div class="flex flex-wrap items-center gap-2">
+                                <select id="case-status-select" onchange="updateCaseStatus()" class="px-3 py-1.5 border border-slate-200 rounded-xl text-xs font-bold bg-white shadow-2xs text-slate-700">
                                     <option value="Open">Status: Open</option>
                                     <option value="In Progress">Status: In Progress</option>
                                     <option value="Escalated">Status: Escalated</option>
@@ -135,26 +163,60 @@
                             </div>
                         </div>
 
-                        <!-- Case Description & Evidence Collector -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="border border-slate-100 rounded-xl p-4 bg-white">
-                                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Incident Description</h4>
-                                <p id="case-description-text" class="text-xs text-slate-600 leading-relaxed"></p>
+                        <!-- Export Downloads Bar for Target Employee -->
+                        <div class="flex items-center justify-between bg-indigo-50/40 border border-indigo-100 rounded-2xl p-4">
+                            <div class="flex items-center gap-2">
+                                <span class="text-base">📥</span>
+                                <div>
+                                    <h4 class="text-xs font-extrabold text-indigo-900">Individual Employee Data Downloads</h4>
+                                    <p class="text-[10px] text-indigo-600 font-semibold">Export target employee activity records, threat evidence, and PDF reports</p>
+                                </div>
                             </div>
-                            <div class="border border-slate-100 rounded-xl p-4 bg-white flex flex-col justify-between">
-                                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Attach Evidence Note</h4>
-                                <textarea id="evidence-note-input" rows="2" class="w-full p-2 text-xs border border-slate-200 rounded-lg mb-2 focus:outline-none" placeholder="Add analyst notes or evidence details..."></textarea>
-                                <button onclick="submitEvidenceNote()" class="py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold self-end transition-all">
-                                    📌 Attach Note to Evidence
+                            <div class="flex items-center gap-2">
+                                <button onclick="downloadCurrentEmployeeActivitiesCSV()" class="px-3 py-1.5 bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white rounded-xl text-xs font-bold transition-all shadow-2xs flex items-center gap-1">
+                                    📊 Activities CSV
+                                </button>
+                                <button onclick="downloadCurrentEmployeePDFReport()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-2xs flex items-center gap-1">
+                                    📄 Threat Report PDF
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Chronological Activity Timeline Correlation -->
-                        <div class="border border-slate-100 rounded-xl p-5 bg-white">
+                        <!-- Case Description & Evidence Collector -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="border border-slate-200/80 rounded-2xl p-4 bg-white shadow-2xs">
+                                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Incident Context & Summary</h4>
+                                <p id="case-description-text" class="text-xs text-slate-600 leading-relaxed font-medium"></p>
+                            </div>
+                            <div class="border border-slate-200/80 rounded-2xl p-4 bg-white flex flex-col justify-between shadow-2xs">
+                                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Attach Evidence Note</h4>
+                                <textarea id="evidence-note-input" rows="2" class="w-full p-2.5 text-xs border border-slate-200 rounded-xl mb-2 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/10 font-medium" placeholder="Add analyst notes or evidence findings..."></textarea>
+                                <button onclick="submitEvidenceNote()" class="py-1.5 px-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold self-end transition-all shadow-2xs">
+                                    📌 Attach Note to Case
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Detected Threat Anomalies Detailed Grid -->
+                        <div class="border border-slate-200/80 rounded-2xl p-5 bg-white shadow-2xs">
                             <div class="flex items-center justify-between mb-4">
-                                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Correlated Activity Timeline</h4>
-                                <span class="text-[11px] text-slate-400">Streaming logon, device, file, email & web events</span>
+                                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                                    🚨 All Detected Behavioral Anomalies
+                                </h4>
+                                <span id="detected-anomalies-count" class="text-[10px] font-extrabold text-red-700 bg-red-50 border border-red-100 px-2.5 py-0.5 rounded-full">0 anomalies</span>
+                            </div>
+                            <div id="case-anomalies-list" class="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Chronological Activity Timeline Correlation -->
+                        <div class="border border-slate-200/80 rounded-2xl p-5 bg-white shadow-2xs">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                                    📜 Correlated Activity Log Timeline
+                                </h4>
+                                <span class="text-[10px] font-bold text-slate-400">Streaming logon, device, file, email & web events</span>
                             </div>
 
                             <div id="case-activity-timeline" class="space-y-3 max-h-[350px] overflow-y-auto pr-2">
@@ -171,22 +233,22 @@
     <div id="create-incident-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50">
         <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md p-6 mx-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-                <h3 class="text-sm font-bold text-slate-800">Create Investigation Incident Case</h3>
-                <button onclick="closeCreateIncidentModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+                <h3 class="text-sm font-extrabold text-slate-900">Create Investigation Case</h3>
+                <button onclick="closeCreateIncidentModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
             </div>
 
             <form id="create-incident-form" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Target Employee ID</label>
-                    <input type="text" id="inc-target-emp" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs" placeholder="e.g. CEL0561, EHB0824" required>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Target Employee ID</label>
+                    <input type="text" id="inc-target-emp" class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600" placeholder="e.g. CEL0561, MPM0220" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Case Title</label>
-                    <input type="text" id="inc-title" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs" placeholder="e.g. Suspicious Cloud Exfiltration" required>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Case Title</label>
+                    <input type="text" id="inc-title" class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600" placeholder="e.g. Off-hours Mass File Exfiltration" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Severity Level</label>
-                    <select id="inc-severity" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white">
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Severity Level</label>
+                    <select id="inc-severity" class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-bold bg-white focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600">
                         <option value="Critical">Critical</option>
                         <option value="High" selected>High</option>
                         <option value="Medium">Medium</option>
@@ -194,13 +256,16 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Description & Context</label>
-                    <textarea id="inc-description" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs" placeholder="Describe the behavior or anomaly pattern..." required></textarea>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Description & Behavioral Context</label>
+                    <textarea id="inc-description" rows="3" class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600" placeholder="Describe detected anomaly patterns..." required></textarea>
                 </div>
 
-                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm">
-                    🚀 Create Investigation Case
-                </button>
+                <div class="flex justify-end gap-2 border-t border-slate-100 pt-4 mt-2">
+                    <button type="button" onclick="closeCreateIncidentModal()" class="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl text-xs font-bold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold transition-all shadow-2xs">
+                        🚀 Launch Case
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -209,9 +274,7 @@
     <div id="toast-container" class="toast-container"></div>
 
     <script src="/static/js/auth.js"></script>
-    <script src="/static/js/investigation.js?v=1.0.2"></script>
-    <script>
-        initInvestigation();
-    </script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/investigation.js?v=1.0.5"></script>
 </body>
 </html>

@@ -8,15 +8,20 @@ Serves Excel (.xlsx) downloads across 5 categories:
   - Risk Assessment Reports
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+import io
+import json
+import logging
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-import io
+from typing import Optional, List
 
 from backend.core.database import get_db
 from backend.models.user import User
 from backend.routers.deps import get_current_user
 from backend.services.export_service import ExportService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/reports/export", tags=["Reports & Export"])
 
@@ -96,7 +101,7 @@ async def email_individual_employee_report(
                 assigned_analyst="Unassigned"
             )
         except Exception as inc_err:
-            print(f"[REPORTS INCIDENT AUTO-CREATE WARNING] {inc_err}")
+            logger.warning(f"[REPORTS INCIDENT AUTO-CREATE WARNING] {inc_err}")
 
     # Determine recipient managers
     recipients = []
@@ -139,7 +144,40 @@ async def email_individual_employee_report(
 
     return {
         "status": "success",
-        "message": f"Full individual anomaly report for {emp.full_name} (EMP-{emp.employee_id}) sent to {', '.join(recipients)}.",
-        "employee_id": emp.employee_id,
-        "anomalies_count": len(anomalies)
+        "message": f"Individual employee anomaly report successfully dispatched to {len(recipients)} recipient(s).",
+        "recipients": recipients
     }
+
+
+@router.get("/employee-activities-csv/{employee_id}")
+async def export_employee_activities_csv(
+    employee_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Export all chronological activity logs for a specific employee as a CSV file."""
+    import csv
+    from backend.services.investigation_service import InvestigationService
+    clean_id = employee_id.replace("EMP-", "").strip()
+    timeline = await InvestigationService.get_activity_timeline(db, clean_id, limit=300)
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["Timestamp", "Employee ID", "PC Host", "Event Type", "Activity Action", "Details"])
+    
+    for item in timeline.get("timeline", []):
+        writer.writerow([
+            item.get("timestamp"),
+            f"EMP-{clean_id}",
+            item.get("pc", "N/A"),
+            item.get("type"),
+            item.get("activity"),
+            item.get("details", "")
+        ])
+    
+    csv_bytes = output.getvalue().encode("utf-8")
+    return Response(
+        content=csv_bytes,
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename=itbis_employee_{clean_id}_activities.csv"}
+    )

@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Datasets & Exploratory Data Analysis (Mounted via volume at runtime)
+dataset/
+eda/
+database/
+*.csv
+*.tar.gz
+*.zip
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.coverage.*
+
+# Git & IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables & secrets
+.env
+*.env.local
+
+# Temporary / Scratch Files
+scratch/
+.tempmediaStorage/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
