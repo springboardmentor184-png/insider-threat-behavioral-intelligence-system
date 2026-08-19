@@ -24,11 +24,20 @@ class UserResponse(BaseModel):
     full_name: str
     role: str
     is_active: bool
+    profile_photo: Optional[str] = None
     created_at: datetime
 
     class Config:
         from_attributes = True
         orm_mode = True
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
+    profile_photo: Optional[str] = None
+    is_active: Optional[bool] = None
 
 class UserLogin(BaseModel):
     email: EmailStr

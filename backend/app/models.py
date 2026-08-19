@@ -12,6 +12,7 @@ class User(Base):
     full_name = Column(String, nullable=False)
     role = Column(String, nullable=False, default="Security Analyst")  # Administrator, Security Analyst, SOC Engineer, Security Manager
     is_active = Column(Boolean, default=True)
+    profile_photo = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     
     # Relationship to employee profile if linked

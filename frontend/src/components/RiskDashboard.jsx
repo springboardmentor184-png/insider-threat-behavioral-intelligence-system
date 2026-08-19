@@ -234,7 +234,7 @@ const styles = {
   title: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   subtitle: {
     fontSize: '13px',
@@ -265,7 +265,7 @@ const styles = {
   statVal: {
     fontSize: '26px',
     fontWeight: '800',
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   statSubText: {
     fontSize: '11px',
@@ -277,7 +277,7 @@ const styles = {
   },
   panelTitle: {
     fontSize: '16px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600',
     marginBottom: '20px'
   },
@@ -295,7 +295,7 @@ const styles = {
     padding: '12px',
     borderBottom: '1px solid var(--panel-border)',
     fontWeight: '600',
-    background: 'rgba(7, 10, 19, 0.4)'
+    background: 'var(--bg-primary)'
   },
   td: {
     padding: '12px',
@@ -324,7 +324,7 @@ const styles = {
     background: 'rgba(255,255,255,0.02)',
     padding: '2px 6px',
     borderRadius: '4px',
-    border: '1px solid rgba(255,255,255,0.05)',
+    border: '1px solid var(--panel-border)',
     cursor: 'help'
   },
   actionBtn: {

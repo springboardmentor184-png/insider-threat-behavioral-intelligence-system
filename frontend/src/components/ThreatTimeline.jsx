@@ -367,7 +367,7 @@ const styles = {
   title: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   subtitle: {
     fontSize: '13px',
@@ -400,7 +400,7 @@ const styles = {
   },
   panelTitle: {
     fontSize: '15px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600',
     marginBottom: '12px'
   },
@@ -425,7 +425,7 @@ const styles = {
     fontWeight: '600'
   },
   metricValues: {
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   userVal: {
     fontWeight: '700',
@@ -548,7 +548,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    background: 'rgba(7, 10, 19, 0.8)',
+    background: 'var(--bg-tertiary)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -566,7 +566,7 @@ const styles = {
   modalTitle: {
     fontSize: '16px',
     fontWeight: '700',
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   modalDesc: {
     fontSize: '13px',

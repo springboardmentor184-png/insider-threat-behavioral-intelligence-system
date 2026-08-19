@@ -11,13 +11,13 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+    borderBottom: '1px solid var(--panel-border)',
     paddingBottom: '16px',
   },
   title: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#fff',
+    color: 'var(--text-primary)',
     margin: 0,
   },
   subtitle: {
@@ -50,7 +50,7 @@ const styles = {
   btnSecondary: {
     background: 'rgba(255, 255, 255, 0.05)',
     border: '1px solid rgba(255, 255, 255, 0.1)',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   grid: {
     display: 'grid',
@@ -59,8 +59,8 @@ const styles = {
     alignItems: 'start',
   },
   sidebar: {
-    background: 'rgba(15, 23, 42, 0.45)',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    background: 'var(--panel-bg)',
+    border: '1px solid var(--panel-border)',
     borderRadius: '12px',
     padding: '16px',
     backdropFilter: 'blur(8px)',
@@ -81,9 +81,9 @@ const styles = {
     gap: '10px',
   },
   sidebarItemActive: {
-    background: 'rgba(0, 242, 254, 0.08)',
-    color: '#00f2fe',
-    borderLeft: '3px solid #00f2fe',
+    background: 'rgba(2, 132, 199, 0.08)',
+    color: 'var(--accent-cyan)',
+    borderLeft: '3px solid var(--accent-cyan)',
   },
   contentPanel: {
     display: 'flex',
@@ -91,8 +91,8 @@ const styles = {
     gap: '24px',
   },
   card: {
-    background: 'rgba(15, 23, 42, 0.45)',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    background: 'var(--panel-bg)',
+    border: '1px solid var(--panel-border)',
     borderRadius: '12px',
     padding: '24px',
     backdropFilter: 'blur(8px)',
@@ -100,8 +100,8 @@ const styles = {
   cardTitle: {
     fontSize: '15px',
     fontWeight: '700',
-    color: '#fff',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+    color: 'var(--text-primary)',
+    borderBottom: '1px solid var(--panel-border)',
     paddingBottom: '12px',
     marginBottom: '16px',
     display: 'flex',
@@ -114,8 +114,8 @@ const styles = {
     gap: '16px',
   },
   metricCard: {
-    background: 'rgba(255, 255, 255, 0.02)',
-    border: '1px solid rgba(255, 255, 255, 0.03)',
+    background: 'var(--bg-primary)',
+    border: '1px solid var(--panel-border)',
     borderRadius: '8px',
     padding: '16px',
     display: 'flex',
@@ -125,7 +125,7 @@ const styles = {
   metricVal: {
     fontSize: '28px',
     fontWeight: '800',
-    color: '#00f2fe',
+    color: 'var(--accent-cyan)',
   },
   metricLabel: {
     fontSize: '11px',
@@ -140,13 +140,13 @@ const styles = {
   th: {
     textAlign: 'left',
     padding: '12px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '700',
-    borderBottom: '2px solid rgba(255, 255, 255, 0.05)',
+    borderBottom: '2px solid var(--panel-border)',
   },
   td: {
     padding: '12px',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+    borderBottom: '1px solid var(--panel-border)',
   },
   statusBadge: {
     padding: '4px 8px',

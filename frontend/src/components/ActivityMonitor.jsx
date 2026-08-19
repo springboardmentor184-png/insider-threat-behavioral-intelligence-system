@@ -402,7 +402,7 @@ const styles = {
   title: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   subtitle: {
     fontSize: '13px',
@@ -418,8 +418,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
-    background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%)',
-    borderColor: 'rgba(96, 165, 250, 0.2)',
+    background: 'var(--panel-bg)',
+    borderColor: 'var(--panel-border)',
   },
   ingestTitle: {
     fontSize: '16px',
@@ -440,7 +440,7 @@ const styles = {
     flexGrow: 1,
     padding: '10px 14px',
     fontSize: '13px',
-    background: 'rgba(15, 23, 42, 0.6)',
+    background: 'var(--bg-primary)',
   },
   ingestBtn: {
     padding: '10px 24px',
@@ -452,15 +452,15 @@ const styles = {
     gap: '8px',
     marginTop: '16px',
     padding: '16px',
-    background: 'rgba(15, 23, 42, 0.4)',
+    background: 'var(--bg-primary)',
     borderRadius: '8px',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    border: '1px solid var(--panel-border)',
   },
   progressHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     fontSize: '12px',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   progressFile: {
     color: 'var(--accent-cyan)',
@@ -506,7 +506,7 @@ const styles = {
   statVal: {
     fontSize: '26px',
     fontWeight: '800',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   statSubText: {
     fontSize: '11px',
@@ -569,7 +569,7 @@ const styles = {
   },
   logsTitle: {
     fontSize: '16px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600',
   },
   refreshBtn: {
@@ -592,7 +592,7 @@ const styles = {
     padding: '12px',
     borderBottom: '1px solid var(--panel-border)',
     fontWeight: '600',
-    background: 'rgba(7, 10, 19, 0.4)',
+    background: 'var(--bg-primary)',
     position: 'sticky',
     top: 0,
     zIndex: 1,

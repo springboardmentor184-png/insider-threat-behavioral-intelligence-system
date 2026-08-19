@@ -215,8 +215,8 @@ export default function IncidentManager({ token, currentUser }) {
                   onClick={() => fetchIncidentDetail(inc.incident_id)}
                   style={{
                     ...styles.incidentCard,
-                    borderColor: isSelected ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.05)',
-                    background: isSelected ? 'rgba(96, 165, 250, 0.05)' : 'rgba(30, 41, 59, 0.2)'
+                    borderColor: isSelected ? 'var(--accent-cyan)' : 'var(--panel-border)',
+                    background: isSelected ? 'rgba(96, 165, 250, 0.12)' : 'var(--bg-secondary)'
                   }}
                 >
                   <div style={styles.cardHeader}>
@@ -362,7 +362,7 @@ const styles = {
   title: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   subtitle: {
     fontSize: '13px',
@@ -388,7 +388,7 @@ const styles = {
   },
   panelTitle: {
     fontSize: '15px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600'
   },
   filterGroup: {
@@ -434,7 +434,7 @@ const styles = {
   cardTitle: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#fff',
+    color: 'var(--text-primary)',
     margin: '4px 0'
   },
   cardFooter: {
@@ -468,13 +468,13 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: '16px',
-    borderBottom: '1px solid rgba(255,255,255,0.05)',
+    borderBottom: '1px solid var(--panel-border)',
     paddingBottom: '12px'
   },
   detailTitle: {
     fontSize: '16px',
     fontWeight: '700',
-    color: '#fff'
+    color: 'var(--text-primary)'
   },
   statusBadge: {
     padding: '4px 12px',
@@ -492,7 +492,7 @@ const styles = {
     flexWrap: 'wrap',
     gap: '20px',
     padding: '16px',
-    background: 'rgba(15, 23, 42, 0.4)',
+    background: 'var(--bg-primary)',
     borderRadius: '8px',
     border: '1px solid rgba(255,255,255,0.03)'
   },
@@ -535,7 +535,7 @@ const styles = {
   },
   sectionTitle: {
     fontSize: '13px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600'
   },
   evidenceList: {

@@ -425,7 +425,7 @@ const styles = {
   title: {
     fontSize: '18px',
     fontWeight: '600',
-    color: '#fff',
+    color: 'var(--text-primary)',
     marginBottom: '2px',
   },
   subtitle: {
@@ -437,7 +437,7 @@ const styles = {
   profileRow: {
     display: 'flex',
     gap: '16px',
-    background: 'rgba(7, 10, 19, 0.4)',
+    background: 'var(--bg-primary)',
     border: '1px solid var(--panel-border)',
     borderRadius: '8px',
     padding: '16px',
@@ -458,7 +458,7 @@ const styles = {
   profileVal: {
     fontSize: '14px',
     fontWeight: '600',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   section: {
     borderTop: '1px solid var(--panel-border)',
@@ -547,7 +547,7 @@ const styles = {
     fontSize: '12px',
   },
   associationForm: {
-    background: 'rgba(7, 10, 19, 0.3)',
+    background: 'var(--bg-primary)',
     border: '1px solid var(--panel-border)',
     borderRadius: '6px',
     padding: '12px',

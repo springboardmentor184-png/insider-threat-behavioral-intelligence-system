@@ -30,6 +30,45 @@
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+/* Light Theme Variables */
+body.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  
+  --panel-bg: #ffffff;
+  --panel-border: rgba(15, 23, 42, 0.08);
+  --panel-border-hover: rgba(15, 23, 42, 0.18);
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  --accent-cyan: #0284c7;
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+}
+
+body.light-theme {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(24, 119, 242, 0.04) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(101, 103, 107, 0.02) 0px, transparent 50%) !important;
+}
+
+body.light-theme .glass-panel {
+  box-shadow: 0 4px 20px 0 rgba(15, 23, 42, 0.05) !important;
+}
+
+body.light-theme .glass-panel:hover {
+  box-shadow: 0 4px 25px 0 rgba(2, 132, 199, 0.1) !important;
+  border-color: var(--panel-border-hover) !important;
+}
+
 /* Reset & Scrollbar */
 * {
   box-sizing: border-box;
@@ -103,7 +142,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-input, .form-select, .form-textarea {
-  background: rgba(7, 10, 19, 0.6);
+  background: var(--bg-tertiary);
   border: 1px solid var(--panel-border);
   border-radius: 8px;
   color: var(--text-primary);
@@ -117,7 +156,7 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.2);
-  background: rgba(7, 10, 19, 0.9);
+  background: var(--bg-secondary);
 }
 
 /* Button Styles */

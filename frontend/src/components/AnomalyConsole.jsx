@@ -461,7 +461,7 @@ const styles = {
   title: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   subtitle: {
     fontSize: '13px',
@@ -493,7 +493,7 @@ const styles = {
   },
   radarLabel: {
     fontSize: '14px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600',
   },
   statsGrid: {
@@ -516,7 +516,7 @@ const styles = {
   statVal: {
     fontSize: '26px',
     fontWeight: '800',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   statSubText: {
     fontSize: '11px',
@@ -543,7 +543,7 @@ const styles = {
   },
   panelTitle: {
     fontSize: '16px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600',
   },
   tableHeader: {
@@ -599,7 +599,7 @@ const styles = {
   },
   alertMeta: {
     fontSize: '12px',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   alertDesc: {
     fontSize: '13px',
@@ -664,7 +664,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid rgba(255,255,255,0.05)',
+    borderBottom: '1px solid var(--panel-border)',
     paddingBottom: '10px',
   },
   userTitle: {
@@ -701,7 +701,7 @@ const styles = {
   cardVal: {
     fontSize: '14px',
     fontWeight: '700',
-    color: '#fff',
+    color: 'var(--text-primary)',
     marginTop: '2px',
   },
   cardSub: {

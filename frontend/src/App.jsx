@@ -9,11 +9,22 @@ import ThreatTimeline from './components/ThreatTimeline';
 import IncidentManager from './components/IncidentManager';
 import { AdminDashboard, AnalystDashboard, SOCDashboard, ManagerDashboard } from './components/RoleDashboards';
 import ExecutiveReports from './components/ExecutiveReports';
+import MyProfile from './components/MyProfile';
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem('access_token') || '');
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem('app-theme') || 'dark');
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+    localStorage.setItem('app-theme', theme);
+  }, [theme]);
   const [auditLogs, setAuditLogs] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, directory, audit, risk, timeline, incidents
   const [selectedInvestigateEmployeeId, setSelectedInvestigateEmployeeId] = useState('');
@@ -300,6 +311,22 @@ export default function App() {
             </button>
           )}
 
+          {/* My Profile (All roles) */}
+          {currentUser && (
+            <button 
+              style={{
+                ...styles.sidebarBtn, 
+                background: activeTab === 'profile' ? 'rgba(0, 242, 254, 0.05)' : 'none',
+                color: activeTab === 'profile' ? 'var(--accent-cyan)' : 'var(--text-secondary)',
+                borderLeft: activeTab === 'profile' ? '3px solid var(--accent-cyan)' : '3px solid transparent',
+                paddingLeft: activeTab === 'profile' ? '12px' : '8px',
+              }}
+              onClick={() => setActiveTab('profile')}
+            >
+              👤 My Profile
+            </button>
+          )}
+
           {/* Security Audit Logs (Administrator only) */}
           {currentUser && currentUser.role === 'Administrator' && (
             <button 
@@ -321,6 +348,29 @@ export default function App() {
       {/* Main Content Area */}
       <div style={styles.contentLayout}>
         <header style={styles.topBar}>
+          {/* Theme Toggle Button */}
+          <button 
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid var(--panel-border)',
+              borderRadius: '8px',
+              color: 'var(--text-primary)',
+              fontSize: '13px',
+              fontWeight: '600',
+              padding: '6px 14px',
+              cursor: 'pointer',
+              marginRight: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              transition: 'background 0.2s',
+            }}
+            title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+          </button>
+
           {/* Notification Center Bell */}
           <div style={styles.bellWrapper}>
             <button 
@@ -521,6 +571,14 @@ export default function App() {
         {activeTab === 'reports' && (
           <ExecutiveReports token={token} />
         )}
+
+        {activeTab === 'profile' && (
+          <MyProfile 
+            token={token} 
+            currentUser={currentUser} 
+            onUpdateUser={(updated) => setCurrentUser(updated)} 
+          />
+        )}
         </main>
 
         <footer style={styles.footer}>
@@ -539,13 +597,13 @@ const styles = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'row',
-    background: '#04060a',
+    background: 'var(--bg-primary)',
   },
   sidebar: {
     width: '260px',
     flexShrink: 0,
-    background: '#070a13',
-    borderRight: '1px solid rgba(255, 255, 255, 0.05)',
+    background: 'var(--bg-secondary)',
+    borderRight: '1px solid var(--panel-border)',
     display: 'flex',
     flexDirection: 'column',
     padding: '24px',
@@ -556,7 +614,7 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     paddingBottom: '16px',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+    borderBottom: '1px solid var(--panel-border)',
   },
   logoIcon: {
     fontSize: '28px',
@@ -565,7 +623,7 @@ const styles = {
     fontSize: '16px',
     fontWeight: '700',
     lineHeight: '1.2',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   brandSubtitle: {
     fontSize: '10px',
@@ -604,8 +662,8 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '16px 32px',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
-    background: 'rgba(7, 10, 19, 0.2)',
+    borderBottom: '1px solid var(--panel-border)',
+    background: 'var(--bg-secondary)',
   },
   bellWrapper: {
     position: 'relative',
@@ -648,13 +706,13 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+    borderBottom: '1px solid var(--panel-border)',
     paddingBottom: '8px',
   },
   notifTitle: {
     fontSize: '12px',
     fontWeight: '700',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   clearBtn: {
     background: 'none',
@@ -713,7 +771,7 @@ const styles = {
   userName: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   logoutBtn: {
     padding: '5px 12px',
@@ -750,7 +808,7 @@ const styles = {
   },
   auditTitle: {
     fontSize: '18px',
-    color: '#fff',
+    color: 'var(--text-primary)',
     fontWeight: '600',
   },
   refreshBtn: {
@@ -798,7 +856,7 @@ const styles = {
     borderTop: '1px solid var(--panel-border)',
     padding: '20px 0',
     textAlign: 'center',
-    background: 'rgba(7, 10, 19, 0.6)',
+    background: 'var(--bg-secondary)',
     color: 'var(--text-secondary)',
     fontSize: '12px',
   },

@@ -11,8 +11,8 @@ const dashStyles = {
   card: {
     padding: '24px',
     borderRadius: '12px',
-    background: 'rgba(15, 23, 42, 0.45)',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
+    background: 'var(--panel-bg)',
+    border: '1px solid var(--panel-border)',
     backdropFilter: 'blur(8px)',
     display: 'flex',
     flexDirection: 'column',
@@ -22,9 +22,9 @@ const dashStyles = {
   cardTitle: {
     fontSize: '15px',
     fontWeight: '700',
-    color: '#fff',
+    color: 'var(--text-primary)',
     letterSpacing: '0.5px',
-    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+    borderBottom: '1px solid var(--panel-border)',
     paddingBottom: '10px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -126,7 +126,7 @@ export function AdminDashboard({ token }) {
 
   return (
     <div className="fade-in">
-      <h2 style={{color: '#fff', fontSize: '20px', fontWeight: '700'}}>🛡️ Platform Administrative Controller Console</h2>
+      <h2 style={{color: 'var(--text-primary)', fontSize: '20px', fontWeight: '700'}}>🛡️ Platform Administrative Controller Console</h2>
       <p style={{color: 'var(--text-secondary)', fontSize: '13px', marginTop: '4px'}}>Real-time deployment infrastructure monitor & role directories</p>
 
       <div style={dashStyles.grid}>
@@ -153,7 +153,7 @@ export function AdminDashboard({ token }) {
               return (
                 <div key={u.email} style={dashStyles.listItem}>
                   <div>
-                    <div style={{fontWeight: '700', color: '#fff'}}>{u.name}</div>
+                    <div style={{fontWeight: '700', color: 'var(--text-primary)'}}>{u.name}</div>
                     <div style={{color: 'var(--text-muted)', fontSize: '11px'}}>{u.email}</div>
                   </div>
                   <span style={{
@@ -200,25 +200,25 @@ export function AdminDashboard({ token }) {
           <div style={dashStyles.cardTitle}>⚙️ System Monitoring</div>
           <div style={dashStyles.list}>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff', fontWeight: '600'}}>Relational DB (PostgreSQL)</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '600'}}>Relational DB (PostgreSQL)</span>
               <span style={{color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span className="pulse-green" style={{width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block'}} /> Connected
               </span>
             </div>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff', fontWeight: '600'}}>Document Store (MongoDB)</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '600'}}>Document Store (MongoDB)</span>
               <span style={{color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span className="pulse-green" style={{width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block'}} /> Online
               </span>
             </div>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff', fontWeight: '600'}}>IsolationForest Pipeline</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '600'}}>IsolationForest Pipeline</span>
               <span style={{color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span className="pulse-green" style={{width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block'}} /> Operational
               </span>
             </div>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff', fontWeight: '600'}}>Elasticsearch Endpoint</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '600'}}>Elasticsearch Endpoint</span>
               <span style={{color: '#f59e0b', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span className="pulse-orange" style={{width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block'}} /> Standby
               </span>
@@ -238,7 +238,7 @@ export function AdminDashboard({ token }) {
               auditLogs.map((log, idx) => (
                 <div key={idx} style={dashStyles.listItem}>
                   <span style={{color: 'var(--accent-cyan)', fontWeight: '600'}}>👤 {log.user_email}</span>
-                  <span style={{color: '#fff'}}>Action: <code>{log.action}</code></span>
+                  <span style={{color: 'var(--text-primary)'}}>Action: <code>{log.action}</code></span>
                   <span style={{
                     ...dashStyles.badge,
                     background: log.status === 'SUCCESS' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
@@ -316,7 +316,7 @@ export function AnalystDashboard({ token, onInvestigate }) {
 
   return (
     <div className="fade-in">
-      <h2 style={{color: '#fff', fontSize: '20px', fontWeight: '700'}}>🔍 Threat Triage & Incident Analyst Panel</h2>
+      <h2 style={{color: 'var(--text-primary)', fontSize: '20px', fontWeight: '700'}}>🔍 Threat Triage & Incident Analyst Panel</h2>
       <p style={{color: 'var(--text-secondary)', fontSize: '13px', marginTop: '4px'}}>Real-time alerts queue, risk priorities and assignee workloads</p>
 
       <div style={dashStyles.grid}>
@@ -362,7 +362,7 @@ export function AnalystDashboard({ token, onInvestigate }) {
                 return (
                   <div key={r.employee_id} style={dashStyles.listItem}>
                     <div>
-                      <strong style={{color: '#fff'}}>{r.employee_id}</strong>
+                      <strong style={{color: 'var(--text-primary)'}}>{r.employee_id}</strong>
                       <span style={{color: 'var(--text-muted)', fontSize: '11px', marginLeft: '8px'}}>Risk: {r.category}</span>
                     </div>
                     
@@ -393,7 +393,7 @@ export function AnalystDashboard({ token, onInvestigate }) {
                 <div key={c.incident_id} style={dashStyles.listItem}>
                   <div>
                     <strong style={{color: 'var(--accent-cyan)'}}>{c.incident_id}</strong>
-                    <div style={{color: '#fff', fontSize: '11px', marginTop: '2px'}}>{c.title}</div>
+                    <div style={{color: 'var(--text-primary)', fontSize: '11px', marginTop: '2px'}}>{c.title}</div>
                   </div>
                   <span style={{
                     ...dashStyles.badge,
@@ -477,7 +477,7 @@ export function SOCDashboard({ token }) {
 
   return (
     <div className="fade-in">
-      <h2 style={{color: '#fff', fontSize: '20px', fontWeight: '700'}}>🚀 SOC Security Incident Monitoring Center</h2>
+      <h2 style={{color: 'var(--text-primary)', fontSize: '20px', fontWeight: '700'}}>🚀 SOC Security Incident Monitoring Center</h2>
       <p style={{color: 'var(--text-secondary)', fontSize: '13px', marginTop: '4px'}}>Live event ingestion counters, firewall anomalies and SOC workloads</p>
 
       <div style={dashStyles.grid}>
@@ -500,7 +500,7 @@ export function SOCDashboard({ token }) {
               liveLogs.map((log, idx) => (
                 <div key={idx} style={dashStyles.listItem}>
                   <span style={{color: 'var(--accent-cyan)', fontWeight: '600'}}>👤 {log.employee_id}</span>
-                  <span style={{color: '#fff'}}>Action: <code>{log.activity_type} | {log.action}</code></span>
+                  <span style={{color: 'var(--text-primary)'}}>Action: <code>{log.activity_type} | {log.action}</code></span>
                   <span style={{color: 'var(--text-muted)'}}>Terminal: {log.device_name} ({log.ip_address})</span>
                   <span style={{color: 'var(--text-muted)', fontSize: '11px'}}>{new Date(log.timestamp).toLocaleTimeString()}</span>
                 </div>
@@ -519,7 +519,7 @@ export function SOCDashboard({ token }) {
               anomalies.map((a, idx) => (
                 <div key={idx} style={dashStyles.listItem}>
                   <div>
-                    <strong style={{color: '#fff'}}>{a.employee_id}</strong>
+                    <strong style={{color: 'var(--text-primary)'}}>{a.employee_id}</strong>
                     <div style={{fontSize: '11px', color: 'var(--text-secondary)'}}>{a.description.substring(0, 45)}...</div>
                   </div>
                   <span style={{
@@ -552,19 +552,19 @@ export function SOCDashboard({ token }) {
           <div style={dashStyles.cardTitle}>🌐 Threat Intelligence Feeds</div>
           <div style={dashStyles.list}>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff'}}>Dynamic Anomaly Profile Model</span>
+              <span style={{color: 'var(--text-primary)'}}>Dynamic Anomaly Profile Model</span>
               <span style={{color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span style={{width: '6px', height: '6px', borderRadius: '50%', background: '#10b981'}} /> ONLINE
               </span>
             </div>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff'}}>IP Blacklist Domain Feed</span>
+              <span style={{color: 'var(--text-primary)'}}>IP Blacklist Domain Feed</span>
               <span style={{color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span style={{width: '6px', height: '6px', borderRadius: '50%', background: '#10b981'}} /> ACTIVE
               </span>
             </div>
             <div style={dashStyles.listItem}>
-              <span style={{color: '#fff'}}>Outbound Tunnel Signatures</span>
+              <span style={{color: 'var(--text-primary)'}}>Outbound Tunnel Signatures</span>
               <span style={{color: '#10b981', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px'}}>
                 <span style={{width: '6px', height: '6px', borderRadius: '50%', background: '#10b981'}} /> LOADED
               </span>
@@ -646,7 +646,7 @@ export function ManagerDashboard({ token }) {
 
   return (
     <div className="fade-in">
-      <h2 style={{color: '#fff', fontSize: '20px', fontWeight: '700'}}>💼 Executive Security Posture & Compliance Dashboard</h2>
+      <h2 style={{color: 'var(--text-primary)', fontSize: '20px', fontWeight: '700'}}>💼 Executive Security Posture & Compliance Dashboard</h2>
       <p style={{color: 'var(--text-secondary)', fontSize: '13px', marginTop: '4px'}}>Organizational risk distributions, compliance metrics and case summaries</p>
 
       <div style={dashStyles.grid}>
@@ -655,19 +655,19 @@ export function ManagerDashboard({ token }) {
           <div style={dashStyles.cardTitle}>🛡️ Organizational Risk Posture</div>
           <div style={dashStyles.list}>
             <div style={{...dashStyles.listItem, borderLeft: '3px solid #ef4444'}}>
-              <span style={{color: '#fff', fontWeight: '700'}}>Critical Risk Profile</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '700'}}>Critical Risk Profile</span>
               <strong style={{color: '#ef4444', fontSize: '13px'}}>{riskDistribution.critical} Employees</strong>
             </div>
             <div style={{...dashStyles.listItem, borderLeft: '3px solid #fb923c'}}>
-              <span style={{color: '#fff', fontWeight: '700'}}>High Risk Profile</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '700'}}>High Risk Profile</span>
               <strong style={{color: '#fb923c', fontSize: '13px'}}>{riskDistribution.high} Employees</strong>
             </div>
             <div style={{...dashStyles.listItem, borderLeft: '3px solid #facc15'}}>
-              <span style={{color: '#fff', fontWeight: '700'}}>Medium Risk Profile</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '700'}}>Medium Risk Profile</span>
               <strong style={{color: '#facc15', fontSize: '13px'}}>{riskDistribution.medium} Employees</strong>
             </div>
             <div style={{...dashStyles.listItem, borderLeft: '3px solid #60a5fa'}}>
-              <span style={{color: '#fff', fontWeight: '700'}}>Low Risk Profile</span>
+              <span style={{color: 'var(--text-primary)', fontWeight: '700'}}>Low Risk Profile</span>
               <strong style={{color: '#60a5fa', fontSize: '13px'}}>{riskDistribution.low} Employees</strong>
             </div>
           </div>
@@ -713,7 +713,7 @@ export function ManagerDashboard({ token }) {
           <div style={dashStyles.cardTitle}>🚨 Insider Threat Reports (By Dept)</div>
           <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', flexGrow: 1, gap: '10px'}}>
             <div>
-              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#fff', marginBottom: '2px'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-primary)', marginBottom: '2px'}}>
                 <span>Engineering</span>
                 <span>{departmentStats.engineering} cases</span>
               </div>
@@ -722,7 +722,7 @@ export function ManagerDashboard({ token }) {
               </div>
             </div>
             <div>
-              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#fff', marginBottom: '2px'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-primary)', marginBottom: '2px'}}>
                 <span>Finance</span>
                 <span>{departmentStats.finance} cases</span>
               </div>
@@ -731,7 +731,7 @@ export function ManagerDashboard({ token }) {
               </div>
             </div>
             <div>
-              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#fff', marginBottom: '2px'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-primary)', marginBottom: '2px'}}>
                 <span>Operations</span>
                 <span>{departmentStats.operations} cases</span>
               </div>
@@ -740,7 +740,7 @@ export function ManagerDashboard({ token }) {
               </div>
             </div>
             <div>
-              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#fff', marginBottom: '2px'}}>
+              <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-primary)', marginBottom: '2px'}}>
                 <span>Research & Development</span>
                 <span>{departmentStats.rd} cases</span>
               </div>

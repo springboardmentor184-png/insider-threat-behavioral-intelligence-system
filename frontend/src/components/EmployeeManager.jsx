@@ -280,7 +280,7 @@ export default function EmployeeManager({ token, currentUser, onSelectEmployee, 
               style={{
                 ...styles.employeeCard,
                 borderColor: selectedEmployeeId === emp.employee_id ? 'var(--accent-blue)' : 'var(--panel-border)',
-                background: selectedEmployeeId === emp.employee_id ? 'rgba(56, 139, 253, 0.08)' : 'rgba(7, 10, 19, 0.4)'
+                background: selectedEmployeeId === emp.employee_id ? 'rgba(56, 139, 253, 0.12)' : 'var(--bg-secondary)'
               }}
               onClick={() => onSelectEmployee(emp)}
             >
@@ -351,14 +351,14 @@ const styles = {
   panelTitle: {
     fontSize: '20px',
     fontWeight: '600',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   onboardToggleBtn: {
     padding: '8px 16px',
     fontSize: '13px',
   },
   onboardForm: {
-    background: 'rgba(7, 10, 19, 0.7)',
+    background: 'var(--bg-tertiary)',
     border: '1px solid var(--panel-border-hover)',
     borderRadius: '8px',
     padding: '20px',
@@ -386,7 +386,7 @@ const styles = {
   },
   searchInput: {
     width: '100%',
-    background: 'rgba(7, 10, 19, 0.4)',
+    background: 'var(--bg-primary)',
   },
   employeeList: {
     display: 'grid',
@@ -427,7 +427,7 @@ const styles = {
   empName: {
     fontSize: '15px',
     fontWeight: '600',
-    color: '#fff',
+    color: 'var(--text-primary)',
   },
   empIdText: {
     fontSize: '12px',

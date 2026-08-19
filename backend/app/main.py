@@ -9,7 +9,7 @@ from app.config import settings
 from app.database import engine, get_db, Base
 from app.models import User, EmployeeProfile, Device, Asset, AuditLog
 from app.schemas import (
-    UserCreate, UserResponse, Token, EmployeeCreate, EmployeeUpdate,
+    UserCreate, UserResponse, UserUpdate, Token, EmployeeCreate, EmployeeUpdate,
     EmployeeResponse, DeviceCreate, DeviceResponse, AssetCreate, AssetResponse,
     AuditLogResponse
 )
@@ -20,6 +20,19 @@ from app.auth import (
 
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
+
+# Database migration hook to add profile_photo column if missing
+from sqlalchemy import text
+from app.database import SessionLocal
+db_session = SessionLocal()
+try:
+    db_session.execute(text("ALTER TABLE users ADD COLUMN profile_photo VARCHAR;"))
+    db_session.commit()
+    print("[Migration] Added profile_photo column to users table.")
+except Exception as e:
+    db_session.rollback()
+finally:
+    db_session.close()
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -247,6 +260,47 @@ def get_google_client_id():
 
 @app.get("/api/auth/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+@app.put("/api/auth/profile", response_model=UserResponse)
+def update_profile(
+    body: UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Updates the authenticated user's profile details.
+    """
+    if body.email and body.email != current_user.email:
+        # Check if the new email is already registered by another account
+        existing_user = db.query(User).filter(User.email == body.email).first()
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email address already registered by another user.")
+        current_user.email = body.email
+
+    if body.full_name is not None:
+        current_user.full_name = body.full_name
+    if body.password:
+        current_user.hashed_password = get_password_hash(body.password)
+    if body.role is not None:
+        current_user.role = body.role
+    if body.profile_photo is not None:
+        current_user.profile_photo = body.profile_photo
+    if body.is_active is not None:
+        current_user.is_active = body.is_active
+
+    db.commit()
+    db.refresh(current_user)
+    
+    # Generate audit log entry
+    fields_updated = [k for k, v in body.model_dump().items() if v is not None]
+    create_audit_log(
+        db, 
+        current_user.email, 
+        f"PROFILE_UPDATE (Fields: {', '.join(fields_updated)})", 
+        "SUCCESS"
+    )
+    
     return current_user
 
 # ----------------- EMPLOYEE IDENTITY & PROFILE ROUTES -----------------
