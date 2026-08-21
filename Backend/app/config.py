@@ -49,3 +49,15 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(
         "30"
     )
 )
+
+
+# ==========================
+# Password Reset OTP
+# ==========================
+
+OTP_EXPIRE_MINUTES = int(
+    os.getenv(
+        "OTP_EXPIRE_MINUTES",
+        "5"
+    )
+)

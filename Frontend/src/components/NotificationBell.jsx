@@ -1,333 +1,482 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
-    getNotifications,
-    getUnreadNotificationCount,
-    markNotificationAsRead,
-    markAllNotificationsAsRead
+  getNotifications,
+  markNotificationAsRead
 } from "../services/notificationService";
 
 
 function NotificationBell() {
 
-    const [notifications, setNotifications] = useState([]);
-    const [unreadCount, setUnreadCount] = useState(0);
-    const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const [notifications, setNotifications] = useState([]);
+
+  const [showNotifications, setShowNotifications] = useState(false);
 
 
-    const loadNotifications = async () => {
+  // ==========================================
+  // Load Notifications
+  // ==========================================
 
-        try {
+  const loadNotifications = async () => {
 
-            const data =
-                await getNotifications();
+    try {
 
-            setNotifications(data);
+      const data = await getNotifications();
 
-            const count =
-                await getUnreadNotificationCount();
+      setNotifications(data || []);
 
-            setUnreadCount(
-                count.unread_count
-            );
+    } catch (error) {
 
-        } catch (error) {
+      console.error(
+        "Error loading notifications:",
+        error
+      );
 
-            console.error(
-                "Error loading notifications:",
-                error
-            );
+    }
 
-        }
-
-    };
+  };
 
 
-    useEffect(() => {
+  // ==========================================
+  // Initial Load
+  // ==========================================
 
-        loadNotifications();
+  useEffect(() => {
 
-        const interval =
-            setInterval(
-                loadNotifications,
-                30000
-            );
-
-        return () =>
-            clearInterval(interval);
-
-    }, []);
+    loadNotifications();
 
 
-    const handleRead = async (
-        notificationId
-    ) => {
+    const interval = setInterval(() => {
 
-        try {
+      loadNotifications();
 
-            await markNotificationAsRead(
-                notificationId
-            );
+    }, 30000);
 
-            await loadNotifications();
 
-        } catch (error) {
+    return () => {
 
-            console.error(
-                "Error marking notification:",
-                error
-            );
-
-        }
+      clearInterval(interval);
 
     };
 
-
-    const handleReadAll = async () => {
-
-        try {
-
-            await markAllNotificationsAsRead();
-
-            await loadNotifications();
-
-        } catch (error) {
-
-            console.error(
-                "Error marking notifications:",
-                error
-            );
-
-        }
-
-    };
+  }, []);
 
 
-    return (
+  // ==========================================
+  // Unread Count
+  // ==========================================
+
+  const unreadCount = notifications.filter(
+    (notification) =>
+      !notification.is_read
+  ).length;
+
+
+  // ==========================================
+  // Notification Redirect
+  // ==========================================
+
+  const handleNotificationClick = async (
+    notification
+  ) => {
+
+    try {
+
+      // Mark notification as read
+
+      if (!notification.is_read) {
+
+        await markNotificationAsRead(
+          notification.id
+        );
+
+      }
+
+
+      // Close dropdown
+
+      setShowNotifications(false);
+
+
+      // --------------------------------------
+      // Threat Alert
+      // --------------------------------------
+
+      if (
+        notification.notification_type ===
+          "Threat Alert" ||
+        notification.notification_type ===
+          "ThreatAlert" ||
+        notification.notification_type ===
+          "Alert"
+      ) {
+
+        navigate("/threatalerts");
+
+        return;
+
+      }
+
+
+      // --------------------------------------
+      // Investigation
+      // --------------------------------------
+
+      if (
+        notification.notification_type ===
+          "Investigation" ||
+        notification.notification_type ===
+          "Threat Investigation"
+      ) {
+
+        navigate("/investigation");
+
+        return;
+
+      }
+
+
+      // --------------------------------------
+      // AI Prediction
+      // --------------------------------------
+
+      if (
+        notification.notification_type ===
+          "AI Prediction" ||
+        notification.notification_type ===
+          "Prediction"
+      ) {
+
+        navigate("/prediction");
+
+        return;
+
+      }
+
+
+      // --------------------------------------
+      // Employee Notification
+      // --------------------------------------
+
+      if (
+        notification.notification_type ===
+          "Employee"
+      ) {
+
+        navigate("/employees");
+
+        return;
+
+      }
+
+
+      // --------------------------------------
+      // Default
+      // --------------------------------------
+
+      navigate("/dashboard");
+
+    } catch (error) {
+
+      console.error(
+        "Error opening notification:",
+        error
+      );
+
+    }
+
+  };
+
+
+  // ==========================================
+  // Toggle Notification Panel
+  // ==========================================
+
+  const toggleNotifications = () => {
+
+    setShowNotifications(
+      (previous) => !previous
+    );
+
+  };
+
+
+  return (
+
+    <div
+      className="notification-wrapper"
+      style={{
+        position: "relative"
+      }}
+    >
+
+
+      {/* ======================================
+          Notification Bell
+      ====================================== */}
+
+      <button
+        type="button"
+        className="notification-button"
+        onClick={toggleNotifications}
+        title="Notifications"
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+          position: "relative"
+        }}
+      >
+
+        <i className="bi bi-bell-fill"></i>
+
+
+        {/* Unread Count */}
+
+        {unreadCount > 0 && (
+
+          <span
+            className="notification-count"
+            style={{
+              position: "absolute",
+              top: "-6px",
+              right: "-8px",
+              background: "#dc3545",
+              color: "#fff",
+              borderRadius: "50%",
+              minWidth: "18px",
+              height: "18px",
+              fontSize: "11px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "600"
+            }}
+          >
+
+            {unreadCount > 99
+              ? "99+"
+              : unreadCount}
+
+          </span>
+
+        )}
+
+      </button>
+
+
+      {/* ======================================
+          Notification Dropdown
+      ====================================== */}
+
+      {showNotifications && (
 
         <div
-            className="position-relative"
+          className="notification-dropdown"
+          style={{
+            position: "absolute",
+            top: "40px",
+            right: "0",
+            width: "360px",
+            background: "#fff",
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            boxShadow:
+              "0 8px 25px rgba(0,0,0,0.15)",
+            zIndex: 9999
+          }}
         >
 
-            <button
-                className="btn btn-light position-relative"
-                onClick={() =>
-                    setOpen(!open)
-                }
+
+          {/* Header */}
+
+          <div
+            className="notification-header"
+            style={{
+              padding: "12px 15px",
+              borderBottom:
+                "1px solid #eee",
+              display: "flex",
+              justifyContent:
+                "space-between",
+              alignItems: "center"
+            }}
+          >
+
+            <strong>
+              Notifications
+            </strong>
+
+
+            <span
+              className="text-muted"
+              style={{
+                fontSize: "12px"
+              }}
             >
 
-                <i className="bi bi-bell-fill fs-5"></i>
+              {unreadCount} unread
 
-                {unreadCount > 0 && (
+            </span>
 
-                    <span
-                        className="
-                            position-absolute
-                            top-0
-                            start-100
-                            translate-middle
-                            badge
-                            rounded-pill
-                            bg-danger
-                        "
-                    >
-
-                        {unreadCount}
-
-                    </span>
-
-                )}
-
-            </button>
+          </div>
 
 
-            {open && (
+          {/* Notification List */}
 
-                <div
-                    className="
-                        card
-                        shadow
-                        position-absolute
-                        end-0
-                        mt-2
-                    "
+          {notifications.length === 0 ? (
+
+            <div
+              className="text-center text-muted"
+              style={{
+                padding: "25px"
+              }}
+            >
+
+              No notifications
+
+            </div>
+
+          ) : (
+
+            <div
+              style={{
+                maxHeight: "400px",
+                overflowY: "auto"
+              }}
+            >
+
+              {notifications.map(
+                (notification) => (
+
+                  <div
+                    key={notification.id}
+                    onClick={() =>
+                      handleNotificationClick(
+                        notification
+                      )
+                    }
                     style={{
-                        width: "380px",
-                        zIndex: 1050
+                      padding: "14px 15px",
+                      borderBottom:
+                        "1px solid #eee",
+                      cursor: "pointer",
+                      backgroundColor:
+                        notification.is_read
+                          ? "#fff"
+                          : "#f5f8ff"
                     }}
-                >
+                  >
+
 
                     <div
-                        className="
-                            card-header
-                            d-flex
-                            justify-content-between
-                            align-items-center
-                        "
+                      style={{
+                        display: "flex",
+                        justifyContent:
+                          "space-between",
+                        alignItems: "center"
+                      }}
                     >
 
-                        <strong>
-                            Notifications
-                        </strong>
-
-                        {unreadCount > 0 && (
-
-                            <button
-                                className="
-                                    btn
-                                    btn-sm
-                                    btn-link
-                                "
-                                onClick={
-                                    handleReadAll
-                                }
-                            >
-                                Mark all as read
-                            </button>
-
-                        )}
-
-                    </div>
-
-
-                    <div
-                        className="card-body p-0"
+                      <strong
                         style={{
-                            maxHeight: "400px",
-                            overflowY: "auto"
+                          fontSize: "14px"
                         }}
-                    >
+                      >
 
-                        {notifications.length === 0 ? (
+                        {notification.title}
 
-                            <div
-                                className="
-                                    text-center
-                                    text-muted
-                                    py-4
-                                "
-                            >
+                      </strong>
 
-                                <i
-                                    className="
-                                        bi
-                                        bi-bell-slash
-                                        fs-3
-                                    "
-                                ></i>
 
-                                <p className="mb-0 mt-2">
-                                    No notifications
-                                </p>
+                      <span
+                        className={
+                          notification.severity ===
+                          "Critical"
+                            ? "badge bg-dark"
+                            : notification.severity ===
+                              "High"
+                            ? "badge bg-danger"
+                            : notification.severity ===
+                              "Medium"
+                            ? "badge bg-warning text-dark"
+                            : "badge bg-secondary"
+                        }
+                      >
 
-                            </div>
+                        {notification.severity}
 
-                        ) : (
-
-                            notifications.map(
-                                (notification) => (
-
-                                    <div
-                                        key={
-                                            notification.id
-                                        }
-                                        className={`
-                                            p-3
-                                            border-bottom
-                                            ${
-                                                !notification.is_read
-                                                    ? "bg-light"
-                                                    : ""
-                                            }
-                                        `}
-                                        onClick={() =>
-                                            handleRead(
-                                                notification.id
-                                            )
-                                        }
-                                        style={{
-                                            cursor:
-                                                "pointer"
-                                        }}
-                                    >
-
-                                        <div
-                                            className="
-                                                d-flex
-                                                justify-content-between
-                                            "
-                                        >
-
-                                            <strong>
-                                                {
-                                                    notification.title
-                                                }
-                                            </strong>
-
-                                            <span
-                                                className={`
-                                                    badge
-                                                    ${
-                                                        notification.severity ===
-                                                        "Critical"
-                                                            ? "bg-dark"
-                                                            : notification.severity ===
-                                                              "High"
-                                                            ? "bg-danger"
-                                                            : "bg-warning text-dark"
-                                                    }
-                                                `}
-                                            >
-
-                                                {
-                                                    notification.severity
-                                                }
-
-                                            </span>
-
-                                        </div>
-
-                                        <p
-                                            className="
-                                                mb-1
-                                                small
-                                                text-muted
-                                            "
-                                        >
-                                            {
-                                                notification.message
-                                            }
-                                        </p>
-
-                                        <small
-                                            className="
-                                                text-secondary
-                                            "
-                                        >
-                                            {
-                                                new Date(
-                                                    notification.created_at
-                                                ).toLocaleString()
-                                            }
-                                        </small>
-
-                                    </div>
-
-                                )
-                            )
-
-                        )}
+                      </span>
 
                     </div>
 
-                </div>
 
-            )}
+                    <p
+                      className="mb-1 mt-2"
+                      style={{
+                        fontSize: "13px",
+                        color: "#555"
+                      }}
+                    >
+
+                      {notification.message}
+
+                    </p>
+
+
+                    {notification.employee_id && (
+
+                      <small
+                        className="text-primary"
+                      >
+
+                        Employee ID:{" "}
+                        {notification.employee_id}
+
+                        {" • Click to view"}
+
+                      </small>
+
+                    )}
+
+
+                    <div>
+
+                      <small
+                        className="text-muted"
+                      >
+
+                        {notification.created_at
+                          ? new Date(
+                              notification.created_at
+                            ).toLocaleString()
+                          : ""}
+
+                      </small>
+
+                    </div>
+
+                  </div>
+
+                )
+              )}
+
+            </div>
+
+          )}
 
         </div>
 
-    );
+      )}
+
+    </div>
+
+  );
 
 }
+
 
 export default NotificationBell;

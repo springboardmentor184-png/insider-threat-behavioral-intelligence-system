@@ -6,7 +6,8 @@ from app.database import get_db
 
 from app.models import (
     Employee,
-    BehaviorBaseline
+    BehaviorBaseline,
+    User
 )
 
 from app.schemas import (
@@ -31,9 +32,13 @@ from app.services.alert_management_service import (
 from app.services.email_service import (
     send_threat_alert_email
 )
+
 from app.services.notification_service import (
     create_notification
 )
+
+from app.security import require_role
+
 
 router = APIRouter(
     prefix="/ai",
@@ -43,6 +48,7 @@ router = APIRouter(
 
 # =====================================================
 # AI Prediction
+# Administrator + Security Analyst
 # =====================================================
 
 @router.post(
@@ -51,7 +57,13 @@ router = APIRouter(
 )
 def predict(
     data: AIPredictRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_role(
+            "Administrator",
+            "Security Analyst"
+        )
+    )
 ):
 
     # ---------------------------------
@@ -61,6 +73,14 @@ def predict(
     prediction = predict_behavior(
         data.model_dump()
     )
+
+    # ---------------------------------
+    # Default values
+    # ---------------------------------
+
+    alert = None
+    alert_created = False
+    investigation = None
 
     # ---------------------------------
     # Automatic Alert & Investigation
@@ -109,71 +129,72 @@ def predict(
             )
 
             # ---------------------------------
-            # Send Email Only for New Alert
+            # Create Notification + Send Email
+            # Only for New Alert
             # ---------------------------------
 
-    if alert_created:
+            if alert_created:
 
-        # ---------------------------------
-        # Create In-App Notification
-        # ---------------------------------
+                # ---------------------------------
+                # Create In-App Notification
+                # ---------------------------------
 
-        create_notification(
-            db=db,
-            employee_id=employee.id,
-            notification_type="Threat Alert",
-            title=(
-                f"{prediction['risk_level']} "
-                "Risk Threat Detected"
-            ),
-            message=(
-                f"{employee.full_name} "
-                f"({employee.employee_id}) "
-                f"has been classified as "
-                f"{prediction['risk_level']} Risk "
-                f"with a risk score of "
-                f"{prediction['risk_score']}."
-            ),
-            severity=prediction["risk_level"]
-        )
+                create_notification(
+                    db=db,
+                    employee_id=employee.id,
+                    notification_type="Threat Alert",
+                    title=(
+                        f"{prediction['risk_level']} "
+                        "Risk Threat Detected"
+                    ),
+                    message=(
+                        f"{employee.full_name} "
+                        f"({employee.employee_id}) "
+                        f"has been classified as "
+                        f"{prediction['risk_level']} Risk "
+                        f"with a risk score of "
+                        f"{prediction['risk_score']}."
+                    ),
+                    severity=prediction["risk_level"]
+                )
 
-        # ---------------------------------
-        # Send Gmail Security Alert
-        # ---------------------------------
+                # ---------------------------------
+                # Send Gmail Security Alert
+                # ---------------------------------
 
-        send_threat_alert_email(
-            employee=employee,
-            prediction=prediction,
-            alert_id=(
-                alert.id
-                if alert
-                else None
-            ),
-            investigation_id=(
-                investigation.id
-                if investigation
-                else None
-            )
-        )
+                send_threat_alert_email(
+                    employee=employee,
+                    prediction=prediction,
+                    alert_id=(
+                        alert.id
+                        if alert
+                        else None
+                    ),
+                    investigation_id=(
+                        investigation.id
+                        if investigation
+                        else None
+                    )
+                )
 
-    else:
+            else:
 
-        print(
-            "🔔 Notification skipped - "
-            "active alert already exists."
-        )
+                print(
+                    "🔔 Notification skipped - "
+                    "active alert already exists."
+                )
 
-        print(
-            "📧 Email skipped - "
-            "active alert already exists."
-        )
-            
+                print(
+                    "📧 Email skipped - "
+                    "active alert already exists."
+                )
 
     return prediction
 
 
 # =====================================================
 # Download AI Report
+# Administrator + Security Analyst
 # =====================================================
 
 @router.get(
@@ -181,7 +202,13 @@ def predict(
 )
 def download_report(
     employee_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_role(
+            "Administrator",
+            "Security Analyst"
+        )
+    )
 ):
 
     # ---------------------------------

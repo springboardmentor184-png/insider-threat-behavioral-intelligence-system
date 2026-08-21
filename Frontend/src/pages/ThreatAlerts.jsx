@@ -2,35 +2,53 @@ import { useEffect, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+
 import { toast } from "react-toastify";
+
 import {
-
-    getAlertDashboard,
-
-    assignAlert,
-
-    escalateAlert,
-
-    resolveAlert
-
+  getAlertDashboard,
+  assignAlert,
+  escalateAlert,
+  resolveAlert
 } from "../services/alertManagementService";
 
+import { getCurrentUser } from "../services/authService";
+
 import "../styles/dashboard.css";
+
 
 function ThreatAlerts() {
 
   const [alerts, setAlerts] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
+  const [user, setUser] = useState(null);
+
+
+  // =====================================================
+  // Load Data
+  // =====================================================
+
   useEffect(() => {
+
     loadAlerts();
+
+    loadUser();
+
   }, []);
+
+
+  // =====================================================
+  // Load Alerts
+  // =====================================================
 
   const loadAlerts = async () => {
 
     try {
 
-      const data = await getAlertDashboard();
+      const data =
+        await getAlertDashboard();
 
       setAlerts(data);
 
@@ -46,117 +64,191 @@ function ThreatAlerts() {
 
   };
 
+
+  // =====================================================
+  // Load Current User
+  // =====================================================
+
+  const loadUser = async () => {
+
+    try {
+
+      const response =
+        await getCurrentUser();
+
+      setUser(response.data);
+
+    } catch (error) {
+
+      console.error(
+        "Failed to load current user:",
+        error
+      );
+
+    }
+
+  };
+
+
+  // =====================================================
+  // Role
+  // =====================================================
+
+  const isAdministrator =
+    user?.role === "Administrator";
+
+
+  // =====================================================
+  // Assign Alert
+  // Administrator Only
+  // =====================================================
+
   const handleAssign = async (alertId) => {
 
-  const analyst = prompt("Enter Analyst Name");
+    const analyst =
+      prompt("Enter Analyst Name");
 
-  if (!analyst) return;
+    if (!analyst) return;
 
-  try {
+    try {
 
-    await assignAlert(
-      alertId,
-      analyst
-    );
+      await assignAlert(
+        alertId,
+        analyst
+      );
 
-    toast.success(
-      "Analyst Assigned Successfully"
-    );
+      toast.success(
+        "Analyst Assigned Successfully"
+      );
 
-    loadAlerts();
+      loadAlerts();
 
-  } catch (error) {
+    } catch (error) {
 
-    console.error(error);
+      console.error(error);
 
-    toast.error(
-      "Assignment Failed"
-    );
+      toast.error(
+        "Assignment Failed"
+      );
 
-  }
+    }
 
-};
+  };
 
-const handleEscalate = async (alertId) => {
 
-  try {
+  // =====================================================
+  // Escalate Alert
+  // Administrator Only
+  // =====================================================
 
-    await escalateAlert(alertId);
+  const handleEscalate = async (alertId) => {
 
-    toast.success(
-      "Alert Escalated Successfully"
-    );
+    try {
 
-    loadAlerts();
+      await escalateAlert(alertId);
 
-  } catch (error) {
+      toast.success(
+        "Alert Escalated Successfully"
+      );
 
-    console.error(error);
+      loadAlerts();
 
-    toast.error(
-      "Escalation Failed"
-    );
+    } catch (error) {
 
-  }
+      console.error(error);
 
-};
+      toast.error(
+        "Escalation Failed"
+      );
 
-const handleResolve = async (alertId) => {
+    }
 
-  const notes = prompt(
-    "Enter Resolution Notes"
-  );
+  };
 
-  if (!notes) return;
 
-  try {
+  // =====================================================
+  // Resolve Alert
+  // Administrator Only
+  // =====================================================
 
-    await resolveAlert(
-      alertId,
-      notes
-    );
+  const handleResolve = async (alertId) => {
 
-    toast.success(
-      "Alert Resolved Successfully"
-    );
+    const notes =
+      prompt(
+        "Enter Resolution Notes"
+      );
 
-    loadAlerts();
+    if (!notes) return;
 
-  } catch (error) {
+    try {
 
-    console.error(error);
+      await resolveAlert(
+        alertId,
+        notes
+      );
 
-    toast.error(
-      "Resolution Failed"
-    );
+      toast.success(
+        "Alert Resolved Successfully"
+      );
 
-  }
+      loadAlerts();
 
-};
+    } catch (error) {
 
-  const totalAlerts = alerts.length;
+      console.error(error);
+
+      toast.error(
+        "Resolution Failed"
+      );
+
+    }
+
+  };
+
+
+  // =====================================================
+  // KPI Calculations
+  // =====================================================
+
+  const totalAlerts =
+    alerts.length;
+
 
   const criticalAlerts =
     alerts.filter(
-      (a) => a.severity === "Critical"
+      (a) =>
+        a.severity === "Critical"
     ).length;
+
 
   const highAlerts =
     alerts.filter(
-      (a) => a.severity === "High"
+      (a) =>
+        a.severity === "High"
     ).length;
+
 
   const openAlerts =
     alerts.filter(
-      (a) => a.status === "Open"
+      (a) =>
+        a.status === "Open"
     ).length;
+
 
   const resolvedAlerts =
     alerts.filter(
-      (a) => a.status === "Resolved"
+      (a) =>
+        a.status === "Resolved"
     ).length;
 
-  const severityBadge = (severity) => {
+
+  // =====================================================
+  // Severity Badge
+  // =====================================================
+
+  const severityBadge = (
+    severity
+  ) => {
 
     switch (severity) {
 
@@ -183,11 +275,18 @@ const handleResolve = async (alertId) => {
 
       <Sidebar />
 
+
       <div className="main-content">
 
         <Navbar />
 
+
         <div className="dashboard-body">
+
+
+          {/* =================================================
+              Header
+          ================================================= */}
 
           <div className="mb-4">
 
@@ -205,9 +304,13 @@ const handleResolve = async (alertId) => {
 
           </div>
 
-          {/* KPI Cards */}
+
+          {/* =================================================
+              KPI Cards
+          ================================================= */}
 
           <div className="row mb-4">
+
 
             <div className="col-md-2">
 
@@ -215,15 +318,20 @@ const handleResolve = async (alertId) => {
 
                 <div className="card-body">
 
-                  <h3>{totalAlerts}</h3>
+                  <h3>
+                    {totalAlerts}
+                  </h3>
 
-                  <small>Total Alerts</small>
+                  <small>
+                    Total Alerts
+                  </small>
 
                 </div>
 
               </div>
 
             </div>
+
 
             <div className="col-md-2">
 
@@ -237,13 +345,16 @@ const handleResolve = async (alertId) => {
 
                   </h3>
 
-                  <small>Critical</small>
+                  <small>
+                    Critical
+                  </small>
 
                 </div>
 
               </div>
 
             </div>
+
 
             <div className="col-md-2">
 
@@ -257,13 +368,16 @@ const handleResolve = async (alertId) => {
 
                   </h3>
 
-                  <small>High</small>
+                  <small>
+                    High
+                  </small>
 
                 </div>
 
               </div>
 
             </div>
+
 
             <div className="col-md-2">
 
@@ -277,13 +391,16 @@ const handleResolve = async (alertId) => {
 
                   </h3>
 
-                  <small>Open</small>
+                  <small>
+                    Open
+                  </small>
 
                 </div>
 
               </div>
 
             </div>
+
 
             <div className="col-md-2">
 
@@ -297,7 +414,9 @@ const handleResolve = async (alertId) => {
 
                   </h3>
 
-                  <small>Resolved</small>
+                  <small>
+                    Resolved
+                  </small>
 
                 </div>
 
@@ -307,7 +426,10 @@ const handleResolve = async (alertId) => {
 
           </div>
 
-          {/* Alert Table */}
+
+          {/* =================================================
+              Alert Table
+          ================================================= */}
 
           <div className="card shadow">
 
@@ -318,6 +440,7 @@ const handleResolve = async (alertId) => {
                 Recent Threat Alerts
 
               </h4>
+
 
               {loading ? (
 
@@ -348,134 +471,195 @@ const handleResolve = async (alertId) => {
 
                       <tr>
 
-                        <th>Severity</th>
+                        <th>
+                          Severity
+                        </th>
 
-                        <th>Employee</th>
+                        <th>
+                          Employee
+                        </th>
 
-                        <th>Department</th>
+                        <th>
+                          Department
+                        </th>
 
-                        <th>Status</th>
+                        <th>
+                          Status
+                        </th>
 
-                        <th>Escalation</th>
+                        <th>
+                          Escalation
+                        </th>
 
-                        <th>Analyst</th>
+                        <th>
+                          Analyst
+                        </th>
 
-                        <th>Created</th>
+                        <th>
+                          Created
+                        </th>
 
-                        <th>Actions</th>
+                        <th>
+                          Actions
+                        </th>
 
                       </tr>
 
                     </thead>
 
+
                     <tbody>
 
-                      {alerts.map((alert) => (
+                      {alerts.map(
+                        (alert) => (
 
-                        <tr key={alert.id}>
-
-                          <td>
-
-                            <span
-                              className={severityBadge(
-                                alert.severity
-                              )}
-                            >
-                              {alert.severity}
-                            </span>
-
-                          </td>
-
-                          <td>
-
-                            <strong>
-
-                              {alert.employee_code}
-
-                            </strong>
-
-                            <br />
-
-                            <small>
-
-                              {alert.full_name}
-
-                            </small>
-
-                          </td>
-
-                          <td>
-
-                            {alert.department}
-
-                          </td>
-
-                          <td>
-
-                            {alert.status}
-
-                          </td>
-
-                          <td>
-
-                            Level {alert.escalation_level}
-
-                          </td>
-
-                          <td>
-
-                            {alert.assigned_analyst}
-
-                          </td>
-
-                          <td>
-
-                            {new Date(
-                              alert.created_at
-                            ).toLocaleDateString()}
-
-                          </td>
-
-                          <td>
-
-                            <button
-                              className="btn btn-primary btn-sm me-2"
-                              onClick={() =>
-                                handleAssign(alert.id)
-                              }
-                            >
-
-                              Assign
-
-                            </button>
-
-                            <button
-                              className="btn btn-warning btn-sm me-2"
-                              onClick={() =>
-                                handleEscalate(alert.id)
-                              }
-                            >
-
-                              Escalate
-
-                            </button>
-
-                            <button
-                            className="btn btn-success btn-sm"
-                            onClick={() =>
-                              handleResolve(alert.id)
+                          <tr
+                            key={
+                              alert.id
                             }
                           >
 
-                            Resolve
+                            <td>
 
-                          </button>
+                              <span
+                                className={severityBadge(
+                                  alert.severity
+                                )}
+                              >
+                                {
+                                  alert.severity
+                                }
+                              </span>
 
-                          </td>
+                            </td>
 
-                        </tr>
 
-                      ))}
+                            <td>
+
+                              <strong>
+                                {
+                                  alert.employee_code
+                                }
+                              </strong>
+
+                              <br />
+
+                              <small>
+                                {
+                                  alert.full_name
+                                }
+                              </small>
+
+                            </td>
+
+
+                            <td>
+                              {
+                                alert.department
+                              }
+                            </td>
+
+
+                            <td>
+                              {
+                                alert.status
+                              }
+                            </td>
+
+
+                            <td>
+
+                              Level{" "}
+                              {
+                                alert.escalation_level
+                              }
+
+                            </td>
+
+
+                            <td>
+                              {
+                                alert.assigned_analyst
+                              }
+                            </td>
+
+
+                            <td>
+
+                              {new Date(
+                                alert.created_at
+                              ).toLocaleDateString()}
+
+                            </td>
+
+
+                            <td>
+
+
+                              {isAdministrator ? (
+
+                                <>
+
+                                  <button
+                                    className="btn btn-primary btn-sm me-2"
+                                    onClick={() =>
+                                      handleAssign(
+                                        alert.id
+                                      )
+                                    }
+                                  >
+
+                                    Assign
+
+                                  </button>
+
+
+                                  <button
+                                    className="btn btn-warning btn-sm me-2"
+                                    onClick={() =>
+                                      handleEscalate(
+                                        alert.id
+                                      )
+                                    }
+                                  >
+
+                                    Escalate
+
+                                  </button>
+
+
+                                  <button
+                                    className="btn btn-success btn-sm"
+                                    onClick={() =>
+                                      handleResolve(
+                                        alert.id
+                                      )
+                                    }
+                                  >
+
+                                    Resolve
+
+                                  </button>
+
+                                </>
+
+                              ) : (
+
+                                <span className="text-muted">
+
+                                  View Only
+
+                                </span>
+
+                              )}
+
+
+                            </td>
+
+                          </tr>
+
+                        )
+                      )}
 
                     </tbody>
 
@@ -498,5 +682,6 @@ const handleResolve = async (alertId) => {
   );
 
 }
+
 
 export default ThreatAlerts;

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import { loginUser } from "../services/authService";
+
 import "../styles/auth.css";
 
 function Login() {
@@ -13,9 +16,19 @@ function Login() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
+  // ==========================
+  // Toggle Password
+  // ==========================
+
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
+
+  // ==========================
+  // Handle Input Change
+  // ==========================
 
   const handleChange = (e) => {
     setFormData({
@@ -24,33 +37,94 @@ function Login() {
     });
   };
 
+  // ==========================
+  // Login
+  // ==========================
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    const email = formData.email.trim();
+    const password = formData.password;
+
+    // ==========================
+    // Frontend Validation
+    // ==========================
+
+    if (!email) {
+      toast.error("Please enter your email address.");
+      return;
+    }
+
+    if (!password) {
+      toast.error("Please enter your password.");
+      return;
+    }
+
+    // Basic email validation
+    const emailPattern =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     try {
-      const response = await loginUser(formData);
+      setLoading(true);
+
+      const response = await loginUser({
+        email,
+        password,
+      });
+
+      // ==========================
+      // Store JWT
+      // ==========================
 
       localStorage.setItem(
         "access_token",
         response.data.access_token
       );
 
-      alert("Login Successful!");
+      // ==========================
+      // Success Notification
+      // ==========================
+
+      toast.success("Login successful!");
+
+      // ==========================
+      // Redirect
+      // ==========================
 
       navigate("/dashboard");
+
     } catch (error) {
-      alert(
-        error.response?.data?.detail ||
-          "Invalid email or password"
-      );
+      console.error("Login Error:", error);
+
+      const detail = error.response?.data?.detail;
+
+      if (typeof detail === "string") {
+        toast.error(detail);
+      } else {
+        toast.error(
+          "Invalid email or password."
+        );
+      }
+
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="container-fluid login-page">
+
       <div className="row min-vh-100">
 
-        {/* Left Section */}
+        {/* ======================================
+            Left Section
+        ====================================== */}
 
         <div className="col-lg-6 left-panel d-none d-lg-flex">
 
@@ -103,15 +177,20 @@ function Login() {
 
         </div>
 
-        {/* Right Section */}
+        {/* ======================================
+            Right Section
+        ====================================== */}
 
         <div className="col-lg-6 d-flex justify-content-center align-items-center">
 
           <div className="login-card shadow-lg">
 
             <span className="badge bg-primary mb-3 px-3 py-2">
+
               <i className="bi bi-shield-check me-2"></i>
+
               Enterprise Security Portal
+
             </span>
 
             <h2 className="mb-2 fw-bold">
@@ -124,7 +203,9 @@ function Login() {
 
             <form onSubmit={handleLogin}>
 
-              {/* Email */}
+              {/* ======================================
+                  Email
+              ====================================== */}
 
               <div className="mb-3">
 
@@ -145,6 +226,7 @@ function Login() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    autoComplete="email"
                     required
                   />
 
@@ -152,7 +234,9 @@ function Login() {
 
               </div>
 
-              {/* Password */}
+              {/* ======================================
+                  Password
+              ====================================== */}
 
               <div className="mb-3">
 
@@ -167,12 +251,17 @@ function Login() {
                   </span>
 
                   <input
-                    type={showPassword ? "text" : "password"}
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
                     className="form-control"
                     placeholder="Enter your password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
+                    autoComplete="current-password"
                     required
                   />
 
@@ -180,7 +269,13 @@ function Login() {
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={togglePassword}
+                    aria-label={
+                      showPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
                   >
+
                     <i
                       className={
                         showPassword
@@ -188,13 +283,16 @@ function Login() {
                           : "bi bi-eye-fill"
                       }
                     ></i>
+
                   </button>
 
                 </div>
 
               </div>
 
-              {/* Remember Me */}
+              {/* ======================================
+                  Remember Me
+              ====================================== */}
 
               <div className="d-flex justify-content-between align-items-center mb-4">
 
@@ -215,19 +313,36 @@ function Login() {
 
                 </div>
 
-                <a href="#" className="forgot-link">
-                  Forgot Password?
-                </a>
+                <Link
+                      to="/forgot-password"
+                      className="forgot-link"
+                    >
+                      Forgot Password?
+                </Link>
 
               </div>
+
+              {/* ======================================
+                  Login Button
+              ====================================== */}
 
               <button
                 type="submit"
                 className="btn btn-primary login-btn w-100"
+                disabled={loading}
               >
+
                 <i className="bi bi-box-arrow-in-right me-2"></i>
-                Sign In Securely
+
+                {loading
+                  ? "Signing In..."
+                  : "Sign In Securely"}
+
               </button>
+
+              {/* ======================================
+                  Register Link
+              ====================================== */}
 
               <div className="text-center mt-4">
 
@@ -253,6 +368,7 @@ function Login() {
         </div>
 
       </div>
+
     </div>
   );
 }

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -26,6 +27,9 @@ from app.services.investigation_service import (
     get_event_correlation,
     update_investigation_workflow,
     update_status
+)
+from app.utils.investigation_report_generator import (
+    generate_investigation_report
 )
 
 router = APIRouter(
@@ -276,3 +280,130 @@ def workflow(
         )
 
     return result
+
+# =====================================================
+# Investigation PDF Report
+# =====================================================
+
+@router.get(
+    "/{investigation_id}/report"
+)
+def download_investigation_report(
+    investigation_id: int,
+    db: Session = Depends(get_db)
+):
+
+    # ---------------------------------
+    # Investigation Details
+    # ---------------------------------
+
+    investigation = get_investigation_details(
+        db,
+        investigation_id
+    )
+
+    if not investigation:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Investigation not found"
+        )
+
+    # ---------------------------------
+    # Timeline
+    # ---------------------------------
+
+    timeline = get_activity_timeline(
+        db,
+        investigation_id
+    )
+
+    # ---------------------------------
+    # Evidence
+    # ---------------------------------
+
+    evidence = get_threat_evidence(
+        db,
+        investigation_id
+    )
+
+    # ---------------------------------
+    # Device Analysis
+    # ---------------------------------
+
+    device_analysis = get_device_analysis(
+        db,
+        investigation_id
+    )
+
+    # ---------------------------------
+    # Risk History
+    # ---------------------------------
+
+    risk_history = get_user_risk_history(
+        db,
+        investigation_id
+    )
+
+    # ---------------------------------
+    # Event Correlation
+    # ---------------------------------
+
+    correlation = get_event_correlation(
+        db,
+        investigation_id
+    )
+
+    # ---------------------------------
+    # Validate Required Data
+    # ---------------------------------
+
+    if not evidence:
+        raise HTTPException(
+            status_code=404,
+            detail="Investigation evidence not found"
+        )
+
+    if not device_analysis:
+        raise HTTPException(
+            status_code=404,
+            detail="Device analysis not found"
+        )
+
+    if not risk_history:
+        raise HTTPException(
+            status_code=404,
+            detail="Risk history not found"
+        )
+
+    if not correlation:
+        raise HTTPException(
+            status_code=404,
+            detail="Event correlation not found"
+        )
+
+    # ---------------------------------
+    # Generate PDF
+    # ---------------------------------
+
+    pdf_path = generate_investigation_report(
+        investigation=investigation,
+        timeline=timeline,
+        evidence=evidence,
+        device_analysis=device_analysis,
+        risk_history=risk_history,
+        correlation=correlation
+    )
+
+    # ---------------------------------
+    # Return PDF
+    # ---------------------------------
+
+    return FileResponse(
+        path=pdf_path,
+        filename=(
+            f"{investigation['employee_code']}"
+            f"_Investigation_Report.pdf"
+        ),
+        media_type="application/pdf"
+    )

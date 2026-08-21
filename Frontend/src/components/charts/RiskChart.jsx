@@ -7,25 +7,72 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+
+// =====================================================
+// Risk Chart Colors
+// =====================================================
+
 const COLORS = [
-  "#22C55E",
-  "#F59E0B",
-  "#EF4444",
+  "#22C55E", // Low
+  "#F59E0B", // Medium
+  "#EF4444", // High
+  "#111827", // Critical
 ];
+
+
+// =====================================================
+// Risk Distribution Chart
+// =====================================================
 
 function RiskChart({ employees }) {
 
+  // -----------------------------------------------------
+  // Low Risk: 0 - 39
+  // -----------------------------------------------------
+
   const low = employees.filter(
-    (emp) => emp.risk_score <= 20
+    (emp) =>
+      Number(emp.risk_score || 0) >= 0 &&
+      Number(emp.risk_score || 0) <= 39
   ).length;
+
+
+  // -----------------------------------------------------
+  // Medium Risk: 40 - 69
+  // -----------------------------------------------------
 
   const medium = employees.filter(
-    (emp) => emp.risk_score > 20 && emp.risk_score <= 60
+    (emp) =>
+      Number(emp.risk_score || 0) >= 40 &&
+      Number(emp.risk_score || 0) <= 69
   ).length;
 
+
+  // -----------------------------------------------------
+  // High Risk: 70 - 89
+  // -----------------------------------------------------
+
   const high = employees.filter(
-    (emp) => emp.risk_score > 60
+    (emp) =>
+      Number(emp.risk_score || 0) >= 70 &&
+      Number(emp.risk_score || 0) <= 89
   ).length;
+
+
+  // -----------------------------------------------------
+  // Critical Risk: 90 - 100
+  // -----------------------------------------------------
+
+  const critical = employees.filter(
+    (emp) =>
+      Number(emp.risk_score || 0) >= 90 &&
+      Number(emp.risk_score || 0) <= 100
+  ).length;
+
+
+  // =====================================================
+  // Chart Data
+  // =====================================================
 
   const data = [
     {
@@ -40,14 +87,28 @@ function RiskChart({ employees }) {
       name: "High Risk",
       value: high,
     },
+    {
+      name: "Critical Risk",
+      value: critical,
+    },
   ];
+
+
+  // =====================================================
+  // Render
+  // =====================================================
 
   return (
     <div className="chart-card">
 
-      <h4>Risk Distribution</h4>
+      <h4>
+        Risk Distribution
+      </h4>
 
-      <ResponsiveContainer width="100%" height={320}>
+      <ResponsiveContainer
+        width="100%"
+        height={320}
+      >
 
         <PieChart>
 
@@ -62,10 +123,12 @@ function RiskChart({ employees }) {
           >
 
             {data.map((entry, index) => (
+
               <Cell
-                key={index}
+                key={`risk-cell-${index}`}
                 fill={COLORS[index]}
               />
+
             ))}
 
           </Pie>
@@ -81,5 +144,6 @@ function RiskChart({ employees }) {
     </div>
   );
 }
+
 
 export default RiskChart;

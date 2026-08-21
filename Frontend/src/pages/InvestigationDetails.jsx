@@ -11,7 +11,8 @@ import {
     getDeviceAnalysis,
     getRiskHistory,
     getEventCorrelation,
-    updateWorkflow
+    updateWorkflow,
+    downloadInvestigationReport
 } from "../services/investigationService";
 
 import "../styles/dashboard.css";
@@ -129,6 +130,51 @@ function InvestigationDetails() {
         );
 
     }
+
+    const handleGenerateReport = async () => {
+
+    try {
+
+        const pdfBlob =
+            await downloadInvestigationReport(id);
+
+        const url = window.URL.createObjectURL(
+            new Blob(
+                [pdfBlob],
+                {
+                    type: "application/pdf"
+                }
+            )
+        );
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            `${investigation.employee_code}_Investigation_Report.pdf`;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+
+        console.error(
+            "Failed to generate investigation report:",
+            error
+        );
+
+        alert(
+            "Failed to generate investigation report."
+        );
+    }
+};
 
     return (
 
@@ -1061,6 +1107,21 @@ function InvestigationDetails() {
             </button>
 
         </div>
+
+        <div className="text-end mt-3">
+
+    <button
+        className="btn btn-danger"
+        onClick={handleGenerateReport}
+    >
+
+        <i className="bi bi-file-earmark-pdf-fill me-2"></i>
+
+        Generate Investigation Report
+
+    </button>
+
+</div>
 
     </div>
 

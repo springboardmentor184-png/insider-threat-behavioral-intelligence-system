@@ -39,18 +39,43 @@ class Employee(Base):
 # ==========================
 # USER MODEL
 # ==========================
+
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
 
-    full_name = Column(String, nullable=False)
+    full_name = Column(
+        String,
+        nullable=False
+    )
 
-    email = Column(String, unique=True, nullable=False, index=True)
+    email = Column(
+        String,
+        unique=True,
+        nullable=False,
+        index=True
+    )
 
-    password = Column(String, nullable=False)
+    password = Column(
+        String,
+        nullable=False
+    )
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    role = Column(
+        String,
+        nullable=False,
+        default="Administrator"
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
 
 
 # ==========================
@@ -254,6 +279,45 @@ class Notification(Base):
     )
 
     is_read = Column(
+        Boolean,
+        default=False
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    # ==========================================
+# PASSWORD RESET OTP MODEL
+# ==========================================
+
+class PasswordResetOTP(Base):
+    __tablename__ = "password_reset_otps"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False
+    )
+
+    otp = Column(
+        String,
+        nullable=False
+    )
+
+    expires_at = Column(
+        DateTime,
+        nullable=False
+    )
+
+    is_used = Column(
         Boolean,
         default=False
     )

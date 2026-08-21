@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.security import get_current_user
-from app.models import User
+from app.security import get_current_user, require_role
+from app.models import User, Employee
 from app.database import get_db
-from app.models import Employee
 from app.schemas import EmployeeCreate, EmployeeResponse
+
 
 router = APIRouter(
     prefix="/employees",
@@ -13,16 +13,26 @@ router = APIRouter(
 )
 
 
-# ==========================
+# =====================================================
 # CREATE Employee
-# ==========================
-@router.post("/", response_model=EmployeeResponse)
+# Administrator Only
+# =====================================================
+
+@router.post(
+    "/",
+    response_model=EmployeeResponse
+)
 def create_employee(
     employee: EmployeeCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(
+        require_role("Administrator")
+    )
 ):
-    db_employee = Employee(**employee.model_dump())
+
+    db_employee = Employee(
+        **employee.model_dump()
+    )
 
     db.add(db_employee)
     db.commit()
@@ -31,14 +41,25 @@ def create_employee(
     return db_employee
 
 
-# ==========================
+# =====================================================
 # GET All Employees
-# ==========================
-@router.get("/", response_model=list[EmployeeResponse])
+# Administrator + Security Analyst
+# =====================================================
+
+@router.get(
+    "/",
+    response_model=list[EmployeeResponse]
+)
 def get_employees(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(
+        require_role(
+            "Administrator",
+            "Security Analyst"
+        )
+    )
 ):
+
     employees = (
         db.query(Employee)
         .order_by(Employee.employee_id.asc())
@@ -48,16 +69,33 @@ def get_employees(
     return employees
 
 
-# ==========================
+# =====================================================
 # GET Employee by ID
-# ==========================
-@router.get("/{employee_id}", response_model=EmployeeResponse)
+# Administrator + Security Analyst
+# =====================================================
+
+@router.get(
+    "/{employee_id}",
+    response_model=EmployeeResponse
+)
 def get_employee(
     employee_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(
+        require_role(
+            "Administrator",
+            "Security Analyst"
+        )
+    )
 ):
-    employee = db.query(Employee).filter(Employee.id == employee_id).first()
+
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == employee_id
+        )
+        .first()
+    )
 
     if not employee:
         raise HTTPException(
@@ -68,17 +106,31 @@ def get_employee(
     return employee
 
 
-# ==========================
+# =====================================================
 # UPDATE Employee
-# ==========================
-@router.put("/{employee_id}", response_model=EmployeeResponse)
+# Administrator Only
+# =====================================================
+
+@router.put(
+    "/{employee_id}",
+    response_model=EmployeeResponse
+)
 def update_employee(
     employee_id: int,
     updated_employee: EmployeeCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(
+        require_role("Administrator")
+    )
 ):
-    employee = db.query(Employee).filter(Employee.id == employee_id).first()
+
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == employee_id
+        )
+        .first()
+    )
 
     if not employee:
         raise HTTPException(
@@ -87,7 +139,12 @@ def update_employee(
         )
 
     for key, value in updated_employee.model_dump().items():
-        setattr(employee, key, value)
+
+        setattr(
+            employee,
+            key,
+            value
+        )
 
     db.commit()
     db.refresh(employee)
@@ -95,16 +152,29 @@ def update_employee(
     return employee
 
 
-# ==========================
+# =====================================================
 # DELETE Employee
-# ==========================
-@router.delete("/{employee_id}")
+# Administrator Only
+# =====================================================
+
+@router.delete(
+    "/{employee_id}"
+)
 def delete_employee(
     employee_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(
+        require_role("Administrator")
+    )
 ):
-    employee = db.query(Employee).filter(Employee.id == employee_id).first()
+
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == employee_id
+        )
+        .first()
+    )
 
     if not employee:
         raise HTTPException(

@@ -17,6 +17,11 @@ import ThreatInvestigation from "./pages/ThreatInvestigation";
 // Protected Route
 import ProtectedRoute from "./components/ProtectedRoute";
 import InvestigationDetails from "./pages/InvestigationDetails";
+
+import Reports from "./pages/Reports";
+import UserManagement from "./pages/UserManagement";
+import ForgotPassword from "./pages/ForgotPassword";
+
 // Error Page
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +33,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />}
+/>
 
         {/* Dashboard */}
         <Route
@@ -38,6 +45,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* User Management */}
+
+<Route
+  path="/users"
+  element={
+    <ProtectedRoute>
+      <UserManagement />
+    </ProtectedRoute>
+  }
+/>
 
         {/* Employees */}
         <Route
@@ -100,13 +117,31 @@ function App() {
         />
 
         <Route
-    path="/investigation"
-    element={<ThreatInvestigation />}
-    />
+  path="/investigation"
+  element={
+    <ProtectedRoute>
+      <ThreatInvestigation />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/investigation/:id"
+  element={
+    <ProtectedRoute>
+      <InvestigationDetails />
+    </ProtectedRoute>
+  }
+/>
+
     <Route
-    path="/investigation/:id"
-    element={<InvestigationDetails />}
-    />
+  path="/reports"
+  element={
+    <ProtectedRoute>
+      <Reports />
+    </ProtectedRoute>
+  }
+/>
 
         {/* Settings */}
         <Route

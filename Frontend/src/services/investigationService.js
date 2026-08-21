@@ -133,3 +133,28 @@ export const updateWorkflow = async (id, workflow) => {
     return response.data;
 
 };
+
+// =====================================================
+// Download Investigation Report
+// =====================================================
+
+export const downloadInvestigationReport = async (
+  investigationId
+) => {
+
+  const token = localStorage.getItem(
+    "access_token"
+  );
+
+  const response = await api.get(
+    `/investigations/${investigationId}/report`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }
+  );
+
+  return response.data;
+};

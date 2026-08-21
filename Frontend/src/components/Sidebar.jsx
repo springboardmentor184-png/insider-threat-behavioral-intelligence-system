@@ -1,130 +1,337 @@
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
+import {
+  getCurrentUser,
+  clearAuthData,
+} from "../services/authService";
+
+
 function Sidebar() {
+
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    navigate("/login");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+  // =====================================================
+  // Load Current User
+  // =====================================================
+
+  useEffect(() => {
+
+    loadUser();
+
+  }, []);
+
+
+  const loadUser = async () => {
+
+    try {
+
+      const response = await getCurrentUser();
+
+      setUser(response.data);
+
+      // Keep user information available
+      // to other components
+
+      localStorage.setItem(
+        "current_user",
+        JSON.stringify(response.data)
+      );
+
+      localStorage.setItem(
+        "user_role",
+        response.data.role
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Failed to load current user:",
+        error
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   };
 
+
+  // =====================================================
+  // Logout
+  // =====================================================
+
+  const handleLogout = () => {
+
+    clearAuthData();
+
+    navigate("/login");
+
+  };
+
+
+  // =====================================================
+  // Role
+  // =====================================================
+
+  const role = user?.role || "";
+
+  const isAdministrator =
+    role === "Administrator";
+
+
+  // =====================================================
+  // Navigation Link Component
+  // =====================================================
+
+  const MenuLink = ({
+    to,
+    icon,
+    children,
+  }) => {
+
+    return (
+
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          isActive
+            ? "nav-link active"
+            : "nav-link"
+        }
+      >
+
+        <i className={icon}></i>
+
+        <span>
+          {children}
+        </span>
+
+      </NavLink>
+
+    );
+
+  };
+
+
   return (
+
     <aside className="sidebar">
 
-      {/* Logo */}
+
+      {/* =================================================
+          Logo
+      ================================================= */}
+
       <div className="sidebar-logo">
+
         <div className="logo-icon">
+
           <i className="bi bi-shield-lock-fill"></i>
+
         </div>
+
 
         <div>
-          <h4>AI Insider</h4>
-          <p>Threat Intelligence</p>
+
+          <h4>
+            AI Insider
+          </h4>
+
+          <p>
+            Threat Intelligence
+          </p>
+
         </div>
+
       </div>
 
-      {/* Navigation */}
+
+      {/* =================================================
+          User Role
+      ================================================= */}
+
+      {!loading && user && (
+
+        <div className="px-3 mb-3">
+
+          <div
+            className="small text-muted"
+            style={{
+              fontSize: "12px"
+            }}
+          >
+            Logged in as
+          </div>
+
+          <strong
+            style={{
+              fontSize: "13px"
+            }}
+          >
+            {user.role}
+          </strong>
+
+        </div>
+
+      )}
+
+
+      {/* =================================================
+          Navigation
+      ================================================= */}
+
       <nav className="sidebar-menu">
 
+
         {/* Dashboard */}
-        <NavLink
+
+        <MenuLink
           to="/dashboard"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
+          icon="bi bi-grid-fill"
         >
-          <i className="bi bi-grid-fill"></i>
-          <span>Dashboard</span>
-        </NavLink>
+          Dashboard
+        </MenuLink>
+
 
         {/* Employees */}
-        <NavLink
+
+        <MenuLink
           to="/employees"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
+          icon="bi bi-people-fill"
         >
-          <i className="bi bi-people-fill"></i>
-          <span>Employees</span>
-        </NavLink>
+          Employees
+        </MenuLink>
 
-        {/* Analytics */}
-        <NavLink
+
+        {/* UEBA Intelligence */}
+
+        <MenuLink
           to="/analytics"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
+          icon="bi bi-bar-chart-fill"
         >
-          <i className="bi bi-bar-chart-fill"></i>
-          <span>UEBA Intelligence</span>
-        </NavLink>
+          UEBA Intelligence
+        </MenuLink>
 
-          {/* Threat Investigation */}
-          <NavLink
-            to="/investigation"
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
-          >
-            <i className="bi bi-binoculars-fill"></i>
-            <span>Threat Investigation</span>
-          </NavLink>
+
+        {/* Threat Investigation */}
+
+        <MenuLink
+          to="/investigation"
+          icon="bi bi-binoculars-fill"
+        >
+          Threat Investigation
+        </MenuLink>
+
 
         {/* Activity Logs */}
-        <NavLink
+
+        <MenuLink
           to="/activitylogs"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
+          icon="bi bi-clock-history"
         >
-          <i className="bi bi-clock-history"></i>
-          <span>Activity Logs</span>
-        </NavLink>
+          Activity Logs
+        </MenuLink>
+
 
         {/* Threat Alerts */}
-        <NavLink
+
+        <MenuLink
           to="/threatalerts"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
+          icon="bi bi-shield-exclamation"
         >
-          <i className="bi bi-shield-exclamation"></i>
-          <span>Threat Alerts</span>
-        </NavLink>
+          Threat Alerts
+        </MenuLink>
+
 
         {/* AI Prediction */}
-        <NavLink
-          to="/prediction"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
-        >
-          <i className="bi bi-cpu-fill"></i>
-          <span>AI Prediction</span>
-        </NavLink>
 
-        {/* Settings */}
-        <NavLink
-          to="/settings"
-          className={({ isActive }) =>
-            isActive ? "nav-link active" : "nav-link"
-          }
+        <MenuLink
+          to="/prediction"
+          icon="bi bi-cpu-fill"
         >
-          <i className="bi bi-gear-fill"></i>
-          <span>Settings</span>
-        </NavLink>
+          AI Prediction
+        </MenuLink>
+
+
+        {/* Reports & Export */}
+
+        <MenuLink
+          to="/reports"
+          icon="bi bi-file-earmark-bar-graph-fill"
+        >
+          Reports & Export
+        </MenuLink>
+
+
+        {/* =================================================
+            User Management
+            Administrator Only
+        ================================================= */}
+
+        {isAdministrator && (
+
+          <MenuLink
+            to="/users"
+            icon="bi bi-person-gear"
+          >
+            User Management
+          </MenuLink>
+
+        )}
+
+
+        {/* =================================================
+            Settings
+            Administrator Only
+        ================================================= */}
+
+        {isAdministrator && (
+
+          <MenuLink
+            to="/settings"
+            icon="bi bi-gear-fill"
+          >
+            Settings
+          </MenuLink>
+
+        )}
 
       </nav>
 
-      {/* Logout */}
+
+      {/* =================================================
+          Logout
+      ================================================= */}
+
       <div className="sidebar-footer">
-        <button className="logout-btn" onClick={handleLogout}>
+
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+        >
+
           <i className="bi bi-box-arrow-right"></i>
-          <span> Logout</span>
+
+          <span>
+            Logout
+          </span>
+
         </button>
+
       </div>
 
     </aside>
+
   );
+
 }
+
 
 export default Sidebar;

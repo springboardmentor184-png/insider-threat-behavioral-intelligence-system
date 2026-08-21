@@ -14,6 +14,7 @@ from app.routes import investigation
 from app.routes import alert_management
 from app.routes import notification
 from app.routes import notifications
+from app.routes import analytics
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
@@ -55,6 +56,7 @@ app.include_router(investigation.router)
 app.include_router(alert_management.router)
 app.include_router(notification.router)
 app.include_router(notifications.router)
+app.include_router(analytics.router)
 # -----------------------------
 # Root Endpoint
 # -----------------------------
