@@ -1,45 +1,56 @@
 # Insider Threat Behavioral Intelligence System
 
-An AI-powered User and Entity Behavior Analytics (UEBA) platform designed to detect, analyze, investigate, and manage insider threats using Machine Learning, Hybrid Rule-Based Detection, Risk Scoring, Threat Investigation, Alert Management, Security Analytics, and Notification workflows.
+An AI-powered User and Entity Behavior Analytics (UEBA) platform that monitors employee behavior, establishes behavioral baselines, detects anomalies, calculates insider risk, generates security alerts, manages threat investigations, and provides centralized security analytics.
+
+Built as part of the Infosys Springboard Internship Program.
 
 ---
 
-# Project Overview
+## Overview
 
-The Insider Threat Behavioral Intelligence System helps security teams monitor employee behavior, identify suspicious activity, calculate insider risk, generate security alerts, initiate investigations, and provide centralized security visibility.
+The Insider Threat Behavioral Intelligence System helps security teams identify suspicious employee behavior, detect potential insider threats, investigate security incidents, and manage alerts through a centralized security platform.
 
-The system combines:
+The system analyzes behavioral signals such as failed login attempts, USB activity, file downloads, email activity, and after-hours access. These signals are analyzed using behavioral baselines, Machine Learning, and a Hybrid Rule Engine to generate actionable security intelligence.
 
-- User and Entity Behavior Analytics (UEBA)
-- Machine Learning using Isolation Forest
-- Hybrid Rule-Based Detection
-- Behavioral Baseline Analysis
-- Insider Risk Scoring
-- Threat Investigation
-- Alert and Incident Management
-- Event Correlation
-- Threat Evidence Collection
-- Analyst Assignment
-- Alert Escalation and Resolution
-- In-App Security Notifications
-- Gmail Security Email Notifications
-- Executive Security Dashboard
-- Department Risk Analytics
-- Threat and Investigation Analytics
-- PDF Security Reports
-- OTP-Based Password Recovery
-- JWT Authentication
-- Role-Based Access Control
+The platform provides:
+
+- Employee behavior monitoring
+- Behavioral baseline analysis
+- AI-based anomaly detection
+- Hybrid rule-based threat detection
+- Insider risk scoring
+- Threat severity classification
+- Automated alert generation
+- Automated investigation creation
+- Threat evidence collection
+- Event correlation
+- Analyst investigation workflows
+- Alert assignment and escalation
+- In-app security notifications
+- Gmail security email notifications
+- Executive security analytics
+- PDF security reports
 
 ---
 
-# Problem Statement
+## Project Status
 
-Insider threats, whether intentional or accidental, can manifest through multiple behavioral signals such as failed login attempts, USB usage, file downloads, mass email activity, and after-hours access.
+All four core milestones have been completed.
+
+- [x] **Milestone 1:** Project Initialization, Design Process and Core Setup
+- [x] **Milestone 2:** Behavioral Analytics and Anomaly Detection
+- [x] **Milestone 3:** Risk Scoring and Threat Investigation
+- [x] **Milestone 4:** Analytics, Dashboard and Security Enhancements
+
+---
+
+## Problem Statement
+
+Insider threats, whether intentional or accidental, can manifest through multiple behavioral signals such as failed logins, USB usage, file downloads, mass emails, and after-hours access.
 
 These signals are distributed across different employee activities, making manual correlation slow, error-prone, and difficult to scale.
 
-The system addresses this problem by converting employee behavioral activity into actionable security intelligence through:
+The system addresses this challenge by converting behavioral activity into actionable security intelligence through:
 
 - Behavioral monitoring
 - AI-based anomaly detection
@@ -47,20 +58,20 @@ The system addresses this problem by converting employee behavioral activity int
 - Behavioral baseline analysis
 - Risk scoring
 - Threat classification
-- Automated alert generation
-- Automated investigation creation
+- Automated investigations
+- Alert management
 - Security notifications
-- Analyst investigation workflows
+- Analyst workflows
 - Executive security analytics
 
 ---
 
-# Project Objectives
+## Project Objectives
 
 - Monitor employee behavioral activities.
+- Establish behavioral baselines for employees.
 - Detect suspicious and abnormal behavioral patterns.
 - Identify insider threat indicators using AI and rule-based detection.
-- Establish behavioral baselines for employees.
 - Calculate employee risk scores.
 - Classify threats into Low, Medium, High, and Critical levels.
 - Automatically generate alerts for High and Critical threats.
@@ -73,9 +84,458 @@ The system addresses this problem by converting employee behavioral activity int
 
 ---
 
-# Technology Stack
+## Features
 
-## Backend
+### 1. User Authentication and Role-Based Access
+
+- User registration and login
+- JWT-based authentication
+- Protected API routes
+- Password hashing
+- Role-Based Access Control
+- User management
+- OTP-based password recovery
+- SMTP email delivery for password recovery
+- Secure password reset workflow
+
+---
+
+### 2. Employee Management
+
+- Employee creation
+- Employee retrieval
+- Employee update
+- Employee deletion
+- Employee directory
+- Employee search
+- Employee filtering
+- Employee department and role management
+- Employee risk score monitoring
+
+---
+
+### 3. Behavioral Activity Monitoring
+
+- Employee behavior logs
+- Failed login monitoring
+- USB activity monitoring
+- After-hours login monitoring
+- File download monitoring
+- Email activity monitoring
+- Login hour analysis
+- Activity log filtering
+- Multi-criteria activity search
+
+---
+
+### 4. Behavioral Baseline Analysis
+
+The system establishes behavioral baselines to identify deviations from normal employee activity.
+
+Tracked behavioral indicators include:
+
+- Average failed login attempts
+- Average files downloaded
+- Average emails sent
+- Average login hour
+- USB usage rate
+- After-hours activity rate
+
+Behavioral baselines are used as part of the threat detection and risk analysis process.
+
+---
+
+### 5. AI Threat Detection
+
+The threat detection engine combines Machine Learning and rule-based analysis.
+
+Implemented:
+
+- Isolation Forest
+- Hybrid Rule Engine
+- Behavioral Baseline Analysis
+- Anomaly Detection
+- Threat Prediction
+- Triggered Rule Identification
+
+Prediction results:
+
+- Normal
+- Anomaly
+
+Risk levels:
+
+- Low
+- Medium
+- High
+- Critical
+
+Detection methods:
+
+- Isolation Forest
+- Hybrid Rule Engine
+
+---
+
+### 6. Insider Risk Scoring Engine
+
+The risk scoring engine converts behavioral indicators into a normalized risk score.
+
+Implemented:
+
+- Weighted risk scoring
+- Risk score generation
+- Risk level classification
+- Threat severity classification
+- Risk trend generation
+- Risk summary generation
+- Security recommendation generation
+- Triggered rule identification
+
+Risk classification:
+
+- 0 - 39: Low
+- 40 - 69: Medium
+- 70 - 89: High
+- 90 - 100: Critical
+
+---
+
+### 7. UEBA Intelligence
+
+The UEBA module provides behavioral intelligence for individual employees.
+
+Implemented:
+
+- Employee selection
+- Behavioral analytics
+- User Behavior Analytics
+- Entity Behavior Analytics
+- Behavior score
+- Behavior trend
+- Department risk
+- Peer group analysis
+- Threat intelligence
+- Risk summary
+- Detection method
+- Risk level
+- Risk score
+
+---
+
+### 8. Threat Investigation
+
+The Threat Investigation module provides an end-to-end investigation workflow for suspicious employees.
+
+Implemented:
+
+- Investigation dashboard
+- Investigation queue
+- Active investigations
+- Investigation details
+- Threat severity
+- Investigation status
+- Assigned analyst
+- Investigation notes
+- Recommendations
+- Investigation timeline
+- Threat evidence
+- Device analysis
+- User risk history
+- Event correlation
+- Investigation workflow
+
+Investigation status:
+
+- Open
+- Assigned
+- Investigating
+- Resolved
+- Closed
+
+---
+
+### 9. Threat Timeline
+
+The investigation timeline provides a chronological view of employee security activity.
+
+Tracked events include:
+
+- Employee login
+- Failed login attempts
+- USB activity
+- File downloads
+- Email activity
+- After-hours login
+- AI threat detection
+- Investigation creation
+
+---
+
+### 10. Threat Evidence Collection
+
+The investigation module provides security evidence including:
+
+- Failed logins
+- Files downloaded
+- Emails sent
+- USB usage
+- After-hours login
+- Risk level
+- Detection method
+- Threat severity
+
+---
+
+### 11. Device Analysis
+
+The device analysis module provides:
+
+- Login hour
+- USB device usage
+- After-hours login
+- Files downloaded
+- Emails sent
+- Device risk
+
+---
+
+### 12. User Risk History
+
+Implemented:
+
+- Current risk
+- Previous risk
+- Total incidents
+- Average risk score
+- Behavioral trend
+
+---
+
+### 13. Event Correlation
+
+The event correlation module identifies relationships between multiple security events.
+
+Implemented:
+
+- Security event correlation
+- Event count
+- Correlation score
+- Event severity
+- Correlated event identification
+
+Events can include:
+
+- Failed login attempts
+- USB activity
+- File downloads
+- Email activity
+- After-hours login
+
+---
+
+### 14. Alert and Incident Management
+
+Implemented:
+
+- Threat alert creation
+- Automatic alert generation
+- Alert dashboard
+- Alert severity classification
+- Analyst assignment
+- Alert escalation
+- Alert resolution
+- Resolution notes
+- Escalation level tracking
+- Alert status tracking
+- Automatic incident creation
+
+Supported alert severity levels:
+
+- Informational
+- Low
+- Medium
+- High
+- Critical
+
+---
+
+### 15. Automatic Threat Alerts
+
+High and Critical risk predictions automatically generate security alerts.
+
+The workflow is:
+
+AI Prediction → High/Critical Risk → Threat Alert → Investigation
+
+The system also prevents duplicate active alerts for the same employee.
+
+---
+
+### 16. Analyst Assignment and Alert Escalation
+
+Security analysts can be assigned to alerts and investigations.
+
+Implemented:
+
+- Analyst assignment
+- Investigation status updates
+- Alert escalation
+- Escalation level tracking
+- Resolution notes
+- Alert resolution
+
+Escalation levels:
+
+- Level 1
+- Level 2
+- Level 3
+
+---
+
+### 17. Notification System
+
+Implemented:
+
+- Notification database
+- Notification service
+- Notification API
+- Notification bell
+- Unread notification count
+- Notification dropdown
+- Mark notification as read
+- Mark all notifications as read
+- Employee-specific notification navigation
+- High-risk notifications
+- Critical-risk notifications
+- Duplicate notification prevention
+
+---
+
+### 18. Email Security Notifications
+
+The system integrates Gmail SMTP for security email notifications.
+
+High and Critical threats can generate security emails containing:
+
+- Employee ID
+- Employee name
+- Department
+- Role
+- Risk level
+- Risk score
+- Prediction
+- Detection method
+- Risk summary
+- Triggered rules
+- Recommendation
+- Alert ID
+- Investigation ID
+
+---
+
+### 19. Duplicate Alert and Notification Prevention
+
+The system prevents duplicate security events when an active alert already exists.
+
+Duplicate prevention is implemented for:
+
+- Threat alerts
+- In-app notifications
+- Gmail security emails
+
+This prevents unnecessary repeated notifications for the same active threat.
+
+---
+
+### 20. Executive Security Dashboard
+
+Implemented in Milestone 4.
+
+The Executive Security Dashboard provides centralized visibility into the organization's current security posture.
+
+Dashboard KPIs include:
+
+- Total employees
+- High-risk employees
+- Critical-risk employees
+- Average risk score
+- Total alerts
+- Critical alerts
+- High alerts
+- Medium alerts
+- Low alerts
+- Open alerts
+- Resolved alerts
+- Total investigations
+- Active investigations
+- Resolved investigations
+- Critical investigations
+- High investigations
+
+---
+
+### 21. Security Analytics
+
+Implemented:
+
+- Security Risk Overview
+- Threat and Investigation Summary
+- Employee Risk Distribution
+- Department Risk Analysis
+- Threat Investigation Analysis
+- Alert Severity Analysis
+- Investigation Status Analysis
+- Average Risk Score
+- High-risk employee monitoring
+- Critical-risk employee monitoring
+- Interactive security charts
+- Data visualization
+
+---
+
+### 22. Dashboard Navigation
+
+Dashboard elements provide navigation to relevant application modules.
+
+Implemented:
+
+- Employee KPI cards to Employee Management
+- Alert KPI cards to Threat Alerts
+- Investigation KPI cards to Threat Investigation
+- Notification items to related security information
+- Analytics sections to relevant security modules
+
+---
+
+### 23. Reports and PDF Generation
+
+Implemented:
+
+- Security reports
+- Investigation reports
+- Employee-specific reports
+- PDF report generation
+- Downloadable security reports
+
+Reports can contain:
+
+- Employee information
+- Behavioral metrics
+- Behavioral baseline
+- AI prediction
+- Risk score
+- Threat severity
+- Risk level
+- Risk summary
+- Recommendation
+- Detection method
+
+---
+
+## Tech Stack
+
+### Backend
 
 - Python
 - FastAPI
@@ -88,9 +548,10 @@ The system addresses this problem by converting employee behavioral activity int
 - SMTP / Gmail
 - ReportLab
 
-## Frontend
+### Frontend
 
 - React.js
+- Vite
 - Bootstrap 5
 - Bootstrap Icons
 - Axios
@@ -98,7 +559,7 @@ The system addresses this problem by converting employee behavioral activity int
 - React Toastify
 - Recharts
 
-## Machine Learning
+### Machine Learning
 
 - Isolation Forest
 - Hybrid Rule Engine
@@ -106,12 +567,12 @@ The system addresses this problem by converting employee behavioral activity int
 - Behavioral Baseline Analysis
 - Anomaly Detection
 
-## Database
+### Database
 
 - PostgreSQL
 - SQLAlchemy ORM
 
-## Development Tools
+### Development Tools
 
 - Visual Studio Code
 - Git
@@ -121,770 +582,115 @@ The system addresses this problem by converting employee behavioral activity int
 
 ---
 
-# Project Structure
+## Project Structure
 
-The project is organized into separate Backend and Frontend applications.
-
-## Backend
-
-- `Backend/app/routes/` - API route definitions
-- `Backend/app/services/` - Business logic and application services
-- `Backend/app/ml/` - Machine Learning and prediction logic
-- `Backend/app/utils/` - Utility functions and report generation
-- `Backend/app/models.py` - SQLAlchemy database models
-- `Backend/app/schemas.py` - Pydantic schemas
-- `Backend/app/database.py` - Database configuration
-- `Backend/app/config.py` - Application configuration
-- `Backend/app/security.py` - Authentication and security utilities
-- `Backend/app/main.py` - FastAPI application entry point
-- `Backend/requirements.txt` - Backend dependencies
-
-## Frontend
-
-- `Frontend/src/pages/` - Application pages
-- `Frontend/src/components/` - Reusable UI components
-- `Frontend/src/components/charts/` - Security analytics charts
-- `Frontend/src/services/` - API service integrations
-- `Frontend/src/styles/` - Application styling
-- `Frontend/package.json` - Frontend dependencies
-- `Frontend/package-lock.json` - Dependency lock file
-
----
-
-# Implemented Features
-
-## Authentication
-
-Implemented:
-
-- User Login
-- User Registration
-- JWT Authentication
-- Protected APIs
-- User Session Management
-- Role-Based Access Control
-- OTP-Based Password Recovery
-- SMTP Email OTP Delivery
-- Secure Password Reset
-
----
-
-# Employee Management
-
-Implemented:
-
-- Add Employee
-- Update Employee
-- Delete Employee
-- Employee Dashboard
-- Employee Search
-- Employee Filtering
-- Employee Risk Score
-- Employee Department
-- Employee Role
-
----
-
-# User Behavior Analytics
-
-Implemented:
-
-- Behavior Log Monitoring
-- Employee Activity Analysis
-- Behavioral Baseline
-- Failed Login Monitoring
-- USB Activity Monitoring
-- After-Hours Login Monitoring
-- File Download Monitoring
-- Email Activity Monitoring
-- Login Hour Analysis
-- Multi-Criteria Activity Filtering
-
----
-
-# AI Threat Detection
-
-The AI threat detection module combines Machine Learning with a Hybrid Rule Engine to identify suspicious employee behavior.
-
-Implemented:
-
-- Isolation Forest
-- Hybrid Rule Engine
-- Behavioral Baseline Analysis
-- Anomaly Detection
-- Risk Score Calculation
-- Threat Severity Classification
-- Threat Recommendation
-- Risk Summary Generation
-- Triggered Rule Detection
-
-Prediction outputs include:
-
-- Normal
-- Anomaly
-
-Risk levels include:
-
-- Low
-- Medium
-- High
-- Critical
-
-Detection methods include:
-
-- Isolation Forest
-- Hybrid Rule Engine
-
-AI Prediction Response includes:
-
-- Prediction
-- Risk Score
-- Risk Level
-- Threat Severity
-- Risk Trend
-- Recommendation
-- Risk Summary
-- Detection Method
-- Triggered Rules
+```text
+insider-threat-behavioral-intelligence-system/
+|
+|-- Backend/
+|   |-- app/
+|   |   |-- routes/
+|   |   |   |-- ai.py
+|   |   |   |-- alerts.py
+|   |   |   |-- alert_management.py
+|   |   |   |-- analytics.py
+|   |   |   |-- auth.py
+|   |   |   |-- employees.py
+|   |   |   |-- investigation.py
+|   |   |   |-- notification.py
+|   |   |   |-- notifications.py
+|   |   |   |-- ueba.py
+|   |   |
+|   |   |-- services/
+|   |   |   |-- analytics_service.py
+|   |   |   |-- alert_management_service.py
+|   |   |   |-- email_service.py
+|   |   |   |-- investigation_service.py
+|   |   |   |-- notification_service.py
+|   |   |   |-- password_email_service.py
+|   |   |   |-- ueba_service.py
+|   |   |
+|   |   |-- ml/
+|   |   |   |-- predict.py
+|   |   |
+|   |   |-- utils/
+|   |   |   |-- investigation_report_generator.py
+|   |   |
+|   |   |-- models.py
+|   |   |-- schemas.py
+|   |   |-- database.py
+|   |   |-- config.py
+|   |   |-- security.py
+|   |   |-- main.py
+|   |
+|   |-- requirements.txt
+|
+|-- Frontend/
+|   |-- src/
+|   |   |-- pages/
+|   |   |   |-- Dashboard.jsx
+|   |   |   |-- Analytics.jsx
+|   |   |   |-- Activitylogs.jsx
+|   |   |   |-- Employees.jsx
+|   |   |   |-- Prediction.jsx
+|   |   |   |-- ThreatAlerts.jsx
+|   |   |   |-- ThreatInvestigation.jsx
+|   |   |   |-- InvestigationDetails.jsx
+|   |   |   |-- Reports.jsx
+|   |   |   |-- UserManagement.jsx
+|   |   |   |-- ForgotPassword.jsx
+|   |   |   |-- Profile.jsx
+|   |   |   |-- Register.jsx
+|   |   |   |-- Login.jsx
+|   |   |   |-- Settings.jsx
+|   |   |
+|   |   |-- components/
+|   |   |   |-- Navbar.jsx
+|   |   |   |-- Sidebar.jsx
+|   |   |   |-- NotificationBell.jsx
+|   |   |   |-- charts/
+|   |   |       |-- RiskChart.jsx
+|   |   |       |-- DepartmentRiskChart.jsx
+|   |   |       |-- ThreatInvestigationChart.jsx
+|   |   |
+|   |   |-- services/
+|   |   |   |-- analyticsService.js
+|   |   |   |-- authService.js
+|   |   |   |-- investigationService.js
+|   |   |   |-- notificationService.js
+|   |   |   |-- uebaService.js
+|   |   |
+|   |   |-- styles/
+|   |       |-- dashboard.css
+|   |
+|   |-- package.json
+|   |-- package-lock.json
+|
+|-- README.md
+|-- .gitignore
+```
 
 ---
 
-# Insider Risk Scoring Engine
+## Machine Learning Workflow
 
-Implemented:
+The threat detection workflow follows these stages:
 
-- Weighted Risk Scoring
-- Risk Score Generation
-- Threat Severity Classification
-- Risk Level Classification
-- Risk Trend Generation
-- Risk Recommendation Engine
-- Risk Summary Generation
-- Triggered Rule Detection
-
-Risk classification:
-
-- 0 - 39: Low
-- 40 - 69: Medium
-- 70 - 89: High
-- 90 - 100: Critical
+1. Employee Behavior
+2. Behavioral Baseline
+3. Business Rule Engine
+4. Isolation Forest
+5. Risk Scoring Engine
+6. Threat Severity Classification
+7. Threat Alert
+8. Automatic Investigation
+9. Investigation Workflow
+10. Security Notification
+11. Executive Security Dashboard
 
 ---
 
-# UEBA Intelligence Dashboard
-
-Implemented:
-
-- Employee Selection
-- Behavioral Analytics
-- User Behavior Analytics
-- Entity Behavior Analytics
-- Behavior Score
-- Behavior Trend
-- Department Risk
-- Peer Group Analysis
-- Threat Intelligence
-- Risk Summary
-- Detection Method
-- Risk Level
-- Risk Score
-
----
-
-# AI Prediction Module
-
-Implemented:
-
-- AI Behavior Prediction
-- Hybrid Threat Detection
-- Risk Score Calculation
-- Threat Severity
-- Risk Trend
-- Risk Summary
-- Triggered Rules
-- Automatic Alert Generation
-- Automatic Investigation Creation
-- PDF Risk Report Generation
-
----
-
-# Threat Investigation Module
-
-## Incident Creation
-
-Implemented:
-
-- Automatic incident creation for High and Critical insider threats
-- Alert-linked investigation creation
-- Threat severity assignment
-- Investigation status tracking
-
-## Investigation Dashboard
-
-Implemented:
-
-- Investigation Queue
-- Active Investigations
-- Threat Severity
-- Investigation Status
-- Assigned Analyst
-- Open Investigation
-- Resolved Investigation
-- Investigation Tracking
-
-## Investigation Details
-
-Implemented:
-
-- Investigation Summary
-- Activity Timeline
-- Threat Evidence Collection
-- Device Analysis
-- User Risk History
-- Event Correlation
-- Investigation Workflow
-- Investigation Notes
-- Recommendations
-
----
-
-# Threat Timeline
-
-The investigation timeline displays:
-
-- Employee Login
-- Failed Login Attempts
-- USB Activity
-- File Downloads
-- Email Activity
-- After-Hours Login
-- AI Threat Detection
-- Investigation Creation
-
----
-
-# Threat Evidence Collection
-
-Implemented evidence includes:
-
-- Failed Logins
-- Files Downloaded
-- Emails Sent
-- USB Usage
-- After-Hours Login
-- Detection Method
-- Risk Level
-- Threat Severity
-
----
-
-# Device Analysis
-
-Implemented:
-
-- Login Hour
-- USB Device Usage
-- After-Hours Login
-- Files Downloaded
-- Emails Sent
-- Device Risk
-
----
-
-# User Risk History
-
-Implemented:
-
-- Current Risk
-- Previous Risk
-- Total Incidents
-- Average Risk Score
-- Behavioral Trend
-
----
-
-# Event Correlation
-
-Implemented:
-
-- Security Event Correlation
-- Total Event Calculation
-- Correlation Score
-- Event Severity
-- Correlated Event Identification
-
-Example security events considered for correlation:
-
-- Multiple Failed Login Attempts
-- USB Device Activity
-- Mass File Download
-- Bulk Email Activity
-- After-Hours Login
-
----
-
-# Investigation Workflow
-
-Implemented:
-
-- Analyst Assignment
-- Investigation Status
-- Investigation Notes
-- Resolution Notes
-- Recommendations
-- Investigation Tracking
-
-Investigation status:
-
-- Open
-- Assigned
-- Investigating
-- Resolved
-- Closed
-
-Investigation workflow:
-
-- Open Investigation
-- Assign Analyst
-- Investigate Threat
-- Record Investigation Notes
-- Provide Recommendation
-- Resolve Investigation
-- Close Investigation
-
----
-
-# Risk Analytics
-
-Implemented:
-
-- Risk Score
-- Behavior Score
-- Threat Severity
-- Risk Summary
-- Department Risk
-- Behavior Trend
-- Correlation Score
-- Investigation Risk
-- Employee Risk History
-- Risk Distribution
-- Threat Analytics
-
----
-
-# Alert and Incident Management
-
-Implemented:
-
-- Threat Alert Creation
-- Automatic Alert Generation
-- Alert Dashboard
-- Alert Severity Classification
-- Analyst Assignment
-- Alert Escalation
-- Alert Resolution
-- Resolution Notes
-- Escalation Level Tracking
-- Alert Status Tracking
-- Automatic Incident Creation
-
----
-
-# Alert Severity Levels
-
-Supported severity levels:
-
-- Informational
-- Low
-- Medium
-- High
-- Critical
-
----
-
-# Alert Management Dashboard
-
-Implemented:
-
-- Total Alerts
-- Critical Alerts
-- High Alerts
-- Open Alerts
-- Resolved Alerts
-- Employee Information
-- Employee Code
-- Department
-- Threat Severity
-- Alert Status
-- Escalation Level
-- Assigned Analyst
-- Alert Creation Time
-
-Available actions:
-
-- Assign Analyst
-- Escalate Alert
-- Resolve Alert
-
----
-
-# Analyst Assignment
-
-Security analysts can be assigned to individual alerts and investigations.
-
-Workflow:
-
-- Open Alert
-- Assign Analyst
-- Update Investigation Status
-- Continue Investigation
-
----
-
-# Alert Escalation
-
-Implemented:
-
-- Alert Escalation
-- Escalation Level Tracking
-- Escalation Level 1
-- Escalation Level 2
-- Escalation Level 3
-
----
-
-# Alert Resolution
-
-Implemented:
-
-- Alert Resolution
-- Resolution Notes
-- Resolved Timestamp
-- Resolution Status
-
-Resolution workflow:
-
-- Open
-- Assigned
-- Investigating
-- Resolved
-
----
-
-# Automatic Alert Generation
-
-High and Critical risk predictions automatically generate security alerts.
-
-Alert generation workflow:
-
-- AI Prediction
-- High or Critical Risk Detection
-- Threat Alert Creation
-- Investigation Creation
-- Security Notification
-- Email Notification
-
-The system prevents duplicate active alerts for the same employee.
-
----
-
-# Automatic Investigation Creation
-
-When a High or Critical threat is detected, the system automatically creates an investigation.
-
-The investigation contains:
-
-- Employee
-- Threat Severity
-- Investigation Status
-- Assigned Analyst
-- Investigation Notes
-- Recommendation
-- Alert Reference
-- Investigation ID
-
----
-
-# Notification System
-
-Implemented:
-
-- Notification Database
-- Notification Model
-- Notification Schema
-- Notification Service
-- Notification API
-- Notification Bell
-- Notification Dropdown
-- Unread Notification Count
-- Mark Notification as Read
-- Mark All Notifications as Read
-- High-Risk Notifications
-- Critical-Risk Notifications
-- Employee-Specific Notification Navigation
-- Duplicate Notification Prevention
-
----
-
-# Notification Bell
-
-Implemented in the React frontend.
-
-Features:
-
-- Notification Bell
-- Unread Count Badge
-- Notification Dropdown
-- Notification Details
-- Read and Unread State
-- Mark as Read
-- Mark All as Read
-- Navigation to Related Security Information
-
----
-
-# Email Security Notifications
-
-Implemented using Gmail SMTP.
-
-The system automatically sends security emails for new High and Critical threats.
-
-Email contains:
-
-- Employee ID
-- Employee Name
-- Department
-- Employee Role
-- Risk Level
-- Risk Score
-- Prediction
-- Detection Method
-- Risk Summary
-- Triggered Rules
-- Recommendation
-- Alert ID
-- Investigation ID
-
----
-
-# Email Notification Workflow
-
-The email notification workflow is:
-
-- High or Critical Threat
-- AI Risk Detection
-- Threat Alert Creation
-- Investigation Creation
-- In-App Notification
-- Gmail Security Email
-
----
-
-# Duplicate Notification Prevention
-
-Duplicate prevention is implemented for:
-
-- Active Threat Alerts
-- In-App Notifications
-- Gmail Security Emails
-
-When an active alert already exists for the employee, the system prevents unnecessary duplicate alerts, notifications, and emails.
-
----
-
-# React Toast Notifications
-
-React Toastify has been integrated into the frontend.
-
-Implemented toast notifications for:
-
-- Login Success
-- Update Success
-- Analyst Assignment
-- Alert Escalation
-- Alert Resolution
-- Investigation Updates
-- Notification Actions
-- API Errors
-- Workflow Updates
-
----
-
-# Executive Security Dashboard
-
-Implemented in Milestone 4.
-
-The Executive Security Dashboard provides centralized visibility into the current security posture of the organization.
-
-Implemented KPI metrics:
-
-- Total Employees
-- High Risk Employees
-- Critical Risk Employees
-- Average Risk Score
-- Total Alerts
-- Critical Alerts
-- High Alerts
-- Medium Alerts
-- Low Alerts
-- Open Alerts
-- Resolved Alerts
-- Total Investigations
-- Active Investigations
-- Resolved Investigations
-- Critical Investigations
-- High Investigations
-
----
-
-# Executive Security Analytics
-
-Implemented:
-
-- Security Risk Overview
-- Threat and Investigation Summary
-- Employee Risk Distribution
-- Department Risk Analysis
-- Threat Investigation Analysis
-- Alert Severity Analysis
-- Investigation Status Analysis
-- Average Risk Score
-- High Risk Employee Monitoring
-- Critical Risk Employee Monitoring
-- Advanced Security Charts
-- Interactive Data Visualization
-
----
-
-# Dashboard Navigation
-
-Implemented navigation from dashboard elements to related modules:
-
-- Employee KPI Cards to Employee Management
-- Alert KPI Cards to Threat Alerts
-- Investigation KPI Cards to Threat Investigation
-- Notification Items to Related Security Information
-- Security Analytics to Relevant Analytics Modules
-
----
-
-# Reports Module
-
-Implemented:
-
-- Security Reports
-- Investigation Reports
-- Employee-Specific Reports
-- PDF Report Generation
-- Downloadable Reports
-
----
-
-# PDF Security Reports
-
-Generated reports can contain:
-
-- Employee Information
-- Behavioral Metrics
-- Behavioral Baseline
-- AI Prediction
-- Risk Score
-- Threat Severity
-- Risk Level
-- Risk Summary
-- Recommendation
-- Detection Method
-
----
-
-# REST APIs
-
-## Authentication APIs
-
-- Login
-- Registration
-- OTP Password Recovery
-- Password Reset
-
-## Employee APIs
-
-- Employee CRUD
-- Employee Search
-- Employee Filtering
-
-## Behavior Log APIs
-
-- Activity Logs
-- Behavioral Baseline
-- Baseline Analytics
-
-## AI APIs
-
-- AI Prediction
-- PDF Report
-
-## UEBA APIs
-
-- UEBA Dashboard
-- Behavioral Analytics
-- Risk Analytics
-
-## Threat Investigation APIs
-
-- Investigation Dashboard
-- Investigation Details
-- Activity Timeline
-- Threat Evidence
-- Device Analysis
-- User Risk History
-- Event Correlation
-- Investigation Workflow
-
-## Alert Management APIs
-
-- Alert Dashboard
-- Assign Analyst
-- Escalate Alert
-- Resolve Alert
-
-## Notification APIs
-
-- Get Notifications
-- Get Unread Notification Count
-- Mark Notification as Read
-- Mark All Notifications as Read
-
-## Analytics APIs
-
-- Executive Security Dashboard Metrics
-- Risk Analytics
-- Department Risk Analytics
-- Threat Analytics
-- Investigation Analytics
-
----
-
-# Machine Learning Workflow
-
-The Machine Learning and threat detection workflow is:
-
-- Employee Behavior
-- Behavioral Baseline
-- Business Rule Engine
-- Isolation Forest
-- Risk Scoring Engine
-- Threat Severity Classification
-- Threat Alert
-- Automatic Investigation
-- Investigation Workflow
-- Security Notification
-- Executive Security Dashboard
-
----
-
-# End-to-End Threat Detection Workflow
-
-The complete security workflow is:
+## End-to-End Project Workflow
 
 1. Employee Activity
 2. Behavior Monitoring
@@ -897,11 +703,11 @@ The complete security workflow is:
 9. Automatic Investigation Creation
 10. Event Correlation
 11. Threat Evidence Collection
-12. Investigation Workflow
-13. Analyst Assignment
+12. Analyst Investigation Workflow
+13. Alert Assignment
 14. Alert Escalation or Resolution
 15. In-App Security Notification
-16. Gmail Security Email
+16. Gmail Security Notification
 17. Executive Security Dashboard
 18. Security Analytics
 19. Report Generation
@@ -910,77 +716,49 @@ Low and Medium risk activities continue under normal monitoring.
 
 ---
 
-# Application Modules
+## Milestone-Wise Implementation
 
-Implemented modules:
+### Milestone 1 - Project Initialization and Core Setup
 
-- Dashboard
-- Employee Management
-- UEBA Intelligence
-- Activity Logs
-- Threat Alerts
-- AI Prediction
-- Threat Investigation
-- Investigation Details
-- Alert Management
-- Notification Center
-- Reports
-- User Management
-- Profile
-- Settings
-- Forgot Password
-
----
-
-# Milestone Progress
-
-## Milestone 1 - Project Initialization and Core Setup
-
-Status:
-
-Completed
+Status: Completed
 
 Implemented:
 
-- Project Architecture
-- Backend Setup
-- Frontend Setup
-- Database Configuration
-- Authentication
-- Employee Management
-- Activity Monitoring Foundation
-- Initial Dashboard
-- REST API Foundation
+- Project architecture
+- Backend setup
+- Frontend setup
+- PostgreSQL database configuration
+- Authentication foundation
+- Employee management
+- Activity monitoring foundation
+- Initial dashboard
+- REST API foundation
 
 ---
 
-## Milestone 2 - Behavioral Analytics and Anomaly Detection
+### Milestone 2 - Behavioral Analytics and Anomaly Detection
 
-Status:
-
-Completed
+Status: Completed
 
 Implemented:
 
-- Behavioral Profiling
-- Behavioral Baselines
-- Activity Monitoring
-- Anomaly Detection
+- Behavioral profiling
+- Behavioral baselines
+- Activity monitoring
+- Anomaly detection
 - Isolation Forest
 - Hybrid Rule Engine
-- AI Threat Prediction
-- Risk Indicators
-- AI Risk Reports
-- Behavioral Analytics
-- UEBA Foundation
+- AI threat prediction
+- Risk indicators
+- AI risk reports
+- Behavioral analytics
+- UEBA foundation
 
 ---
 
-## Milestone 3 - Risk Scoring and Threat Investigation
+### Milestone 3 - Risk Scoring and Threat Investigation
 
-Status:
-
-Completed
+Status: Completed
 
 Implemented:
 
@@ -1012,79 +790,35 @@ Implemented:
 - Duplicate Notification Prevention
 - Duplicate Email Prevention
 - React Toast Notifications
-- End-to-End Threat Detection Workflow
 
 ---
 
-# Milestone 3 Final Testing
+### Milestone 4 - Analytics, Dashboard and Security Enhancements
 
-The following functionality was tested successfully:
-
-- AI Prediction
-- Low Risk Detection
-- High Risk Detection
-- Critical Risk Detection
-- Risk Score Generation
-- Hybrid Rule Detection
-- Automatic Alert Creation
-- Automatic Investigation Creation
-- Investigation Dashboard
-- Activity Timeline
-- Threat Evidence
-- Device Analysis
-- User Risk History
-- Event Correlation
-- Investigation Workflow
-- Alert Management Dashboard
-- Analyst Assignment
-- Alert Escalation
-- Alert Resolution
-- In-App Notifications
-- Notification Bell
-- Unread Notification Count
-- Mark as Read
-- React Toast Notifications
-- Gmail Security Email
-- Duplicate Alert Prevention
-- Duplicate Notification Prevention
-- Duplicate Email Prevention
-- End-to-End Security Workflow
-
-Milestone 3 Testing Status:
-
-Completed Successfully
-
----
-
-# Milestone 4 - Analytics, Dashboard and Security Enhancements
-
-Status:
-
-Completed
+Status: Completed
 
 Implemented:
 
 - Executive Security Dashboard
 - Advanced Security Analytics
 - Security KPI Cards
-- Advanced Charts
-- Threat Visualization
-- Risk Visualization
+- Security Risk Overview
+- Threat and Investigation Summary
+- Department Risk Analytics
+- Employee Risk Distribution
+- Threat Investigation Analytics
 - Alert Analytics
 - Investigation Analytics
-- Department Risk Analytics
-- Security Metrics
+- Advanced Security Charts
 - Analytics API
 - Analytics Service
 - Dashboard Navigation
-- Employee Risk Distribution
-- Threat and Investigation Summary
-- Final UI Improvements
-- OTP Password Recovery
+- OTP-Based Password Recovery
 - SMTP Email Integration for OTP
 - User Management
 - Enhanced Authentication
 - Role-Based Access Control
+- Final UI Improvements
 - End-to-End Testing
 - Final Project Validation
 - Final Documentation
@@ -1093,135 +827,11 @@ Implemented:
 
 ---
 
-# Milestone 4 Executive Dashboard
+## Final Testing
 
-The Executive Security Dashboard provides centralized visibility into the current security posture of the organization.
+The following functionality was tested successfully:
 
-Implemented dashboard metrics:
-
-- Total Employees
-- High Risk Employees
-- Critical Risk Employees
-- Average Risk Score
-- Total Alerts
-- Critical Alerts
-- High Alerts
-- Medium Alerts
-- Low Alerts
-- Open Alerts
-- Resolved Alerts
-- Total Investigations
-- Active Investigations
-- Resolved Investigations
-- Critical Investigations
-- High Investigations
-
-The dashboard displays these metrics dynamically through the Analytics API.
-
----
-
-# Milestone 4 Analytics
-
-Implemented:
-
-- Security Risk Overview
-- Threat and Investigation Summary
-- Employee Risk Distribution
-- Department Risk Analysis
-- Threat Investigation Analysis
-- Alert Severity Analysis
-- Investigation Status Analysis
-- Average Risk Score
-- High Risk Employee Monitoring
-- Critical Risk Employee Monitoring
-- Advanced Security Charts
-- Interactive Data Visualization
-
----
-
-# Milestone 4 Dashboard Workflow
-
-The Executive Security Dashboard workflow is:
-
-1. Security Data Collection
-2. Analytics API
-3. Analytics Service
-4. Executive Security Dashboard
-5. Security Risk Overview
-6. Threat and Investigation Summary
-7. Risk Analytics
-8. Threat Analytics
-9. Interactive Charts
-10. Employee, Alert, and Investigation Navigation
-
----
-
-# Final Project Workflow
-
-The final system workflow is:
-
-1. Employee Behavior
-2. Behavioral Analytics
-3. Behavioral Baseline
-4. AI Threat Detection
-5. Hybrid Rule Engine
-6. Risk Scoring
-7. Threat Classification
-8. High or Critical Threat Detection
-9. Threat Alert
-10. Automatic Investigation
-11. Event Correlation
-12. Threat Evidence Collection
-13. Analyst Investigation Workflow
-14. Alert Management
-15. In-App Security Notification
-16. Gmail Security Notification
-17. Executive Security Dashboard
-18. Security Analytics
-19. Reports and Resolution
-
----
-
-# Key Features and Results
-
-The completed system provides:
-
-- Centralized employee behavior monitoring
-- AI-powered anomaly detection
-- Hybrid rule-based threat detection
-- Behavioral baseline analysis
-- Insider risk scoring
-- Low, Medium, High, and Critical classification
-- Automatic High and Critical threat alert generation
-- Automatic investigation creation
-- Duplicate alert prevention
-- Event correlation
-- Threat evidence collection
-- User risk history
-- Device risk analysis
-- Investigation workflow
-- Analyst assignment
-- Alert escalation
-- Alert resolution
-- In-app security notifications
-- Gmail security email notifications
-- Executive security dashboard
-- Department risk analytics
-- Threat and investigation analytics
-- Interactive security charts
-- PDF security reports
-- OTP-based password recovery
-- JWT authentication
-- Role-Based Access Control
-- PostgreSQL database integration
-
----
-
-# Testing
-
-Final testing covered:
-
-- Authentication
+- User Authentication
 - JWT Authentication
 - Role-Based Access Control
 - OTP Password Recovery
@@ -1243,12 +853,16 @@ Final testing covered:
 - User Risk History
 - Threat Evidence
 - Device Analysis
-- Alert Assignment
+- Analyst Assignment
 - Alert Escalation
 - Alert Resolution
 - In-App Notifications
-- Email Notifications
-- Executive Dashboard
+- Notification Bell
+- Notification Read and Unread State
+- Gmail Security Email
+- Duplicate Notification Prevention
+- Duplicate Email Prevention
+- Executive Security Dashboard
 - Security Analytics
 - Department Risk Analytics
 - Threat Analytics
@@ -1261,13 +875,14 @@ The working application was tested before the final project presentation and liv
 
 ---
 
-# Security Considerations
+## Security Considerations
 
 Implemented security practices:
 
 - JWT Authentication
 - Protected API Routes
 - Role-Based Access Control
+- Password Hashing
 - Environment Variables
 - Gmail App Password Authentication
 - Database Credentials Stored Outside Source Code
@@ -1280,9 +895,9 @@ Sensitive credentials such as database passwords, Gmail app passwords, JWT secre
 
 ---
 
-# Challenges Faced and Solutions
+## Challenges Faced and Solutions
 
-## Challenge 1: Multiple Behavioral Signals
+### Challenge 1 - Multiple Behavioral Signals
 
 Challenge:
 
@@ -1294,7 +909,7 @@ Implemented centralized behavioral analysis, behavioral baselines, and risk scor
 
 ---
 
-## Challenge 2: Accurate Threat Detection
+### Challenge 2 - Accurate Threat Detection
 
 Challenge:
 
@@ -1306,7 +921,7 @@ Combined Isolation Forest with a Hybrid Rule Engine to analyze multiple behavior
 
 ---
 
-## Challenge 3: Automated Alert and Investigation Workflow
+### Challenge 3 - Automated Alert and Investigation Workflow
 
 Challenge:
 
@@ -1318,7 +933,7 @@ Implemented automatic threat alert generation, investigation creation, in-app no
 
 ---
 
-## Challenge 4: Secure Authentication and Password Recovery
+### Challenge 4 - Secure Authentication and Password Recovery
 
 Challenge:
 
@@ -1330,7 +945,7 @@ Implemented JWT authentication, Role-Based Access Control, password hashing, OTP
 
 ---
 
-## Challenge 5: Centralized Security Visibility
+### Challenge 5 - Centralized Security Visibility
 
 Challenge:
 
@@ -1342,41 +957,130 @@ Implemented an Executive Security Dashboard with centralized security KPIs, risk
 
 ---
 
-# Future Scope
+## API Overview
 
-Potential future enhancements include:
+The application provides REST APIs for the following modules:
 
-- Real-Time Event Streaming for live monitoring
-- Advanced Machine Learning Models
-- Adaptive Behavioral Baselines
-- Advanced Event Correlation
-- SIEM Integration
-- SOAR Integration
-- Enterprise-Scale Deployment
-- High Availability Architecture
-- Advanced Threat Intelligence Integration
-- Real-Time Security Event Processing
-- Automated Incident Response
-- Cloud Deployment
-- Production Monitoring and Logging
-- Performance Optimization
+### Authentication
+
+- Login
+- Registration
+- OTP Password Recovery
+- Password Reset
+
+### Employees
+
+- Employee CRUD
+- Employee Search
+- Employee Filtering
+
+### Activity and Behavior
+
+- Activity Logs
+- Behavioral Baselines
+- Behavioral Analytics
+
+### AI and Risk
+
+- AI Prediction
+- Risk Scoring
+- Risk Analytics
+- PDF Risk Reports
+
+### UEBA
+
+- UEBA Dashboard
+- Behavioral Analytics
+- Department Risk
+- Peer Group Analysis
+
+### Investigations
+
+- Investigation Dashboard
+- Investigation Details
+- Activity Timeline
+- Threat Evidence
+- Device Analysis
+- User Risk History
+- Event Correlation
+- Investigation Workflow
+
+### Alerts
+
+- Alert Dashboard
+- Analyst Assignment
+- Alert Escalation
+- Alert Resolution
+
+### Notifications
+
+- Get Notifications
+- Unread Notification Count
+- Mark Notification as Read
+- Mark All Notifications as Read
+
+### Analytics
+
+- Executive Security Dashboard
+- Security Risk Overview
+- Department Risk Analytics
+- Threat Analytics
+- Investigation Analytics
 
 ---
 
-# Current Project Status
+## Future Scope
 
-Project milestones:
+Potential future enhancements include:
+
+- Real-time event streaming for live monitoring
+- Advanced Machine Learning models
+- Adaptive behavioral baselines
+- Advanced event correlation across multiple security sources
+- SIEM integration
+- SOAR integration
+- Enterprise-scale deployment
+- High availability architecture
+- Advanced threat intelligence integration
+- Real-time security event processing
+- Automated incident response
+- Cloud deployment
+- Production monitoring and logging
+- Performance optimization
+
+---
+
+## Current Project Status
+
+The project has completed all four planned milestones.
 
 - Milestone 1: Completed
 - Milestone 2: Completed
 - Milestone 3: Completed
 - Milestone 4: Completed
 
-The system currently supports an end-to-end insider threat detection and investigation workflow covering employee behavioral analysis, behavioral baselines, AI-based anomaly detection, hybrid rule detection, risk scoring, threat alert generation, automatic investigation creation, event correlation, analyst workflow, alert management, in-app notifications, Gmail security alerts, executive security analytics, and reporting.
+The current system supports an end-to-end insider threat detection and investigation workflow covering:
+
+- Employee behavioral monitoring
+- Behavioral baseline analysis
+- AI-based anomaly detection
+- Hybrid rule-based detection
+- Risk scoring
+- Threat classification
+- Threat alert generation
+- Automatic investigation creation
+- Event correlation
+- Threat evidence collection
+- Analyst investigation workflow
+- Alert management
+- In-app notifications
+- Gmail security notifications
+- Executive security analytics
+- PDF reporting
 
 ---
 
-# Developer
+## Developer
 
 Darshan Lohakare
 
@@ -1386,6 +1090,6 @@ Pune, India
 
 ---
 
-# License
+## License
 
 This project is developed for educational and research purposes.
