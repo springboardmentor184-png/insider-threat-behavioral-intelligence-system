@@ -1,130 +1,150 @@
-body{
-    margin:0;
-    padding:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#eef2f7;
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background:
+        radial-gradient(circle at 20% 20%,
+            rgba(59, 130, 246, 0.08),
+            transparent 40%),
+        radial-gradient(circle at 80% 80%,
+            rgba(6, 182, 212, 0.08),
+            transparent 40%),
+        var(--bg-primary);
 }
 
-
-.login-container{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    padding:20px;
+.login-card {
+    width: 420px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-glow);
+    animation: fadeSlideUp 0.4s ease;
 }
 
-.login-card{
-    width:420px;
-    background:#fff;
-    border-radius:12px;
-    padding:35px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.login-header{
-    text-align:center;
-    margin-bottom:25px;
+.login-header {
+    text-align: center;
+    margin-bottom: 28px;
 }
 
-.login-header h1{
-    color:#1f4e79;
-    font-size:24px;
-    margin-bottom:8px;
+.login-header h1 {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
 }
 
-.login-header p{
-    color:#666;
-    font-size:15px;
+.login-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
-.login-card form{
-    display:flex;
-    flex-direction:column;
+.login-card form {
+    display: flex;
+    flex-direction: column;
 }
 
-.login-card label{
-    margin-bottom:6px;
-    font-weight:bold;
-    color:#333;
+.login-card label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
 }
 
-.login-card input{
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    margin-bottom:18px;
-    font-size:15px;
+.login-card input {
+    margin-bottom: 18px;
 }
 
-.login-card input:focus{
-    border-color:#1f4e79;
-    outline:none;
+.login-btn {
+    padding: 13px;
+    background: var(--accent-primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 6px;
+    box-shadow: 0 4px 14px var(--accent-glow);
 }
 
-.login-btn{
-    padding:12px;
-    background:#1f4e79;
-    color:white;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:5px;
+.login-btn:hover {
+    background: var(--accent-primary-hover);
 }
 
-.login-btn:hover{
-    background:#163b5c;
+.divider {
+    text-align: center;
+    margin: 22px 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
 }
 
-.divider{
-    text-align:center;
-    margin:20px 0;
-    color:#888;
-    font-weight:bold;
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: var(--border-color);
 }
 
-.google-btn,
-.microsoft-btn{
-    width:100%;
-    padding:12px;
-    margin-bottom:12px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:bold;
+.divider::before {
+    left: 0;
 }
 
-.google-btn{
-    background:#db4437;
-    color:white;
+.divider::after {
+    right: 0;
 }
 
-.google-btn:hover{
-    background:#c1351d;
+.google-btn {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
 }
 
-.microsoft-btn{
-    background:#0078d4;
-    color:white;
+.google-btn:hover {
+    background: #24304a;
+    border-color: #db4437;
 }
 
-.microsoft-btn:hover{
-    background:#005fa3;
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
 }
 
-.register-link{
-    text-align:center;
-    margin-top:18px;
+.register-link a {
+    color: var(--accent-primary);
+    font-weight: 700;
 }
 
-.register-link a{
-    color:#1f4e79;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-.register-link a:hover{
-    text-decoration:underline;
+.register-link a:hover {
+    text-decoration: underline;
 }

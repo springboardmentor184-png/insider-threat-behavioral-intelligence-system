@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
+import {
+    C,
+    Pill,
+    Panel,
+    Btn,
+    Select,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -31,25 +39,21 @@ const VALID_STATUSES = [
     "Closed",
 ];
 
-function badgeClass(category) {
-    if (category === "Critical" || category === "High") {
-        return "danger";
-    }
+const catColor = (c) =>
+    ({
+        Critical: C.accent,
+        High: C.amber,
+        Medium: C.blue,
+        Low: C.green,
+    }[c] || C.muted);
 
-    if (category === "Medium") {
-        return "warning";
-    }
-
-    return "success";
-}
-
-function Investigations() {
+export default function Investigations() {
     const { user } = useAuth();
     const role = user?.role;
 
     const [incidents, setIncidents] = useState([]);
     const [timeline, setTimeline] = useState([]);
-    const [selectedIncident, setSelectedIncident] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const loadIncidents = async () => {
@@ -61,8 +65,7 @@ function Investigations() {
                 }
             );
 
-            const data = await res.json();
-            setIncidents(data);
+            setIncidents(await res.json());
         } catch (err) {
             console.log(err);
         }
@@ -130,171 +133,253 @@ function Investigations() {
 
         const data = await res.json();
 
-        setSelectedIncident(id);
+        setSelected(id);
         setTimeline(data.timeline);
     }
 
     if (loading) {
-        return <h2>Loading Investigations...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Investigations...
+            </p>
+        );
     }
 
     return (
-        <div className="dashboard-container">
-
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
             <div
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginBottom: "20px",
+                    alignItems: "center",
                 }}
             >
-                <h2>Threat Investigations</h2>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 18,
+                    }}
+                >
+                    Threat Investigations{" "}
+                    <span
+                        style={{
+                            color: C.dim,
+                            fontWeight: 400,
+                            fontSize: 12,
+                        }}
+                    >
+                        (investigations.py)
+                    </span>
+                </div>
 
                 {ANALYST_ROLES.includes(role) && (
-                    <button onClick={generateIncidents}>
+                    <Btn
+                        variant="primary"
+                        onClick={generateIncidents}
+                    >
                         Generate High Risk Incidents
-                    </button>
+                    </Btn>
                 )}
             </div>
 
-            <table className="log-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Employee</th>
-                        <th>Risk Score</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Assigned Analyst</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {incidents.length === 0 ? (
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
                         <tr>
-                            <td
-                                colSpan="8"
-                                style={{ textAlign: "center" }}
-                            >
-                                No Incidents Found
-                            </td>
+                            <th style={thStyle}>ID</th>
+                            <th style={thStyle}>Employee</th>
+                            <th style={thStyle}>Risk</th>
+                            <th style={thStyle}>Category</th>
+                            <th style={thStyle}>Status</th>
+                            <th style={thStyle}>Analyst</th>
+                            <th style={thStyle}>Created</th>
+                            <th style={thStyle}>Actions</th>
                         </tr>
-                    ) : (
-                        incidents.map((incident) => (
-                            <tr key={incident.id}>
+                    </thead>
 
-                                <td>{incident.id}</td>
-
-                                <td>{incident.employee_id}</td>
-
-                                <td>
-                                    {incident.risk_score_at_creation}
-                                </td>
-
-                                <td>
-                                    <span
-                                        className={`badge ${badgeClass(
-                                            incident.risk_category
-                                        )}`}
-                                    >
-                                        {incident.risk_category}
-                                    </span>
-                                </td>
-
-                                <td>{incident.status}</td>
-
-                                <td>
-                                    {incident.assigned_analyst ||
-                                        "Not Assigned"}
-                                </td>
-
-                                <td>
-                                    {new Date(
-                                        incident.created_at
-                                    ).toLocaleString()}
-                                </td>
-
+                    <tbody>
+                        {incidents.length === 0 ? (
+                            <tr>
                                 <td
-                                    style={{
-                                        display: "flex",
-                                        gap: "8px",
-                                        flexWrap: "wrap",
-                                    }}
+                                    style={tdStyle}
+                                    colSpan={8}
                                 >
-                                    <button
-                                        onClick={() =>
-                                            viewTimeline(incident.id)
-                                        }
-                                    >
-                                        Timeline
-                                    </button>
-
-                                    {ASSIGN_ROLES.includes(role) && (
-                                        <button
-                                            onClick={() =>
-                                                assignAnalyst(incident.id)
-                                            }
-                                        >
-                                            Assign
-                                        </button>
-                                    )}
-
-                                    {ANALYST_ROLES.includes(role) && (
-                                        <select
-                                            defaultValue=""
-                                            onChange={(e) => {
-                                                if (e.target.value) {
-                                                    changeStatus(
-                                                        incident.id,
-                                                        e.target.value
-                                                    );
-
-                                                    e.target.value = "";
-                                                }
-                                            }}
-                                        >
-                                            <option
-                                                value=""
-                                                disabled
-                                            >
-                                                Update Status
-                                            </option>
-
-                                            {VALID_STATUSES.map(
-                                                (status) => (
-                                                    <option
-                                                        key={status}
-                                                        value={status}
-                                                    >
-                                                        {status}
-                                                    </option>
-                                                )
-                                            )}
-                                        </select>
-                                    )}
+                                    No Incidents Found
                                 </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            incidents.map((i) => (
+                                <tr key={i.id}>
+                                    <td style={tdStyle}>
+                                        {i.id}
+                                    </td>
 
-            {selectedIncident && (
-                <div style={{ marginTop: "40px" }}>
+                                    <td style={tdStyle}>
+                                        {i.employee_id}
+                                    </td>
 
-                    <h3>
-                        Timeline - Incident #{selectedIncident}
-                    </h3>
+                                    <td style={tdStyle}>
+                                        {
+                                            i.risk_score_at_creation
+                                        }
+                                    </td>
 
-                    <table className="log-table">
+                                    <td style={tdStyle}>
+                                        <Pill
+                                            label={
+                                                i.risk_category
+                                            }
+                                            color={catColor(
+                                                i.risk_category
+                                            )}
+                                        />
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {i.status}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {i.assigned_analyst ||
+                                            "Not Assigned"}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {new Date(
+                                            i.created_at
+                                        ).toLocaleString()}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        <div
+                                            style={{
+                                                display:
+                                                    "flex",
+                                                gap: 6,
+                                                flexWrap:
+                                                    "wrap",
+                                            }}
+                                        >
+                                            <Btn
+                                                onClick={() =>
+                                                    viewTimeline(
+                                                        i.id
+                                                    )
+                                                }
+                                            >
+                                                Timeline
+                                            </Btn>
+
+                                            {ASSIGN_ROLES.includes(
+                                                role
+                                            ) && (
+                                                <Btn
+                                                    onClick={() =>
+                                                        assignAnalyst(
+                                                            i.id
+                                                        )
+                                                    }
+                                                >
+                                                    Assign
+                                                </Btn>
+                                            )}
+
+                                            {ANALYST_ROLES.includes(
+                                                role
+                                            ) && (
+                                                <Select
+                                                    defaultValue=""
+                                                    onChange={(
+                                                        e
+                                                    ) => {
+                                                        if (
+                                                            e
+                                                                .target
+                                                                .value
+                                                        ) {
+                                                            changeStatus(
+                                                                i.id,
+                                                                e
+                                                                    .target
+                                                                    .value
+                                                            );
+
+                                                            e.target.value =
+                                                                "";
+                                                        }
+                                                    }}
+                                                >
+                                                    <option
+                                                        value=""
+                                                        disabled
+                                                    >
+                                                        Status
+                                                    </option>
+
+                                                    {VALID_STATUSES.map(
+                                                        (s) => (
+                                                            <option
+                                                                key={
+                                                                    s
+                                                                }
+                                                                value={
+                                                                    s
+                                                                }
+                                                            >
+                                                                {s}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </Select>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </Panel>
+
+            {selected && (
+                <Panel
+                    title={`Timeline — Incident #${selected}`}
+                >
+                    <table
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse",
+                        }}
+                    >
                         <thead>
                             <tr>
-                                <th>Timestamp</th>
-                                <th>Activity</th>
-                                <th>Device</th>
-                                <th>IP Address</th>
+                                <th style={thStyle}>
+                                    Timestamp
+                                </th>
+
+                                <th style={thStyle}>
+                                    Activity
+                                </th>
+
+                                <th style={thStyle}>
+                                    Device
+                                </th>
+
+                                <th style={thStyle}>
+                                    IP Address
+                                </th>
                             </tr>
                         </thead>
 
@@ -302,38 +387,39 @@ function Investigations() {
                             {timeline.length === 0 ? (
                                 <tr>
                                     <td
-                                        colSpan="4"
-                                        style={{
-                                            textAlign: "center",
-                                        }}
+                                        style={tdStyle}
+                                        colSpan={4}
                                     >
                                         No Timeline Available
                                     </td>
                                 </tr>
                             ) : (
-                                timeline.map((event, index) => (
-                                    <tr key={index}>
-                                        <td>
+                                timeline.map((e, idx) => (
+                                    <tr key={idx}>
+                                        <td style={tdStyle}>
                                             {new Date(
-                                                event.timestamp
+                                                e.timestamp
                                             ).toLocaleString()}
                                         </td>
 
-                                        <td>{event.activity}</td>
+                                        <td style={tdStyle}>
+                                            {e.activity}
+                                        </td>
 
-                                        <td>{event.device}</td>
+                                        <td style={tdStyle}>
+                                            {e.device}
+                                        </td>
 
-                                        <td>{event.ip_address}</td>
+                                        <td style={tdStyle}>
+                                            {e.ip_address}
+                                        </td>
                                     </tr>
                                 ))
                             )}
                         </tbody>
                     </table>
-                </div>
+                </Panel>
             )}
-
         </div>
     );
 }
-
-export default Investigations;

@@ -1,58 +1,192 @@
+/* ===========================
+   DESIGN TOKENS
+=========================== */
+
+:root {
+    /* Core palette — dark SOC theme */
+    --bg-primary: #0b1120;
+    --bg-secondary: #111827;
+    --bg-elevated: #1a2332;
+    --bg-card: #161f2e;
+    --border-color: #253044;
+
+    --text-primary: #e5e9f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --accent-primary: #3b82f6;
+    --accent-primary-hover: #2563eb;
+    --accent-glow: rgba(59, 130, 246, 0.35);
+
+    /* Severity system — matches badge classes used across the app */
+    --success: #22c55e;
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --warning: #eab308;
+    --warning-bg: rgba(234, 179, 8, 0.12);
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.12);
+    --info: #06b6d4;
+    --info-bg: rgba(6, 182, 212, 0.12);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-glow:
+        0 0 0 1px var(--border-color),
+        0 8px 24px rgba(0, 0, 0, 0.4);
+
+    --font-main:
+        "Segoe UI",
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+    --font-mono:
+        "Consolas",
+        "Courier New",
+        monospace;
+}
+
+/* ===========================
+   GLOBAL RESET
+=========================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: var(--font-main);
 }
 
+/* ===========================
+   BODY
+=========================== */
 
 body {
-    background: #f4f6f9;
-    color: #333;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
 }
+
+/* ===========================
+   LINKS
+=========================== */
 
 a {
     text-decoration: none;
     color: inherit;
 }
 
+/* ===========================
+   BUTTONS
+=========================== */
+
 button {
     cursor: pointer;
-    padding: 10px 18px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
-    background: #2563eb;
+    border-radius: var(--radius-sm);
+    background: var(--accent-primary);
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
 }
 
 button:hover {
-    background: #1d4ed8;
+    background: var(--accent-primary-hover);
+    transform: translateY(-1px);
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+button:active {
+    transform: translateY(0);
 }
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===========================
+   INPUTS & SELECTS
+=========================== */
+
+input,
+select {
+    width: 100%;
+    padding: 10px 14px;
+    margin: 6px 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+
+/* ===========================
+   TABLES
+=========================== */
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background: #fff;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
 }
 
 table th,
 table td {
-    padding: 12px;
-    border: 1px solid #ddd;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
     text-align: left;
 }
 
 table th {
-    background: #2563eb;
-    color: #fff;
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }

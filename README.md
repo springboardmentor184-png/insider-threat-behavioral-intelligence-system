@@ -537,4 +537,194 @@ Email alerts are sent one-by-one with a fixed delay to stay under SMTP rate limi
 
 All Milestone 3 deliverables have been implemented and verified, including the weighted insider risk scoring engine, the full UEBA analytics suite (summary, distribution, peer comparison, trend), the threat investigation workflow with validated status transitions and analyst assignment, the complete alert lifecycle with role-based email notifications, and four role-specific security dashboards.
 
-NEXT: Milestone 4 — Dashboards, Reports, Notification & Escalation, Deployment
+NEXT: Milestone 4 — Dashboards, Reports, Notification & Escalation, Deployment.
+
+Milestone 4  start
+🎯 Milestone 4 — Dashboards, Reports, Testing & Deployment (Week 7-8)
+
+📋 Milestone 4 — Task Checklist
+
+Task
+Status
+
+1 Build executive dashboards ✅ Done
+
+2 Add reports and visualization modules ✅ Done
+
+3 Implement testing and validations ✅ Done
+
+4 Deploy platform using Docker and cloud services 🟡 In Progress
+
+5 Prepare final documentation and presentation ✅ Done
+
+MILESTONE 4: 4/5 TASKS COMPLETE — DOCKER/CLOUD DEPLOYMENT STILL IN PROGRESS
+
+🏗️ What Was Built
+
+1. Executive Dashboards
+
+Four role-specific dashboards, each pulling live data from the backend — no mock/hardcoded numbers:
+
+GET /dashboard/admin-summary — user management, platform analytics, system health, recent alerts/incidents, top high-risk employees
+
+GET /dashboard/manager-summary — organizational average risk, department-level risk breakdown, compliance metrics (open/resolved incidents, resolution rate)
+
+GET /dashboard/soc-summary — total security events, behavioral anomalies flagged, active investigations
+
+GET /dashboard/analyst-summary — investigation queue, total alerts, risk distribution, top risk employees
+
+Full frontend redesign: persistent sidebar navigation (previously only present on one page), live topbar clock, KPI cards, and real chart visualizations (donut risk-distribution chart, bar/area charts of top-risk employees) built with Recharts, wired to real API data throughout
+
+Employee Activity Drill-Down — a reusable component added across Employees, Risk, UEBA, Investigations, and Reports pages, showing exactly what an individual employee did (login timing, USB activity, file access, email, web access) instead of just a risk number
+
+2. Reports & Visualization Modules
+
+GET /reports/ — organization-wide summary (total/active users, high-risk count)
+
+GET /reports/export/risk-assessment/excel — full risk assessment as downloadable Excel
+
+GET /reports/export/investigations/excel — investigation history as downloadable Excel
+
+GET /reports/export/summary/pdf — formatted PDF summary report
+
+Reports page enhanced with a Behavioral Anomaly Summary section pulling from /behavior/anomaly_report, showing severity breakdown and top 5 highest-risk employees directly in the UI, not just in exported files
+
+3. Testing & Validation
+
+API validation: every endpoint manually tested via FastAPI's /docs interface, confirming correct responses and correct error codes (401/403/404/400) for invalid requests
+
+Security / RBAC testing: confirmed role-based access control is enforced server-side, not just hidden in the UI — verified that lower-privilege roles receive 403 Forbidden when attempting admin-only or manager-only actions (e.g. Security Analyst cannot delete users or manage other user accounts)
+
+End-to-end workflow testing: walked through core flows including login → dashboard load → employee search → activity breakdown → risk analysis → alert review → investigation timeline → report export
+
+Performance validation: confirmed the anomaly detection endpoint responds in seconds (not the original 30+ minutes) against the full dataset of 1.7M+ activity log records
+
+4. Deployment — Docker & Cloud (In Progress)
+
+Dockerfile — builds the backend image from Python 3.11-slim, installs dependencies from requirements.txt, exposes port 8000, runs via Uvicorn
+
+docker-compose.yml — orchestrates backend + MySQL containers together, with a MySQL healthcheck so the backend doesn't attempt to connect before the database is actually ready to accept connections
+
+.dockerignore — excludes .env, .git, cache files, and dataset CSVs from the built image
+
+Status: configuration complete and reviewed, but not yet executed successfully end-to-end. Local Docker Desktop installation is blocked by a Windows 10 virtualization/edition compatibility issue on the development machine. Deployment plan going forward is to provision an Azure Virtual Machine, install Docker directly on it, and run the existing docker-compose.yml unchanged — this also better matches the project's stated cloud deployment target (Azure) rather than only a local Docker demo.
+
+5. Final Documentation
+
+READMEs completed for Milestones 1, 2, 3, and this one (Milestone 4)
+
+Final presentation deck built covering problem statement, architecture, tech stack, modules, milestones, workflow, results, challenges faced, and future enhancements
+
+🐛 Useful Problems Solved
+
+Real bugs with a non-obvious cause and a lasting fix.
+
+
+Problem
+
+Cause
+
+Fix
+
+1
+
+Anomaly model permanently broken after one failed training run
+
+Model cache and trained-model cache were set independently; if training failed partway, one cache variable succeeded while the other stayed None, and the broken state persisted across every request until server restart
+
+Reworked caching so both variables are checked and reset together; a failed training attempt now retries cleanly on the next request instead of getting stuck
+
+2
+
+AuthProvider context never populated — login appeared broken on refresh
+
+main.jsx rendered <App /> without wrapping it in <AuthProvider>, so every useAuth() call across the app returned undefined
+
+Wrapped the app root in <AuthProvider>; added useEffect rehydration from localStorage on mount so refresh no longer loses session state
+
+3
+
+Logout button did nothing
+
+Button was wired to navigate to /login without ever calling the context's logout() function, so auth state was never actually cleared
+
+Logout handler now calls logout() (clears context + localStorage) followed by navigate("/login", { replace: true })
+
+4
+
+Activity Logs page would load 1.75M+ rows into the browser at once
+
+Frontend fetch call never sent skip/limit query params despite the backend supporting pagination
+
+Added real pagination (50 records per page) with Previous/Next controls on the frontend
+
+5
+
+Public registration form allowed selecting "Administrator" as a role
+
+Role dropdown on the registration page offered every privilege level with no restriction
+
+Removed the role dropdown from self-registration; all new signups default to "Security Analyst," with role upgrades handled separately by an Administrator
+
+6
+
+Docker backend would crash on first boot
+
+depends_on only waits for the MySQL container to start, not for MySQL itself to finish initializing and accept connections
+
+Added a MySQL healthcheck and changed depends_on to condition: service_healthy, so the backend waits for a real ready signal
+
+🏛️ Architecture Overview
+
+  React (Vite) — Persistent Sidebar Layout       FastAPI (Uvicorn)
+  localhost:5173     <---------------------->    127.0.0.1:8000
+                     fetch / OAuth
+                     JSON + JWT
+                                                          |
+                                                          | SQLAlchemy ORM
+                                                          v
+                                                  MySQL Database
+                                                  insider_threat_db
+                                                  -----------------
+                                                  users, user_profiles
+                                                  activity_logs (1.7M+ rows)
+                                                  alerts, incidents
+                                                  risk_score_history
+                                                  notifications
+                                                  psychometric_profiles
+
+  Deployment target (in progress):
+  Docker Compose (backend + MySQL containers) -> Azure Virtual Machine
+
+🧰 Tech Stack
+
+Frontend: React, Vite, React Router, Recharts, custom dark SOC-themed design system
+
+Backend: FastAPI, Uvicorn, BackgroundTasks
+
+Database: MySQL, SQLAlchemy, PyMySQL
+
+AI/ML: scikit-learn (Isolation Forest), pandas
+
+Notifications: smtplib (Gmail SMTP, App Password auth)
+
+Auth: JWT (python-jose), bcrypt (passlib), Google OAuth 2.0 (Authlib)
+
+DevOps: Docker, Docker Compose, Azure (deployment in progress)
+
+⚠️ Known Limitations / Open Items
+
+Docker/cloud deployment is not yet live. Configuration is complete and reviewed, but the last verification step — actually running docker-compose up --build successfully and confirming the containerized backend serves requests — has not been completed. Local hardware/OS constraints (Windows 10 Docker Desktop compatibility) are the current blocker; Azure VM deployment is the planned path forward.
+
+No automated test suite yet. Testing performed to date is thorough manual testing (API validation via /docs, RBAC verification, workflow walkthroughs), not an automated pytest suite. This is a planned future enhancement for regression protection.
+
+Self-registration role restriction is intentionally not enforced server-side. The frontend registration form only offers "Security Analyst," but the backend /register endpoint does not independently validate this — a direct API call could still request another role. This is a known, documented decision, not an oversight.
+
+✅ Milestone 4 Summary
+
+STATUS: 4/5 TASKS COMPLETE
+
+Executive dashboards, reports and visualization modules, and testing and validation are all complete and verified against real data. Final documentation is complete. Docker containerization is configured and reviewed but deployment execution is still in progress, with Azure VM deployment planned as the next step once local environment constraints are resolved.
+
+ALMOST ALL COMPLETED 
+NEXT: Complete Azure deployment; optionally add an automated pytest suite for regression coverage.

@@ -1,9 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
-import RiskDistributionChart from "./RiskDistributionChart.jsx";
+import {
+    C,
+    Pill,
+    KPI,
+    Panel,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
+
+import {
+    AreaChart,
+    Area,
+    BarChart,
+    Bar,
+    PieChart,
+    Pie,
+    Cell,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -13,857 +35,1140 @@ function authHeaders() {
     };
 }
 
-const ANALYST_ROLES = [
-    "Administrator",
-    "Security Manager",
-    "SOC Engineer",
-    "Security Analyst",
-];
+const sevClr = (s) =>
+    ({
+        Critical: C.accent,
+        High: C.amber,
+        Medium: C.blue,
+        Low: C.green,
+        Informational: C.teal,
+    }[s] || C.muted);
 
-function Dashboard() {
-    const { user } = useAuth();
+const catClr = (c) =>
+    ({
+        Critical: C.accent,
+        High: C.amber,
+        Medium: C.blue,
+        Low: C.green,
+    }[c] || C.muted);
 
-    const role = user?.role;
-    const name = user?.name;
-
-    return (
-        <div className="dashboard-container">
-
-            {/* ================= HEADER ================= */}
-
-            <header className="dashboard-header">
-
-                <h1>
-                    Insider Threat Behavioral Intelligence System
-                </h1>
-
-                <div className="user-info">
-                    <span>{name}</span>
-
-                    <span className="role-badge">
-                        {role}
-                    </span>
-                </div>
-
-            </header>
-
-
-            {/* ================= DASHBOARD BODY ================= */}
-
-            <div className="dashboard-body">
-
-                {/* ================= SIDEBAR ================= */}
-
-                <nav className="sidebar">
-
-                    <ul>
-
-                        <li>
-                            <Link to="/dashboard">
-                                Dashboard
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/employees">
-                                Employees
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/notifications">
-                                Notification
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/investigations">
-                                Investigations
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/ueba">
-                                UEBA Analytics
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/risk">
-                                Risk Analysis
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link to="/activity">
-                                Activity Logs
-                            </Link>
-                        </li>
-
-                        {/* Administrator only */}
-
-                        {role === "Administrator" && (
-                            <li>
-                                <Link to="/users">
-                                    User Management
-                                </Link>
-                            </li>
-                        )}
-
-                        {/* Analyst-level roles */}
-
-                        {ANALYST_ROLES.includes(role) && (
-                            <li>
-                                <Link to="/reports">
-                                    Reports
-                                </Link>
-                            </li>
-                        )}
-
-                        {ANALYST_ROLES.includes(role) && (
-                            <li>
-                                <Link to="/alerts">
-                                    Alerts
-                                </Link>
-                            </li>
-                        )}
-
-                        <li>
-                            <Link to="/profile">
-                                Profile
-                            </Link>
-                        </li>
-
-                    </ul>
-
-                </nav>
-
-
-                {/* ================= MAIN CONTENT ================= */}
-
-                <main className="dashboard-content">
-
-                    <h2 className="panel-title">
-
-                        {role === "Administrator" &&
-                            "Administrator Control Panel"}
-
-                        {role === "Security Manager" &&
-                            "Security Manager Overview"}
-
-                        {role === "SOC Engineer" &&
-                            "SOC Operations Dashboard"}
-
-                        {role === "Security Analyst" &&
-                            "Security Analyst Workspace"}
-
-                    </h2>
-
-
-                    <p className="panel-subtitle">
-                        System views custom-tailored to authorization
-                        clearance: <b>{role}</b>
-                    </p>
-
-
-                    {/* ROLE-SPECIFIC DASHBOARDS */}
-
-                    {role === "Administrator" && (
-                        <AdminOverview />
-                    )}
-
-                    {role === "Security Manager" && (
-                        <ManagerOverview />
-                    )}
-
-                    {role === "SOC Engineer" && (
-                        <SOCOverview />
-                    )}
-
-                    {role === "Security Analyst" && (
-                        <AnalystOverview />
-                    )}
-
-                </main>
-
-            </div>
-
-        </div>
-    );
-}
-
-
-/* =========================================================
-   DASHBOARD DATA HOOK
-========================================================= */
-
-function useDashboardData(endpoint) {
-
-    const [stats, setStats] = useState(null);
+function useApi(endpoint) {
+    const [data, setData] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-
         fetch(`${API_URL}${endpoint}`, {
             headers: authHeaders(),
         })
-
             .then((res) => {
-
                 if (!res.ok) {
                     throw new Error(`Status ${res.status}`);
                 }
 
                 return res.json();
             })
-
-            .then((data) => {
-                setStats(data);
-            })
-
-            .catch((err) => {
-                setError(err.message);
-            });
-
+            .then(setData)
+            .catch((err) => setError(err.message));
     }, [endpoint]);
 
     return {
-        stats,
+        data,
         error,
     };
 }
 
+export default function Dashboard() {
+    const { user } = useAuth();
+    const role = user?.role;
 
-/* =========================================================
-   ADMINISTRATOR OVERVIEW
-========================================================= */
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 18,
+            }}
+        >
+            <div>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 20,
+                    }}
+                >
+                    {role === "Administrator" &&
+                        "Administrator Control Panel"}
+
+                    {role === "Security Manager" &&
+                        "Security Manager Overview"}
+
+                    {role === "SOC Engineer" &&
+                        "SOC Operations Dashboard"}
+
+                    {role === "Security Analyst" &&
+                        "Security Analyst Workspace"}
+                </div>
+
+                <div
+                    style={{
+                        color: C.dim,
+                        fontSize: 12,
+                        marginTop: 3,
+                    }}
+                >
+                    Views tailored to authorization clearance:{" "}
+                    <b style={{ color: C.txt }}>{role}</b>
+                </div>
+            </div>
+
+            {role === "Administrator" && <AdminOverview />}
+
+            {role === "Security Manager" && <ManagerOverview />}
+
+            {role === "SOC Engineer" && <SOCOverview />}
+
+            {role === "Security Analyst" && <AnalystOverview />}
+        </div>
+    );
+}
+
+/* ─────────────────────────────────────────
+   SHARED WIDGETS
+───────────────────────────────────────── */
+
+function RiskDistributionPie({ distribution }) {
+    const pieColors = {
+        Low: C.green,
+        Medium: C.amber,
+        High: C.blue,
+        Critical: C.accent,
+    };
+
+    const pieData = (distribution || []).map((d) => ({
+        name: d.category,
+        value: d.count,
+        color: pieColors[d.category],
+    }));
+
+    return (
+        <Panel
+            title="Risk Distribution"
+            sub="(risk.py)"
+        >
+            {pieData.length > 0 ? (
+                <>
+                    <ResponsiveContainer
+                        width="100%"
+                        height={150}
+                    >
+                        <PieChart>
+                            <Pie
+                                data={pieData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={44}
+                                outerRadius={64}
+                                dataKey="value"
+                                paddingAngle={3}
+                            >
+                                {pieData.map((d, i) => (
+                                    <Cell
+                                        key={i}
+                                        fill={d.color}
+                                    />
+                                ))}
+                            </Pie>
+
+                            <Tooltip
+                                contentStyle={{
+                                    background: C.panel,
+                                    border: `1px solid ${C.border}`,
+                                    fontSize: 11,
+                                }}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 5,
+                            marginTop: 6,
+                        }}
+                    >
+                        {pieData.map((d) => (
+                            <div
+                                key={d.name}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 8,
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        width: 8,
+                                        height: 8,
+                                        borderRadius: 2,
+                                        background: d.color,
+                                    }}
+                                />
+
+                                <div
+                                    style={{
+                                        color: C.dim,
+                                        fontSize: 10,
+                                        flex: 1,
+                                    }}
+                                >
+                                    {d.name}
+                                </div>
+
+                                <div
+                                    style={{
+                                        color: d.color,
+                                        fontSize: 10,
+                                        fontWeight: 700,
+                                    }}
+                                >
+                                    {d.value}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <p style={{ color: C.dim }}>
+                    Loading...
+                </p>
+            )}
+        </Panel>
+    );
+}
+
+function TopRiskChart({ employees }) {
+    return (
+        <Panel
+            title="Top Risk Employees — Behavior Breakdown"
+            sub="(behavior.py)"
+        >
+            {employees?.length > 0 ? (
+                <ResponsiveContainer
+                    width="100%"
+                    height={220}
+                >
+                    <BarChart
+                        data={employees}
+                        barSize={14}
+                    >
+                        <CartesianGrid
+                            strokeDasharray="3 3"
+                            stroke={C.border}
+                        />
+
+                        <XAxis
+                            dataKey="employee"
+                            tick={{
+                                fill: C.dim,
+                                fontSize: 9,
+                            }}
+                            axisLine={false}
+                            tickLine={false}
+                        />
+
+                        <YAxis
+                            tick={{
+                                fill: C.dim,
+                                fontSize: 10,
+                            }}
+                            axisLine={false}
+                            tickLine={false}
+                        />
+
+                        <Tooltip
+                            contentStyle={{
+                                background: C.panel,
+                                border: `1px solid ${C.border}`,
+                                fontSize: 11,
+                            }}
+                        />
+
+                        <Legend
+                            wrapperStyle={{
+                                fontSize: 11,
+                            }}
+                        />
+
+                        <Bar
+                            dataKey="usb_count"
+                            fill={C.amber}
+                            radius={[3, 3, 0, 0]}
+                            name="USB Events"
+                        />
+
+                        <Bar
+                            dataKey="file_access_count"
+                            fill={C.accent}
+                            radius={[3, 3, 0, 0]}
+                            name="File Access"
+                        />
+                    </BarChart>
+                </ResponsiveContainer>
+            ) : (
+                <p style={{ color: C.dim }}>
+                    Loading...
+                </p>
+            )}
+        </Panel>
+    );
+}
+
+function RiskTrendArea({ employees }) {
+    return (
+        <Panel
+            title="Risk Score — Top Flagged Employees"
+            sub="(behavior.py)"
+        >
+            {employees?.length > 0 ? (
+                <ResponsiveContainer
+                    width="100%"
+                    height={180}
+                >
+                    <AreaChart data={employees}>
+                        <defs>
+                            <linearGradient
+                                id="gDash"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                            >
+                                <stop
+                                    offset="5%"
+                                    stopColor={C.accent}
+                                    stopOpacity={0.3}
+                                />
+
+                                <stop
+                                    offset="95%"
+                                    stopColor={C.accent}
+                                    stopOpacity={0}
+                                />
+                            </linearGradient>
+                        </defs>
+
+                        <CartesianGrid
+                            strokeDasharray="3 3"
+                            stroke={C.border}
+                        />
+
+                        <XAxis
+                            dataKey="employee"
+                            tick={{
+                                fill: C.dim,
+                                fontSize: 9,
+                            }}
+                            axisLine={false}
+                            tickLine={false}
+                        />
+
+                        <YAxis
+                            domain={[0, 100]}
+                            tick={{
+                                fill: C.dim,
+                                fontSize: 10,
+                            }}
+                            axisLine={false}
+                            tickLine={false}
+                        />
+
+                        <Tooltip
+                            contentStyle={{
+                                background: C.panel,
+                                border: `1px solid ${C.border}`,
+                                fontSize: 11,
+                            }}
+                        />
+
+                        <Area
+                            type="monotone"
+                            dataKey="risk_score"
+                            stroke={C.accent}
+                            fill="url(#gDash)"
+                            strokeWidth={2}
+                            name="Risk Score"
+                        />
+                    </AreaChart>
+                </ResponsiveContainer>
+            ) : (
+                <p style={{ color: C.dim }}>
+                    Loading...
+                </p>
+            )}
+        </Panel>
+    );
+}
+
+function RecentAlertsPanel({ alerts, navigate }) {
+    return (
+        <Panel
+            title="Recent Alerts"
+            sub="(alerts.py)"
+        >
+            {alerts?.length ? (
+                alerts.slice(0, 5).map((a) => (
+                    <div
+                        key={a.id}
+                        onClick={() => navigate("/alerts")}
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 12,
+                            padding: "9px 12px",
+                            borderRadius: 7,
+                            marginBottom: 7,
+                            background: C.panel,
+                            border: `1px solid ${C.border}`,
+                            borderLeft: `3px solid ${sevClr(
+                                a.severity
+                            )}`,
+                            cursor: "pointer",
+                        }}
+                    >
+                        <Pill
+                            label={a.severity}
+                            color={sevClr(a.severity)}
+                        />
+
+                        <div
+                            style={{
+                                flex: 1,
+                                color: C.txt,
+                                fontWeight: 600,
+                                fontSize: 12,
+                            }}
+                        >
+                            {a.employee}
+                        </div>
+
+                        <Pill
+                            label={a.status}
+                            color={C.dim}
+                        />
+                    </div>
+                ))
+            ) : (
+                <p style={{ color: C.dim }}>
+                    No recent alerts.
+                </p>
+            )}
+        </Panel>
+    );
+}
+
+function TopRiskTable({ employees, navigate }) {
+    return (
+        <Panel title="Top High Risk Employees">
+            {employees?.length ? (
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
+                        <tr>
+                            <th style={thStyle}>
+                                Employee
+                            </th>
+
+                            <th style={thStyle}>
+                                Risk Score
+                            </th>
+
+                            <th style={thStyle}>
+                                Severity
+                            </th>
+
+                            <th style={thStyle}>
+                                USB
+                            </th>
+
+                            <th style={thStyle}>
+                                File Access
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {employees.slice(0, 6).map((e) => (
+                            <tr
+                                key={e.employee}
+                                onClick={() =>
+                                    navigate("/risk")
+                                }
+                                style={{
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <td style={tdStyle}>
+                                    {e.employee}
+                                </td>
+
+                                <td
+                                    style={{
+                                        ...tdStyle,
+                                        color: catClr(
+                                            e.severity
+                                        ),
+                                        fontWeight: 700,
+                                    }}
+                                >
+                                    {e.risk_score}
+                                </td>
+
+                                <td style={tdStyle}>
+                                    <Pill
+                                        label={e.severity}
+                                        color={catClr(
+                                            e.severity
+                                        )}
+                                    />
+                                </td>
+
+                                <td style={tdStyle}>
+                                    {e.usb_count}
+                                </td>
+
+                                <td style={tdStyle}>
+                                    {e.file_access_count}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p style={{ color: C.dim }}>
+                    No high-risk employees currently.
+                </p>
+            )}
+        </Panel>
+    );
+}
+
+/* ─────────────────────────────────────────
+   ROLE VIEWS
+───────────────────────────────────────── */
 
 function AdminOverview() {
+    const {
+        data: stats,
+        error,
+    } = useApi("/dashboard/admin-summary");
 
     const {
-        stats,
-        error,
-    } = useDashboardData("/dashboard/admin-summary");
+        data: distribution,
+    } = useApi("/risk/");
 
+    const {
+        data: topRisk,
+    } = useApi("/behavior/anomalies");
+
+    const navigate = useNavigate();
 
     if (error) {
         return (
-            <p style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load dashboard data: {error}
             </p>
         );
     }
 
-
     if (!stats) {
         return (
-            <p>
+            <p style={{ color: C.dim }}>
                 Loading dashboard...
             </p>
         );
     }
 
-
     return (
         <>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "repeat(4,1fr)",
+                    gap: 12,
+                }}
+            >
+                <KPI
+                    label="Total Users"
+                    value={
+                        stats.user_management
+                            .total_users
+                    }
+                    color={C.blue}
+                />
 
-            {/* ================= DASHBOARD CARDS ================= */}
+                <KPI
+                    label="Active Users"
+                    value={
+                        stats.user_management
+                            .active_users
+                    }
+                    color={C.green}
+                />
 
-            <div className="overview-cards">
+                <KPI
+                    label="Employee Profiles"
+                    value={
+                        stats.platform_analytics
+                            .total_employee_profiles
+                    }
+                    color={C.teal}
+                />
 
-                <div className="card">
-
-                    <span>
-                        Total Users
-                    </span>
-
-                    <h2>
-                        {stats.user_management.total_users}
-                    </h2>
-
-                </div>
-
-
-                <div className="card">
-
-                    <span>
-                        Active Users
-                    </span>
-
-                    <h2 className="green">
-                        {stats.user_management.active_users}
-                    </h2>
-
-                </div>
-
-
-                <div className="card">
-
-                    <span>
-                        Employee Profiles
-                    </span>
-
-                    <h2>
-                        {
-                            stats.platform_analytics
-                                .total_employee_profiles
-                        }
-                    </h2>
-
-                </div>
-
-
-                <div className="card">
-
-                    <span>
-                        System Status
-                    </span>
-
-                    <h2 className="green">
-                        {stats.system_monitoring.api_status}
-                    </h2>
-
-                </div>
-
+                <KPI
+                    label="System Status"
+                    value={
+                        stats.system_monitoring
+                            .api_status
+                    }
+                    color={C.green}
+                    sub="API health"
+                />
             </div>
 
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "1.6fr 1fr",
+                    gap: 12,
+                    marginTop: 18,
+                }}
+            >
+                <TopRiskTable
+                    employees={topRisk}
+                    navigate={navigate}
+                />
 
-            {/* ================= RISK DISTRIBUTION ================= */}
-
-            <div style={{ marginTop: "30px" }}>
-
-                <h3>
-                    Risk Distribution
-                </h3>
-
-                <RiskDistributionChart />
-
+                <RiskDistributionPie
+                    distribution={distribution}
+                />
             </div>
 
-
-            {/* ================= RECENT ALERTS ================= */}
-
-            <div style={{ marginTop: "35px" }}>
-
-                <h3>
-                    Recent Alerts
-                </h3>
-
-
-                <table className="log-table">
-
-                    <thead>
-
-                        <tr>
-                            <th>ID</th>
-                            <th>Employee</th>
-                            <th>Severity</th>
-                            <th>Status</th>
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {stats.recent_alerts?.map((alert) => (
-
-                            <tr key={alert.id}>
-
-                                <td>
-                                    {alert.id}
-                                </td>
-
-                                <td>
-                                    {alert.employee}
-                                </td>
-
-                                <td>
-                                    {alert.severity}
-                                </td>
-
-                                <td>
-                                    {alert.status}
-                                </td>
-
-                            </tr>
-
-                        ))}
-
-                    </tbody>
-
-                </table>
-
+            <div style={{ marginTop: 18 }}>
+                <TopRiskChart
+                    employees={topRisk?.slice(0, 8)}
+                />
             </div>
 
-
-            {/* ================= RECENT NOTIFICATIONS ================= */}
-
-            <div style={{ marginTop: "35px" }}>
-
-                <h3>
-                    Recent Notifications
-                </h3>
-
-
-                <table className="log-table">
-
-                    <thead>
-
-                        <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Severity</th>
-                            <th>Read</th>
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {stats.recent_notifications?.map(
-                            (notification) => (
-
-                                <tr key={notification.id}>
-
-                                    <td>
-                                        {notification.id}
-                                    </td>
-
-                                    <td>
-                                        {notification.title}
-                                    </td>
-
-                                    <td>
-                                        {notification.severity}
-                                    </td>
-
-                                    <td>
-                                        {notification.is_read
-                                            ? "Yes"
-                                            : "No"}
-                                    </td>
-
-                                </tr>
-
-                            )
-                        )}
-
-                    </tbody>
-
-                </table>
-
+            <div style={{ marginTop: 18 }}>
+                <RecentAlertsPanel
+                    alerts={stats.recent_alerts}
+                    navigate={navigate}
+                />
             </div>
-
-
-            {/* ================= RECENT INCIDENTS ================= */}
-
-            <div style={{ marginTop: "35px" }}>
-
-                <h3>
-                    Recent Incidents
-                </h3>
-
-
-                <table className="log-table">
-
-                    <thead>
-
-                        <tr>
-                            <th>ID</th>
-                            <th>Employee</th>
-                            <th>Risk</th>
-                            <th>Status</th>
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {stats.recent_incidents?.map(
-                            (incident) => (
-
-                                <tr key={incident.id}>
-
-                                    <td>
-                                        {incident.id}
-                                    </td>
-
-                                    <td>
-                                        {incident.employee_id}
-                                    </td>
-
-                                    <td>
-                                        {incident.risk_category}
-                                    </td>
-
-                                    <td>
-                                        {incident.status}
-                                    </td>
-
-                                </tr>
-
-                            )
-                        )}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            {/* ================= HIGH RISK EMPLOYEES ================= */}
-
-            <div style={{ marginTop: "35px" }}>
-
-                <h3>
-                    Top High Risk Employees
-                </h3>
-
-
-                <table className="log-table">
-
-                    <thead>
-
-                        <tr>
-                            <th>Employee</th>
-                            <th>Department</th>
-                            <th>Risk Score</th>
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {stats.high_risk_employees?.map(
-                            (employee) => (
-
-                                <tr key={employee.employee_id}>
-
-                                    <td>
-                                        {employee.employee_id}
-                                    </td>
-
-                                    <td>
-                                        {employee.department}
-                                    </td>
-
-                                    <td>
-                                        {employee.risk_score}
-                                    </td>
-
-                                </tr>
-
-                            )
-                        )}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
         </>
     );
 }
 
-
-/* =========================================================
-   SECURITY MANAGER OVERVIEW
-========================================================= */
-
 function ManagerOverview() {
+    const {
+        data: stats,
+        error,
+    } = useApi("/dashboard/manager-summary");
 
     const {
-        stats,
-        error,
-    } = useDashboardData("/dashboard/manager-summary");
+        data: distribution,
+    } = useApi("/risk/");
 
+    const {
+        data: topRisk,
+    } = useApi("/behavior/anomalies");
 
     if (error) {
         return (
-            <p style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load manager data: {error}
             </p>
         );
     }
 
-
     if (!stats) {
         return (
-            <p>
+            <p style={{ color: C.dim }}>
                 Loading manager data...
             </p>
         );
     }
 
-
     return (
         <>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "repeat(4,1fr)",
+                    gap: 12,
+                }}
+            >
+                <KPI
+                    label="Organizational Avg Risk"
+                    value={
+                        stats.organizational_avg_risk_score
+                    }
+                    color={C.amber}
+                />
 
-            <div className="overview-cards">
+                <KPI
+                    label="Open Incidents"
+                    value={
+                        stats.compliance_metrics
+                            .open_incidents
+                    }
+                    color={C.blue}
+                />
 
-                <div className="card">
+                <KPI
+                    label="Resolution Rate"
+                    value={`${stats.compliance_metrics.resolution_rate_percent}%`}
+                    color={C.green}
+                />
 
-                    <span>
-                        Organizational Avg Risk
-                    </span>
-
-                    <h2 className="amber">
-                        {stats.organizational_avg_risk_score}
-                    </h2>
-
-                </div>
-
-
-                <div className="card">
-
-                    <span>
-                        Open Incidents
-                    </span>
-
-                    <h2>
-                        {stats.compliance_metrics.open_incidents}
-                    </h2>
-
-                </div>
-
-
-                <div className="card">
-
-                    <span>
-                        Resolution Rate
-                    </span>
-
-                    <h2 className="green">
-                        {
-                            stats.compliance_metrics
-                                .resolution_rate_percent
-                        }%
-                    </h2>
-
-                </div>
-
-
-                <div className="card">
-
-                    <span>
-                        Total Employees
-                    </span>
-
-                    <h2>
-                        {stats.total_employees}
-                    </h2>
-
-                </div>
-
+                <KPI
+                    label="Total Employees"
+                    value={stats.total_employees}
+                    color={C.teal}
+                />
             </div>
 
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "1.6fr 1fr",
+                    gap: 12,
+                    marginTop: 18,
+                }}
+            >
+                <Panel title="Department Risk Breakdown">
+                    {stats.department_risk_breakdown
+                        ?.length ? (
+                        <table
+                            style={{
+                                width: "100%",
+                                borderCollapse:
+                                    "collapse",
+                            }}
+                        >
+                            <thead>
+                                <tr>
+                                    <th style={thStyle}>
+                                        Department
+                                    </th>
 
-            <div style={{ marginTop: "30px" }}>
+                                    <th style={thStyle}>
+                                        Avg Risk
+                                    </th>
 
-                <h3>
-                    Risk Distribution
-                </h3>
+                                    <th style={thStyle}>
+                                        Employees
+                                    </th>
+                                </tr>
+                            </thead>
 
-                <RiskDistributionChart />
+                            <tbody>
+                                {stats.department_risk_breakdown.map(
+                                    (d) => (
+                                        <tr
+                                            key={
+                                                d.department
+                                            }
+                                        >
+                                            <td
+                                                style={
+                                                    tdStyle
+                                                }
+                                            >
+                                                {
+                                                    d.department
+                                                }
+                                            </td>
 
+                                            <td
+                                                style={{
+                                                    ...tdStyle,
+                                                    color: C.amber,
+                                                    fontWeight: 700,
+                                                }}
+                                            >
+                                                {
+                                                    d.avg_risk_score
+                                                }
+                                            </td>
+
+                                            <td
+                                                style={
+                                                    tdStyle
+                                                }
+                                            >
+                                                {
+                                                    d.employee_count
+                                                }
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p
+                            style={{
+                                color: C.dim,
+                            }}
+                        >
+                            No department data
+                            available.
+                        </p>
+                    )}
+                </Panel>
+
+                <RiskDistributionPie
+                    distribution={distribution}
+                />
             </div>
 
+            <div style={{ marginTop: 18 }}>
+                <TopRiskChart
+                    employees={topRisk?.slice(0, 8)}
+                />
+            </div>
         </>
     );
 }
 
-
-/* =========================================================
-   SOC ENGINEER OVERVIEW
-========================================================= */
-
 function SOCOverview() {
+    const {
+        data: stats,
+        error,
+    } = useApi("/dashboard/soc-summary");
 
     const {
-        stats,
-        error,
-    } = useDashboardData("/dashboard/soc-summary");
-
+        data: topRisk,
+    } = useApi("/behavior/anomalies");
 
     if (error) {
         return (
-            <p style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load SOC data: {error}
             </p>
         );
     }
 
-
     if (!stats) {
         return (
-            <p>
+            <p style={{ color: C.dim }}>
                 Loading SOC data...
             </p>
         );
     }
 
-
     return (
+        <>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "repeat(4,1fr)",
+                    gap: 12,
+                }}
+            >
+                <KPI
+                    label="Total Security Events"
+                    value={
+                        stats.total_security_events
+                    }
+                    color={C.blue}
+                />
 
-        <div className="overview-cards">
+                <KPI
+                    label="Behavioral Anomalies"
+                    value={
+                        stats.behavioral_anomalies_flagged
+                    }
+                    color={C.accent}
+                    blink
+                />
 
-            <div className="card">
+                <KPI
+                    label="Active Investigations"
+                    value={
+                        stats.active_investigations
+                            .count
+                    }
+                    color={C.amber}
+                />
 
-                <span>
-                    Total Security Events
-                </span>
-
-                <h2>
-                    {stats.total_security_events}
-                </h2>
-
+                <KPI
+                    label="Threat Intel Feed"
+                    value="Updated"
+                    color={C.green}
+                />
             </div>
 
-
-            <div className="card">
-
-                <span>
-                    Behavioral Anomalies
-                </span>
-
-                <h2 className="red">
-                    {stats.behavioral_anomalies_flagged}
-                </h2>
-
+            <div style={{ marginTop: 18 }}>
+                <RiskTrendArea
+                    employees={topRisk?.slice(0, 7)}
+                />
             </div>
 
+            <div style={{ marginTop: 18 }}>
+                <Panel title="Active Investigations">
+                    {stats.active_investigations
+                        .items?.length ? (
+                        stats.active_investigations.items.map(
+                            (i) => (
+                                <div
+                                    key={i.id}
+                                    style={{
+                                        display: "flex",
+                                        alignItems:
+                                            "center",
+                                        gap: 12,
+                                        padding:
+                                            "9px 12px",
+                                        borderRadius: 7,
+                                        marginBottom: 7,
+                                        background:
+                                            C.panel,
+                                        border: `1px solid ${C.border}`,
+                                    }}
+                                >
+                                    <Pill
+                                        label={
+                                            i.risk_category
+                                        }
+                                        color={catClr(
+                                            i.risk_category
+                                        )}
+                                    />
 
-            <div className="card">
+                                    <div
+                                        style={{
+                                            flex: 1,
+                                            color: C.txt,
+                                            fontWeight: 600,
+                                            fontSize: 12,
+                                        }}
+                                    >
+                                        {
+                                            i.employee_id
+                                        }
+                                    </div>
 
-                <span>
-                    Active Investigations
-                </span>
-
-                <h2>
-                    {stats.active_investigations.count}
-                </h2>
-
+                                    <div
+                                        style={{
+                                            color: C.dim,
+                                            fontSize: 11,
+                                        }}
+                                    >
+                                        {i.status}
+                                    </div>
+                                </div>
+                            )
+                        )
+                    ) : (
+                        <p
+                            style={{
+                                color: C.dim,
+                            }}
+                        >
+                            No active investigations.
+                        </p>
+                    )}
+                </Panel>
             </div>
-
-
-            <div className="card">
-
-                <span>
-                    Threat Intel Feed
-                </span>
-
-                <h2 className="green">
-                    Updated
-                </h2>
-
-            </div>
-
-        </div>
-
+        </>
     );
 }
 
-
-/* =========================================================
-   SECURITY ANALYST OVERVIEW
-========================================================= */
-
 function AnalystOverview() {
+    const {
+        data: stats,
+        error,
+    } = useApi("/dashboard/analyst-summary");
 
     const {
-        stats,
-        error,
-    } = useDashboardData("/dashboard/analyst-summary");
-
+        data: topRisk,
+    } = useApi("/behavior/anomalies");
 
     if (error) {
         return (
-            <p style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load analyst data: {error}
             </p>
         );
     }
 
-
     if (!stats) {
         return (
-            <p>
+            <p style={{ color: C.dim }}>
                 Loading analyst data...
             </p>
         );
     }
 
-
     return (
-
-        <div className="overview-cards">
-
-            <div className="card">
-
-                <span>
-                    Open Incidents
-                </span>
-
-                <h2>
-                    {stats.investigation_queue.open_incidents}
-                </h2>
-
-            </div>
-
-
-            <div className="card">
-
-                <span>
-                    Total Alerts
-                </span>
-
-                <h2>
-                    {stats.total_alerts}
-                </h2>
-
-            </div>
-
-
-            <div className="card">
-
-                <span>
-                    High Risk Employees
-                </span>
-
-                <h2 className="red">
-
-                    {
-                        stats.risk_distribution.High +
-                        stats.risk_distribution.Critical
+        <>
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "repeat(4,1fr)",
+                    gap: 12,
+                }}
+            >
+                <KPI
+                    label="Open Incidents"
+                    value={
+                        stats.investigation_queue
+                            .open_incidents
                     }
+                    color={C.blue}
+                />
 
-                </h2>
+                <KPI
+                    label="Total Alerts"
+                    value={stats.total_alerts}
+                    color={C.amber}
+                    blink
+                />
 
+                <KPI
+                    label="High Risk Employees"
+                    value={
+                        stats.risk_distribution
+                            .High +
+                        stats.risk_distribution
+                            .Critical
+                    }
+                    color={C.accent}
+                />
+
+                <KPI
+                    label="Total Employees Monitored"
+                    value={
+                        stats.total_employees_monitored
+                    }
+                    color={C.teal}
+                />
             </div>
 
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "1.6fr 1fr",
+                    gap: 12,
+                    marginTop: 18,
+                }}
+            >
+                <TopRiskChart
+                    employees={topRisk?.slice(0, 8)}
+                />
 
-            <div className="card">
-
-                <span>
-                    Total Employees Monitored
-                </span>
-
-                <h2>
-                    {stats.total_employees_monitored}
-                </h2>
-
+                <RiskDistributionPie
+                    distribution={[
+                        {
+                            category: "Low",
+                            count:
+                                stats.risk_distribution
+                                    .Low,
+                        },
+                        {
+                            category: "Medium",
+                            count:
+                                stats.risk_distribution
+                                    .Medium,
+                        },
+                        {
+                            category: "High",
+                            count:
+                                stats.risk_distribution
+                                    .High,
+                        },
+                        {
+                            category: "Critical",
+                            count:
+                                stats.risk_distribution
+                                    .Critical,
+                        },
+                    ]}
+                />
             </div>
 
-        </div>
+            {stats.top_risk_employees?.length > 0 && (
+                <div style={{ marginTop: 18 }}>
+                    <Panel title="Top Risk Employees">
+                        {stats.top_risk_employees.map(
+                            (e) => (
+                                <div
+                                    key={e.employee_id}
+                                    style={{
+                                        display: "flex",
+                                        alignItems:
+                                            "center",
+                                        gap: 12,
+                                        padding:
+                                            "9px 12px",
+                                        borderRadius: 7,
+                                        marginBottom: 7,
+                                        background:
+                                            C.panel,
+                                        border: `1px solid ${C.border}`,
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            flex: 1,
+                                            color: C.txt,
+                                            fontWeight: 600,
+                                            fontSize: 12,
+                                        }}
+                                    >
+                                        {
+                                            e.employee_id
+                                        }
+                                    </div>
 
+                                    <div
+                                        style={{
+                                            color: C.dim,
+                                            fontSize: 11,
+                                        }}
+                                    >
+                                        {e.department}
+                                    </div>
+
+                                    <div
+                                        style={{
+                                            color: C.accent,
+                                            fontWeight: 700,
+                                        }}
+                                    >
+                                        {e.risk_score}
+                                    </div>
+                                </div>
+                            )
+                        )}
+                    </Panel>
+                </div>
+            )}
+        </>
     );
 }
-
-
-export default Dashboard;

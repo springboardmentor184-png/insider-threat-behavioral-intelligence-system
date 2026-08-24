@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
-import "../styles/Dashboard.css";
+import {
+    C,
+    Pill,
+    Panel,
+    Btn,
+    Input,
+    Select,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -11,7 +20,7 @@ function authHeaders() {
     };
 }
 
-function Users() {
+export default function Users() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
@@ -35,9 +44,7 @@ function Users() {
                 throw new Error(`Status ${res.status}`);
             }
 
-            const data = await res.json();
-
-            setUsers(data);
+            setUsers(await res.json());
         } catch (err) {
             console.log(err);
         }
@@ -74,7 +81,6 @@ function Users() {
 
             if (!res.ok) {
                 const err = await res.json();
-
                 throw new Error(
                     err.detail || "Request failed"
                 );
@@ -117,14 +123,16 @@ function Users() {
         }
 
         try {
-            const res = await fetch(`${API_URL}/users/${id}`, {
-                method: "DELETE",
-                headers: authHeaders(),
-            });
+            const res = await fetch(
+                `${API_URL}/users/${id}`,
+                {
+                    method: "DELETE",
+                    headers: authHeaders(),
+                }
+            );
 
             if (!res.ok) {
                 const err = await res.json();
-
                 throw new Error(
                     err.detail || "Delete failed"
                 );
@@ -137,21 +145,40 @@ function Users() {
     };
 
     if (loading) {
-        return <h2>Loading Users...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Users...
+            </p>
+        );
     }
 
     return (
-        <div className="dashboard-container">
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
             <div
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginBottom: "20px",
+                    alignItems: "center",
                 }}
             >
-                <h2>User Management</h2>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 18,
+                    }}
+                >
+                    User Management
+                </div>
 
-                <button
+                <Btn
+                    variant="primary"
                     onClick={() => {
                         setShowForm(!showForm);
                         setEditingId(null);
@@ -166,159 +193,176 @@ function Users() {
                     }}
                 >
                     {showForm ? "Cancel" : "Add User"}
-                </button>
+                </Btn>
             </div>
 
             {showForm && (
-                <form
-                    onSubmit={saveUser}
-                    className="add-employee-form"
-                >
-                    <input
-                        name="full_name"
-                        placeholder="Full Name"
-                        value={form.full_name}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                    />
-
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        value={form.password}
-                        onChange={handleChange}
-                        required={!editingId}
-                    />
-
-                    <input
-                        name="department"
-                        placeholder="Department"
-                        value={form.department}
-                        onChange={handleChange}
-                    />
-
-                    <select
-                        name="role"
-                        value={form.role}
-                        onChange={handleChange}
+                <Panel>
+                    <form
+                        onSubmit={saveUser}
+                        style={{
+                            display: "flex",
+                            gap: 10,
+                            flexWrap: "wrap",
+                            alignItems: "flex-end",
+                        }}
                     >
-                        <option value="Administrator">
-                            Administrator
-                        </option>
+                        <Input
+                            name="full_name"
+                            placeholder="Full Name"
+                            value={form.full_name}
+                            onChange={handleChange}
+                            required
+                        />
 
-                        <option value="Security Manager">
-                            Security Manager
-                        </option>
+                        <Input
+                            name="email"
+                            type="email"
+                            placeholder="Email"
+                            value={form.email}
+                            onChange={handleChange}
+                            required
+                        />
 
-                        <option value="SOC Engineer">
-                            SOC Engineer
-                        </option>
+                        <Input
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            value={form.password}
+                            onChange={handleChange}
+                            required={!editingId}
+                        />
 
-                        <option value="Security Analyst">
-                            Security Analyst
-                        </option>
-                    </select>
+                        <Input
+                            name="department"
+                            placeholder="Department"
+                            value={form.department}
+                            onChange={handleChange}
+                        />
 
-                    <button type="submit">
-                        {editingId
-                            ? "Update User"
-                            : "Create User"}
-                    </button>
-                </form>
+                        <Select
+                            name="role"
+                            value={form.role}
+                            onChange={handleChange}
+                        >
+                            <option>
+                                Administrator
+                            </option>
+
+                            <option>
+                                Security Manager
+                            </option>
+
+                            <option>
+                                SOC Engineer
+                            </option>
+
+                            <option>
+                                Security Analyst
+                            </option>
+                        </Select>
+
+                        <Btn
+                            type="submit"
+                            variant="primary"
+                        >
+                            {editingId
+                                ? "Update User"
+                                : "Create User"}
+                        </Btn>
+                    </form>
+                </Panel>
             )}
 
-            <table className="log-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Department</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {users.length === 0 ? (
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
                         <tr>
-                            <td
-                                colSpan="7"
-                                style={{
-                                    textAlign: "center",
-                                }}
-                            >
-                                No Users Found
-                            </td>
+                            <th style={thStyle}>ID</th>
+                            <th style={thStyle}>Name</th>
+                            <th style={thStyle}>Email</th>
+                            <th style={thStyle}>Role</th>
+                            <th style={thStyle}>Department</th>
+                            <th style={thStyle}>Status</th>
+                            <th style={thStyle}>Actions</th>
                         </tr>
-                    ) : (
-                        users.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
+                    </thead>
 
-                                <td>{user.full_name}</td>
-
-                                <td>{user.email}</td>
-
-                                <td>{user.role}</td>
-
-                                <td>
-                                    {user.department ||
-                                        "Not Available"}
+                    <tbody>
+                        {users.map((u) => (
+                            <tr key={u.id}>
+                                <td style={tdStyle}>
+                                    {u.id}
                                 </td>
 
-                                <td>
-                                    <span
-                                        className={`badge ${
-                                            user.is_active
-                                                ? "success"
-                                                : "danger"
-                                        }`}
-                                    >
-                                        {user.is_active
-                                            ? "Active"
-                                            : "Inactive"}
-                                    </span>
+                                <td style={tdStyle}>
+                                    {u.full_name}
                                 </td>
 
-                                <td>
-                                    <button
-                                        onClick={() =>
-                                            editUser(user)
+                                <td style={tdStyle}>
+                                    {u.email}
+                                </td>
+
+                                <td style={tdStyle}>
+                                    {u.role}
+                                </td>
+
+                                <td style={tdStyle}>
+                                    {u.department}
+                                </td>
+
+                                <td style={tdStyle}>
+                                    <Pill
+                                        label={
+                                            u.is_active
+                                                ? "Active"
+                                                : "Inactive"
                                         }
+                                        color={
+                                            u.is_active
+                                                ? C.green
+                                                : C.accent
+                                        }
+                                    />
+                                </td>
+
+                                <td style={tdStyle}>
+                                    <div
                                         style={{
-                                            marginRight: "8px",
+                                            display: "flex",
+                                            gap: 6,
                                         }}
                                     >
-                                        Edit
-                                    </button>
+                                        <Btn
+                                            onClick={() =>
+                                                editUser(u)
+                                            }
+                                        >
+                                            Edit
+                                        </Btn>
 
-                                    <button
-                                        onClick={() =>
-                                            deleteUser(user.id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
+                                        <Btn
+                                            variant="danger"
+                                            onClick={() =>
+                                                deleteUser(
+                                                    u.id
+                                                )
+                                            }
+                                        >
+                                            Delete
+                                        </Btn>
+                                    </div>
                                 </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ))}
+                    </tbody>
+                </table>
+            </Panel>
         </div>
     );
 }
-
-export default Users;

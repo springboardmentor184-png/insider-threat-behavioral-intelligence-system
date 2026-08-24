@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
+import EmployeeBehaviorDetail from "../assets/components/EmployeeBehaviorDetail";
+import { C, Panel, Btn, thStyle, tdStyle } from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -18,7 +19,7 @@ const ANALYST_ROLES = [
     "Security Analyst",
 ];
 
-function Reports() {
+export default function Reports() {
     const { user } = useAuth();
     const role = user?.role;
 
@@ -48,244 +49,298 @@ function Reports() {
 
                 return r.json();
             }),
-        ]).then(([reportRes, anomalyRes]) => {
-            if (reportRes.status === "fulfilled") {
-                setReport(reportRes.value);
+        ]).then(([r1, r2]) => {
+            if (r1.status === "fulfilled") {
+                setReport(r1.value);
             } else {
                 setError(
-                    reportRes.reason?.message ||
-                        "Failed to load report summary"
+                    r1.reason?.message || "Failed to load report"
                 );
             }
 
-            if (anomalyRes.status === "fulfilled") {
-                setAnomalyReport(anomalyRes.value);
+            if (r2.status === "fulfilled") {
+                setAnomalyReport(r2.value);
             }
 
             setLoading(false);
         });
     }, []);
 
-    async function downloadRiskExcel() {
+    async function download(path, filename) {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(
-            `${API_URL}/reports/export/risk-assessment/excel`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+        const response = await fetch(`${API_URL}${path}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
         const blob = await response.blob();
 
         const url = window.URL.createObjectURL(blob);
 
         const a = document.createElement("a");
+
         a.href = url;
-        a.download = "risk_assessment.xlsx";
-
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-    }
-
-    async function downloadInvestigationExcel() {
-        const token = localStorage.getItem("token");
-
-        const response = await fetch(
-            `${API_URL}/reports/export/investigations/excel`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-
-        const blob = await response.blob();
-
-        const url = window.URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "investigation_report.xlsx";
-
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-    }
-
-    async function downloadSummaryPDF() {
-        const token = localStorage.getItem("token");
-
-        const response = await fetch(
-            `${API_URL}/reports/export/summary/pdf`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-
-        const blob = await response.blob();
-
-        const url = window.URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "insider_threat_summary_report.pdf";
-
+        a.download = filename;
         a.click();
 
         window.URL.revokeObjectURL(url);
     }
 
     if (loading) {
-        return <h2>Loading Reports...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Reports...
+            </p>
+        );
     }
 
     if (error) {
         return (
-            <h2 style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load reports: {error}
-            </h2>
+            </p>
         );
     }
 
     return (
-        <div className="dashboard-container">
-            <h1>Security Reports</h1>
-
-            <div className="overview-cards">
-                <div className="card">
-                    <span>Total Users</span>
-                    <h2>{report.total_users}</h2>
-                </div>
-
-                <div className="card">
-                    <span>Active Users</span>
-                    <h2 className="green">
-                        {report.active_users}
-                    </h2>
-                </div>
-
-                <div className="card">
-                    <span>High Risk Users</span>
-                    <h2 className="red">
-                        {report.high_risk_users}
-                    </h2>
-                </div>
-
-                {anomalyReport && (
-                    <div className="card">
-                        <span>Total Flagged (Behavioral)</span>
-                        <h2 className="red">
-                            {anomalyReport.total_flagged}
-                        </h2>
-                    </div>
-                )}
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 18,
+            }}
+        >
+            <div
+                style={{
+                    color: C.txt,
+                    fontWeight: 800,
+                    fontSize: 18,
+                }}
+            >
+                Security Reports
             </div>
 
-            <br />
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(4, 1fr)",
+                    gap: 12,
+                }}
+            >
+                {[
+                    [
+                        "Total Users",
+                        report.total_users,
+                        C.blue,
+                    ],
+                    [
+                        "Active Users",
+                        report.active_users,
+                        C.green,
+                    ],
+                    [
+                        "High Risk Users",
+                        report.high_risk_users,
+                        C.accent,
+                    ],
+                    [
+                        "Total Flagged",
+                        anomalyReport?.total_flagged ?? "—",
+                        C.amber,
+                    ],
+                ].map(([label, val, color]) => (
+                    <div
+                        key={label}
+                        style={{
+                            background: C.card,
+                            border: `1px solid ${C.border}`,
+                            borderRadius: 10,
+                            padding: "14px 16px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                color: C.dim,
+                                fontSize: 10,
+                                textTransform: "uppercase",
+                                marginBottom: 5,
+                            }}
+                        >
+                            {label}
+                        </div>
 
-            {/* Behavioral analytics report */}
+                        <div
+                            style={{
+                                color,
+                                fontSize: 24,
+                                fontWeight: 800,
+                            }}
+                        >
+                            {val}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
             {anomalyReport && (
-                <div className="card">
-                    <h3>Behavioral Anomaly Summary</h3>
-
+                <Panel title="Behavioral Anomaly Summary">
                     <table
-                        className="log-table"
-                        style={{ marginTop: "12px" }}
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse",
+                            marginBottom: 16,
+                        }}
                     >
                         <thead>
                             <tr>
-                                <th>Category</th>
-                                <th>Count</th>
+                                <th style={thStyle}>
+                                    Category
+                                </th>
+
+                                <th style={thStyle}>
+                                    Count
+                                </th>
                             </tr>
                         </thead>
 
                         <tbody>
                             {Object.entries(
                                 anomalyReport.severity_breakdown
-                            ).map(([category, count]) => (
-                                <tr key={category}>
-                                    <td>{category}</td>
-                                    <td>{count}</td>
+                            ).map(([cat, count]) => (
+                                <tr key={cat}>
+                                    <td style={tdStyle}>
+                                        {cat}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {count}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
-                    <h4 style={{ marginTop: "20px" }}>
+                    <div
+                        style={{
+                            color: C.txt,
+                            fontWeight: 700,
+                            fontSize: 13,
+                            marginBottom: 8,
+                        }}
+                    >
                         Top 5 Highest Risk Employees
-                    </h4>
+                    </div>
 
-                    <table className="log-table">
+                    <table
+                        style={{
+                            width: "100%",
+                            borderCollapse: "collapse",
+                        }}
+                    >
                         <thead>
                             <tr>
-                                <th>Employee</th>
-                                <th>Risk Score</th>
-                                <th>Severity</th>
+                                <th style={thStyle}>
+                                    Employee
+                                </th>
+
+                                <th style={thStyle}>
+                                    Risk
+                                </th>
+
+                                <th style={thStyle}>
+                                    Severity
+                                </th>
+
+                                <th style={thStyle}>
+                                    Activity
+                                </th>
                             </tr>
                         </thead>
 
                         <tbody>
                             {anomalyReport.top_5_highest_risk?.map(
-                                (employee) => (
-                                    <tr key={employee.employee}>
-                                        <td>{employee.employee}</td>
-                                        <td>{employee.risk_score}</td>
-                                        <td>{employee.severity}</td>
+                                (e) => (
+                                    <tr key={e.employee}>
+                                        <td style={tdStyle}>
+                                            {e.employee}
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            {e.risk_score}
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            {e.severity}
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            <EmployeeBehaviorDetail
+                                                employeeId={e.employee}
+                                            />
+                                        </td>
                                     </tr>
                                 )
                             )}
                         </tbody>
                     </table>
-                </div>
+                </Panel>
             )}
 
-            <br />
-
-            <div className="card">
-                <h3>Generated By</h3>
-                <p>{report.generated_by}</p>
-            </div>
-
-            <br />
+            <Panel title="Generated By">
+                <p style={{ color: C.dim }}>
+                    {report.generated_by}
+                </p>
+            </Panel>
 
             {ANALYST_ROLES.includes(role) && (
-                <>
-                    <h3>Export Reports</h3>
-
+                <Panel title="Export Reports">
                     <div
                         style={{
                             display: "flex",
-                            gap: "15px",
+                            gap: 12,
                             flexWrap: "wrap",
-                            marginTop: "20px",
                         }}
                     >
-                        <button onClick={downloadRiskExcel}>
+                        <Btn
+                            variant="primary"
+                            onClick={() =>
+                                download(
+                                    "/reports/export/risk-assessment/excel",
+                                    "risk_assessment.xlsx"
+                                )
+                            }
+                        >
                             Download Risk Assessment Excel
-                        </button>
+                        </Btn>
 
-                        <button
-                            onClick={
-                                downloadInvestigationExcel
+                        <Btn
+                            variant="primary"
+                            onClick={() =>
+                                download(
+                                    "/reports/export/investigations/excel",
+                                    "investigation_report.xlsx"
+                                )
                             }
                         >
                             Download Investigation Excel
-                        </button>
+                        </Btn>
 
-                        <button onClick={downloadSummaryPDF}>
+                        <Btn
+                            variant="primary"
+                            onClick={() =>
+                                download(
+                                    "/reports/export/summary/pdf",
+                                    "insider_threat_summary_report.pdf"
+                                )
+                            }
+                        >
                             Download Summary PDF
-                        </button>
+                        </Btn>
                     </div>
-                </>
+                </Panel>
             )}
         </div>
     );
 }
-
-export default Reports;

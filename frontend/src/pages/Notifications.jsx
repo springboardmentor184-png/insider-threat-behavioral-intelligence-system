@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
+import {
+    C,
+    Panel,
+    Btn,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -19,7 +25,7 @@ const GENERATE_ROLES = [
     "Security Analyst",
 ];
 
-function Notifications() {
+export default function Notifications() {
     const { user } = useAuth();
     const role = user?.role;
 
@@ -39,9 +45,7 @@ function Notifications() {
                 }
             );
 
-            const data = await res.json();
-
-            setNotifications(data);
+            setNotifications(await res.json());
 
             const countRes = await fetch(
                 `${API_URL}/notifications/summary/unread-count`,
@@ -63,7 +67,7 @@ function Notifications() {
     useEffect(() => {
         loadNotifications();
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line
     }, [unreadOnly]);
 
     async function generateAlertNotifications() {
@@ -103,48 +107,71 @@ function Notifications() {
     }
 
     if (loading) {
-        return <h2>Loading Notifications...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Notifications...
+            </p>
+        );
     }
 
     return (
-        <div className="dashboard-container">
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
             <div
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginBottom: "20px",
+                    alignItems: "center",
                 }}
             >
-                <h2>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 18,
+                    }}
+                >
                     Notifications ({unreadCount} Unread)
-                </h2>
+                </div>
 
                 {GENERATE_ROLES.includes(role) && (
                     <div
                         style={{
                             display: "flex",
-                            gap: "10px",
+                            gap: 10,
                         }}
                     >
-                        <button
-                            onClick={generateAlertNotifications}
+                        <Btn
+                            onClick={
+                                generateAlertNotifications
+                            }
                         >
                             Generate Alert Notifications
-                        </button>
+                        </Btn>
 
-                        <button
-                            onClick={generateIncidentNotifications}
+                        <Btn
+                            onClick={
+                                generateIncidentNotifications
+                            }
                         >
                             Generate Incident Notifications
-                        </button>
+                        </Btn>
                     </div>
                 )}
             </div>
 
             <label
                 style={{
-                    display: "block",
-                    marginBottom: "16px",
+                    color: C.dim,
+                    fontSize: 12,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
                 }}
             >
                 <input
@@ -153,83 +180,95 @@ function Notifications() {
                     onChange={(e) =>
                         setUnreadOnly(e.target.checked)
                     }
-                />{" "}
+                />
+
                 Show unread only
             </label>
 
-            <table className="log-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Type</th>
-                        <th>Title</th>
-                        <th>Severity</th>
-                        <th>Employee</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {notifications.length === 0 ? (
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
                         <tr>
-                            <td
-                                colSpan="8"
-                                style={{
-                                    textAlign: "center",
-                                }}
-                            >
-                                No Notifications
-                            </td>
+                            <th style={thStyle}>ID</th>
+                            <th style={thStyle}>Type</th>
+                            <th style={thStyle}>Title</th>
+                            <th style={thStyle}>Severity</th>
+                            <th style={thStyle}>Employee</th>
+                            <th style={thStyle}>Status</th>
+                            <th style={thStyle}>Created</th>
+                            <th style={thStyle}>Action</th>
                         </tr>
-                    ) : (
-                        notifications.map((n) => (
-                            <tr key={n.id}>
-                                <td>{n.id}</td>
+                    </thead>
 
-                                <td>
-                                    {n.notification_type}
-                                </td>
-
-                                <td>{n.title}</td>
-
-                                <td>{n.severity}</td>
-
-                                <td>
-                                    {n.related_employee_id}
-                                </td>
-
-                                <td>
-                                    {n.is_read
-                                        ? "Read"
-                                        : "Unread"}
-                                </td>
-
-                                <td>
-                                    {new Date(
-                                        n.created_at
-                                    ).toLocaleString()}
-                                </td>
-
-                                <td>
-                                    {!n.is_read && (
-                                        <button
-                                            onClick={() =>
-                                                markRead(n.id)
-                                            }
-                                        >
-                                            Mark Read
-                                        </button>
-                                    )}
+                    <tbody>
+                        {notifications.length === 0 ? (
+                            <tr>
+                                <td
+                                    style={tdStyle}
+                                    colSpan={8}
+                                >
+                                    No Notifications
                                 </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            notifications.map((n) => (
+                                <tr key={n.id}>
+                                    <td style={tdStyle}>
+                                        {n.id}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {n.notification_type}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {n.title}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {n.severity}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {n.related_employee_id}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {n.is_read
+                                            ? "Read"
+                                            : "Unread"}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {new Date(
+                                            n.created_at
+                                        ).toLocaleString()}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {!n.is_read && (
+                                            <Btn
+                                                onClick={() =>
+                                                    markRead(
+                                                        n.id
+                                                    )
+                                                }
+                                            >
+                                                Mark Read
+                                            </Btn>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </Panel>
         </div>
     );
 }
-
-export default Notifications;

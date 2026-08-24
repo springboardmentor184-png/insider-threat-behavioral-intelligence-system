@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
+import {
+    C,
+    Pill,
+    Panel,
+    Btn,
+    Select,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -24,19 +32,16 @@ const ASSIGN_ROLES = [
     "Security Manager",
 ];
 
-function badgeClass(severity) {
-    if (severity === "Critical" || severity === "High") {
-        return "danger";
-    }
+const sevColor = (s) =>
+    ({
+        Critical: C.accent,
+        High: C.amber,
+        Medium: C.blue,
+        Low: C.green,
+        Informational: C.teal,
+    }[s] || C.muted);
 
-    if (severity === "Medium") {
-        return "warning";
-    }
-
-    return "success";
-}
-
-function Alerts() {
+export default function Alerts() {
     const { user } = useAuth();
     const role = user?.role;
 
@@ -51,9 +56,7 @@ function Alerts() {
                 headers: authHeaders(),
             });
 
-            const data = await res.json();
-
-            setAlerts(data);
+            setAlerts(await res.json());
         } catch (err) {
             console.log(err);
         }
@@ -101,13 +104,15 @@ function Alerts() {
     }
 
     async function createIncident(id) {
-        await fetch(`${API_URL}/alerts/${id}/create-incident`, {
-            method: "POST",
-            headers: authHeaders(),
-        });
+        await fetch(
+            `${API_URL}/alerts/${id}/create-incident`,
+            {
+                method: "POST",
+                headers: authHeaders(),
+            }
+        );
 
         alert("Incident Created");
-
         loadAlerts();
     }
 
@@ -132,54 +137,82 @@ function Alerts() {
     }
 
     if (loading) {
-        return <h2>Loading Alerts...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Alerts...
+            </p>
+        );
     }
 
-    // Summary counts by severity
-    const severityCounts = alerts.reduce((acc, alert) => {
-        acc[alert.severity] =
-            (acc[alert.severity] || 0) + 1;
+    const severityCounts = alerts.reduce(
+        (acc, a) => {
+            acc[a.severity] =
+                (acc[a.severity] || 0) + 1;
 
-        return acc;
-    }, {});
+            return acc;
+        },
+        {}
+    );
 
-    // Apply severity and status filters
-    const filteredAlerts = alerts.filter((alert) => {
-        const severityMatch =
-            severityFilter === "All" ||
-            alert.severity === severityFilter;
-
-        const statusMatch =
-            statusFilter === "All" ||
-            alert.status === statusFilter;
-
-        return severityMatch && statusMatch;
-    });
+    const filtered = alerts.filter(
+        (a) =>
+            (severityFilter === "All" ||
+                a.severity === severityFilter) &&
+            (statusFilter === "All" ||
+                a.status === statusFilter)
+    );
 
     return (
-        <div className="dashboard-container">
-
-            {/* Page Header */}
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
             <div
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginBottom: "20px",
+                    alignItems: "center",
                 }}
             >
-                <h2>Threat Alerts</h2>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 18,
+                    }}
+                >
+                    Threat Alerts{" "}
+                    <span
+                        style={{
+                            color: C.dim,
+                            fontWeight: 400,
+                            fontSize: 12,
+                        }}
+                    >
+                        (alerts.py)
+                    </span>
+                </div>
 
                 {ANALYST_ROLES.includes(role) && (
-                    <button onClick={generateAlerts}>
+                    <Btn
+                        variant="primary"
+                        onClick={generateAlerts}
+                    >
                         Generate Alerts
-                    </button>
+                    </Btn>
                 )}
             </div>
 
-            {/* Severity Summary Cards */}
             <div
-                className="overview-cards"
-                style={{ marginBottom: "20px" }}
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "repeat(5, 1fr)",
+                    gap: 12,
+                }}
             >
                 {[
                     "Informational",
@@ -187,212 +220,244 @@ function Alerts() {
                     "Medium",
                     "High",
                     "Critical",
-                ].map((severity) => (
+                ].map((sev) => (
                     <div
-                        className="card"
-                        key={severity}
+                        key={sev}
+                        style={{
+                            background: C.card,
+                            border: `1px solid ${C.border}`,
+                            borderRadius: 10,
+                            padding: "14px 16px",
+                        }}
                     >
-                        <span>{severity}</span>
-
-                        <h2
-                            className={
-                                badgeClass(severity) ===
-                                "danger"
-                                    ? "red"
-                                    : ""
-                            }
+                        <div
+                            style={{
+                                color: C.dim,
+                                fontSize: 10,
+                                textTransform:
+                                    "uppercase",
+                                marginBottom: 5,
+                            }}
                         >
-                            {severityCounts[severity] || 0}
-                        </h2>
+                            {sev}
+                        </div>
+
+                        <div
+                            style={{
+                                color: sevColor(sev),
+                                fontSize: 24,
+                                fontWeight: 800,
+                            }}
+                        >
+                            {severityCounts[sev] || 0}
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {/* Filters */}
             <div
                 style={{
                     display: "flex",
-                    gap: "12px",
-                    marginBottom: "16px",
+                    gap: 10,
                 }}
             >
-                <select
+                <Select
                     value={severityFilter}
                     onChange={(e) =>
-                        setSeverityFilter(e.target.value)
+                        setSeverityFilter(
+                            e.target.value
+                        )
                     }
                 >
                     <option value="All">
                         All Severities
                     </option>
-
-                    <option value="Informational">
+                    <option>
                         Informational
                     </option>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Critical</option>
+                </Select>
 
-                    <option value="Low">
-                        Low
-                    </option>
-
-                    <option value="Medium">
-                        Medium
-                    </option>
-
-                    <option value="High">
-                        High
-                    </option>
-
-                    <option value="Critical">
-                        Critical
-                    </option>
-                </select>
-
-                <select
+                <Select
                     value={statusFilter}
                     onChange={(e) =>
-                        setStatusFilter(e.target.value)
+                        setStatusFilter(
+                            e.target.value
+                        )
                     }
                 >
                     <option value="All">
                         All Statuses
                     </option>
-
-                    <option value="Open">
-                        Open
-                    </option>
-
-                    <option value="Investigating">
-                        Investigating
-                    </option>
-
-                    <option value="Escalated">
-                        Escalated
-                    </option>
-
-                    <option value="Resolved">
-                        Resolved
-                    </option>
-                </select>
+                    <option>Open</option>
+                    <option>Investigating</option>
+                    <option>Escalated</option>
+                    <option>Resolved</option>
+                </Select>
             </div>
 
-            {/* Alerts Table */}
-            <table className="log-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Employee</th>
-                        <th>Severity</th>
-                        <th>Status</th>
-                        <th>Description</th>
-                        <th>Analyst</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {filteredAlerts.length === 0 ? (
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
                         <tr>
-                            <td
-                                colSpan="7"
-                                style={{
-                                    textAlign: "center",
-                                }}
-                            >
-                                No Alerts Found
-                            </td>
+                            <th style={thStyle}>
+                                ID
+                            </th>
+
+                            <th style={thStyle}>
+                                Employee
+                            </th>
+
+                            <th style={thStyle}>
+                                Severity
+                            </th>
+
+                            <th style={thStyle}>
+                                Status
+                            </th>
+
+                            <th style={thStyle}>
+                                Description
+                            </th>
+
+                            <th style={thStyle}>
+                                Analyst
+                            </th>
+
+                            <th style={thStyle}>
+                                Actions
+                            </th>
                         </tr>
-                    ) : (
-                        filteredAlerts.map((alert) => (
-                            <tr key={alert.id}>
-                                <td>{alert.id}</td>
+                    </thead>
 
-                                <td>
-                                    {alert.employee}
-                                </td>
-
-                                <td>
-                                    <span
-                                        className={`badge ${badgeClass(
-                                            alert.severity
-                                        )}`}
-                                    >
-                                        {alert.severity}
-                                    </span>
-                                </td>
-
-                                <td>{alert.status}</td>
-
-                                <td>
-                                    {alert.description}
-                                </td>
-
-                                <td>
-                                    {alert.assigned_analyst ||
-                                        "Not Assigned"}
-                                </td>
-
+                    <tbody>
+                        {filtered.length === 0 ? (
+                            <tr>
                                 <td
-                                    style={{
-                                        display: "flex",
-                                        gap: "8px",
-                                        flexWrap: "wrap",
-                                    }}
+                                    style={tdStyle}
+                                    colSpan={7}
                                 >
-                                    {/* Assign Analyst */}
-                                    {ASSIGN_ROLES.includes(role) && (
-                                        <button
-                                            onClick={() =>
-                                                assignAnalyst(
-                                                    alert.id
-                                                )
-                                            }
-                                        >
-                                            Assign
-                                        </button>
-                                    )}
-
-                                    {/* Analyst Actions */}
-                                    {ANALYST_ROLES.includes(role) && (
-                                        <>
-                                            <button
-                                                onClick={() =>
-                                                    escalateAlert(
-                                                        alert.id
-                                                    )
-                                                }
-                                            >
-                                                Escalate
-                                            </button>
-
-                                            <button
-                                                onClick={() =>
-                                                    createIncident(
-                                                        alert.id
-                                                    )
-                                                }
-                                            >
-                                                Incident
-                                            </button>
-
-                                            <button
-                                                onClick={() =>
-                                                    resolveAlert(
-                                                        alert.id
-                                                    )
-                                                }
-                                            >
-                                                Resolve
-                                            </button>
-                                        </>
-                                    )}
+                                    No Alerts Found
                                 </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            filtered.map((a) => (
+                                <tr
+                                    key={a.id}
+                                    style={{
+                                        borderLeft: `3px solid ${sevColor(
+                                            a.severity
+                                        )}`,
+                                    }}
+                                >
+                                    <td style={tdStyle}>
+                                        {a.id}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.employee}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        <Pill
+                                            label={
+                                                a.severity
+                                            }
+                                            color={sevColor(
+                                                a.severity
+                                            )}
+                                        />
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.status}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.description}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.assigned_analyst ||
+                                            "Not Assigned"}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        <div
+                                            style={{
+                                                display:
+                                                    "flex",
+                                                gap: 6,
+                                                flexWrap:
+                                                    "wrap",
+                                            }}
+                                        >
+                                            {ASSIGN_ROLES.includes(
+                                                role
+                                            ) && (
+                                                <Btn
+                                                    onClick={() =>
+                                                        assignAnalyst(
+                                                            a.id
+                                                        )
+                                                    }
+                                                >
+                                                    Assign
+                                                </Btn>
+                                            )}
+
+                                            {ANALYST_ROLES.includes(
+                                                role
+                                            ) && (
+                                                <>
+                                                    <Btn
+                                                        onClick={() =>
+                                                            escalateAlert(
+                                                                a.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Escalate
+                                                    </Btn>
+
+                                                    <Btn
+                                                        onClick={() =>
+                                                            createIncident(
+                                                                a.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Incident
+                                                    </Btn>
+
+                                                    <Btn
+                                                        variant="primary"
+                                                        onClick={() =>
+                                                            resolveAlert(
+                                                                a.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Resolve
+                                                    </Btn>
+                                                </>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </Panel>
         </div>
     );
 }
-
-export default Alerts;

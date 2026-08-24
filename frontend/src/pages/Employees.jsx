@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
+import EmployeeBehaviorDetail from "../assets/components/EmployeeBehaviorDetail";
+import {
+    C,
+    Pill,
+    Panel,
+    Btn,
+    Input,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -15,20 +24,32 @@ function authHeaders() {
 const CAN_MANAGE = ["Administrator", "Security Manager"];
 const CAN_DELETE = ["Administrator"];
 
-function riskLabel(score) {
+function riskInfo(score) {
     if (score >= 75) {
-        return { text: "Critical", cls: "danger" };
+        return {
+            text: "Critical",
+            color: C.accent,
+        };
     }
 
     if (score >= 50) {
-        return { text: "High", cls: "danger" };
+        return {
+            text: "High",
+            color: C.amber,
+        };
     }
 
     if (score >= 25) {
-        return { text: "Medium", cls: "warning" };
+        return {
+            text: "Medium",
+            color: C.blue,
+        };
     }
 
-    return { text: "Low", cls: "success" };
+    return {
+        text: "Low",
+        color: C.green,
+    };
 }
 
 const EMPTY_FORM = {
@@ -42,14 +63,13 @@ const EMPTY_FORM = {
     address: "",
 };
 
-function Employees() {
+export default function Employees() {
     const { user } = useAuth();
     const role = user?.role;
 
     const [employees, setEmployees] = useState([]);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState("");
-
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState(EMPTY_FORM);
@@ -66,13 +86,8 @@ function Employees() {
 
                 return res.json();
             })
-            .then((data) => {
-                setEmployees(data);
-                setError(null);
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
+            .then(setEmployees)
+            .catch((err) => setError(err.message));
     };
 
     useEffect(() => {
@@ -85,17 +100,18 @@ function Employees() {
         setShowForm(true);
     }
 
-    // Fetch full profile details before opening the edit form,
-    // since the list endpoint only returns a subset of fields.
     async function openEditForm(emp) {
         setEditingId(emp.id);
         setShowForm(true);
         setFormLoading(true);
 
         try {
-            const res = await fetch(`${API_URL}/profile/${emp.id}`, {
-                headers: authHeaders(),
-            });
+            const res = await fetch(
+                `${API_URL}/profile/${emp.id}`,
+                {
+                    headers: authHeaders(),
+                }
+            );
 
             if (res.ok) {
                 const full = await res.json();
@@ -106,27 +122,25 @@ function Employees() {
                     department: full.department || "",
                     manager: full.manager || "",
                     device_info: full.device_info || "",
-                    access_privileges: full.access_privileges || "",
+                    access_privileges:
+                        full.access_privileges || "",
                     phone: full.phone || "",
                     address: full.address || "",
                 });
             } else {
-                // Fallback: pre-fill what we already have from the list.
                 setFormData({
                     ...EMPTY_FORM,
-                    employee_id: emp.employee_id || "",
-                    designation: emp.designation || "",
-                    department: emp.department || "",
+                    employee_id: emp.employee_id,
+                    designation: emp.designation,
+                    department: emp.department,
                 });
             }
-        } catch (err) {
-            console.error(err);
-
+        } catch {
             setFormData({
                 ...EMPTY_FORM,
-                employee_id: emp.employee_id || "",
-                designation: emp.designation || "",
-                department: emp.department || "",
+                employee_id: emp.employee_id,
+                designation: emp.designation,
+                department: emp.department,
             });
         } finally {
             setFormLoading(false);
@@ -158,13 +172,12 @@ function Employees() {
 
             if (!res.ok) {
                 const err = await res.json();
-                throw new Error(err.detail || "Request failed");
+                throw new Error(
+                    err.detail || "Request failed"
+                );
             }
 
             setShowForm(false);
-            setEditingId(null);
-            setFormData(EMPTY_FORM);
-
             loadEmployees();
         } catch (err) {
             alert(err.message);
@@ -181,14 +194,19 @@ function Employees() {
         }
 
         try {
-            const res = await fetch(`${API_URL}/profile/${id}`, {
-                method: "DELETE",
-                headers: authHeaders(),
-            });
+            const res = await fetch(
+                `${API_URL}/profile/${id}`,
+                {
+                    method: "DELETE",
+                    headers: authHeaders(),
+                }
+            );
 
             if (!res.ok) {
                 const err = await res.json();
-                throw new Error(err.detail || "Delete failed");
+                throw new Error(
+                    err.detail || "Delete failed"
+                );
             }
 
             loadEmployees();
@@ -199,265 +217,441 @@ function Employees() {
 
     if (error) {
         return (
-            <p style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load employees: {error}
             </p>
         );
     }
 
-    const filteredEmployees = employees.filter((emp) => {
+    const filtered = employees.filter((emp) => {
         const q = search.toLowerCase();
 
         return (
-            emp.employee_id?.toLowerCase().includes(q) ||
-            emp.department?.toLowerCase().includes(q) ||
-            emp.designation?.toLowerCase().includes(q)
+            emp.employee_id
+                ?.toLowerCase()
+                .includes(q) ||
+            emp.department
+                ?.toLowerCase()
+                .includes(q) ||
+            emp.designation
+                ?.toLowerCase()
+                .includes(q)
         );
     });
 
     return (
-        <div className="dashboard-container">
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
             <div
-                className="page-header"
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                 }}
             >
-                <h2>Employees</h2>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 18,
+                    }}
+                >
+                    Employee Risk Registry{" "}
+                    <span
+                        style={{
+                            color: C.dim,
+                            fontWeight: 400,
+                            fontSize: 12,
+                        }}
+                    >
+                        (employees.py)
+                    </span>
+                </div>
 
                 {CAN_MANAGE.includes(role) && (
-                    <button onClick={openAddForm}>
+                    <Btn
+                        variant="primary"
+                        onClick={openAddForm}
+                    >
                         + Add Employee
-                    </button>
+                    </Btn>
                 )}
             </div>
 
-            <input
-                type="text"
+            <Input
                 placeholder="Search by Employee ID, Department, or Designation..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                style={{
-                    margin: "12px 0",
-                    width: "100%",
-                    maxWidth: "400px",
-                }}
+                style={{ maxWidth: 380 }}
             />
 
             {showForm && (
-                <div className="card" style={{ marginBottom: "20px" }}>
-                    <h3>
-                        {editingId
+                <Panel
+                    title={
+                        editingId
                             ? "Edit Employee"
-                            : "Onboard New Employee"}
-                    </h3>
-
+                            : "Onboard New Employee"
+                    }
+                >
                     {formLoading ? (
-                        <p>Loading employee details...</p>
+                        <p style={{ color: C.dim }}>
+                            Loading employee details...
+                        </p>
                     ) : (
                         <form onSubmit={handleSubmit}>
                             <div
                                 style={{
                                     display: "grid",
-                                    gridTemplateColumns: "1fr 1fr",
-                                    gap: "12px",
+                                    gridTemplateColumns:
+                                        "1fr 1fr",
+                                    gap: 12,
                                 }}
                             >
-                                <div>
-                                    <label>Employee ID</label>
+                                {[
+                                    [
+                                        "employee_id",
+                                        "Employee ID",
+                                        true,
+                                    ],
+                                    [
+                                        "designation",
+                                        "Designation",
+                                        false,
+                                    ],
+                                    [
+                                        "department",
+                                        "Department",
+                                        false,
+                                    ],
+                                    [
+                                        "manager",
+                                        "Manager",
+                                        false,
+                                    ],
+                                    [
+                                        "device_info",
+                                        "Device Info",
+                                        false,
+                                    ],
+                                    [
+                                        "access_privileges",
+                                        "Access Privileges",
+                                        false,
+                                    ],
+                                    [
+                                        "phone",
+                                        "Phone",
+                                        false,
+                                    ],
+                                    [
+                                        "address",
+                                        "Address",
+                                        false,
+                                    ],
+                                ].map(
+                                    ([
+                                        name,
+                                        label,
+                                        disableOnEdit,
+                                    ]) => (
+                                        <div key={name}>
+                                            <label
+                                                style={{
+                                                    display:
+                                                        "block",
+                                                    color: C.dim,
+                                                    fontSize: 10.5,
+                                                    textTransform:
+                                                        "uppercase",
+                                                    marginBottom: 5,
+                                                }}
+                                            >
+                                                {label}
+                                            </label>
 
-                                    <input
-                                        name="employee_id"
-                                        value={formData.employee_id}
-                                        onChange={handleChange}
-                                        required
-                                        disabled={!!editingId}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Designation</label>
-
-                                    <input
-                                        name="designation"
-                                        value={formData.designation}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Department</label>
-
-                                    <input
-                                        name="department"
-                                        value={formData.department}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Manager</label>
-
-                                    <input
-                                        name="manager"
-                                        value={formData.manager}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Device Info</label>
-
-                                    <input
-                                        name="device_info"
-                                        value={formData.device_info}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Access Privileges</label>
-
-                                    <input
-                                        name="access_privileges"
-                                        value={formData.access_privileges}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Phone</label>
-
-                                    <input
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Address</label>
-
-                                    <input
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+                                            <Input
+                                                name={name}
+                                                value={
+                                                    formData[
+                                                        name
+                                                    ]
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                                required={
+                                                    name ===
+                                                        "employee_id" ||
+                                                    name ===
+                                                        "designation"
+                                                }
+                                                disabled={
+                                                    disableOnEdit &&
+                                                    !!editingId
+                                                }
+                                                style={{
+                                                    width: "100%",
+                                                }}
+                                            />
+                                        </div>
+                                    )
+                                )}
                             </div>
 
                             <div
                                 style={{
-                                    marginTop: "16px",
+                                    marginTop: 16,
                                     display: "flex",
-                                    gap: "10px",
+                                    gap: 10,
                                 }}
                             >
-                                <button type="submit">
+                                <Btn
+                                    type="submit"
+                                    variant="primary"
+                                >
                                     {editingId
                                         ? "Save Changes"
                                         : "Onboard Employee"}
-                                </button>
+                                </Btn>
 
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setShowForm(false);
-                                        setEditingId(null);
-                                        setFormData(EMPTY_FORM);
-                                    }}
+                                <Btn
+                                    variant="ghost"
+                                    onClick={() =>
+                                        setShowForm(false)
+                                    }
                                 >
                                     Cancel
-                                </button>
+                                </Btn>
                             </div>
                         </form>
                     )}
-                </div>
+                </Panel>
             )}
 
-            <table className="log-table">
-                <thead>
-                    <tr>
-                        <th>Employee ID</th>
-                        <th>Department</th>
-                        <th>Designation</th>
-                        <th>Risk Score</th>
-                        <th>Risk Category</th>
-
-                        {CAN_MANAGE.includes(role) && (
-                            <th>Actions</th>
-                        )}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {filteredEmployees.length === 0 ? (
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
                         <tr>
-                            <td
-                                colSpan={
-                                    CAN_MANAGE.includes(role) ? 6 : 5
-                                }
-                                style={{ textAlign: "center" }}
-                            >
-                                No employees found
-                            </td>
+                            <th style={thStyle}>
+                                Employee
+                            </th>
+
+                            <th style={thStyle}>
+                                Department
+                            </th>
+
+                            <th style={thStyle}>
+                                Designation
+                            </th>
+
+                            <th style={thStyle}>
+                                Risk Score
+                            </th>
+
+                            <th style={thStyle}>
+                                Category
+                            </th>
+
+                            <th style={thStyle}>
+                                Activity
+                            </th>
+
+                            {CAN_MANAGE.includes(role) && (
+                                <th style={thStyle}>
+                                    Actions
+                                </th>
+                            )}
                         </tr>
-                    ) : (
-                        filteredEmployees.map((emp) => {
-                            const risk = riskLabel(emp.risk_score);
+                    </thead>
 
-                            return (
-                                <tr key={emp.id || emp.employee_id}>
-                                    <td>{emp.employee_id}</td>
-                                    <td>{emp.department}</td>
-                                    <td>{emp.designation}</td>
-                                    <td>{emp.risk_score}</td>
+                    <tbody>
+                        {filtered.length === 0 ? (
+                            <tr>
+                                <td
+                                    style={tdStyle}
+                                    colSpan={
+                                        CAN_MANAGE.includes(role)
+                                            ? 7
+                                            : 6
+                                    }
+                                >
+                                    No employees found
+                                </td>
+                            </tr>
+                        ) : (
+                            filtered.map((emp) => {
+                                const risk = riskInfo(
+                                    emp.risk_score
+                                );
 
-                                    <td>
-                                        <span
-                                            className={`badge ${risk.cls}`}
-                                        >
-                                            {risk.text}
-                                        </span>
-                                    </td>
-
-                                    {CAN_MANAGE.includes(role) && (
-                                        <td
-                                            style={{
-                                                display: "flex",
-                                                gap: "8px",
-                                            }}
-                                        >
-                                            <button
-                                                onClick={() =>
-                                                    openEditForm(emp)
-                                                }
+                                return (
+                                    <tr
+                                        key={
+                                            emp.id ||
+                                            emp.employee_id
+                                        }
+                                    >
+                                        <td style={tdStyle}>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems:
+                                                        "center",
+                                                    gap: 8,
+                                                }}
                                             >
-                                                Edit
-                                            </button>
-
-                                            {CAN_DELETE.includes(role) && (
-                                                <button
-                                                    onClick={() =>
-                                                        handleDelete(emp.id)
-                                                    }
+                                                <div
+                                                    style={{
+                                                        width: 26,
+                                                        height: 26,
+                                                        borderRadius:
+                                                            "50%",
+                                                        background: `${risk.color}22`,
+                                                        color: risk.color,
+                                                        display:
+                                                            "flex",
+                                                        alignItems:
+                                                            "center",
+                                                        justifyContent:
+                                                            "center",
+                                                        fontSize: 10,
+                                                        fontWeight: 700,
+                                                        flexShrink: 0,
+                                                    }}
                                                 >
-                                                    Delete
-                                                </button>
-                                            )}
+                                                    {emp.employee_id?.slice(
+                                                        0,
+                                                        2
+                                                    )}
+                                                </div>
+
+                                                {emp.employee_id}
+                                            </div>
                                         </td>
-                                    )}
-                                </tr>
-                            );
-                        })
-                    )}
-                </tbody>
-            </table>
+
+                                        <td style={tdStyle}>
+                                            {emp.department}
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            {emp.designation}
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            <div
+                                                style={{
+                                                    display:
+                                                        "flex",
+                                                    alignItems:
+                                                        "center",
+                                                    gap: 8,
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        width: 60,
+                                                        height: 5,
+                                                        background:
+                                                            C.border,
+                                                        borderRadius:
+                                                            3,
+                                                    }}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            height: "100%",
+                                                            width: `${emp.risk_score}%`,
+                                                            borderRadius:
+                                                                3,
+                                                            background:
+                                                                risk.color,
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                <span
+                                                    style={{
+                                                        color: risk.color,
+                                                        fontWeight: 800,
+                                                    }}
+                                                >
+                                                    {emp.risk_score}
+                                                </span>
+                                            </div>
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            <Pill
+                                                label={risk.text}
+                                                color={
+                                                    risk.color
+                                                }
+                                            />
+                                        </td>
+
+                                        <td style={tdStyle}>
+                                            <EmployeeBehaviorDetail
+                                                employeeId={
+                                                    emp.employee_id
+                                                }
+                                            />
+                                        </td>
+
+                                        {CAN_MANAGE.includes(
+                                            role
+                                        ) && (
+                                            <td style={tdStyle}>
+                                                <div
+                                                    style={{
+                                                        display:
+                                                            "flex",
+                                                        gap: 6,
+                                                    }}
+                                                >
+                                                    <Btn
+                                                        onClick={() =>
+                                                            openEditForm(
+                                                                emp
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </Btn>
+
+                                                    {CAN_DELETE.includes(
+                                                        role
+                                                    ) && (
+                                                        <Btn
+                                                            variant="danger"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    emp.id
+                                                                )
+                                                            }
+                                                        >
+                                                            Delete
+                                                        </Btn>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        )}
+                                    </tr>
+                                );
+                            })
+                        )}
+                    </tbody>
+                </table>
+            </Panel>
         </div>
     );
 }
-
-export default Employees;

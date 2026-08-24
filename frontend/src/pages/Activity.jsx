@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
 import useAuth from "../hooks/useAuth";
-import "../styles/Dashboard.css";
+import {
+    C,
+    Panel,
+    Btn,
+    Input,
+    thStyle,
+    tdStyle,
+} from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -23,7 +30,7 @@ const MANAGE_ROLES = ["Administrator"];
 
 const PAGE_SIZE = 50;
 
-function Activity() {
+export default function Activity() {
     const { user } = useAuth();
     const role = user?.role;
 
@@ -31,7 +38,6 @@ function Activity() {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
-
     const [employeeFilter, setEmployeeFilter] = useState("");
 
     const [showForm, setShowForm] = useState(false);
@@ -46,8 +52,7 @@ function Activity() {
 
     useEffect(() => {
         loadActivities(page);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line
     }, [page]);
 
     async function loadActivities(pageNum) {
@@ -56,18 +61,16 @@ function Activity() {
         try {
             const skip = pageNum * PAGE_SIZE;
 
-            const response = await fetch(
+            const res = await fetch(
                 `${API_URL}/activity/?skip=${skip}&limit=${PAGE_SIZE}`,
                 {
                     headers: authHeaders(),
                 }
             );
 
-            const data = await response.json();
+            const data = await res.json();
 
             setActivities(data);
-
-            // If a full page is returned, there may be more records.
             setHasMore(data.length === PAGE_SIZE);
         } catch (err) {
             console.log(err);
@@ -86,9 +89,6 @@ function Activity() {
     async function saveActivity(e) {
         e.preventDefault();
 
-        // Backend route:
-        // POST /activity/
-        // PUT  /activity/{id}
         const url = editingId
             ? `${API_URL}/activity/${editingId}`
             : `${API_URL}/activity/`;
@@ -104,7 +104,10 @@ function Activity() {
 
             if (!res.ok) {
                 const err = await res.json();
-                throw new Error(err.detail || "Request failed");
+
+                throw new Error(
+                    err.detail || "Request failed"
+                );
             }
 
             setForm({
@@ -123,14 +126,14 @@ function Activity() {
         }
     }
 
-    function editActivity(activity) {
-        setEditingId(activity.id);
+    function editActivity(a) {
+        setEditingId(a.id);
 
         setForm({
-            employee: activity.employee,
-            activity: activity.activity,
-            device: activity.device,
-            ip_address: activity.ip_address,
+            employee: a.employee,
+            activity: a.activity,
+            device: a.device,
+            ip_address: a.ip_address,
         });
 
         setShowForm(true);
@@ -142,14 +145,20 @@ function Activity() {
         }
 
         try {
-            const res = await fetch(`${API_URL}/activity/${id}`, {
-                method: "DELETE",
-                headers: authHeaders(),
-            });
+            const res = await fetch(
+                `${API_URL}/activity/${id}`,
+                {
+                    method: "DELETE",
+                    headers: authHeaders(),
+                }
+            );
 
             if (!res.ok) {
                 const err = await res.json();
-                throw new Error(err.detail || "Delete failed");
+
+                throw new Error(
+                    err.detail || "Delete failed"
+                );
             }
 
             loadActivities(page);
@@ -158,210 +167,287 @@ function Activity() {
         }
     }
 
-    // Filters only the currently loaded page.
-    const visibleActivities = employeeFilter
-        ? activities.filter((item) =>
-              item.employee
+    const visible = employeeFilter
+        ? activities.filter((a) =>
+              a.employee
                   ?.toLowerCase()
                   .includes(employeeFilter.toLowerCase())
           )
         : activities;
 
     if (loading && activities.length === 0) {
-        return <h2>Loading Activity Logs...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Activity Logs...
+            </p>
+        );
     }
 
     return (
-        <div className="dashboard-container">
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
             <div
                 style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginBottom: "20px",
+                    alignItems: "center",
                 }}
             >
-                <h2>Activity Logs</h2>
+                <div
+                    style={{
+                        color: C.txt,
+                        fontWeight: 800,
+                        fontSize: 18,
+                    }}
+                >
+                    Activity Monitor{" "}
+                    <span
+                        style={{
+                            color: C.dim,
+                            fontWeight: 400,
+                            fontSize: 12,
+                        }}
+                    >
+                        (activity.py + CERT CSVs)
+                    </span>
+                </div>
 
                 {ANALYST_ROLES.includes(role) && (
-                    <button
+                    <Btn
+                        variant="primary"
                         onClick={() => {
                             setShowForm(!showForm);
                             setEditingId(null);
                         }}
                     >
-                        {showForm ? "Cancel" : "+ Add Activity"}
-                    </button>
+                        {showForm
+                            ? "Cancel"
+                            : "+ Add Activity"}
+                    </Btn>
                 )}
             </div>
 
             <p
                 style={{
-                    color: "#666",
-                    fontSize: "0.9rem",
+                    color: C.muted,
+                    fontSize: 11,
                 }}
             >
-                Showing page {page + 1} ({activities.length} records this
-                page). Search filters only the currently loaded page — use
-                pagination to browse further.
+                Showing page {page + 1} (
+                {activities.length} records). Search filters
+                only the loaded page — use pagination to browse
+                further.
             </p>
 
-            <input
-                type="text"
+            <Input
                 placeholder="Filter this page by Employee..."
                 value={employeeFilter}
-                onChange={(e) => setEmployeeFilter(e.target.value)}
-                style={{
-                    width: "300px",
-                    marginBottom: "16px",
-                }}
+                onChange={(e) =>
+                    setEmployeeFilter(e.target.value)
+                }
+                style={{ maxWidth: 320 }}
             />
 
             {showForm && (
-                <form
-                    onSubmit={saveActivity}
-                    className="add-employee-form"
-                >
-                    <input
-                        name="employee"
-                        placeholder="Employee"
-                        value={form.employee}
-                        onChange={handleChange}
-                        required
-                    />
+                <Panel>
+                    <form
+                        onSubmit={saveActivity}
+                        style={{
+                            display: "flex",
+                            gap: 10,
+                            flexWrap: "wrap",
+                            alignItems: "flex-end",
+                        }}
+                    >
+                        <Input
+                            name="employee"
+                            placeholder="Employee"
+                            value={form.employee}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <input
-                        name="activity"
-                        placeholder="Activity"
-                        value={form.activity}
-                        onChange={handleChange}
-                        required
-                    />
+                        <Input
+                            name="activity"
+                            placeholder="Activity"
+                            value={form.activity}
+                            onChange={handleChange}
+                            required
+                        />
 
-                    <input
-                        name="device"
-                        placeholder="Device"
-                        value={form.device}
-                        onChange={handleChange}
-                    />
+                        <Input
+                            name="device"
+                            placeholder="Device"
+                            value={form.device}
+                            onChange={handleChange}
+                        />
 
-                    <input
-                        name="ip_address"
-                        placeholder="IP Address"
-                        value={form.ip_address}
-                        onChange={handleChange}
-                    />
+                        <Input
+                            name="ip_address"
+                            placeholder="IP Address"
+                            value={form.ip_address}
+                            onChange={handleChange}
+                        />
 
-                    <button type="submit">
-                        {editingId
-                            ? "Update Activity"
-                            : "Add Activity"}
-                    </button>
-                </form>
+                        <Btn
+                            type="submit"
+                            variant="primary"
+                        >
+                            {editingId ? "Update" : "Add"}
+                        </Btn>
+                    </form>
+                </Panel>
             )}
 
-            <table className="log-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Employee</th>
-                        <th>Activity</th>
-                        <th>Device</th>
-                        <th>IP Address</th>
-                        <th>Timestamp</th>
-
-                        {MANAGE_ROLES.includes(role) && (
-                            <th>Actions</th>
-                        )}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {visibleActivities.length === 0 ? (
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <thead>
                         <tr>
-                            <td
-                                colSpan={
-                                    MANAGE_ROLES.includes(role)
-                                        ? 7
-                                        : 6
-                                }
-                                style={{
-                                    textAlign: "center",
-                                }}
-                            >
-                                No Activity Logs Found
-                            </td>
+                            <th style={thStyle}>ID</th>
+                            <th style={thStyle}>Employee</th>
+                            <th style={thStyle}>Activity</th>
+                            <th style={thStyle}>Device</th>
+                            <th style={thStyle}>IP Address</th>
+                            <th style={thStyle}>Timestamp</th>
+
+                            {MANAGE_ROLES.includes(role) && (
+                                <th style={thStyle}>
+                                    Actions
+                                </th>
+                            )}
                         </tr>
-                    ) : (
-                        visibleActivities.map((activity) => (
-                            <tr key={activity.id}>
-                                <td>{activity.id}</td>
-                                <td>{activity.employee}</td>
-                                <td>{activity.activity}</td>
-                                <td>{activity.device}</td>
-                                <td>{activity.ip_address}</td>
-                                <td>
-                                    {new Date(
-                                        activity.timestamp
-                                    ).toLocaleString()}
+                    </thead>
+
+                    <tbody>
+                        {visible.length === 0 ? (
+                            <tr>
+                                <td
+                                    style={tdStyle}
+                                    colSpan={
+                                        MANAGE_ROLES.includes(
+                                            role
+                                        )
+                                            ? 7
+                                            : 6
+                                    }
+                                >
+                                    No Activity Logs Found
                                 </td>
-
-                                {MANAGE_ROLES.includes(role) && (
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                editActivity(activity)
-                                            }
-                                            style={{
-                                                marginRight: "8px",
-                                            }}
-                                        >
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            onClick={() =>
-                                                deleteActivity(
-                                                    activity.id
-                                                )
-                                            }
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                )}
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            visible.map((a) => (
+                                <tr key={a.id}>
+                                    <td style={tdStyle}>
+                                        {a.id}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.employee}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.activity}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.device}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {a.ip_address}
+                                    </td>
+
+                                    <td style={tdStyle}>
+                                        {new Date(
+                                            a.timestamp
+                                        ).toLocaleString()}
+                                    </td>
+
+                                    {MANAGE_ROLES.includes(
+                                        role
+                                    ) && (
+                                        <td style={tdStyle}>
+                                            <div
+                                                style={{
+                                                    display:
+                                                        "flex",
+                                                    gap: 6,
+                                                }}
+                                            >
+                                                <Btn
+                                                    onClick={() =>
+                                                        editActivity(
+                                                            a
+                                                        )
+                                                    }
+                                                >
+                                                    Edit
+                                                </Btn>
+
+                                                <Btn
+                                                    variant="danger"
+                                                    onClick={() =>
+                                                        deleteActivity(
+                                                            a.id
+                                                        )
+                                                    }
+                                                >
+                                                    Delete
+                                                </Btn>
+                                            </div>
+                                        </td>
+                                    )}
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </Panel>
 
             <div
                 style={{
                     display: "flex",
-                    gap: "10px",
-                    marginTop: "16px",
+                    gap: 10,
+                    alignItems: "center",
                 }}
             >
-                <button
+                <Btn
                     disabled={page === 0}
                     onClick={() =>
                         setPage((p) => Math.max(0, p - 1))
                     }
                 >
                     Previous
-                </button>
+                </Btn>
 
-                <span>Page {page + 1}</span>
+                <span
+                    style={{
+                        color: C.dim,
+                        fontSize: 12,
+                    }}
+                >
+                    Page {page + 1}
+                </span>
 
-                <button
+                <Btn
                     disabled={!hasMore}
-                    onClick={() => setPage((p) => p + 1)}
+                    onClick={() =>
+                        setPage((p) => p + 1)
+                    }
                 >
                     Next
-                </button>
+                </Btn>
             </div>
         </div>
     );
 }
-
-export default Activity;

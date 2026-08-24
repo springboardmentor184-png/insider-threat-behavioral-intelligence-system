@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./assets/components/ProtectedRoute";
+import AppLayout from "./assets/components/AppLayout";
 
 import OAuthSuccess from "./pages/OAuthSuccess";
 import Login from "./pages/Login";
@@ -22,149 +23,74 @@ const ANALYST_ROLES = [
     "Administrator",
     "Security Manager",
     "SOC Engineer",
-    "Security Analyst"
+    "Security Analyst",
 ];
 
 const ADMIN_ONLY = ["Administrator"];
 
-const ADMIN_AND_MANAGER = [
-    "Administrator",
-    "Security Manager"
-];
+function withLayout(Component, allowedRoles) {
+    return (
+        <ProtectedRoute allowedRoles={allowedRoles}>
+            <AppLayout>
+                <Component />
+            </AppLayout>
+        </ProtectedRoute>
+    );
+}
 
 function AppRoutes() {
     return (
         <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/oauth-success" element={<OAuthSuccess />} />
 
-            {/* Public routes */}
-            <Route
-                path="/"
-                element={<Navigate to="/login" replace />}
-            />
+            <Route path="/dashboard" element={withLayout(Dashboard)} />
+            <Route path="/profile" element={withLayout(Profile)} />
+            <Route path="/notifications" element={withLayout(Notifications)} />
 
-            <Route
-                path="/login"
-                element={<Login />}
-            />
-
-            <Route
-                path="/register"
-                element={<Register />}
-            />
-
-            <Route
-                path="/oauth-success"
-                element={<OAuthSuccess />}
-            />
-
-            {/* Protected — any logged-in user */}
-            <Route
-                path="/dashboard"
-                element={
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
-            />
-
-            <Route
-                path="/profile"
-                element={
-                    <ProtectedRoute>
-                        <Profile />
-                    </ProtectedRoute>
-                }
-            />
-
-            <Route
-                path="/notifications"
-                element={
-                    <ProtectedRoute>
-                        <Notifications />
-                    </ProtectedRoute>
-                }
-            />
-
-            {/* Protected — analyst-level roles only */}
             <Route
                 path="/alerts"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <Alerts />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Alerts, ANALYST_ROLES)}
             />
 
             <Route
                 path="/reports"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <Reports />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Reports, ANALYST_ROLES)}
             />
 
             <Route
                 path="/employees"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <Employees />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Employees, ANALYST_ROLES)}
             />
 
             <Route
                 path="/investigations"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <Investigations />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Investigations, ANALYST_ROLES)}
             />
 
             <Route
                 path="/ueba"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <UEBA />
-                    </ProtectedRoute>
-                }
+                element={withLayout(UEBA, ANALYST_ROLES)}
             />
 
             <Route
                 path="/risk"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <Risk />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Risk, ANALYST_ROLES)}
             />
 
             <Route
                 path="/activity"
-                element={
-                    <ProtectedRoute allowedRoles={ANALYST_ROLES}>
-                        <Activity />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Activity, ANALYST_ROLES)}
             />
 
-            {/* Protected — Admin only */}
             <Route
                 path="/users"
-                element={
-                    <ProtectedRoute allowedRoles={ADMIN_ONLY}>
-                        <Users />
-                    </ProtectedRoute>
-                }
+                element={withLayout(Users, ADMIN_ONLY)}
             />
 
-            {/* Catch-all */}
-            <Route
-                path="*"
-                element={<NotFound />}
-            />
-
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }

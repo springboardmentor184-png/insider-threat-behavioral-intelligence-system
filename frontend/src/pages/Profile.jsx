@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API_URL from "../services/api";
-import "../styles/Dashboard.css";
+import { C, Panel, tdStyle } from "../assets/components/AppLayout";
 
 function authHeaders() {
     const token = localStorage.getItem("token");
@@ -10,7 +10,7 @@ function authHeaders() {
     };
 }
 
-function Profile() {
+export default function Profile() {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,102 +31,96 @@ function Profile() {
                 setLoading(false);
             })
             .catch((err) => {
-                console.error(err);
                 setError(err.message);
                 setLoading(false);
             });
     }, []);
 
     if (loading) {
-        return <h2>Loading Profile...</h2>;
+        return (
+            <p style={{ color: C.dim }}>
+                Loading Profile...
+            </p>
+        );
     }
 
     if (error) {
         return (
-            <h2 style={{ color: "red" }}>
+            <p style={{ color: C.accent }}>
                 Failed to load profile: {error}
-            </h2>
+            </p>
         );
     }
 
+    const rows = [
+        ["User ID", profile.id],
+        ["Full Name", profile.full_name],
+        ["Email", profile.email],
+        ["Role", profile.role],
+        [
+            "Department",
+            profile.department || "Not Available",
+        ],
+        [
+            "Account Status",
+            profile.is_active ? "Active" : "Inactive",
+        ],
+        [
+            "Member Since",
+            profile.created_at
+                ? new Date(
+                      profile.created_at
+                  ).toLocaleDateString()
+                : "Not Available",
+        ],
+    ];
+
     return (
-        <div className="dashboard-container">
-            <h1>Employee Profile</h1>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+            }}
+        >
+            <div
+                style={{
+                    color: C.txt,
+                    fontWeight: 800,
+                    fontSize: 18,
+                }}
+            >
+                Employee Profile
+            </div>
 
-            <table className="log-table">
-                <tbody>
-                    <tr>
-                        <td>
-                            <b>User ID</b>
-                        </td>
-                        <td>{profile.id}</td>
-                    </tr>
+            <Panel>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                    }}
+                >
+                    <tbody>
+                        {rows.map(([label, val]) => (
+                            <tr key={label}>
+                                <td
+                                    style={{
+                                        ...tdStyle,
+                                        width: 220,
+                                        color: C.dim,
+                                    }}
+                                >
+                                    <b>{label}</b>
+                                </td>
 
-                    <tr>
-                        <td>
-                            <b>Full Name</b>
-                        </td>
-                        <td>{profile.full_name}</td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Email</b>
-                        </td>
-                        <td>{profile.email}</td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Role</b>
-                        </td>
-                        <td>{profile.role}</td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Department</b>
-                        </td>
-                        <td>
-                            {profile.department || "Not Available"}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Account Status</b>
-                        </td>
-                        <td>
-                            <span
-                                className={`badge ${
-                                    profile.is_active
-                                        ? "success"
-                                        : "danger"
-                                }`}
-                            >
-                                {profile.is_active
-                                    ? "Active"
-                                    : "Inactive"}
-                            </span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <b>Member Since</b>
-                        </td>
-                        <td>
-                            {profile.created_at
-                                ? new Date(
-                                      profile.created_at
-                                  ).toLocaleDateString()
-                                : "Not Available"}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <td style={tdStyle}>
+                                    {val}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Panel>
         </div>
     );
 }
-
-export default Profile;
