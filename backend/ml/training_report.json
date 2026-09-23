@@ -1,0 +1,105 @@
+{
+  "model_type": "IsolationForest",
+  "evaluation_note": "Accuracy is omitted because a normal-only model would look 99.7% accurate on this subset while detecting no threats. Precision, recall, and F1 are calculated only against the evaluable insiders present in the supplied logon/device files.",
+  "configured_reference_insiders": [
+    "AAM0658",
+    "ACM2278",
+    "AJR0932",
+    "CDE1846",
+    "CMP2946",
+    "DAM0315",
+    "HIS0934",
+    "MBG3183",
+    "MCF0600",
+    "PHB0250",
+    "PLJ1771",
+    "RES0688",
+    "TAR0535"
+  ],
+  "evaluable_reference_insiders": [
+    "AAM0658",
+    "AJR0932",
+    "MCF0600"
+  ],
+  "unavailable_reference_insiders": [
+    "ACM2278",
+    "CDE1846",
+    "CMP2946",
+    "DAM0315",
+    "HIS0934",
+    "MBG3183",
+    "PHB0250",
+    "PLJ1771",
+    "RES0688",
+    "TAR0535"
+  ],
+  "evaluation_population_note": "Only 3 of 13 configured reference IDs occur in this supplied data subset; recall is 1.0000 (3/3) for those 3 evaluable IDs, not all configured IDs.",
+  "threshold_percentile": 90,
+  "anomaly_score_threshold": 0.528213,
+  "precision": 0.03,
+  "recall": 1.0,
+  "f1_score": 0.0583,
+  "confusion_matrix": {
+    "true_negative": 900,
+    "false_positive": 97,
+    "false_negative": 0,
+    "true_positive": 3
+  },
+  "profiles_scored": 1000,
+  "flagged_profiles": 100,
+  "feature_count": 27,
+  "feature_names": [
+    "total_logons",
+    "mean_logon_hour",
+    "std_logon_hour",
+    "after_hours_logons",
+    "weekend_logons",
+    "unique_pcs_logon",
+    "num_logon_days",
+    "total_logoffs",
+    "total_device_connects",
+    "after_hours_device",
+    "weekend_device",
+    "unique_pcs_device",
+    "mean_device_hour",
+    "std_device_hour",
+    "num_device_days",
+    "total_device_disconnects",
+    "after_hours_logon_ratio",
+    "weekend_logon_ratio",
+    "logons_per_day",
+    "device_connects_per_day",
+    "after_hours_device_ratio",
+    "weekend_device_ratio",
+    "logon_logoff_ratio",
+    "pc_variety_score",
+    "mean_session_min",
+    "std_session_min",
+    "max_session_min"
+  ],
+  "known_insiders": [
+    "AAM0658",
+    "AJR0932",
+    "MCF0600"
+  ],
+  "known_insider_rankings": [
+    {
+      "user": "MCF0600",
+      "anomaly_score": 0.5890695777286691,
+      "risk_rank": 40,
+      "risk_percentile": 4.0
+    },
+    {
+      "user": "AAM0658",
+      "anomaly_score": 0.5395924686118199,
+      "risk_rank": 85,
+      "risk_percentile": 8.5
+    },
+    {
+      "user": "AJR0932",
+      "anomaly_score": 0.5324670488156108,
+      "risk_rank": 94,
+      "risk_percentile": 9.4
+    }
+  ]
+}

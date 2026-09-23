@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-dotenv
+python-jose
+passlib[bcrypt]
+# passlib 1.7.x is incompatible with bcrypt 5.x at runtime.
+bcrypt>=4.1,<5
+pandas
+scikit-learn
+joblib
+imbalanced-learn
+email-validator
+reportlab

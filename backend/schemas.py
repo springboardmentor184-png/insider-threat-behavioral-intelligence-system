@@ -1,0 +1,99 @@
+from pydantic import BaseModel, EmailStr
+from datetime import date
+from typing import Optional, List
+from datetime import datetime
+from models import UserRole
+
+
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role: UserRole = UserRole.SECURITY_ANALYST
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+    role: UserRole
+
+    class Config:
+        from_attributes = True
+
+
+# What the client sends when logging in
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+
+class PasswordResetConfirm(BaseModel):
+    token: str
+    password: str
+
+
+# What we send back after successful login (never send password back!)
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    role: str
+
+
+# What we send back to represent a user (no password_hash exposed)
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: str
+    role: str
+
+    class Config:
+        from_attributes = True
+
+
+class UserRoleUpdate(BaseModel):
+    role: UserRole
+
+
+# What the client sends to create/update a profile
+class ProfileUpdate(BaseModel):
+    designation: Optional[str] = None
+    department: Optional[str] = None
+    join_date: Optional[date] = None
+    device_ids: Optional[str] = None
+
+
+# What we send back to represent a profile
+class ProfileOut(BaseModel):
+    id: int
+    user_id: int
+    designation: Optional[str] = None
+    department: Optional[str] = None
+    join_date: Optional[date] = None
+    device_ids: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class AlertStatusUpdate(BaseModel):
+    status: str
+
+
+class InvestigationStatusUpdate(BaseModel):
+    status: str
+
+
+class RiskScoreOut(BaseModel):
+    employee_id: str
+    risk_score: float
+    risk_level: str
+    threat_probability: float
+    computed_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
