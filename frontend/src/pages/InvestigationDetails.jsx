@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import api from '../services/api'
+import { generateInvestigationCasePDF } from '../utils/pdfGenerator'
 
 const InvestigationDetails = () => {
   const { id } = useParams()
@@ -70,53 +71,7 @@ const InvestigationDetails = () => {
   }
 
   const handleExportReport = () => {
-    if (!details) return
-    const textContent = `========================================================
-INSIDER THREAT DETAILED INVESTIGATION CASE BRIEF
-========================================================
-Case Reference   : #CASE-${details.id}
-Case Title       : ${details.title}
-Created Date     : ${new Date(details.created_at).toLocaleString()}
-Severity Level   : ${details.severity}
-Case Status      : ${details.status}
-Assigned Analyst : ${details.assigned_analyst_name}
-
---------------------------------------------------------
-SUBJECT EMPLOYEE PROFILE:
-Name             : ${details.employee ? details.employee.name : 'N/A'}
-Employee ID      : ${details.employee ? details.employee.employee_id : 'N/A'}
-Corporate Email  : ${details.employee ? details.employee.email : 'N/A'}
-Department       : ${details.employee ? details.employee.department : 'N/A'}
-Designation      : ${details.employee ? details.employee.designation : 'N/A'}
-
---------------------------------------------------------
-INSIDER RISK SCORE ANALYSIS:
-Total Risk Score : ${details.risk_profile ? details.risk_profile.score : 0}/100 (${details.risk_profile ? details.risk_profile.level : 'N/A'})
-Risk Explanation : ${details.risk_profile ? details.risk_profile.explanation : 'N/A'}
-
-Weighted Components:
-- Behavioral Anomalies (35%) : ${details.risk_profile ? details.risk_profile.components.behavioral_anomaly_score : 0}
-- Privilege Misuse (25%)    : ${details.risk_profile ? details.risk_profile.components.privilege_misuse_score : 0}
-- Data Access (20%)         : ${details.risk_profile ? details.risk_profile.components.data_access_score : 0}
-- Access Patterns (10%)     : ${details.risk_profile ? details.risk_profile.components.access_pattern_score : 0}
-- Historical Events (10%)   : ${details.risk_profile ? details.risk_profile.components.historical_event_score : 0}
-
---------------------------------------------------------
-CASE SUMMARY:
-${details.summary}
-
-RESOLUTION NOTES:
-${details.resolution_notes || 'Investigation active in SOC queue.'}
-
-========================================================`
-
-    const element = document.createElement("a")
-    const file = new Blob([textContent], { type: 'text/plain' })
-    element.href = URL.createObjectURL(file)
-    element.download = `investigation_case_${details.id}_${Date.now()}.txt`
-    document.body.appendChild(element)
-    element.click()
-    document.body.removeChild(element)
+    generateInvestigationCasePDF(details)
   }
 
   if (loading || !details) {
@@ -172,7 +127,7 @@ ${details.resolution_notes || 'Investigation active in SOC queue.'}
           className="btn btn-primary"
           style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
         >
-          <Download size={16} /> Export Case Brief (.txt)
+          <Download size={16} /> Export Case Brief (PDF)
         </button>
       </div>
 

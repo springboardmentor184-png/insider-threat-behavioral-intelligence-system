@@ -104,8 +104,19 @@ class UserResponse(UserBase):
 
 class UserLogin(BaseModel):
     email: str = Field(..., min_length=1, description="Email address or Username")
-    password: str
+    password: Optional[str] = None
     remember_me: bool = False
+
+class SendOTPRequest(BaseModel):
+    email: str = Field(..., min_length=1, description="Corporate Email Address or Username")
+
+class VerifyOTPRequest(BaseModel):
+    email: str = Field(..., min_length=1, description="Corporate Email Address or Username")
+    otp: str = Field(..., min_length=6, max_length=6, description="6-digit OTP Code")
+    remember_me: bool = False
+
+class ResendOTPRequest(BaseModel):
+    email: str = Field(..., min_length=1, description="Corporate Email Address or Username")
 
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr
@@ -140,14 +151,19 @@ class ResetPasswordRequest(BaseModel):
 
 class ProfileUpdate(BaseModel):
     full_name: Optional[str] = None
+    email: Optional[EmailStr] = None
     username: Optional[str] = None
+    role_name: Optional[str] = None
     profile_picture: Optional[str] = None
+    password: Optional[str] = None
+    confirm_password: Optional[str] = None
 
     @field_validator('full_name')
     @classmethod
     def validate_full_name(cls, v: Optional[str]) -> Optional[str]:
-        if v is None:
-            return v
+        if not v:
+            return None
+        v = v.strip()
         if not re.match(r"^[a-zA-Z\s]+$", v):
             raise ValueError("Full Name can only contain letters and spaces")
         return v
@@ -155,7 +171,7 @@ class ProfileUpdate(BaseModel):
     @field_validator('username')
     @classmethod
     def validate_username(cls, v: Optional[str]) -> Optional[str]:
-        if v is None or v == "":
+        if not v:
             return None
         v = v.strip()
         if len(v) < 3 or len(v) > 30:

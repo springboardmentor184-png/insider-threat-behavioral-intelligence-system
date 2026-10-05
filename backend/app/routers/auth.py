@@ -14,6 +14,8 @@ from app.schemas.schemas import (
 )
 from app.core.security import verify_password, get_password_hash, create_access_token, create_refresh_token
 from app.core.dependencies import get_current_user
+from app.core.email_service import send_password_reset_email, send_otp_email
+import jwt
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -196,67 +198,197 @@ def logout(response: Response):
     response.delete_cookie("refresh_token")
     return {"message": "Session terminated successfully."}
 
-from app.core.email_service import send_password_reset_email, send_otp_email
-import random
+import secrets
+import hashlib
+from app.schemas.schemas import SendOTPRequest, VerifyOTPRequest, ResendOTPRequest
 
 @router.post("/send-otp", status_code=status.HTTP_200_OK)
-def send_otp(payload: ForgotPasswordRequest, request: Request, db: Session = Depends(get_db)):
-    """Generates and emails a 6-digit OTP code to verified user email address."""
+def send_otp(payload: SendOTPRequest, request: Request, db: Session = Depends(get_db)):
+    """Generates and emails a secure 6-digit OTP code to a registered user for login."""
     apply_rate_limit(request)
-    sanitize_input(payload.email)
+    identifier = payload.email.strip().lower()
 
-    user = db.query(User).filter(User.email == payload.email.strip().lower()).first()
-    if not user:
+    user = db.query(User).filter(
+        or_(func.lower(User.email) == identifier, func.lower(User.username) == identifier)
+    ).first()
+
+    # Account Enumeration Protection: Generic response if user not found or inactive
+    if not user or not user.is_active:
+        return {
+            "status": "success",
+            "message": "If an account exists with this information, an OTP has been sent."
+        }
+
+    now = datetime.utcnow()
+
+    # Cooldown Check (60 seconds between resends)
+    if user.otp_last_sent_at and (now - user.otp_last_sent_at).total_seconds() < 60:
+        seconds_remaining = 60 - int((now - user.otp_last_sent_at).total_seconds())
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No registered operator account found with email address '{payload.email}'. Please check spelling or register."
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Please wait {seconds_remaining} seconds before requesting a new OTP."
         )
 
-    # Generate random 6-digit numeric OTP code
-    otp = f"{random.randint(100000, 999999)}"
-    user.otp_code = otp
-    user.otp_expiry = datetime.utcnow() + timedelta(minutes=10)
+    # Secure 6-digit OTP generation (never log or return raw OTP in JSON payload)
+    raw_otp = f"{secrets.randbelow(900000) + 100000}"
+    otp_hash = hashlib.sha256(raw_otp.encode()).hexdigest()
+
+    user.otp_code = otp_hash
+    user.otp_expiry = now + timedelta(minutes=5)  # 5 minutes expiry
+    user.otp_attempts = 0
+    user.otp_last_sent_at = now
     db.commit()
 
-    # Dispatch OTP Email
-    delivered, status_msg = send_otp_email(target_email=user.email, otp_code=otp)
+    # Dispatch OTP Email asynchronously/via smtplib
+    try:
+        send_otp_email(target_email=user.email, otp_code=raw_otp, purpose="Secure Account Login")
+    except Exception as email_err:
+        print(f"[WARN] OTP email dispatch warning: {email_err}")
 
     return {
         "status": "success",
-        "email_sent": delivered,
-        "email": user.email,
-        "message": f"6-Digit OTP verification code sent to {user.email} (Valid for 10 mins)."
+        "message": "If an account exists with this information, an OTP has been sent."
     }
 
-@router.post("/verify-otp", status_code=status.HTTP_200_OK)
-def verify_otp(payload: Dict[str, str], db: Session = Depends(get_db)):
-    """Verifies 6-digit OTP code and returns a reset_token."""
-    email = payload.get("email", "").strip().lower()
-    otp = payload.get("otp", "").strip()
+@router.post("/resend-otp", status_code=status.HTTP_200_OK)
+def resend_otp(payload: ResendOTPRequest, request: Request, db: Session = Depends(get_db)):
+    """Resends a new 6-digit OTP code after enforcing a 60-second cooldown."""
+    apply_rate_limit(request)
+    identifier = payload.email.strip().lower()
 
-    if not email or not otp:
-        raise HTTPException(status_code=400, detail="Email and OTP code are required.")
+    user = db.query(User).filter(
+        or_(func.lower(User.email) == identifier, func.lower(User.username) == identifier)
+    ).first()
 
-    user = db.query(User).filter(User.email == email).first()
-    if not user or user.otp_code != otp:
-        raise HTTPException(status_code=400, detail="Invalid 6-digit OTP verification code.")
+    if not user or not user.is_active:
+        return {
+            "status": "success",
+            "message": "If an account exists with this information, an OTP has been sent."
+        }
 
-    if not user.otp_expiry or user.otp_expiry < datetime.utcnow():
-        raise HTTPException(status_code=400, detail="OTP verification code has expired. Please request a new one.")
+    now = datetime.utcnow()
 
-    # OTP is valid! Generate reset token and clear OTP
-    reset_token = str(uuid.uuid4())
-    user.reset_token = reset_token
-    user.reset_token_expiry = datetime.utcnow() + timedelta(minutes=15)
-    user.otp_code = None
-    user.otp_expiry = None
+    # Cooldown Check (60 seconds)
+    if user.otp_last_sent_at and (now - user.otp_last_sent_at).total_seconds() < 60:
+        seconds_remaining = 60 - int((now - user.otp_last_sent_at).total_seconds())
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Please wait {seconds_remaining} seconds before requesting a new OTP."
+        )
+
+    # Generate new OTP & invalidate previous one
+    raw_otp = f"{secrets.randbelow(900000) + 100000}"
+    otp_hash = hashlib.sha256(raw_otp.encode()).hexdigest()
+
+    user.otp_code = otp_hash
+    user.otp_expiry = now + timedelta(minutes=5)
+    user.otp_attempts = 0
+    user.otp_last_sent_at = now
     db.commit()
+
+    try:
+        send_otp_email(target_email=user.email, otp_code=raw_otp, purpose="Secure Account Login")
+    except Exception as email_err:
+        print(f"[WARN] Resend OTP email dispatch warning: {email_err}")
 
     return {
         "status": "success",
-        "message": "OTP verification successful!",
-        "reset_token": reset_token,
-        "reset_link": f"/reset-password?token={reset_token}"
+        "message": "If an account exists with this information, an OTP has been sent."
+    }
+
+@router.post("/verify-otp", response_model=Token, status_code=status.HTTP_200_OK)
+def verify_otp(payload: VerifyOTPRequest, response: Response, request: Request, db: Session = Depends(get_db)):
+    """Verifies the 6-digit OTP code and authenticates the user into a secure session."""
+    apply_rate_limit(request)
+    identifier = payload.email.strip().lower()
+    input_otp = payload.otp.strip()
+
+    user = db.query(User).filter(
+        or_(func.lower(User.email) == identifier, func.lower(User.username) == identifier)
+    ).first()
+
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid account or verification details."
+        )
+
+    now = datetime.utcnow()
+
+    # Check attempt count limit (5 attempts max)
+    if user.otp_attempts >= 5:
+        user.otp_code = None
+        user.otp_expiry = None
+        db.commit()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Too many failed verification attempts. This OTP has been invalidated. Please request a new OTP."
+        )
+
+    # Check Expiration (5 mins)
+    if not user.otp_code or not user.otp_expiry or user.otp_expiry < now:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="OTP verification code has expired. Please request a new OTP."
+        )
+
+    # Check OTP hash match
+    input_hash = hashlib.sha256(input_otp.encode()).hexdigest()
+    is_valid = (input_hash == user.otp_code) or (input_otp == user.otp_code)
+
+    if not is_valid:
+        user.otp_attempts += 1
+        attempts_left = 5 - user.otp_attempts
+        if attempts_left <= 0:
+            user.otp_code = None
+            user.otp_expiry = None
+            db.commit()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Too many failed verification attempts. This OTP has been invalidated. Please request a new OTP."
+            )
+        db.commit()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid 6-digit OTP verification code. {attempts_left} attempts remaining."
+        )
+
+    # OTP Verified Successfully! Immediately invalidate OTP code & reset attempts
+    user.otp_code = None
+    user.otp_expiry = None
+    user.otp_attempts = 0
+    user.last_login = now
+    if not user.email_verified:
+        user.email_verified = True
+    db.commit()
+
+    # Create JWT session tokens
+    access_token = create_access_token(username=user.email, role=user.role.name)
+    refresh_token = create_refresh_token(username=user.email, role=user.role.name)
+
+    cookie_age = 7 * 24 * 3600 if payload.remember_me else None
+
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        max_age=3600,
+        samesite="lax",
+        secure=False
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        max_age=cookie_age,
+        samesite="lax",
+        secure=False
+    )
+
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer"
     }
 
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
@@ -416,19 +548,59 @@ def get_profile(current_user: User = Depends(get_current_user)):
 @router.put("/profile", response_model=UserResponse)
 def update_profile(profile_in: ProfileUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     sanitize_input(profile_in.full_name)
+    sanitize_input(profile_in.email)
     sanitize_input(profile_in.username)
+    sanitize_input(profile_in.role_name)
     sanitize_input(profile_in.profile_picture)
 
-    if profile_in.username and profile_in.username != current_user.username:
-        if db.query(User).filter(User.username == profile_in.username).first():
+    # Email update check
+    if profile_in.email and profile_in.email.strip().lower() != current_user.email.lower():
+        new_email = profile_in.email.strip().lower()
+        if db.query(User).filter(User.email == new_email).first():
+            raise HTTPException(status_code=409, detail="An account with this email address already exists")
+        current_user.email = new_email
+
+    # Username update check
+    if profile_in.username and profile_in.username.strip() != current_user.username:
+        new_username = profile_in.username.strip()
+        if db.query(User).filter(User.username == new_username).first():
             raise HTTPException(status_code=409, detail="Username is already taken")
-        current_user.username = profile_in.username
-        
+        current_user.username = new_username
+
+    # Full Name update
     if profile_in.full_name:
-        current_user.full_name = profile_in.full_name
+        current_user.full_name = profile_in.full_name.strip()
+
+    # Profile Picture update
     if profile_in.profile_picture:
-        current_user.profile_picture = profile_in.profile_picture
+        current_user.profile_picture = profile_in.profile_picture.strip()
+
+    # Role update
+    if profile_in.role_name:
+        role = db.query(Role).filter(Role.name == profile_in.role_name).first()
+        if role:
+            current_user.role_id = role.id
+
+    # Password update
+    if profile_in.password:
+        if profile_in.password != profile_in.confirm_password:
+            raise HTTPException(status_code=400, detail="Passwords do not match")
+        if len(profile_in.password) < 8 or len(profile_in.password) > 64:
+            raise HTTPException(status_code=400, detail="Password must be between 8 and 64 characters")
+        current_user.hashed_password = get_password_hash(profile_in.password)
 
     db.commit()
     db.refresh(current_user)
     return current_user
+
+@router.delete("/account", status_code=status.HTTP_200_OK)
+def delete_account(response: Response, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Permanently deletes the current user's account, freeing email & username for re-registration."""
+    db.delete(current_user)
+    db.commit()
+
+    # Wipe cookies
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+
+    return {"message": "Account successfully deleted. Your email and username are now available for registration."}

@@ -54,12 +54,32 @@ const RiskAnalytics = () => {
     fetchAnalyticsData()
   }
 
+  const playAlertSound = () => {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+      const osc = audioCtx.createOscillator()
+      const gain = audioCtx.createGain()
+      osc.type = 'sine'
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime)
+      osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.3)
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime)
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3)
+      osc.connect(gain)
+      gain.connect(audioCtx.destination)
+      osc.start()
+      osc.stop(audioCtx.currentTime + 0.3)
+    } catch (e) {
+      console.warn("Audio playback context unavailable")
+    }
+  }
+
   const handleRecalculateScores = async () => {
     setRecalculating(true)
     setFeedback('')
     try {
       const res = await api.post('/risk/recalculate')
       setFeedback(res.data.message)
+      playAlertSound()
       await fetchAnalyticsData()
     } catch (err) {
       setFeedback("Failed to recalculate risk scores.")
@@ -74,6 +94,7 @@ const RiskAnalytics = () => {
     try {
       const res = await api.post('/alerts/trigger-scan')
       setFeedback(res.data.message)
+      playAlertSound()
       await fetchAnalyticsData()
     } catch (err) {
       setFeedback("Failed to trigger alert threshold scan.")

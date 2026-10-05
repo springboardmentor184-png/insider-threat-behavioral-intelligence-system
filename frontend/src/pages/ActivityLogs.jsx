@@ -1,13 +1,35 @@
 import React, { useEffect, useState, useContext } from 'react'
 import api from '../services/api'
 import { AuthContext } from '../context/AuthContext'
-import { ClipboardList, RefreshCw, Play, Filter, AlertCircle, CheckCircle, Database, ChevronLeft, ChevronRight, HardDrive, FileText, Mail, Globe, Shield } from 'lucide-react'
+import { ClipboardList, RefreshCw, Play, Filter, AlertCircle, CheckCircle, Database, ChevronLeft, ChevronRight, HardDrive, FileText, Mail, Globe, Shield, Download } from 'lucide-react'
 
 const ActivityLogs = () => {
   const { user } = useContext(AuthContext)
   const [logs, setLogs] = useState([])
   const [employees, setEmployees] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const handleExportCSV = () => {
+    if (!logs || logs.length === 0) return
+    const headers = ["ID", "Timestamp", "Employee Name", "Event Type", "Severity", "Details"]
+    const rows = logs.map(log => [
+      log.id,
+      `"${new Date(log.timestamp).toLocaleString()}"`,
+      `"${log.employee ? log.employee.name : 'Unknown'}"`,
+      `"${log.event_type}"`,
+      `"${log.severity}"`,
+      `"${typeof log.details === 'object' ? JSON.stringify(log.details).replace(/"/g, '""') : log.details}"`
+    ])
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n")
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement("a")
+    link.setAttribute("href", encodedUri)
+    link.setAttribute("download", `telemetry_activity_logs_${new Date().toISOString().slice(0, 10)}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
   
   // Filtering & Pagination
   const [eventTypeFilter, setEventTypeFilter] = useState('')
@@ -109,9 +131,14 @@ const ActivityLogs = () => {
           </p>
         </div>
 
-        <button onClick={fetchLogs} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <RefreshCw size={16} /> Refresh Log Stream
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button onClick={handleExportCSV} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', backgroundColor: '#06b6d4', borderColor: '#06b6d4' }}>
+            <Download size={16} /> Export Telemetry CSV
+          </button>
+          <button onClick={fetchLogs} className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <RefreshCw size={16} /> Refresh Log Stream
+          </button>
+        </div>
       </div>
 
       {/* Dataset Integration Banner Card */}

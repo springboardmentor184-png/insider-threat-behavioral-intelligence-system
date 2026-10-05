@@ -33,8 +33,10 @@ class User(Base):
     reset_token = Column(String(255), nullable=True, index=True)
     reset_token_expiry = Column(DateTime(timezone=True), nullable=True)
     
-    otp_code = Column(String(10), nullable=True, index=True)
+    otp_code = Column(String(255), nullable=True, index=True)
     otp_expiry = Column(DateTime(timezone=True), nullable=True)
+    otp_attempts = Column(Integer, default=0, nullable=False)
+    otp_last_sent_at = Column(DateTime(timezone=True), nullable=True)
     
     last_login = Column(DateTime(timezone=True), nullable=True)
     is_active = Column(Boolean, default=True)

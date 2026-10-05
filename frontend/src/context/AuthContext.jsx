@@ -40,6 +40,28 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
+  const sendOtp = async (email) => {
+    const res = await api.post('/auth/send-otp', { email })
+    return res.data
+  }
+
+  const resendOtp = async (email) => {
+    const res = await api.post('/auth/resend-otp', { email })
+    return res.data
+  }
+
+  const verifyOtp = async (email, otp, rememberMe = false) => {
+    const res = await api.post('/auth/verify-otp', { 
+      email, 
+      otp, 
+      remember_me: rememberMe 
+    })
+    localStorage.setItem('token', res.data.access_token)
+    localStorage.setItem('refresh_token', res.data.refresh_token)
+    await fetchCurrentUser()
+    return res.data
+  }
+
   const login = async (email, password, rememberMe) => {
     const res = await api.post('/auth/login', { 
       email, 
@@ -82,24 +104,37 @@ export const AuthProvider = ({ children }) => {
     })
   }
 
-  const updateProfile = async (fullName, username, picUrl) => {
-    const res = await api.put('/auth/profile', {
-      full_name: fullName,
-      username: username || null,
-      profile_picture: picUrl || null
-    })
+  const updateProfile = async (payload) => {
+    const res = await api.put('/auth/profile', payload)
     setUser(res.data)
+    return res.data
+  }
+
+  const deleteAccount = async () => {
+    try {
+      await api.delete('/auth/account')
+    } catch (err) {
+      console.error("Account deletion request error", err)
+    } finally {
+      localStorage.removeItem('token')
+      localStorage.removeItem('refresh_token')
+      setUser(null)
+    }
   }
 
   return (
     <AuthContext.Provider value={{ 
       user, 
       loading, 
+      sendOtp,
+      resendOtp,
+      verifyOtp,
       login, 
       loginWithGoogle,
       logout, 
       registerUser, 
       updateProfile,
+      deleteAccount,
       theme, 
       toggleTheme, 
       isAuthenticated: !!user 

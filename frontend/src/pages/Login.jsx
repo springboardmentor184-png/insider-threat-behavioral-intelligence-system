@@ -1,53 +1,119 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
-import { Shield, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { Shield, AlertCircle, CheckCircle2, Loader2, ArrowLeft, KeyRound, Mail } from 'lucide-react'
 
 const Login = () => {
+  const [step, setStep] = useState('request') // 'request' | 'verify'
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [otp, setOtp] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
+  const [infoMsg, setInfoMsg] = useState('')
   const [loading, setLoading] = useState(false)
-  
+  const [cooldown, setCooldown] = useState(0)
+
   // Google OAuth Simulation state
   const [showGoogleModal, setShowGoogleModal] = useState(false)
   const [customGoogleEmail, setCustomGoogleEmail] = useState('')
   const [customGoogleName, setCustomGoogleName] = useState('')
 
-  const { login, loginWithGoogle } = useContext(AuthContext)
+  const { sendOtp, verifyOtp, resendOtp, loginWithGoogle } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  // Cooldown countdown timer effect
+  useEffect(() => {
+    let timer = null
+    if (cooldown > 0) {
+      timer = setInterval(() => {
+        setCooldown((prev) => prev - 1)
+      }, 1000)
+    }
+    return () => {
+      if (timer) clearInterval(timer)
+    }
+  }, [cooldown])
+
+  // Step 1: Send OTP to User's Email / Username
+  const handleSendOtp = async (e) => {
     e.preventDefault()
     setError('')
-    
-    // Quick validation
-    if (!email || !password) {
-      setError('Please fill in all credentials.')
+    setInfoMsg('')
+
+    if (!email.trim()) {
+      setError('Please enter your registered corporate email address or username.')
       return
     }
 
     setLoading(true)
     try {
-      await login(email, password, rememberMe)
-      navigate('/')
+      const res = await sendOtp(email.trim())
+      setInfoMsg(res.message || 'If an account exists with this information, an OTP has been sent.')
+      setStep('verify')
+      setCooldown(60) // Start 60-second cooldown timer
     } catch (err) {
-      setError(err.response?.data?.detail || 'Authentication failed. Please check credentials.')
+      if (err.response?.status === 429) {
+        setError(err.response.data.detail || 'Rate limit exceeded. Please wait before requesting another OTP.')
+      } else {
+        setError(err.response?.data?.detail || 'Failed to dispatch OTP verification code. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
   }
 
-  const triggerGoogleAuth = async (name, email) => {
+  // Step 2: Verify 6-Digit OTP & Create Session
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault()
+    setError('')
+    setInfoMsg('')
+
+    if (!otp.trim() || otp.trim().length !== 6) {
+      setError('Please enter the complete 6-digit OTP code.')
+      return
+    }
+
+    setLoading(true)
+    try {
+      await verifyOtp(email.trim(), otp.trim(), rememberMe)
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Invalid or expired OTP code. Please check your inbox or request a new code.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Resend OTP Action
+  const handleResendOtp = async () => {
+    if (cooldown > 0 || loading) return
+    setError('')
+    setInfoMsg('')
+    setLoading(true)
+    try {
+      const res = await resendOtp(email.trim())
+      setInfoMsg(res.message || 'A new 6-digit OTP code has been sent to your email.')
+      setCooldown(60)
+    } catch (err) {
+      if (err.response?.status === 429) {
+        setError(err.response.data.detail)
+      } else {
+        setError(err.response?.data?.detail || 'Failed to resend OTP code.')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Google OAuth trigger handler
+  const triggerGoogleAuth = async (name, emailAddr) => {
     setError('')
     setLoading(true)
     setShowGoogleModal(false)
     try {
       const googleId = `g-${name.toLowerCase().replace(/\s+/g, '')}-${Date.now().toString().slice(-4)}`
       const picUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${name}`
-      await loginWithGoogle(name, email, googleId, picUrl)
+      await loginWithGoogle(name, emailAddr, googleId, picUrl)
       navigate('/')
     } catch (err) {
       setError('Google Sign-in failed. Please try again.')
@@ -63,7 +129,7 @@ const Login = () => {
           <Shield size={48} style={{ color: '#06b6d4', marginBottom: '1rem' }} />
           <h2 style={{ fontFamily: 'Space Grotesk' }}>SYSTEM ACCESS</h2>
           <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '0.25rem' }}>
-            Behavioral Intelligence Control Panel
+            Behavioral Intelligence Control Panel • OTP Authentication
           </p>
         </div>
 
@@ -74,73 +140,135 @@ const Login = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Corporate Email or Username</label>
-            <input
-              type="text"
-              required
-              className="form-control"
-              placeholder="operator@company.com or username"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
-            />
+        {infoMsg && (
+          <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+            <CheckCircle2 size={16} style={{ flexShrink: 0, color: '#10b981' }} />
+            <span>{infoMsg}</span>
           </div>
+        )}
 
-          <div className="form-group" style={{ position: 'relative' }}>
-            <label className="form-label">Security Password</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              required
-              className="form-control"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
+        {step === 'request' ? (
+          /* STEP 1: Enter Email / Username */
+          <form onSubmit={handleSendOtp}>
+            <div className="form-group">
+              <label className="form-label">Corporate Email or Username</label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  required
+                  className="form-control"
+                  placeholder="operator@company.com or username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading}
+                  style={{ paddingLeft: '2.5rem' }}
+                />
+                <Mail size={16} style={{ position: 'absolute', left: '0.85rem', top: '0.85rem', color: '#64748b' }} />
+              </div>
+            </div>
+
+            <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <Loader2 size={16} className="spinner" /> Sending OTP Verification Code...
+                </span>
+              ) : (
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <KeyRound size={16} /> Send OTP Verification Code
+                </span>
+              )}
+            </button>
+          </form>
+        ) : (
+          /* STEP 2: Enter 6-Digit OTP */
+          <form onSubmit={handleVerifyOtp}>
+            <div style={{ backgroundColor: 'rgba(6, 182, 212, 0.08)', border: '1px solid rgba(6, 182, 212, 0.2)', borderRadius: '8px', padding: '0.75rem 1rem', marginBottom: '1.25rem', fontSize: '0.85rem' }}>
+              <div style={{ color: '#06b6d4', fontWeight: '600' }}>OTP Sent to Account</div>
+              <div style={{ color: '#94a3b8', marginTop: '0.15rem' }}>
+                Enter the 6-digit code sent to your registered email for <strong>{email}</strong>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">6-Digit Verification Code (OTP)</label>
+              <input
+                type="text"
+                required
+                maxLength={6}
+                className="form-control"
+                placeholder="123456"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
+                disabled={loading}
+                style={{
+                  fontFamily: 'Space Grotesk, monospace',
+                  fontSize: '1.4rem',
+                  letterSpacing: '0.4em',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  color: '#06b6d4'
+                }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#94a3b8', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  disabled={loading}
+                  style={{ accentColor: '#06b6d4' }}
+                />
+                Remember Me (7 days)
+              </label>
+
+              <button
+                type="button"
+                onClick={handleResendOtp}
+                disabled={cooldown > 0 || loading}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: cooldown > 0 ? '#64748b' : '#06b6d4',
+                  fontWeight: '600',
+                  cursor: cooldown > 0 ? 'not-allowed' : 'pointer',
+                  fontSize: '0.85rem'
+                }}
+              >
+                {cooldown > 0 ? `Resend OTP (${cooldown}s)` : 'Resend OTP'}
+              </button>
+            </div>
+
+            <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <Loader2 size={16} className="spinner" /> Authorizing Session...
+                </span>
+              ) : 'Verify OTP & Authorize Session'}
+            </button>
+
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => { setStep('request'); setError(''); setInfoMsg(''); setOtp(''); }}
               style={{
-                position: 'absolute',
-                right: '1rem',
-                top: '2.4rem',
                 background: 'none',
                 border: 'none',
-                color: '#64748b',
+                color: '#94a3b8',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.4rem',
+                width: '100%',
+                marginTop: '1rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer'
               }}
             >
-              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              <ArrowLeft size={14} /> Change Email / Username
             </button>
-          </div>
-
-          {/* Remember Me and Forgot Password Container */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.85rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#94a3b8', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                disabled={loading}
-                style={{ accentColor: '#06b6d4' }}
-              />
-              Remember Me
-            </label>
-            <Link to="/forgot-password" style={{ color: '#06b6d4', fontWeight: '500' }}>
-              Forgot Password?
-            </Link>
-          </div>
-
-          <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
-            {loading ? (
-              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                <Loader2 size={16} className="spinner" /> Authorizing Session...
-              </span>
-            ) : 'Authenticate'}
-          </button>
-        </form>
+          </form>
+        )}
 
         {/* Divider line */}
         <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0', gap: '1rem' }}>
@@ -207,13 +335,6 @@ const Login = () => {
                 style={styles.accountOption}
               >
                 <strong>Sarah Connor</strong> (sconnor@company.com)
-              </button>
-              <button
-                type="button"
-                onClick={() => triggerGoogleAuth('Alex Vance', 'avance@intel.org')}
-                style={styles.accountOption}
-              >
-                <strong>Alex Vance</strong> (avance@intel.org)
               </button>
             </div>
 
@@ -319,6 +440,5 @@ const styles = {
     transition: 'all 0.2s'
   }
 }
-
 
 export default Login

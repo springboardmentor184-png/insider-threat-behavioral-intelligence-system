@@ -235,12 +235,13 @@ def send_password_reset_email(
 def send_otp_email(
     target_email: str,
     otp_code: str,
-    purpose: str = "Password Reset & Account Access Verification"
+    purpose: str = "Identity Verification & Secure Login"
 ):
     """
     Sends an automated 6-digit OTP verification code via email.
+    Note: Per security guidelines, raw OTP is never exposed in log outputs.
     """
-    subject = f"[InsiderThreat.AI] Your 6-Digit Verification Code: {otp_code}"
+    subject = f"[InsiderThreat.AI] Security Verification Code"
 
     html_content = f"""
     <!DOCTYPE html>
@@ -268,7 +269,7 @@ def send_otp_email(
                 <div class="otp-box">{otp_code}</div>
 
                 <p style="font-size: 13px; color: #64748b;">
-                    This OTP is valid for <strong>10 minutes</strong>. Do not share this verification code with anyone.
+                    This OTP is valid for <strong>5 minutes</strong>. Do not share this verification code with anyone.
                 </p>
             </div>
             <div class="footer">
@@ -283,7 +284,6 @@ def send_otp_email(
     print(f"DISPATCHING 6-DIGIT OTP VERIFICATION CODE TO USER")
     print(f"Recipient : {target_email}")
     print(f"Subject   : {subject}")
-    print(f"OTP Code  : {otp_code}")
     print(f"=================================================================\n")
 
     if SMTP_PASSWORD:
@@ -293,7 +293,7 @@ def send_otp_email(
             msg["From"] = SMTP_USER
             msg["To"] = target_email
             
-            # Send copy to primary operator email for instant testing visibility across all accounts
+            # Send copy to primary operator email for testing visibility across all accounts
             recipients = [target_email]
             if target_email.lower() != SMTP_USER.lower():
                 msg["Cc"] = SMTP_USER
@@ -305,11 +305,11 @@ def send_otp_email(
                 server.starttls()
                 server.login(SMTP_USER, SMTP_PASSWORD)
                 server.sendmail(SMTP_USER, recipients, msg.as_string())
-            print(f"[OK] 6-Digit OTP email successfully delivered via SMTP to {target_email} (and CC: {SMTP_USER})")
-            return True, f"OTP email delivered via SMTP to {target_email} (and CC: {SMTP_USER})"
+            print(f"[OK] 6-Digit OTP email successfully delivered via SMTP to {target_email}")
+            return True, f"OTP email delivered via SMTP to {target_email}"
         except Exception as ex:
             print(f"[WARN] SMTP OTP Email Delivery Warning: {ex}")
             return False, f"SMTP delivery failed: {str(ex)}"
     else:
-        print(f"[INFO] 6-Digit OTP code generated for {target_email}: {otp_code}")
+        print(f"[INFO] 6-Digit OTP dispatched via simulation mode for {target_email}")
         return True, f"Dev simulation mode: Dispatched to server console for {target_email}"
